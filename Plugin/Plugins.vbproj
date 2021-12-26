@@ -11,7 +11,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>Interfaces</AssemblyName>
+    <AssemblyName>Plugins</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
@@ -23,7 +23,7 @@
     <OptionCompare>Binary</OptionCompare>
     <OptionExplicit>On</OptionExplicit>
     <OptionStrict>On</OptionStrict>
-    <RootNamespace>GeniePlugin.Interfaces</RootNamespace>
+    <RootNamespace>GeniePlugin.Plugins</RootNamespace>
     <StartupObject>PluginSample.Interfaces.%28None%29</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -52,7 +52,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\bin\</OutputPath>
-    <DocumentationFile>Interfaces.xml</DocumentationFile>
+    <DocumentationFile>Plugins.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
@@ -72,7 +72,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>Interfaces.xml</DocumentationFile>
+    <DocumentationFile>Plugins.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>

@@ -73,6 +73,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Interfaces">
+      <HintPath>bin\Interfaces.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Jint, Version=0.8.8.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -595,12 +598,6 @@
     <None Include="Resources\view-refresh1.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Plugin\Interfaces.vbproj">
-      <Project>{B0882700-5EAF-4712-ADE5-69DAFE473A01}</Project>
-      <Name>Interfaces</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Forms\ConfigPanels\UCWindowSettings.resx">
       <DependentUpon>UCWindowSettings.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -652,6 +649,12 @@
     <None Include="Resources\control_pause.gif" />
     <None Include="Resources\control_play.gif" />
     <None Include="Resources\control_stop.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Plugin\Plugins.vbproj">
+      <Project>{b0882700-5eaf-4712-ade5-69dafe473a01}</Project>
+      <Name>Plugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
