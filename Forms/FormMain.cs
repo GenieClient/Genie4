@@ -1160,12 +1160,15 @@ namespace GenieClient
 
         private void FormMain_KeyDown(object sender, KeyEventArgs e)
         {
+            if (!this.TextBoxInput.Focused)
+            {
+                this.TextBoxInput.Focus();
+            }
             if (My.MyProject.Forms.FormConfig.Visible == false | TextBoxInput.Focused == true)
             {
                 if (m_oGlobals.MacroList.Contains(e.KeyData) == true)
                 {
-                    m_oCommand.ParseCommand(((Genie.Macros.Macro)m_oGlobals.MacroList[e.KeyData]).sAction, true, true);
-                    string argsText = "";
+                    string argsText = m_oCommand.ParseCommand(((Genie.Macros.Macro)m_oGlobals.MacroList[e.KeyData]).sAction, true, true);
                     var argoColor = Color.Transparent;
                     var argoBgColor = Color.Transparent;
                     Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
