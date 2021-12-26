@@ -5,6 +5,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
+using System.Reflection;
 
 /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
 /* TODO ERROR: Skipped IfDirectiveTrivia */
@@ -35,11 +36,27 @@ namespace GenieClient.My
             {
             }
 
+            string jint = "GenieClient.Libs.Jint.dll";
+            string antlr3 = "GenieClient.Libs.Antlr3.Runtime.dll";
+            string interfaces = "GenieClient.Libs.Interfaces.dll";
+            EmbeddedAssembly.Load(jint, "Jint.dll");
+            EmbeddedAssembly.Load(antlr3, "Antlr3.Runtime.dll");
+            EmbeddedAssembly.Load(interfaces, "Interfaces.dll");
+
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+
             MyProject.Application.Run(Args);
         }
+
+        static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            return EmbeddedAssembly.Get(args.Name);
+        }
+
         /* TODO ERROR: Skipped EndIfDirectiveTrivia */
         /* TODO ERROR: Skipped ElifDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped ElifDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
     }
+
 
     /* TODO ERROR: Skipped EndIfDirectiveTrivia */
     /* TODO ERROR: Skipped IfDirectiveTrivia */
