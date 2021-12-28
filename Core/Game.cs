@@ -921,7 +921,9 @@ namespace GenieClient.Genie
             if (sText.Length == 32 & m_sEncryptionKey.Length == 0)
             {
                 m_sEncryptionKey = sText;
-                m_oSocket.Send("A" + Constants.vbTab + m_sAccountName.ToUpper() + Constants.vbTab + Utility.EncryptText(m_sEncryptionKey, m_sAccountPassword) + Constants.vbNewLine);
+                m_oSocket.Send("A" + Constants.vbTab + m_sAccountName.ToUpper() + Constants.vbTab);
+                m_oSocket.Send(Utility.EncryptText(m_sEncryptionKey, m_sAccountPassword));
+                m_oSocket.Send(Constants.vbNewLine);
             }
             else
             {
