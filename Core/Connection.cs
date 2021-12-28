@@ -163,6 +163,11 @@ namespace GenieClient.Genie
             Send(m_SocketClient, sText);
         }
 
+        public void Send(byte[] bytes)
+        {
+            Send(m_SocketClient, bytes);
+        }
+
         private void ConnectCallback(IAsyncResult ar)
         {
             m_oLastServerActivity = DateTime.Now;
@@ -235,6 +240,28 @@ namespace GenieClient.Genie
                 }
 
                 var ByteData = Encoding.Default.GetBytes(sText);
+                s.BeginSend(ByteData, 0, ByteData.Length, SocketFlags.None, new AsyncCallback(SendCallback), s);
+            }
+            catch (SocketException ex)
+            {
+                PrintSocketError("Connection failure", ex.ErrorCode);
+            }
+        }
+
+        private void Send(Socket s, byte[] ByteData)
+        {
+            try
+            {
+                if (Information.IsNothing(s) == true)
+                {
+                    return;
+                }
+
+                if (s.Connected == false)
+                {
+                    return;
+                }
+
                 s.BeginSend(ByteData, 0, ByteData.Length, SocketFlags.None, new AsyncCallback(SendCallback), s);
             }
             catch (SocketException ex)
