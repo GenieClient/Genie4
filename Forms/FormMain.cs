@@ -1160,10 +1160,6 @@ namespace GenieClient
 
         private void FormMain_KeyDown(object sender, KeyEventArgs e)
         {
-            if (!this.TextBoxInput.Focused)
-            {
-                this.TextBoxInput.Focus();
-            }
             if (My.MyProject.Forms.FormConfig.Visible == false | TextBoxInput.Focused == true)
             {
                 if (m_oGlobals.MacroList.Contains(e.KeyData) == true)
