@@ -673,7 +673,9 @@ namespace GenieClient
 
             SelectionStart = int.MaxValue;
             SelectionLength = 0;
+            this.ReadOnly = false; //disabling ReadOnly to prevent system beeping on next line of code
             SelectedRtf = text;
+            this.ReadOnly = true;
             bool bScroll = true;
             if (iFirstLineVisible + 2 >= m_iEndLine) // +2 extra lines
             {
