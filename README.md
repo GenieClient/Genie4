@@ -1,11 +1,3 @@
-# genie3
+Genie 4 is an upgrade of Genie 3 to the .NET 6.0 unified Core Framework which adds cross-platform support.
 
-Official source code for Genie3 - https://genieclient.com
-
-Download executable here:
-https://github.com/walcon/genie3/releases/download/compiled/Genie3Release.zip
-Please note, this version is untested and may contain bugs. Use at your own risk!
-
-More notes will be added later. If you make any improvements please contact me and I will add you as a contributor.
-
-// Conny
+There will be bugs. Probably lots of them. 
