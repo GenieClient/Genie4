@@ -1164,7 +1164,8 @@ namespace GenieClient
             {
                 if (m_oGlobals.MacroList.Contains(e.KeyData) == true)
                 {
-                    string argsText = m_oCommand.ParseCommand(((Genie.Macros.Macro)m_oGlobals.MacroList[e.KeyData]).sAction, true, true);
+                    m_oCommand.ParseCommand(((Genie.Macros.Macro)m_oGlobals.MacroList[e.KeyData]).sAction, true, true);
+                    string argsText = "";
                     var argoColor = Color.Transparent;
                     var argoBgColor = Color.Transparent;
                     Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
@@ -6727,45 +6728,45 @@ namespace GenieClient
             /*
             try
             {*/
-                string argsAction = m_oGlobals.Events.Poll();
-                RunQueueCommand(argsAction, ""); // , "Event")
-                int iSent = 0;
-                bool argbInRoundtime = HasRoundtime;
-                string sCommandQueue = m_oGlobals.CommandQueue.Poll(argbInRoundtime);
-                while (sCommandQueue.Length > 0)
-                {
-                    RunQueueCommand(sCommandQueue, ""); // , "Queue")
-                    iSent += 1;
+            string argsAction = m_oGlobals.Events.Poll();
+            RunQueueCommand(argsAction, ""); // , "Event")
+            int iSent = 0;
+            bool argbInRoundtime = HasRoundtime;
+            string sCommandQueue = m_oGlobals.CommandQueue.Poll(argbInRoundtime);
+            while (sCommandQueue.Length > 0)
+            {
+                RunQueueCommand(sCommandQueue, ""); // , "Queue")
+                iSent += 1;
 
-                    // ' This is broke
-                    // If iSent >= m_oGlobals.Config.iTypeAhead Then
-                    // m_oGlobals.CommandQueue.SetNextTime(0.5)
-                    // Exit While
-                    // End If
+                // ' This is broke
+                // If iSent >= m_oGlobals.Config.iTypeAhead Then
+                // m_oGlobals.CommandQueue.SetNextTime(0.5)
+                // Exit While
+                // End If
 
-                    bool argbInRoundtime1 = HasRoundtime;
-                    sCommandQueue = m_oGlobals.CommandQueue.Poll(argbInRoundtime1);
-                }
+                bool argbInRoundtime1 = HasRoundtime;
+                sCommandQueue = m_oGlobals.CommandQueue.Poll(argbInRoundtime1);
+            }
 
-                TickScripts();
-                if (m_oGlobals.Config.bShowSpellTimer == true && m_oGlobals.oSpellTimeStart != DateTime.MinValue)
-                {
-                    SafeSetStatusBarLabels();
-                }
+            TickScripts();
+            if (m_oGlobals.Config.bShowSpellTimer == true && m_oGlobals.oSpellTimeStart != DateTime.MinValue)
+            {
+                SafeSetStatusBarLabels();
+            }
 
-                SafeAddScripts();
-                RemoveExitedScripts();
+            SafeAddScripts();
+            RemoveExitedScripts();
 
-                if (m_bScriptListUpdated)
-                {
-                    SetScriptListVariable();
-                }
-                /*}
-                 TODO ERROR: Skipped IfDirectiveTrivia 
-                catch (Exception ex)
-                {
-                    HandleGenieException("BackgroundWorker", ex.Message, ex.ToString());
-                    /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+            if (m_bScriptListUpdated)
+            {
+                SetScriptListVariable();
+            }
+            /*}
+             TODO ERROR: Skipped IfDirectiveTrivia 
+            catch (Exception ex)
+            {
+                HandleGenieException("BackgroundWorker", ex.Message, ex.ToString());
+                /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
             /*}
             */
         }
