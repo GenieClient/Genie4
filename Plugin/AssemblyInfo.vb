@@ -7,12 +7,12 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("")> 
-<Assembly: AssemblyCopyright("")> 
-<Assembly: AssemblyTrademark("")> 
+<Assembly: AssemblyTitle("GeniePlugin")>
+<Assembly: AssemblyDescription("Plugin Interface for Genie 4")>
+<Assembly: AssemblyCompany("")>
+<Assembly: AssemblyProduct("Genie 4")>
+<Assembly: AssemblyCopyright("")>
+<Assembly: AssemblyTrademark("")>
 <Assembly: CLSCompliant(True)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
@@ -28,4 +28,4 @@ Imports System.Runtime.InteropServices
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
 
-<Assembly: AssemblyVersion("2.0.0.0")>
+<Assembly: AssemblyVersion("2.0.0.1")>
