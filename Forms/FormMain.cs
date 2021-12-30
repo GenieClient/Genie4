@@ -3574,7 +3574,7 @@ namespace GenieClient
                                                 TriggerAction(oTrigger.sAction, RegExpArg);
                                             }
                                         }
-                                    }
+                                       }
                                 }
                             }
                         }
@@ -5182,7 +5182,21 @@ namespace GenieClient
             ShowDialogException("Main", e.Exception.Message, e.Exception.ToString());
         }
 
+        public delegate void ShowDialogExceptionDelegate(string section, string message, string description = null);
         private void ShowDialogException(string section, string message, string description = null)
+        {
+            if (InvokeRequired == true)
+            {
+                var parameters = new object[] { section, message, description};
+                Invoke(new ShowDialogExceptionDelegate(ThreadSafeShowDialogException), parameters);
+            }
+            else
+            {
+                ThreadSafeShowDialogException(section, message, description);
+            }
+            
+        }
+        private void ThreadSafeShowDialogException(string section, string message, string description = null)
         {
             if (My.MyProject.Forms.DialogException.Visible == false)
             {
