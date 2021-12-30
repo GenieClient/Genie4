@@ -6,14 +6,17 @@ namespace GenieClient.Genie.Collections
 {
     public class SortedList : System.Collections.SortedList
     {
-        private const int m_iDefaultTimeout = 5;
-        private ReaderWriterLock m_oRWLock = new ReaderWriterLock();
+        private ReaderWriterLockSlim m_oRWLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
-        public bool AcquireWriterLock(int millisecondsTimeout = 0)
+        public bool AcquireWriterLock()
         {
             try
             {
-                m_oRWLock.AcquireWriterLock(millisecondsTimeout);
+                if(m_oRWLock.IsWriteLockHeld | m_oRWLock.IsReadLockHeld)
+                {
+                    return false;
+                }
+                m_oRWLock.EnterWriteLock();
                 return true;
             }
             catch (Exception ex)
@@ -22,41 +25,20 @@ namespace GenieClient.Genie.Collections
             }
         }
 
-        public bool AcquireReaderLock(int millisecondsTimeout = 0)
+        public bool AcquireReaderLock()
         {
             try
             {
-                m_oRWLock.AcquireReaderLock(millisecondsTimeout);
+                if (m_oRWLock.IsWriteLockHeld)
+                {
+                    return false;
+                }
+                m_oRWLock.EnterReadLock();
                 return true;
             }
             catch (Exception ex)
             {
                 return false;
-            }
-        }
-
-        public LockCookie UpgradeToWriterLock(int millisecondsTimeout = 0)
-        {
-            try
-            {
-                return m_oRWLock.UpgradeToWriterLock(millisecondsTimeout);
-            }
-            catch (Exception ex)
-            {
-                return default;
-            }
-        }
-
-        public bool DowngradeToReaderLock(LockCookie cookie)
-        {
-            try
-            {
-                m_oRWLock.DowngradeFromWriterLock(ref cookie);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return default;
             }
         }
 
@@ -64,7 +46,7 @@ namespace GenieClient.Genie.Collections
         {
             try
             {
-                m_oRWLock.ReleaseWriterLock();
+                m_oRWLock.ExitWriteLock();
                 return true;
             }
             catch (Exception ex)
@@ -77,7 +59,7 @@ namespace GenieClient.Genie.Collections
         {
             try
             {
-                m_oRWLock.ReleaseReaderLock();
+                m_oRWLock.ExitReadLock();
                 return true;
             }
             catch (Exception ex)
@@ -96,7 +78,7 @@ namespace GenieClient.Genie.Collections
 
         public new void Clear()
         {
-            if (AcquireWriterLock(m_iDefaultTimeout))
+            if (AcquireWriterLock())
             {
                 try
                 {
@@ -115,7 +97,7 @@ namespace GenieClient.Genie.Collections
 
         public new void Add(object key, object value)
         {
-            if (AcquireWriterLock(m_iDefaultTimeout))
+            if (AcquireWriterLock())
             {
                 try
                 {
@@ -134,7 +116,7 @@ namespace GenieClient.Genie.Collections
 
         public new void Remove(object key)
         {
-            if (AcquireWriterLock(m_iDefaultTimeout))
+            if (AcquireWriterLock())
             {
                 try
                 {
@@ -153,7 +135,7 @@ namespace GenieClient.Genie.Collections
 
         public new void RemoveAt(int index)
         {
-            if (AcquireWriterLock(m_iDefaultTimeout))
+            if (AcquireWriterLock())
             {
                 try
                 {
@@ -179,7 +161,7 @@ namespace GenieClient.Genie.Collections
 
             set
             {
-                if (AcquireWriterLock(m_iDefaultTimeout))
+                if (AcquireWriterLock())
                 {
                     try
                     {

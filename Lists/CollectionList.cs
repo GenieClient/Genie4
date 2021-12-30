@@ -6,15 +6,17 @@ namespace GenieClient.Genie.Collections
 {
     public class CollectionList : CollectionBase
     {
-        private ReaderWriterLock m_RWLock = new ReaderWriterLock();
+        private ReaderWriterLockSlim m_RWLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
-        public bool AcquireWriterLock(int millisecondsTimeout = 0)
+        public bool AcquireWriterLock()
         {
             try
             {
-                if (m_RWLock.IsWriterLockHeld | m_RWLock.IsReaderLockHeld)
+                if (m_RWLock.IsWriteLockHeld | m_RWLock.IsReadLockHeld)
+                {
                     return false;
-                m_RWLock.AcquireWriterLock(millisecondsTimeout);
+                }
+                m_RWLock.EnterWriteLock();
                 return true;
             }
             catch (Exception ex)
@@ -23,45 +25,16 @@ namespace GenieClient.Genie.Collections
             }
         }
 
-        public bool AcquireReaderLock(int millisecondsTimeout = 0)
+        public bool AcquireReaderLock()
         {
             try
             {
-                if (m_RWLock.IsWriterLockHeld)
-                    return false;
-                m_RWLock.AcquireReaderLock(millisecondsTimeout);
+                m_RWLock.EnterReadLock();
                 return true;
             }
             catch (Exception ex)
             {
                 return false;
-            }
-        }
-
-        public LockCookie UpgradeToWriterLock(int millisecondsTimeout = 0)
-        {
-            try
-            {
-                if (m_RWLock.IsWriterLockHeld)
-                    return default;
-                return m_RWLock.UpgradeToWriterLock(millisecondsTimeout);
-            }
-            catch (Exception ex)
-            {
-                return default;
-            }
-        }
-
-        public bool DowngradeToReaderLock(LockCookie cookie)
-        {
-            try
-            {
-                m_RWLock.DowngradeFromWriterLock(ref cookie);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return default;
             }
         }
 
@@ -69,7 +42,7 @@ namespace GenieClient.Genie.Collections
         {
             try
             {
-                m_RWLock.ReleaseWriterLock();
+                m_RWLock.ExitWriteLock();
                 return true;
             }
             catch (Exception ex)
@@ -82,7 +55,7 @@ namespace GenieClient.Genie.Collections
         {
             try
             {
-                m_RWLock.ReleaseReaderLock();
+                m_RWLock.ExitReadLock();
                 return true;
             }
             catch (Exception ex)
