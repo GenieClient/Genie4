@@ -1251,7 +1251,7 @@ namespace GenieClient
                         // Select next
                         if (!Information.IsNothing(TextBoxInput.Tag))
                         {
-                            if (m_oGlobals.AliasList.AcquireReaderLock(m_iDefaultTimeout))
+                            if (m_oGlobals.AliasList.AcquireReaderLock())
                             {
                                 try
                                 {
@@ -1295,7 +1295,7 @@ namespace GenieClient
                             }
                         }
                     }
-                    else if (m_oGlobals.AliasList.AcquireReaderLock(m_iDefaultTimeout))
+                    else if (m_oGlobals.AliasList.AcquireReaderLock())
                     {
                         try
                         {
@@ -2352,7 +2352,7 @@ namespace GenieClient
         }
 
         /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
-        private const int m_iDefaultTimeout = 2500;
+      
 
         /* TODO ERROR: Skipped RegionDirectiveTrivia */
         private Genie.ScriptList m_oScriptList = new Genie.ScriptList();
@@ -2997,11 +2997,11 @@ namespace GenieClient
         {
             if (m_oScriptListNew.Count > 0)
             {
-                if (m_oScriptList.AcquireWriterLock(m_iDefaultTimeout))
+                if (m_oScriptList.AcquireWriterLock())
                 {
                     try
                     {
-                        if (m_oScriptListNew.AcquireWriterLock(m_iDefaultTimeout))
+                        if (m_oScriptListNew.AcquireWriterLock())
                         {
                             try
                             {
@@ -3547,7 +3547,7 @@ namespace GenieClient
             {
                 if (sText.Trim().Length > 0)
                 {
-                    if (m_oGlobals.TriggerList.AcquireReaderLock(m_iDefaultTimeout))
+                    if (m_oGlobals.TriggerList.AcquireReaderLock())
                     {
                         try
                         {
@@ -3595,7 +3595,7 @@ namespace GenieClient
                     }
 
                     // Scripts
-                    if (m_oScriptList.AcquireReaderLock(m_iDefaultTimeout))
+                    if (m_oScriptList.AcquireReaderLock())
                     {
                         try
                         {
@@ -3623,7 +3623,7 @@ namespace GenieClient
 
         private void SetScriptListVariable()
         {
-            if (m_oScriptList.AcquireReaderLock(m_iDefaultTimeout))
+            if (m_oScriptList.AcquireReaderLock())
             {
                 Debug.Print("ScriptList Lock aquired by SetScriptListVariable()");
                 try
@@ -3671,7 +3671,7 @@ namespace GenieClient
                 AddText(argsText, oTargetWindow: argoTargetWindow);
                 int I = 0;
                 // Scripts
-                if (m_oScriptList.AcquireReaderLock(m_iDefaultTimeout))
+                if (m_oScriptList.AcquireReaderLock())
                 {
                     Debug.Print("ScriptList Lock aquired by ListScripts()");
                     try
@@ -3790,7 +3790,7 @@ namespace GenieClient
                 }
 
                 Script oScript = null;
-                if (m_oScriptListNew.AcquireWriterLock(m_iDefaultTimeout))
+                if (m_oScriptListNew.AcquireWriterLock())
                 {
                     try
                     {
@@ -3990,7 +3990,7 @@ namespace GenieClient
 
             if (m_bTriggersEnabled == true)
             {
-                if (m_oGlobals.TriggerList.AcquireReaderLock(m_iDefaultTimeout))
+                if (m_oGlobals.TriggerList.AcquireReaderLock())
                 {
                     try
                     {
@@ -4029,7 +4029,7 @@ namespace GenieClient
                     ShowDialogException("TriggerList", "Unable to acquire reader lock.");
                 }
 
-                if (m_oScriptList.AcquireReaderLock(m_iDefaultTimeout))
+                if (m_oScriptList.AcquireReaderLock())
                 {
                     try
                     {
@@ -4512,7 +4512,7 @@ namespace GenieClient
                 AddText(argsText, argoColor, argoBgColor, oTargetWindow: argoTargetWindow, sTargetWindow: argsTargetWindow); // For some stupid reason we need this. Probably because EndUpdate is fired before we are ready in the other thread.
                 EndUpdate();
                 m_oGame.SetBufferEnd();
-                if (m_oScriptList.AcquireReaderLock(m_iDefaultTimeout))
+                if (m_oScriptList.AcquireReaderLock())
                 {
                     try
                     {
@@ -4568,7 +4568,7 @@ namespace GenieClient
                 }
 
                 // Scripts
-                if (m_oScriptList.AcquireReaderLock(m_iDefaultTimeout))
+                if (m_oScriptList.AcquireReaderLock())
                 {
                     Debug.Print("ScriptList Lock aquired by ScriptTrace()");
                     try
@@ -4623,7 +4623,7 @@ namespace GenieClient
                 }
 
                 // Scripts
-                if (m_oScriptList.AcquireReaderLock(m_iDefaultTimeout))
+                if (m_oScriptList.AcquireReaderLock())
                 {
                     Debug.Print("ScriptList Lock aquired by ScriptTrace()");
                     try
@@ -4687,7 +4687,7 @@ namespace GenieClient
 
 
                 // Scripts
-                if (m_oScriptList.AcquireReaderLock(m_iDefaultTimeout))
+                if (m_oScriptList.AcquireReaderLock())
                 {
                     Debug.Print("ScriptList Lock aquired by ScriptAbort()");
                     try
@@ -4748,7 +4748,7 @@ namespace GenieClient
                 }
 
                 // Scripts
-                if (m_oScriptList.AcquireReaderLock(m_iDefaultTimeout))
+                if (m_oScriptList.AcquireReaderLock())
                 {
                     Debug.Print("ScriptList Lock aquired by ScriptPause(()");
                     try
@@ -4809,7 +4809,7 @@ namespace GenieClient
                 }
 
                 // Scripts
-                if (m_oScriptList.AcquireReaderLock(m_iDefaultTimeout))
+                if (m_oScriptList.AcquireReaderLock())
                 {
                     Debug.Print("ScriptList Lock aquired by ScriptPause(()");
                     try
@@ -4877,7 +4877,7 @@ namespace GenieClient
                 }
 
                 // Scripts
-                if (m_oScriptList.AcquireReaderLock(m_iDefaultTimeout))
+                if (m_oScriptList.AcquireReaderLock())
                 {
                     Debug.Print("ScriptList Lock aquired by ScriptResume(()");
                     try
@@ -4925,7 +4925,7 @@ namespace GenieClient
                 }
 
                 // Scripts
-                if (m_oScriptList.AcquireReaderLock(m_iDefaultTimeout))
+                if (m_oScriptList.AcquireReaderLock())
                 {
                     Debug.Print("ScriptList Lock aquired by ScriptDebugLevel(()");
                     try
@@ -5528,7 +5528,7 @@ namespace GenieClient
         {
             try
             {
-                if (m_oScriptList.AcquireReaderLock(m_iDefaultTimeout))
+                if (m_oScriptList.AcquireReaderLock())
                 {
                     try
                     {
@@ -5557,7 +5557,7 @@ namespace GenieClient
         {
             try
             {
-                if (m_oScriptList.AcquireReaderLock(m_iDefaultTimeout))
+                if (m_oScriptList.AcquireReaderLock())
                 {
                     try
                     {
@@ -5608,7 +5608,7 @@ namespace GenieClient
                 oRTControl.SetRT((int)(iTime + m_oGlobals.Config.dRTOffset));
             }
 
-            if (m_oScriptList.AcquireReaderLock(m_iDefaultTimeout))
+            if (m_oScriptList.AcquireReaderLock())
             {
                 try
                 {
@@ -5704,7 +5704,7 @@ namespace GenieClient
 
         private void AbortAllScripts()
         {
-            if (m_oScriptList.AcquireReaderLock(m_iDefaultTimeout))
+            if (m_oScriptList.AcquireReaderLock())
             {
                 try
                 {
