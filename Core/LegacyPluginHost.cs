@@ -5,7 +5,7 @@ using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient
 {
-    public class PluginHost : GeniePlugin.Plugins.IHost
+    public class LegacyPluginHost : GeniePlugin.Interfaces.IHost
     {
         public event EventEchoTextEventHandler EventEchoText;
 
@@ -97,7 +97,7 @@ namespace GenieClient
             return m_oGlobals.PluginPremiumKeyList.ContainsKey(premKey);
         }
 
-        public PluginHost(Form Form, ref Genie.Globals Globals)
+        public LegacyPluginHost(Form Form, ref Genie.Globals Globals)
         {
             m_oParent = Form;
             m_oGlobals = Globals;

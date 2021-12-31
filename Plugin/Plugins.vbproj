@@ -14,7 +14,7 @@
     <OutputType>Library</OutputType>
     <OptionStrict>On</OptionStrict>
     <RootNamespace>GeniePlugin.Plugins</RootNamespace>
-    <StartupObject>PluginSample.Interfaces.%28None%29</StartupObject>
+    <StartupObject></StartupObject>
     <MyType>Windows</MyType>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>

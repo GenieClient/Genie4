@@ -26,6 +26,7 @@ namespace GenieClient
             m_oCommand = new Genie.Command(ref _m_oGlobals);
             m_oAutoMapper = new Mapper.AutoMapper(ref _m_oGlobals);
             m_oOutputMain = new FormSkin("main", "Game", ref _m_oGlobals);
+            m_oLegacyPluginHost = new LegacyPluginHost(this, ref _m_oGlobals);
             m_oPluginHost = new PluginHost(this, ref _m_oGlobals);
             m_PluginDialog = new FormPlugins(ref _m_oGlobals.PluginList);
             // This call is required by the Windows Form Designer.
@@ -448,7 +449,36 @@ namespace GenieClient
 
         private List<PluginServices.AvailablePlugin> m_oPlugins = new List<PluginServices.AvailablePlugin>();
         private Dictionary<string, string> m_oPluginNameToFile = new Dictionary<string, string>();
+        private LegacyPluginHost _m_oLegacyPluginHost;
         private PluginHost _m_oPluginHost;
+
+        private LegacyPluginHost m_oLegacyPluginHost
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _m_oLegacyPluginHost;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_m_oLegacyPluginHost != null)
+                {
+                    _m_oLegacyPluginHost.EventEchoText -= Plugin_EventEchoText;
+                    _m_oLegacyPluginHost.EventSendText -= Plugin_EventSendText;
+                    _m_oLegacyPluginHost.EventVariableChanged -= PluginHost_EventVariableChanged;
+                }
+
+                _m_oLegacyPluginHost = value;
+                if (_m_oLegacyPluginHost != null)
+                {
+                    _m_oLegacyPluginHost.EventEchoText += Plugin_EventEchoText;
+                    _m_oLegacyPluginHost.EventSendText += Plugin_EventSendText;
+                    _m_oLegacyPluginHost.EventVariableChanged += PluginHost_EventVariableChanged;
+                }
+            }
+        }
 
         private PluginHost m_oPluginHost
         {
@@ -490,6 +520,7 @@ namespace GenieClient
 
             // Get list of plugins
             var oAvailablePlugins = PluginServices.FindPlugins(sPluginPath, "GeniePlugin.Interfaces.IPlugin");
+
             m_oPlugins.Clear();
             if (!Information.IsNothing(oAvailablePlugins))
             {
@@ -741,8 +772,8 @@ namespace GenieClient
                 m_oGlobals.PluginList.Add(plugin);
                 try
                 {
-                    m_oPluginHost.PluginKey = pluginkey;
-                    plugin.Initialize(m_oPluginHost);
+                    m_oLegacyPluginHost.PluginKey = pluginkey;
+                    plugin.Initialize(m_oLegacyPluginHost);
                 }
                 catch (Exception ex)
                 {
