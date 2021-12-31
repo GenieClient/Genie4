@@ -14,7 +14,7 @@ namespace GenieClient.Genie
 {
     public class Globals
     {
-        private Config _Config = new();
+        private Config _Config = new Config();
 
 
         public Config Config
