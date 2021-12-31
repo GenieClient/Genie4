@@ -75,7 +75,9 @@ namespace GenieClient
                 var re = new Regex(sRegExp);
                 return true;
             }
+#pragma warning disable CS0168
             catch (Exception ex)
+#pragma warning restore CS0168
             {
                 return false;
             }
@@ -124,8 +126,7 @@ namespace GenieClient
             {
                 throw new Exception(Crypto.CryptoException.Message);
             }
-
-            Crypto.Clear();
+            // Crypto.Clear();
         }
 
         public static string GenerateHashSHA256(string sText)
@@ -143,7 +144,7 @@ namespace GenieClient
                 throw new Exception(Crypto.CryptoException.Message);
             }
 
-            Crypto.Clear();
+            // Crypto.Clear();
         }
 
         public static string EncryptString(string sPassword, string sText)
@@ -162,7 +163,7 @@ namespace GenieClient
                 throw new Exception(Crypto.CryptoException.Message);
             }
 
-            Crypto.Clear();
+            // Crypto.Clear();
         }
 
         public static string DecryptString(string sPassword, string sText)
@@ -182,7 +183,7 @@ namespace GenieClient
                 throw new Exception(Crypto.CryptoException.Message);
             }
 
-            Crypto.Clear();
+            // Crypto.Clear();
         }
 
         public static int RandomNumber(int min, int max)
@@ -233,7 +234,6 @@ namespace GenieClient
             if (Information.IsNothing(oDateStart) | Information.IsNothing(oDateEnd))
             {
                 return 0;
-                return default;
             }
 
             var span = oDateEnd - oDateStart;
@@ -245,7 +245,6 @@ namespace GenieClient
             if (Information.IsNothing(oDateStart) | Information.IsNothing(oDateEnd))
             {
                 return 0;
-                return default;
             }
 
             var span = oDateEnd - oDateStart;
@@ -420,7 +419,9 @@ namespace GenieClient
                     AddArrayItem(oList, argsText3, Conversions.ToBoolean(Interaction.IIf(oList.Count > 0, bTreatUnderscoreAsSpace, false)));
                 }
             }
+#pragma warning disable CS0168
             catch (Exception ex)
+#pragma warning restore CS0168
             {
                 throw new Exception("Invalid string in Parse Arguments: " + sText);
             }
@@ -460,12 +461,16 @@ namespace GenieClient
             {
                 File.Move(sSourceFileName, sDestFileName);
             }
+#pragma warning disable CS0168
             catch (IOException ex)
+#pragma warning restore CS0168
             {
                 // The destination file already exists.
                 return false;
             }
+#pragma warning disable CS0168
             catch (UnauthorizedAccessException ex)
+#pragma warning restore CS0168
             {
                 // The caller does not have the required permission. 
                 return false;
@@ -480,11 +485,15 @@ namespace GenieClient
             {
                 File.Delete(sourceFileName);
             }
+#pragma warning disable CS0168
             catch (IOException ex)
+#pragma warning restore CS0168
             {
                 return false;
             }
+#pragma warning disable CS0168
             catch (UnauthorizedAccessException ex)
+#pragma warning restore CS0168
             {
                 // The caller does not have the required permission. 
                 return false;
@@ -502,11 +511,15 @@ namespace GenieClient
                     Directory.CreateDirectory(sourceDirectoryName);
                 }
             }
+#pragma warning disable CS0168
             catch (IOException ex)
+#pragma warning restore CS0168
             {
                 return false;
             }
+#pragma warning disable CS0168
             catch (UnauthorizedAccessException ex)
+#pragma warning restore CS0168
             {
                 // The caller does not have the required permission. 
                 return false;
@@ -543,15 +556,21 @@ namespace GenieClient
                 double d = double.Parse(sValue, new System.Globalization.CultureInfo("en-US"));
                 return d;
             }
+#pragma warning disable CS0168
             catch (FormatException ex)
+#pragma warning restore CS0168
             {
                 return -1;
             }
+#pragma warning disable CS0168
             catch (OverflowException ex)
+#pragma warning restore CS0168
             {
                 return -1;
             }
+#pragma warning disable CS0168
             catch (InvalidCastException ex)
+#pragma warning restore CS0168
             {
                 return -1;
             }
@@ -576,15 +595,21 @@ namespace GenieClient
                     return -1;
                 }
             }
+#pragma warning disable CS0168
             catch (FormatException ex)
+#pragma warning restore CS0168
             {
                 return -1;
             }
+#pragma warning disable CS0168
             catch (OverflowException ex)
+#pragma warning restore CS0168
             {
                 return -1;
             }
+#pragma warning disable CS0168
             catch (InvalidCastException ex)
+#pragma warning restore CS0168
             {
                 return -1;
             }
@@ -611,16 +636,18 @@ namespace GenieClient
         }
 
         /// <summary>
-    /// exception-safe retrieval of LastWriteTime for this assembly.
-    /// </summary>
-    /// <returns>File.GetLastWriteTime, or DateTime.MaxValue if exception was encountered.</returns>
+        /// exception-safe retrieval of LastWriteTime for this assembly.
+        /// </summary>
+        /// <returns>File.GetLastWriteTime, or DateTime.MaxValue if exception was encountered.</returns>
         private static DateTime AssemblyLastWriteTime(System.Reflection.Assembly a)
         {
             try
             {
                 return File.GetLastWriteTime(a.Location);
             }
+#pragma warning disable CS0168
             catch (Exception ex)
+#pragma warning restore CS0168
             {
                 return DateTime.MaxValue;
             }
@@ -757,7 +784,9 @@ namespace GenieClient
                     sFile = FileSystem.Dir();
                 }
             }
+#pragma warning disable CS0168
             catch (Exception ex)
+#pragma warning restore CS0168
             {
             }
         }
@@ -830,7 +859,6 @@ namespace GenieClient
                 default:
                     {
                         throw new Exception("Invalid #MATH expression: " + sExpression);
-                        break;
                     }
             }
 
