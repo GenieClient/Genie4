@@ -2659,13 +2659,11 @@ namespace GenieClient.Genie
             EchoText("autolog=" + oGlobals.Config.bAutoLog.ToString() + Constants.vbNewLine);
             EchoText("automapper=" + oGlobals.Config.bAutoMapper.ToString() + Constants.vbNewLine);
             EchoText("commandchar=" + oGlobals.Config.cCommandChar.ToString() + Constants.vbNewLine);
-            EchoText("configdir=" + oGlobals.Config.sConfigDir + Constants.vbNewLine);
             EchoText("connectstring=" + oGlobals.Config.sConnectString.ToString() + Constants.vbNewLine);
             EchoText("editor=" + oGlobals.Config.sEditor + Constants.vbNewLine);
             EchoText("ignoreclosealert=" + oGlobals.Config.bIgnoreCloseAlert.ToString() + Constants.vbNewLine);
             EchoText("ignorescriptwarnings=" + oGlobals.Config.bIgnoreScriptWarnings.ToString() + Constants.vbNewLine);
             EchoText("keepinputtext=" + oGlobals.Config.bKeepInput.ToString() + Constants.vbNewLine);
-            EchoText("logdir=" + oGlobals.Config.sLogDir + Constants.vbNewLine);
             EchoText("maxgosubdepth=" + oGlobals.Config.iMaxGoSubDepth + Constants.vbNewLine);
             EchoText("maxrowbuffer=" + oGlobals.Config.iBufferLineSize.ToString() + Constants.vbNewLine);
             EchoText("monstercountignorelist=" + oGlobals.Config.sIgnoreMonsterList + Constants.vbNewLine);
@@ -2676,8 +2674,12 @@ namespace GenieClient.Genie
             EchoText("reconnect=" + oGlobals.Config.bReconnect.ToString() + Constants.vbNewLine);
             EchoText("roundtimeoffset=" + oGlobals.Config.dRTOffset + Constants.vbNewLine);
             EchoText("showlinks=" + oGlobals.Config.bShowLinks.ToString() + Constants.vbNewLine);
-            EchoText("scriptchar=" + oGlobals.Config.ScriptChar.ToString() + Constants.vbNewLine);
+            EchoText("logdir=" + oGlobals.Config.sLogDir + Constants.vbNewLine);
+            EchoText("configdir=" + oGlobals.Config.sConfigDir + Constants.vbNewLine);
+            EchoText("plugindir=" + oGlobals.Config.PluginDir.ToString() + Constants.vbNewLine);
+            EchoText("mapdir=" + oGlobals.Config.MapDir.ToString() + Constants.vbNewLine);
             EchoText("scriptdir=" + oGlobals.Config.sScriptDir + Constants.vbNewLine);
+            EchoText("scriptchar=" + oGlobals.Config.ScriptChar.ToString() + Constants.vbNewLine);
             EchoText("scripttimeout=" + oGlobals.Config.iScriptTimeout.ToString() + Constants.vbNewLine);
             EchoText("separatorchar=" + oGlobals.Config.cSeparatorChar.ToString() + Constants.vbNewLine);
             EchoText("spelltimer=" + oGlobals.Config.bShowSpellTimer.ToString() + Constants.vbNewLine);

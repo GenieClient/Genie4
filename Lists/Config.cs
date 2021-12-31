@@ -40,6 +40,8 @@ namespace GenieClient.Genie
         public string sUserActivityCommand = "quit";
         public double dRTOffset = 0;
         public string sScriptDir = "Scripts";
+        public string sPluginDir = "Plugins";
+        public string sMapDir = "Maps";
         public string sConfigDir = "Config";
         public string sConfigDirProfile = "Config";
         public bool bShowLinks = false;
@@ -82,6 +84,78 @@ namespace GenieClient.Genie
                 }
 
                 sScriptDir = value;
+            }
+        }
+
+        public string MapDir
+        {
+            get
+            {
+                string sLocation = string.Empty;
+                if (sMapDir.Contains(":"))
+                {
+                    sLocation = sMapDir;
+                }
+                else
+                {
+                    sLocation = LocalDirectory.Path;
+                    if (sMapDir.StartsWith(@"\"))
+                    {
+                        sLocation += sMapDir;
+                    }
+                    else
+                    {
+                        sLocation += @"\" + sMapDir;
+                    }
+                }
+
+                return sLocation;
+            }
+
+            set
+            {
+                if (value.EndsWith(@"\"))
+                {
+                    value = value.Substring(0, value.Length - 1);
+                }
+
+                sMapDir = value;
+            }
+        }
+
+        public string PluginDir
+        {
+            get
+            {
+                string sLocation = string.Empty;
+                if (sPluginDir.Contains(":"))
+                {
+                    sLocation = sPluginDir;
+                }
+                else
+                {
+                    sLocation = LocalDirectory.Path;
+                    if (sPluginDir.StartsWith(@"\"))
+                    {
+                        sLocation += sPluginDir;
+                    }
+                    else
+                    {
+                        sLocation += @"\" + sPluginDir;
+                    }
+                }
+
+                return sLocation;
+            }
+
+            set
+            {
+                if (value.EndsWith(@"\"))
+                {
+                    value = value.Substring(0, value.Length - 1);
+                }
+
+                sPluginDir = value;
             }
         }
 
@@ -271,6 +345,8 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine("#config {ignorescriptwarnings} {" + bIgnoreScriptWarnings + "}");
                 oStreamWriter.WriteLine("#config {roundtimeoffset} {" + dRTOffset + "}");
                 oStreamWriter.WriteLine("#config {scriptdir} {" + sScriptDir + "}");
+                oStreamWriter.WriteLine("#config {mapdir} {" + sMapDir + "}");
+                oStreamWriter.WriteLine("#config {plugindir} {" + sPluginDir + "}");
                 oStreamWriter.WriteLine("#config {configdir} {" + sConfigDir + "}");
                 oStreamWriter.WriteLine("#config {logdir} {" + sLogDir + "}");
                 oStreamWriter.WriteLine("#config {reconnect} {" + bReconnect + "}");
@@ -593,6 +669,42 @@ namespace GenieClient.Genie
                             else if (Directory.Exists(LocalDirectory.Path + @"\" + sValue) == true)
                             {
                                 ScriptDir = sValue;
+                            }
+                            else if (bShowException == true)
+                            {
+                                throw new Exception("Directory does not exist: " + sValue);
+                            }
+
+                            break;
+                        }
+
+                    case "mapdir":
+                        {
+                            if (Directory.Exists(sValue) == true)
+                            {
+                                MapDir = sValue;
+                            }
+                            else if (Directory.Exists(LocalDirectory.Path + @"\" + sValue) == true)
+                            {
+                                MapDir = sValue;
+                            }
+                            else if (bShowException == true)
+                            {
+                                throw new Exception("Directory does not exist: " + sValue);
+                            }
+
+                            break;
+                        }
+
+                    case "plugindir":
+                        {
+                            if (Directory.Exists(sValue) == true)
+                            {
+                                PluginDir = sValue;
+                            }
+                            else if (Directory.Exists(LocalDirectory.Path + @"\" + sValue) == true)
+                            {
+                                PluginDir = sValue;
                             }
                             else if (bShowException == true)
                             {

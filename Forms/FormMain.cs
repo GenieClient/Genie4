@@ -517,7 +517,7 @@ namespace GenieClient
         private int LoadPlugins()
         {
             GeniePlugin.Interfaces.IPlugin oPlugin;
-            string sPluginPath = Path.Combine(LocalDirectory.Path, "Plugins");
+            string sPluginPath = m_oGlobals.Config.PluginDir;
             if (m_bDebugPlugin)
             {
                 sPluginPath = Application.StartupPath;
@@ -577,7 +577,8 @@ namespace GenieClient
         {
             if (!filename.Contains(@"\"))
             {
-                string sPluginPath = Path.Combine(LocalDirectory.Path, "Plugins");
+                
+                string sPluginPath = m_oGlobals.Config.PluginDir;
                 if (m_bDebugPlugin)
                 {
                     sPluginPath = Application.StartupPath;
@@ -653,7 +654,8 @@ namespace GenieClient
             {
                 if ((kvp.Value.ToLower() ?? "") == (filename.ToLower() ?? ""))
                 {
-                    string sPluginPath = Path.Combine(LocalDirectory.Path, "Plugins");
+                    
+                    string sPluginPath = m_oGlobals.Config.PluginDir;
                     if (m_bDebugPlugin)
                     {
                         sPluginPath = Application.StartupPath;
@@ -678,7 +680,8 @@ namespace GenieClient
             {
                 if ((kvp.Key.ToLower() ?? "") == (name.ToLower() ?? ""))
                 {
-                    string sPluginPath = Path.Combine(LocalDirectory.Path, "Plugins");
+                    
+                    string sPluginPath = m_oGlobals.Config.PluginDir;
                     if (m_bDebugPlugin)
                     {
                         sPluginPath = Application.StartupPath;
@@ -1670,7 +1673,7 @@ namespace GenieClient
 
         private void FormPlugin_ReloadPluginByName(string name)
         {
-            string sPluginPath = Path.Combine(LocalDirectory.Path, "Plugins");
+            string sPluginPath = m_oGlobals.Config.PluginDir;
             if (m_bDebugPlugin)
             {
                 sPluginPath = Application.StartupPath;
