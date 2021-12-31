@@ -5724,10 +5724,6 @@ namespace GenieClient
             TextBoxInput.Focus();
         }
 
-        private void EnterGenieKeyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
         private void AbortAllScriptsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbortAllScripts();
@@ -6251,11 +6247,6 @@ namespace GenieClient
             }
         }
 
-        private void CheckForNewVersionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void ListAllScriptsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Command_EventListScripts("");
@@ -6394,21 +6385,19 @@ namespace GenieClient
             }
         }
 
-        private void OpenGenieForumToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenGenieDiscordWToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start("http://genieclient.com/bulletin/");
+            Utility.OpenBrowser("https://discord.gg/MtmzE2w");
         }
 
         private void OpenGenieWikiToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (File.Exists(Application.StartupPath + @"\help.pdf"))
-            {
-                Process.Start(Application.StartupPath + @"\help.pdf");
-            }
-            else
-            {
-                Process.Start("http://genieclient.com/documentation.html");
-            }
+            Utility.OpenBrowser("https://geniefe.fandom.com/");
+        }
+
+        private void OpenGenieGithubToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Utility.OpenBrowser("https://github.com/GenieClient/");
         }
 
         private void MagicPanelsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -7320,6 +7309,16 @@ namespace GenieClient
             {
                 ChangeIcon(sPath);
             }
+        }
+
+        private void OpenGenieForumToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OpenGenieDiscordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
