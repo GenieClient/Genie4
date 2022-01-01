@@ -3023,17 +3023,17 @@ namespace GenieClient.Genie
                 }
                 else if(oPlugin is GeniePlugin.Plugins.IPlugin)
                 {
-                    if ((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled)
+                    if ((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled)
                     {
                         try
                         {
-                            sText = (oPlugin as GeniePlugin.Interfaces.IPlugin).ParseText(sText, sWindow);
+                            sText = (oPlugin as GeniePlugin.Plugins.IPlugin).ParseText(sText, sWindow);
                         }
                         /* TODO ERROR: Skipped IfDirectiveTrivia */
                         catch (Exception ex)
                         {
-                            GenieError.GeniePluginError((oPlugin as GeniePlugin.Interfaces.IPlugin), "ParseText", ex);
-                            (oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled = false;
+                            GenieError.GeniePluginError((oPlugin as GeniePlugin.Plugins.IPlugin), "ParseText", ex);
+                            (oPlugin as GeniePlugin.Plugins.IPlugin).Enabled = false;
                             /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                         }
                     }
