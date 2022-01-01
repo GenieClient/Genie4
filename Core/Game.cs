@@ -3002,20 +3002,40 @@ namespace GenieClient.Genie
         {
             if (m_oGlobals.PluginsEnabled == false)
                 return sText;
-            foreach (GeniePlugin.Interfaces.IPlugin oPlugin in m_oGlobals.PluginList)
+            foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if (oPlugin.Enabled)
+                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
-                    try
+                    if ((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled)
                     {
-                        sText = oPlugin.ParseText(sText, sWindow);
+                        try
+                        {
+                            sText = (oPlugin as GeniePlugin.Interfaces.IPlugin).ParseText(sText, sWindow);
+                        }
+                        /* TODO ERROR: Skipped IfDirectiveTrivia */
+                        catch (Exception ex)
+                        {
+                            GenieError.GeniePluginError((oPlugin as GeniePlugin.Interfaces.IPlugin), "ParseText", ex);
+                            (oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled = false;
+                            /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                        }
                     }
-                    /* TODO ERROR: Skipped IfDirectiveTrivia */
-                    catch (Exception ex)
+                }
+                else if(oPlugin is GeniePlugin.Plugins.IPlugin)
+                {
+                    if ((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled)
                     {
-                        GenieError.GeniePluginError(oPlugin, "ParseText", ex);
-                        oPlugin.Enabled = false;
-                        /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                        try
+                        {
+                            sText = (oPlugin as GeniePlugin.Plugins.IPlugin).ParseText(sText, sWindow);
+                        }
+                        /* TODO ERROR: Skipped IfDirectiveTrivia */
+                        catch (Exception ex)
+                        {
+                            GenieError.GeniePluginError((oPlugin as GeniePlugin.Plugins.IPlugin), "ParseText", ex);
+                            (oPlugin as GeniePlugin.Plugins.IPlugin).Enabled = false;
+                            /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                        }
                     }
                 }
             }

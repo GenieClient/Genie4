@@ -2721,14 +2721,26 @@ namespace GenieClient
 
         private string EvalPlugin(string sText, int iFileId, int iFileRow)
         {
-            string sResult;
-            foreach (GeniePlugin.Interfaces.IPlugin oPlugin in m_oGlobals.PluginList)
+            string sResult = String.Empty;
+            foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if (oPlugin.Enabled)
+                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
-                    sResult = oPlugin.ParseInput("@script " + sText);
-                    if ((sResult ?? "") != (sText ?? ""))
-                        return sResult;
+                    if ((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled)
+                    {
+                        sResult = (oPlugin as GeniePlugin.Interfaces.IPlugin).ParseInput("@script " + sText);
+                        if ((sResult ?? "") != (sText ?? ""))
+                            return sResult;
+                    }
+                }
+                else if (oPlugin is GeniePlugin.Plugins.IPlugin)
+                {
+                    if ((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled)
+                    {
+                        sResult = (oPlugin as GeniePlugin.Plugins.IPlugin).ParseInput("@script " + sText);
+                        if ((sResult ?? "") != (sText ?? ""))
+                            return sResult;
+                    }
                 }
             }
 
@@ -2738,13 +2750,25 @@ namespace GenieClient
         private string EvalPluginScript(string sText, int iFileId, int iFileRow)
         {
             string sResult;
-            foreach (GeniePlugin.Interfaces.IPlugin oPlugin in m_oGlobals.PluginList)
+            foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if (oPlugin.Enabled)
+                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
-                    sResult = oPlugin.ParseText(sText, "PluginScript");
-                    if ((sResult ?? "") != (sText ?? ""))
-                        return sResult;
+                    if ((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled)
+                    {
+                        sResult = (oPlugin as GeniePlugin.Interfaces.IPlugin).ParseText(sText, "PluginScript");
+                        if ((sResult ?? "") != (sText ?? ""))
+                            return sResult;
+                    }
+                }
+                else if (oPlugin is GeniePlugin.Plugins.IPlugin)
+                {
+                    if ((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled)
+                    {
+                        sResult = (oPlugin as GeniePlugin.Plugins.IPlugin).ParseText(sText, "PluginScript");
+                        if ((sResult ?? "") != (sText ?? ""))
+                            return sResult;
+                    }
                 }
             }
 

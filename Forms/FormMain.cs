@@ -221,6 +221,7 @@ namespace GenieClient
 
                     _m_oGame.EventDataRecieveEnd -= Simutronics_EventEndUpdate;
                     GenieError.EventGenieError -= HandleGenieException;
+                    GenieError.EventGenieLegacyPluginError -= HandleLegacyPluginException;
                     GenieError.EventGeniePluginError -= HandlePluginException;
                     _m_oGame.EventTriggerParse -= Game_EventTriggerParse;
                     _m_oGame.EventStatusBarUpdate -= Game_EventStatusBarUpdate;
@@ -516,7 +517,7 @@ namespace GenieClient
         /* TODO ERROR: Skipped RegionDirectiveTrivia */
         private int LoadPlugins()
         {
-            GeniePlugin.Interfaces.IPlugin oPlugin;
+            
             string sPluginPath = m_oGlobals.Config.PluginDir;
             if (m_bDebugPlugin)
             {
@@ -524,7 +525,7 @@ namespace GenieClient
             }
 
             // Get list of plugins
-            var oAvailablePlugins = PluginServices.FindPlugins(sPluginPath, "GeniePlugin.Interfaces.IPlugin");
+            var oAvailablePlugins = PluginServices.FindPlugins(sPluginPath);
             m_oPlugins.Clear();
             if (!Information.IsNothing(oAvailablePlugins))
             {
@@ -539,38 +540,76 @@ namespace GenieClient
 
             m_oGlobals.PluginList.Clear();
             m_oPluginNameToFile.Clear();
-            for (int iIndex = 0, loopTo = m_oPlugins.Count - 1; iIndex <= loopTo; iIndex++)
-            {
-                oPlugin = (GeniePlugin.Interfaces.IPlugin)PluginServices.CreateInstance(m_oPlugins[iIndex]);
-                m_oPluginNameToFile.Add(oPlugin.Name, Path.GetFileName(m_oPlugins[iIndex].AssemblyPath));
-                string argsText = "Loading Plugin: " + oPlugin.Name + ", Version: " + oPlugin.Version + "...";
-                Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
-                AddText(argsText, oTargetWindow: argoTargetWindow);
-                VerifyAndLoadPlugin(oPlugin, m_oPlugins[iIndex].Key);
-                if (m_oGlobals.PluginList.Contains(oPlugin))
+            foreach(PluginServices.AvailablePlugin loadingPlugin in m_oPlugins)
+            { 
+                switch (loadingPlugin.Interface)
                 {
-                    string argsText1 = "OK" + Constants.vbNewLine;
-                    Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
-                    AddText(argsText1, oTargetWindow: argoTargetWindow1);
+                    case PluginServices.Interfaces.Legacy:
+                        GeniePlugin.Interfaces.IPlugin legacyPlugin = (GeniePlugin.Interfaces.IPlugin)PluginServices.CreateInstance(loadingPlugin);
+                        LoadLegacyPlugin(legacyPlugin, loadingPlugin.AssemblyPath, loadingPlugin.Key);
+                        break;
+                    case PluginServices.Interfaces.Modern:
+                        GeniePlugin.Plugins.IPlugin modernPlugin = (GeniePlugin.Plugins.IPlugin)PluginServices.CreateInstance(loadingPlugin);
+                        LoadPlugin(modernPlugin, loadingPlugin.AssemblyPath, loadingPlugin.Key);
+                        break;
+                    default:
+                        break;
                 }
-                else if (oPlugin.Description.StartsWith("Premium "))
-                {
-                    string argsText2 = "Invalid Key! To use this plugin you will need to first purchase a license for it. Visit http://genieclient.com for more information." + Constants.vbNewLine;
-                    Genie.Game.WindowTarget argoTargetWindow2 = Genie.Game.WindowTarget.Main;
-                    AddText(argsText2, oTargetWindow: argoTargetWindow2);
-                }
-                else
-                {
-                    string argsText3 = "Failed" + Constants.vbNewLine;
-                    Genie.Game.WindowTarget argoTargetWindow3 = Genie.Game.WindowTarget.Main;
-                    AddText(argsText3, oTargetWindow: argoTargetWindow3);
-                }
-
-                Application.DoEvents();
             }
 
             UpdatePluginsMenuList();
             return m_oGlobals.PluginList.Count;
+        }
+        private void LoadLegacyPlugin(GeniePlugin.Interfaces.IPlugin Plugin, string AssemblyPath, string Key)
+        {
+            m_oPluginNameToFile.Add(Plugin.Name, Path.GetFileName(AssemblyPath));
+            string argsText = "Loading Plugin: " + Plugin.Name + ", Version: " + Plugin.Version + "...";
+            Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
+            AddText(argsText, oTargetWindow: argoTargetWindow);
+            VerifyAndLoadPlugin(Plugin, Key);
+            if (m_oGlobals.PluginList.Contains(Plugin))
+            {
+                string argsText1 = "OK" + Constants.vbNewLine;
+                Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
+                AddText(argsText1, oTargetWindow: argoTargetWindow1);
+            }
+            else if (Plugin.Description.StartsWith("Premium "))
+            {
+                string argsText2 = "Invalid Key! To use this plugin you will need to first purchase a license for it. Visit http://genieclient.com for more information." + Constants.vbNewLine;
+                Genie.Game.WindowTarget argoTargetWindow2 = Genie.Game.WindowTarget.Main;
+                AddText(argsText2, oTargetWindow: argoTargetWindow2);
+            }
+            else
+            {
+                string argsText3 = "Failed" + Constants.vbNewLine;
+                Genie.Game.WindowTarget argoTargetWindow3 = Genie.Game.WindowTarget.Main;
+                AddText(argsText3, oTargetWindow: argoTargetWindow3);
+            }
+
+            Application.DoEvents();
+        }
+
+        private void LoadPlugin(GeniePlugin.Plugins.IPlugin Plugin, string AssemblyPath, string Key)
+        {
+            m_oPluginNameToFile.Add(Plugin.Name, Path.GetFileName(AssemblyPath));
+            string argsText = "Loading Plugin: " + Plugin.Name + ", Version: " + Plugin.Version + "...";
+            Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
+            AddText(argsText, oTargetWindow: argoTargetWindow);
+            VerifyAndLoadPlugin(Plugin, Key);
+            if (m_oGlobals.PluginList.Contains(Plugin))
+            {
+                string argsText1 = "OK" + Constants.vbNewLine;
+                Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
+                AddText(argsText1, oTargetWindow: argoTargetWindow1);
+            }
+            else
+            {
+                string argsText3 = "Failed" + Constants.vbNewLine;
+                Genie.Game.WindowTarget argoTargetWindow3 = Genie.Game.WindowTarget.Main;
+                AddText(argsText3, oTargetWindow: argoTargetWindow3);
+            }
+
+            Application.DoEvents();
         }
 
         private void LoadPlugin(string filename)
@@ -639,11 +678,21 @@ namespace GenieClient
 
         private void EnableOrDisablePlugin(string name, bool value)
         {
-            foreach (GeniePlugin.Interfaces.IPlugin oPlugin in m_oGlobals.PluginList)
+            foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if ((oPlugin.Name ?? "") == (name ?? ""))
+                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
-                    oPlugin.Enabled = value;
+                    if (((oPlugin as GeniePlugin.Interfaces.IPlugin).Name ?? "") == (name ?? ""))
+                    {
+                        (oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled = value;
+                    }
+                }
+                else if(oPlugin is GeniePlugin.Plugins.IPlugin)
+                {
+                    if (((oPlugin as GeniePlugin.Plugins.IPlugin).Name ?? "") == (name ?? ""))
+                    {
+                        (oPlugin as GeniePlugin.Plugins.IPlugin).Enabled = value;
+                    }
                 }
             }
         }
@@ -717,14 +766,24 @@ namespace GenieClient
         {
             int RemoveIndex = -1;
             int I = 0;
-            foreach (GeniePlugin.Interfaces.IPlugin oPlugin in m_oGlobals.PluginList)
+            foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if ((oPlugin.Name ?? "") == (name ?? ""))
+                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
-                    oPlugin.ParentClosing();
-                    RemoveIndex = I;
+                    if (((oPlugin as GeniePlugin.Interfaces.IPlugin).Name ?? "") == (name ?? ""))
+                    {
+                        (oPlugin as GeniePlugin.Interfaces.IPlugin).ParentClosing();
+                        RemoveIndex = I;
+                    }
                 }
-
+                else if (oPlugin is GeniePlugin.Plugins.IPlugin)
+                {
+                    if (((oPlugin as GeniePlugin.Plugins.IPlugin).Name ?? "") == (name ?? ""))
+                    {
+                        (oPlugin as GeniePlugin.Plugins.IPlugin).ParentClosing();
+                        RemoveIndex = I;
+                    }
+                }
                 I += 1;
             }
 
@@ -753,8 +812,13 @@ namespace GenieClient
 
         private void UnloadPlugins()
         {
-            foreach (GeniePlugin.Interfaces.IPlugin oPlugin in m_oGlobals.PluginList)
-                oPlugin.ParentClosing();
+            foreach (object oPlugin in m_oGlobals.PluginList)
+            {
+                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                    (oPlugin as GeniePlugin.Interfaces.IPlugin).ParentClosing();
+                else if (oPlugin is GeniePlugin.Plugins.IPlugin)
+                    (oPlugin as GeniePlugin.Plugins.IPlugin).ParentClosing();
+            }
             m_oGlobals.PluginList.Clear();
             m_oPlugins.Clear();
         }
@@ -762,12 +826,20 @@ namespace GenieClient
         private void ListPlugins()
         {
             AppendText("Plugins loaded:" + Constants.vbNewLine);
-            foreach (GeniePlugin.Interfaces.IPlugin oPlugin in m_oGlobals.PluginList)
+            foreach (object oPlugin in m_oGlobals.PluginList)
             {
                 if (!Information.IsNothing(oPlugin))
                 {
-                    AppendText(Conversions.ToString(Constants.vbTab + oPlugin.Name + " " + oPlugin.Version + " - " + Interaction.IIf(oPlugin.Enabled, "Enabled", "Disabled") + Constants.vbNewLine));
-                    AppendText(Constants.vbTab + Constants.vbTab + m_oPluginNameToFile[oPlugin.Name] + Constants.vbNewLine);
+                    if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                    {
+                        AppendText(Conversions.ToString(Constants.vbTab + (oPlugin as GeniePlugin.Interfaces.IPlugin).Name + " " + (oPlugin as GeniePlugin.Interfaces.IPlugin).Version + " - " + Interaction.IIf((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled, "Enabled", "Disabled") + Constants.vbNewLine));
+                        AppendText(Constants.vbTab + Constants.vbTab + m_oPluginNameToFile[(oPlugin as GeniePlugin.Interfaces.IPlugin).Name] + Constants.vbNewLine);
+                    }
+                    else if(oPlugin is GeniePlugin.Plugins.IPlugin)
+                    {
+                        AppendText(Conversions.ToString(Constants.vbTab + (oPlugin as GeniePlugin.Plugins.IPlugin).Name + " " + (oPlugin as GeniePlugin.Plugins.IPlugin).Version + " - " + Interaction.IIf((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled, "Enabled", "Disabled") + Constants.vbNewLine));
+                        AppendText(Constants.vbTab + Constants.vbTab + m_oPluginNameToFile[(oPlugin as GeniePlugin.Plugins.IPlugin).Name] + Constants.vbNewLine);
+                    }
                 }
             }
 
@@ -793,6 +865,24 @@ namespace GenieClient
             }
         }
 
+        private void VerifyAndLoadPlugin(GeniePlugin.Plugins.IPlugin plugin, string pluginkey)
+        {
+            if (!Information.IsNothing(plugin))
+            {
+                m_oGlobals.PluginList.Add(plugin);
+                try
+                {
+                    m_oPluginHost.PluginKey = pluginkey;
+                    plugin.Initialize(m_oPluginHost);
+                }
+                catch (Exception ex)
+                {
+                    ShowDialogPluginException(plugin, "Plugin", ex);
+                    if (!Information.IsNothing(plugin))
+                        plugin.Enabled = false;
+                }
+            }
+        }
         private void Plugin_EventEchoText(string sText, Color oColor, Color oBgColor)
         {
             Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
@@ -890,13 +980,21 @@ namespace GenieClient
             PluginsToolStripMenuItem.DropDownItems.Add(ti);
             PluginsToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
             int I = 1;
-            foreach (GeniePlugin.Interfaces.IPlugin oPlugin in m_oGlobals.PluginList)
+            foreach (object oPlugin in m_oGlobals.PluginList)
             {
                 if (!Information.IsNothing(oPlugin))
                 {
                     ti = new ToolStripMenuItem();
-                    ti.Name = "ToolStripMenuItemPlugin" + oPlugin.Name;
-                    ti.Text = oPlugin.Name;
+                    if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                    {
+                        ti.Name = "ToolStripMenuItemPlugin" + (oPlugin as GeniePlugin.Interfaces.IPlugin).Name;
+                        ti.Text = (oPlugin as GeniePlugin.Interfaces.IPlugin).Name;
+                    }
+                    else if(oPlugin is GeniePlugin.Plugins.IPlugin)
+                    {
+                        ti.Name = "ToolStripMenuItemPlugin" + (oPlugin as GeniePlugin.Plugins.IPlugin).Name;
+                        ti.Text = (oPlugin as GeniePlugin.Plugins.IPlugin).Name;
+                    }
                     ti.Tag = oPlugin;
                     // ti.Checked = oPlugin.Enabled
                     ti.Click += PluginMenuItem_Click;
@@ -970,19 +1068,37 @@ namespace GenieClient
                 ShowDialogAutoMapperException("ParseText", ex);
             }
 
-            foreach (GeniePlugin.Interfaces.IPlugin oPlugin in m_oGlobals.PluginList)
+            foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                try
+                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
-                    if (oPlugin.Enabled)
-                        oPlugin.ParseText(sText, sWindow);
+                    try
+                    {
+                        if ((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled)
+                            (oPlugin as GeniePlugin.Interfaces.IPlugin).ParseText(sText, sWindow);
+                    }
+                    /* TODO ERROR: Skipped IfDirectiveTrivia */
+                    catch (Exception ex)
+                    {
+                        ShowDialogPluginException((oPlugin as GeniePlugin.Interfaces.IPlugin), "ParseText", ex);
+                        (oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled = false;
+                        /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                    }
                 }
-                /* TODO ERROR: Skipped IfDirectiveTrivia */
-                catch (Exception ex)
+                else if(oPlugin is GeniePlugin.Plugins.IPlugin)
                 {
-                    ShowDialogPluginException(oPlugin, "ParseText", ex);
-                    oPlugin.Enabled = false;
-                    /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                    try
+                    {
+                        if ((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled)
+                            (oPlugin as GeniePlugin.Plugins.IPlugin).ParseText(sText, sWindow);
+                    }
+                    /* TODO ERROR: Skipped IfDirectiveTrivia */
+                    catch (Exception ex)
+                    {
+                        ShowDialogPluginException((oPlugin as GeniePlugin.Plugins.IPlugin), "ParseText", ex);
+                        (oPlugin as GeniePlugin.Plugins.IPlugin).Enabled = false;
+                        /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                    }
                 }
             }
         }
@@ -1018,21 +1134,41 @@ namespace GenieClient
                 ShowDialogAutoMapperException("ParseInput", ex);
             }
 
-            foreach (GeniePlugin.Interfaces.IPlugin oPlugin in m_oGlobals.PluginList)
+            foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                try
+                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
-                    if (oPlugin.Enabled | sText.StartsWith(Conversions.ToString(m_oGlobals.Config.cMyCommandChar)))
+                    try
                     {
-                        sText = oPlugin.ParseInput(sText);
+                        if ((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled | sText.StartsWith(Conversions.ToString(m_oGlobals.Config.cMyCommandChar)))
+                        {
+                            sText = (oPlugin as GeniePlugin.Interfaces.IPlugin).ParseInput(sText);
+                        }
+                    }
+                    /* TODO ERROR: Skipped IfDirectiveTrivia */
+                    catch (Exception ex)
+                    {
+                        ShowDialogPluginException((oPlugin as GeniePlugin.Interfaces.IPlugin), "Input", ex);
+                        (oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled = false;
+                        /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                     }
                 }
-                /* TODO ERROR: Skipped IfDirectiveTrivia */
-                catch (Exception ex)
+                else if (oPlugin is GeniePlugin.Plugins.IPlugin)
                 {
-                    ShowDialogPluginException(oPlugin, "Input", ex);
-                    oPlugin.Enabled = false;
-                    /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                    try
+                    {
+                        if ((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled | sText.StartsWith(Conversions.ToString(m_oGlobals.Config.cMyCommandChar)))
+                        {
+                            sText = (oPlugin as GeniePlugin.Plugins.IPlugin).ParseInput(sText);
+                        }
+                    }
+                    /* TODO ERROR: Skipped IfDirectiveTrivia */
+                    catch (Exception ex)
+                    {
+                        ShowDialogPluginException((oPlugin as GeniePlugin.Plugins.IPlugin), "Input", ex);
+                        (oPlugin as GeniePlugin.Plugins.IPlugin).Enabled = false;
+                        /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                    }
                 }
             }
 
@@ -1076,19 +1212,37 @@ namespace GenieClient
                 ShowDialogAutoMapperException("VariableChanged", ex);
             }
 
-            foreach (GeniePlugin.Interfaces.IPlugin oPlugin in m_oGlobals.PluginList)
+            foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                try
+                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
-                    if (oPlugin.Enabled)
-                        oPlugin.VariableChanged(sVar);
+                    try
+                    {
+                        if ((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled)
+                            (oPlugin as GeniePlugin.Interfaces.IPlugin).VariableChanged(sVar);
+                    }
+                    /* TODO ERROR: Skipped IfDirectiveTrivia */
+                    catch (Exception ex)
+                    {
+                        ShowDialogPluginException((oPlugin as GeniePlugin.Interfaces.IPlugin), "VariableChanged", ex);
+                        (oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled = false;
+                        /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                    }
                 }
-                /* TODO ERROR: Skipped IfDirectiveTrivia */
-                catch (Exception ex)
+                else if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
-                    ShowDialogPluginException(oPlugin, "VariableChanged", ex);
-                    oPlugin.Enabled = false;
-                    /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                    try
+                    {
+                        if ((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled)
+                            (oPlugin as GeniePlugin.Plugins.IPlugin).VariableChanged(sVar);
+                    }
+                    /* TODO ERROR: Skipped IfDirectiveTrivia */
+                    catch (Exception ex)
+                    {
+                        ShowDialogPluginException((oPlugin as GeniePlugin.Plugins.IPlugin), "VariableChanged", ex);
+                        (oPlugin as GeniePlugin.Plugins.IPlugin).Enabled = false;
+                        /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                    }
                 }
             }
         }
@@ -1112,19 +1266,37 @@ namespace GenieClient
 
         private void ParsePluginXML(string sXML)
         {
-            foreach (GeniePlugin.Interfaces.IPlugin oPlugin in m_oGlobals.PluginList)
+            foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                try
+                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
-                    if (oPlugin.Enabled)
-                        oPlugin.ParseXML(sXML);
+                    try
+                    {
+                        if ((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled)
+                            (oPlugin as GeniePlugin.Interfaces.IPlugin).ParseXML(sXML);
+                    }
+                    /* TODO ERROR: Skipped IfDirectiveTrivia */
+                    catch (Exception ex)
+                    {
+                        ShowDialogPluginException((oPlugin as GeniePlugin.Interfaces.IPlugin), "ParseXML", ex);
+                        (oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled = false;
+                        /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                    }
                 }
-                /* TODO ERROR: Skipped IfDirectiveTrivia */
-                catch (Exception ex)
+                else if (oPlugin is GeniePlugin.Plugins.IPlugin)
                 {
-                    ShowDialogPluginException(oPlugin, "ParseXML", ex);
-                    oPlugin.Enabled = false;
-                    /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                    try
+                    {
+                        if ((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled)
+                            (oPlugin as GeniePlugin.Plugins.IPlugin).ParseXML(sXML);
+                    }
+                    /* TODO ERROR: Skipped IfDirectiveTrivia */
+                    catch (Exception ex)
+                    {
+                        ShowDialogPluginException((oPlugin as GeniePlugin.Plugins.IPlugin), "ParseXML", ex);
+                        (oPlugin as GeniePlugin.Plugins.IPlugin).Enabled = false;
+                        /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                    }
                 }
             }
         }
@@ -1150,19 +1322,37 @@ namespace GenieClient
                     m_oAutoMapper.IsClosing = true;
                 }
 
-                foreach (GeniePlugin.Interfaces.IPlugin oPlugin in m_oGlobals.PluginList)
+                foreach (object oPlugin in m_oGlobals.PluginList)
                 {
-                    try
+                    if(oPlugin is GeniePlugin.Interfaces.IPlugin)
                     {
-                        if (oPlugin.Enabled)
-                            oPlugin.ParentClosing();
+                        try
+                        {
+                            if ((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled)
+                                (oPlugin as GeniePlugin.Interfaces.IPlugin).ParentClosing();
+                        }
+                        /* TODO ERROR: Skipped IfDirectiveTrivia */
+                        catch (Exception ex)
+                        {
+                            ShowDialogPluginException((oPlugin as GeniePlugin.Interfaces.IPlugin), "ParentClosing", ex);
+                            (oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled = false;
+                            /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                        }
                     }
-                    /* TODO ERROR: Skipped IfDirectiveTrivia */
-                    catch (Exception ex)
+                    else if (oPlugin is GeniePlugin.Plugins.IPlugin)
                     {
-                        ShowDialogPluginException(oPlugin, "ParentClosing", ex);
-                        oPlugin.Enabled = false;
-                        /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                        try
+                        {
+                            if ((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled)
+                                (oPlugin as GeniePlugin.Plugins.IPlugin).ParentClosing();
+                        }
+                        /* TODO ERROR: Skipped IfDirectiveTrivia */
+                        catch (Exception ex)
+                        {
+                            ShowDialogPluginException((oPlugin as GeniePlugin.Plugins.IPlugin), "ParentClosing", ex);
+                            (oPlugin as GeniePlugin.Plugins.IPlugin).Enabled = false;
+                            /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                        }
                     }
                 }
             }
@@ -5271,7 +5461,20 @@ namespace GenieClient
 
         public delegate void PrintDialogPluginExceptionDelegate(GeniePlugin.Interfaces.IPlugin plugin, string section, Exception ex);
 
-        private void HandlePluginException(GeniePlugin.Interfaces.IPlugin plugin, string section, Exception ex)
+        private void HandleLegacyPluginException(GeniePlugin.Interfaces.IPlugin plugin, string section, Exception ex)
+        {
+            if (InvokeRequired == true)
+            {
+                var parameters = new object[] { plugin, section, ex };
+                Invoke(new PrintDialogPluginExceptionDelegate(ShowDialogPluginException), parameters);
+            }
+            else
+            {
+                ShowDialogPluginException(plugin, section, ex);
+            }
+        }
+
+        private void HandlePluginException(GeniePlugin.Plugins.IPlugin plugin, string section, Exception ex)
         {
             if (InvokeRequired == true)
             {
@@ -5304,6 +5507,39 @@ namespace GenieClient
         }
 
         private void ShowDialogPluginException(GeniePlugin.Interfaces.IPlugin plugin, string section, Exception ex)
+        {
+            if (My.MyProject.Forms.DialogException.Visible == false)
+            {
+                string sPluginName = "Unknown";
+                string sPluginVersion = "Unknown";
+                if (!Information.IsNothing(plugin))
+                {
+                    sPluginName = Conversions.ToString(Interaction.IIf(Information.IsNothing(plugin.Name), "Unknown", plugin.Name));
+                    sPluginVersion = Conversions.ToString(Interaction.IIf(Information.IsNothing(plugin.Version), "Unknown", plugin.Version));
+                }
+
+                var sbDetails = new StringBuilder();
+                sbDetails.Append("Plugin Name:           ");
+                sbDetails.Append(sPluginName);
+                sbDetails.Append(Constants.vbNewLine);
+                sbDetails.Append("Plugin Version         ");
+                sbDetails.Append(sPluginVersion);
+                sbDetails.Append(Constants.vbNewLine);
+                sbDetails.Append("Plugin Action:         ");
+                sbDetails.Append(section);
+                sbDetails.Append(Constants.vbNewLine);
+                sbDetails.Append(Constants.vbNewLine);
+                sbDetails.Append(ex.Message);
+                sbDetails.Append(Constants.vbNewLine);
+                sbDetails.Append(Constants.vbNewLine);
+                sbDetails.Append("----------------------------------------------");
+                sbDetails.Append(Constants.vbNewLine);
+                sbDetails.Append(ex.ToString());
+                My.MyProject.Forms.DialogException.Show(this, sbDetails.ToString(), "There was an unexpected error in the plugin " + sPluginName + ". This may be due to a programming bug.", "The plugin has been disabled.", "Please report the details of this error to the plugin author. You may also want to make sure you are running the latest version of this plugin.");
+            }
+        }
+
+        private void ShowDialogPluginException(GeniePlugin.Plugins.IPlugin plugin, string section, Exception ex)
         {
             if (My.MyProject.Forms.DialogException.Visible == false)
             {
