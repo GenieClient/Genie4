@@ -4487,13 +4487,17 @@ namespace GenieClient
                             oFormTarget = m_oOutputThoughts;
                             break;
                         }
-
+                    case Genie.Game.WindowTarget.Combat:
+                        {
+                            oFormTarget = FindSkinFormByName("Combat");
+                            break;
+                        }
                     case Genie.Game.WindowTarget.Other:
                         {
                             oFormTarget = FindSkinFormByName(sTargetWindow);
                             break;
                         }
-
+                    
                     default:
                         {
                             oFormTarget = m_oOutputMain;
