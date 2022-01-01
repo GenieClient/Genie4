@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Genie Client 4")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("genieclient.com")]
-[assembly: AssemblyProduct("Genie Client 3")]
+[assembly: AssemblyProduct("Genie Client 4")]
 [assembly: AssemblyCopyright("GPL-3")]
 [assembly: AssemblyTrademark("")]
 [assembly: ComVisible(false)]
