@@ -150,7 +150,7 @@ _For more discussion, join the discord group [DiscordGroup](https://discord.gg/M
 ## Roadmap
 
 - [x] .NET 6 Upgrade
-- [ ] Fix Regex Highlight Bug
+- [x] Fix Regex Highlight Bug
 - [ ] Refactor Core Logic away from GUI
 - [ ] Convert GUI to Cross-Platform
 - [ ] Upgrade Plugin Interface
