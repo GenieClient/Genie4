@@ -79,6 +79,12 @@
       <HintPath>Libs\Jint.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="lua51">
+      <HintPath>Libs\lua51.dll</HintPath>
+    </Reference>
+    <Reference Include="LuaInterface">
+      <HintPath>Libs\LuaInterface.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
