@@ -79,12 +79,6 @@
       <HintPath>Libs\Jint.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="lua51">
-      <HintPath>Libs\lua51.dll</HintPath>
-    </Reference>
-    <Reference Include="LuaInterface">
-      <HintPath>Libs\LuaInterface.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -189,6 +183,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Forms\Taleweaver.ico" />
+    <EmbeddedResource Include="Libs\lua51.dll" />
+    <EmbeddedResource Include="Libs\LuaInterface.dll" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\skin_bottom.bmp" />
@@ -218,6 +214,10 @@
   <ItemGroup>
     <EmbeddedResource Remove="Forms\Components\ComponentIcons.resx" />
     <EmbeddedResource Remove="Forms\ConfigPanels\UCVariables.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Libs\lua51.dll" />
+    <None Remove="Libs\LuaInterface.dll" />
   </ItemGroup>
 
 </Project>
