@@ -149,9 +149,11 @@ _For more discussion, join the discord group [DiscordGroup](https://discord.gg/M
 <!-- ROADMAP -->
 ## Roadmap
 
-- [] Cross Platform Options
-- [] Bugfix - A
-- [] Bugfix - B
+- [x] .NET 6 Upgrade
+- [ ] Fix Regex Highlight Bug
+- [ ] Refactor Core Logic away from GUI
+- [ ] Convert GUI to Cross-Platform
+- [ ] Upgrade Plugin Interface
 
 See the [open issues](https://github.com/GenieClient/Genie4/issues) for a full list of proposed features (and known issues).
 
