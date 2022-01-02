@@ -63,7 +63,9 @@ namespace GenieClient
                     m_ItemChanged = true;
                 }
             }
-            catch (Exception ex)
+#pragma warning disable CS0168
+            catch (Exception exp)
+#pragma warning restore CS0168
             {
                 TextBoxMonoFont.Text = "";
                 TextBoxMonoFont.Tag = null;
@@ -87,7 +89,9 @@ namespace GenieClient
                     m_ItemChanged = true;
                 }
             }
-            catch (Exception ex)
+#pragma warning disable CS0168
+            catch (Exception exp)
+#pragma warning restore CS0168
             {
                 TextBoxInputFont.Text = "";
                 TextBoxInputFont.Tag = null;

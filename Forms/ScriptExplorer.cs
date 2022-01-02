@@ -83,7 +83,9 @@ namespace GenieClient
                 // Get an array of all sub-directories as DirectoryInfo objects
                 adiDirectories = diDirectory.GetDirectories();
             }
+#pragma warning disable CS0168
             catch (Exception exp)
+#pragma warning restore CS0168
             {
                 return;
             }
@@ -112,7 +114,9 @@ namespace GenieClient
                 // Get an array of all files as FileInfo objects
                 adiFiles = diDirectory.GetFiles();
             }
+#pragma warning disable CS0168
             catch (Exception exp)
+#pragma warning restore CS0168
             {
                 return;
             }

@@ -34,7 +34,6 @@ namespace GenieClient
 
         public string get_Variable(string Var)
         {
-            string PluginKey = "";
             if ((Var ?? "") == "GenieKey")
             {
                 return m_oGlobals.GenieKey;

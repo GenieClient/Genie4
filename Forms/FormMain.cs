@@ -2807,7 +2807,7 @@ namespace GenieClient
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    GenieError.Error("AddScriptToToolstrip in MainForm", ex.Message, ex.StackTrace);
                 }
                 finally
                 {
