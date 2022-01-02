@@ -43,8 +43,6 @@ namespace GenieClient.My
             embeddedAssemblies.Add("GenieClient.Libs.Jint.dll", "Jint.dll");
             embeddedAssemblies.Add("GenieClient.Libs.Antlr3.Runtime.dll", "Antlr3.Runtime.dll");
             embeddedAssemblies.Add("GenieClient.Libs.Interfaces.dll", "Interfaces.dll");
-            embeddedAssemblies.Add("GenieClient.Libs.lua51.dll", "lua51.dll");
-            embeddedAssemblies.Add("GenieClient.Libs.LuaInterfaces.dll", "LuaInterface.dll");
 
             foreach (KeyValuePair<string, string> embeddedAssembly in embeddedAssemblies)
             {
