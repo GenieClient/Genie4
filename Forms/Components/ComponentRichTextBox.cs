@@ -135,7 +135,7 @@ namespace GenieClient
         private bool m_bNameListOnly = false;
         private int m_iMaxBufferSize = 500000;
         private bool m_bIsMainWindow = false;
-
+       
         public bool IsMainWindow
         {
             get
@@ -389,15 +389,14 @@ namespace GenieClient
             if (sText.Length > 0)
             {
                 m_oRichTextBuffer.SelectedText = sText;
-                //ParseLineHighlight(iStart, sText);
-                ParseLineHighlight(m_oRichTextBuffer.SelectionStart, sText);
+                ParseLineHighlight(iStart, sText);
             }
         }
 
         private void ParseLineHighlight(int iStart, string sLine)
         {
             Genie.Globals.HighlightRegExp.Highlight oHighlight;
-            MatchCollection oMatchCollection;
+            MatchCollection oMatchCollection;            
             if (Conversions.ToBoolean(m_oParentForm.Globals.HighlightRegExpList.AcquireReaderLock()))
             {
                 try
