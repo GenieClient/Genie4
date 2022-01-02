@@ -24,7 +24,9 @@ namespace GenieClient.Mapper
         }
 
         // Required by the Windows Form Designer
+        #pragma warning disable 0649
         private System.ComponentModel.IContainer components;
+        #pragma warning restore 0649
 
         // NOTE: The following procedure is required by the Windows Form Designer
         // It can be modified using the Windows Form Designer.  
@@ -32,470 +34,500 @@ namespace GenieClient.Mapper
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(MapForm));
-            _ToolStripMain = new ToolStrip();
-            _ToolStripMain.KeyUp += new KeyEventHandler(GraphForm_KeyDown);
-            _ToolStripMain.KeyUp += new KeyEventHandler(GraphForm_KeyUp);
-            _ToolStripButtonClear = new ToolStripButton();
-            _ToolStripButtonClear.Click += new EventHandler(ToolStripButtonClear_Click);
-            _ToolStripButtonLoad = new ToolStripButton();
-            _ToolStripButtonLoad.Click += new EventHandler(ToolStripButtonLoad_Click);
-            _ToolStripButtonSave = new ToolStripButton();
-            _ToolStripButtonSave.Click += new EventHandler(ToolStripButtonSave_Click);
-            _ToolStripSeparator1 = new ToolStripSeparator();
-            _ToolStripButtonWalk = new ToolStripButton();
-            _ToolStripButtonWalk.Click += new EventHandler(ToolStripButtonWalk_Click);
-            _ToolStripSeparator3 = new ToolStripSeparator();
-            _ToolStripButtonSnap = new ToolStripButton();
-            _ToolStripButtonSnap.Click += new EventHandler(ToolStripButtonSnap_Click);
-            _ToolStripButtonProperties = new ToolStripButton();
-            _ToolStripButtonProperties.Click += new EventHandler(ToolStripButtonProperties_Click);
-            _ToolStripSeparator4 = new ToolStripSeparator();
-            _ToolStripButtonRecord = new ToolStripButton();
-            _ToolStripButtonRecord.Click += new EventHandler(ToolStripButtonRecord_Click);
-            _ToolStripButtonLockPositions = new ToolStripButton();
-            _ToolStripButtonLockPositions.Click += new EventHandler(ToolStripButtonLockPositions_Click);
-            _ToolStripButtonAllowDuplicates = new ToolStripButton();
-            _ToolStripButtonAllowDuplicates.Click += new EventHandler(ToolStripButtonAllowDuplicates_Click);
-            _ToolStripSeparator5 = new ToolStripSeparator();
-            _ToolStripButtonMoveNodes = new ToolStripButton();
-            _ToolStripButtonMoveNodes.Click += new EventHandler(ToolStripButtonMoveNodes_Click);
-            _ToolStripButtonRemove = new ToolStripButton();
-            _ToolStripButtonRemove.Click += new EventHandler(ToolStripButtonRemove_Click);
-            _ToolStripSeparator2 = new ToolStripSeparator();
-            _ToolStripButtonFixID = new ToolStripButton();
-            _ToolStripButtonFixID.Click += new EventHandler(ToolStripButton1_Click);
-            _ToolStripButtonDock = new ToolStripButton();
-            _ToolStripButtonDock.Click += new EventHandler(ToolStripButtonDock_Click);
-            _ToolStripSeparator7 = new ToolStripSeparator();
-            _ToolStripButtonZoomOut = new ToolStripButton();
-            _ToolStripButtonZoomOut.Click += new EventHandler(ToolStripButtonZoomOut_Click);
-            _ToolStripButtonZoomIn = new ToolStripButton();
-            _ToolStripButtonZoomIn.Click += new EventHandler(ToolStripButtonZoomIn_Click);
-            _ToolStripSeparator6 = new ToolStripSeparator();
-            _ToolStripButtonDown = new ToolStripButton();
-            _ToolStripButtonDown.Click += new EventHandler(ToolStripButtonDown_Click);
-            _ToolStripButtonUp = new ToolStripButton();
-            _ToolStripButtonUp.Click += new EventHandler(ToolStripButtonUp_Click);
-            _ToolStripLabelZ = new ToolStripLabel();
-            _OpenFileDialog1 = new OpenFileDialog();
-            _SaveFileDialog1 = new SaveFileDialog();
-            _PanelDetails = new Panel();
-            _PanelNodeDetails = new NodeDetails();
-            _PanelNodeDetails.UpdateMap += new NodeDetails.UpdateMapEventHandler(PanelNodeDetails_UpdateMap);
-            _PanelNodeDetails.CopyNode += new NodeDetails.CopyNodeEventHandler(PanelNodeDetails_CopyNode);
-            _PanelNodeDetails.AddNode += new NodeDetails.AddNodeEventHandler(PanelNodeDetails_AddNode);
-            _PanelNodeDetails.RemoveNode += new NodeDetails.RemoveNodeEventHandler(PanelNodeDetails_RemoveNode);
-            _PanelNodeDetails.NewNode += new NodeDetails.NewNodeEventHandler(PanelNodeDetails_NewNode);
-            _PanelNodeDetails.ArcChanged += new NodeDetails.ArcChangedEventHandler(PanelNodeDetails_ArcChanged);
-            _PanelNodeDetails.NewLabel += new NodeDetails.NewLabelEventHandler(EventAddLabel);
-            _PanelLabelDetails = new LabelDetails();
-            _PanelLabelDetails.UpdateMap += new LabelDetails.UpdateMapEventHandler(PanelNodeDetails_UpdateMap);
-            _PanelLabelDetails.NewLabel += new LabelDetails.NewLabelEventHandler(EventAddLabel);
-            _StatusStripMain = new StatusStrip();
-            _ToolStripStatusText = new ToolStripStatusLabel();
-            _PanelBase = new Panel();
-            _PanelMap = new FlickerFreePanel();
-            _PanelMap.MouseDown += new MouseEventHandler(FlickerFreePanel1_MouseDown);
-            _PanelMap.MouseLeave += new EventHandler(FlickerFreePanel1_MouseLeave);
-            _PanelMap.MouseMove += new MouseEventHandler(FlickerFreePanel1_MouseMove);
-            _PanelMap.MouseUp += new MouseEventHandler(FlickerFreePanel1_MouseUp);
-            _PanelMap.Paint += new PaintEventHandler(FlickerFreePanel1_Paint);
-            _ToolStripMaps = new ToolStrip();
-            _ToolStripDropDownButtonMaps = new ToolStripDropDownButton();
-            _TestToolStripMenuItem = new ToolStripMenuItem();
-            _ToolStripButtonReload = new ToolStripButton();
-            _ToolStripButtonReload.Click += new EventHandler(ToolStripButtonReload_Click);
-            _ToolStripMain.SuspendLayout();
-            _PanelDetails.SuspendLayout();
-            _StatusStripMain.SuspendLayout();
-            _PanelBase.SuspendLayout();
-            _ToolStripMaps.SuspendLayout();
-            SuspendLayout();
-            // 
-            // ToolStripMain
-            // 
-            _ToolStripMain.GripStyle = ToolStripGripStyle.Hidden;
-            _ToolStripMain.Items.AddRange(new ToolStripItem[] { _ToolStripButtonClear, _ToolStripButtonLoad, _ToolStripButtonSave, _ToolStripSeparator1, _ToolStripButtonWalk, _ToolStripSeparator3, _ToolStripButtonSnap, _ToolStripButtonProperties, _ToolStripSeparator4, _ToolStripButtonRecord, _ToolStripButtonLockPositions, _ToolStripButtonAllowDuplicates, _ToolStripSeparator5, _ToolStripButtonMoveNodes, _ToolStripButtonRemove, _ToolStripSeparator2, _ToolStripButtonFixID, _ToolStripButtonDock, _ToolStripSeparator7, _ToolStripButtonZoomOut, _ToolStripButtonZoomIn, _ToolStripSeparator6, _ToolStripButtonDown, _ToolStripButtonUp, _ToolStripLabelZ });
-            _ToolStripMain.Location = new Point(0, 0);
-            _ToolStripMain.Name = "ToolStripMain";
-            _ToolStripMain.Size = new Size(803, 25);
-            _ToolStripMain.TabIndex = 5;
-            // 
-            // ToolStripButtonClear
-            // 
-            _ToolStripButtonClear.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonClear.Image = (Image)resources.GetObject("ToolStripButtonClear.Image");
-            _ToolStripButtonClear.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonClear.Name = "ToolStripButtonClear";
-            _ToolStripButtonClear.Size = new Size(23, 22);
-            _ToolStripButtonClear.Text = "New";
-            // 
-            // ToolStripButtonLoad
-            // 
-            _ToolStripButtonLoad.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonLoad.Image = (Image)resources.GetObject("ToolStripButtonLoad.Image");
-            _ToolStripButtonLoad.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonLoad.Name = "ToolStripButtonLoad";
-            _ToolStripButtonLoad.Size = new Size(23, 22);
-            _ToolStripButtonLoad.Text = "Load";
-            // 
-            // ToolStripButtonSave
-            // 
-            _ToolStripButtonSave.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonSave.Image = (Image)resources.GetObject("ToolStripButtonSave.Image");
-            _ToolStripButtonSave.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonSave.Name = "ToolStripButtonSave";
-            _ToolStripButtonSave.Size = new Size(23, 22);
-            _ToolStripButtonSave.Text = "Save";
-            // 
-            // ToolStripSeparator1
-            // 
-            _ToolStripSeparator1.Name = "ToolStripSeparator1";
-            _ToolStripSeparator1.Size = new Size(6, 25);
-            // 
-            // ToolStripButtonWalk
-            // 
-            _ToolStripButtonWalk.Checked = true;
-            _ToolStripButtonWalk.CheckOnClick = true;
-            _ToolStripButtonWalk.CheckState = CheckState.Checked;
-            _ToolStripButtonWalk.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonWalk.Image = (Image)resources.GetObject("ToolStripButtonWalk.Image");
-            _ToolStripButtonWalk.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonWalk.Name = "ToolStripButtonWalk";
-            _ToolStripButtonWalk.Size = new Size(23, 22);
-            _ToolStripButtonWalk.Text = "Auto Walk Path";
-            // 
-            // ToolStripSeparator3
-            // 
-            _ToolStripSeparator3.Name = "ToolStripSeparator3";
-            _ToolStripSeparator3.Size = new Size(6, 25);
-            // 
-            // ToolStripButtonSnap
-            // 
-            _ToolStripButtonSnap.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonSnap.Image = (Image)resources.GetObject("ToolStripButtonSnap.Image");
-            _ToolStripButtonSnap.ImageScaling = ToolStripItemImageScaling.None;
-            _ToolStripButtonSnap.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonSnap.Name = "ToolStripButtonSnap";
-            _ToolStripButtonSnap.Size = new Size(23, 22);
-            _ToolStripButtonSnap.Text = "Snap To Grid";
-            // 
-            // ToolStripButtonProperties
-            // 
-            _ToolStripButtonProperties.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonProperties.Image = (Image)resources.GetObject("ToolStripButtonProperties.Image");
-            _ToolStripButtonProperties.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonProperties.Name = "ToolStripButtonProperties";
-            _ToolStripButtonProperties.Size = new Size(23, 22);
-            _ToolStripButtonProperties.Text = "Edit Panel";
-            // 
-            // ToolStripSeparator4
-            // 
-            _ToolStripSeparator4.Name = "ToolStripSeparator4";
-            _ToolStripSeparator4.Size = new Size(6, 25);
-            // 
-            // ToolStripButtonRecord
-            // 
-            _ToolStripButtonRecord.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonRecord.Image = (Image)resources.GetObject("ToolStripButtonRecord.Image");
-            _ToolStripButtonRecord.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonRecord.Name = "ToolStripButtonRecord";
-            _ToolStripButtonRecord.Size = new Size(23, 22);
-            _ToolStripButtonRecord.Text = "Record Mode";
-            // 
-            // ToolStripButtonLockPositions
-            // 
-            _ToolStripButtonLockPositions.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonLockPositions.Enabled = false;
-            _ToolStripButtonLockPositions.Image = (Image)resources.GetObject("ToolStripButtonLockPositions.Image");
-            _ToolStripButtonLockPositions.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonLockPositions.Name = "ToolStripButtonLockPositions";
-            _ToolStripButtonLockPositions.Size = new Size(23, 22);
-            _ToolStripButtonLockPositions.Text = "Lock Positions";
-            // 
-            // ToolStripButtonAllowDuplicates
-            // 
-            _ToolStripButtonAllowDuplicates.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonAllowDuplicates.Enabled = false;
-            _ToolStripButtonAllowDuplicates.Image = (Image)resources.GetObject("ToolStripButtonAllowDuplicates.Image");
-            _ToolStripButtonAllowDuplicates.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonAllowDuplicates.Name = "ToolStripButtonAllowDuplicates";
-            _ToolStripButtonAllowDuplicates.Size = new Size(23, 22);
-            _ToolStripButtonAllowDuplicates.Text = "Allow Duplicate";
-            _ToolStripButtonAllowDuplicates.ToolTipText = "Allow Duplicate Nodes";
-            // 
-            // ToolStripSeparator5
-            // 
-            _ToolStripSeparator5.Name = "ToolStripSeparator5";
-            _ToolStripSeparator5.Size = new Size(6, 25);
-            // 
-            // ToolStripButtonMoveNodes
-            // 
-            _ToolStripButtonMoveNodes.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonMoveNodes.Image = (Image)resources.GetObject("ToolStripButtonMoveNodes.Image");
-            _ToolStripButtonMoveNodes.ImageScaling = ToolStripItemImageScaling.None;
-            _ToolStripButtonMoveNodes.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonMoveNodes.Name = "ToolStripButtonMoveNodes";
-            _ToolStripButtonMoveNodes.Size = new Size(23, 22);
-            _ToolStripButtonMoveNodes.Text = "Move Nodes/Labels";
-            // 
-            // ToolStripButtonRemove
-            // 
-            _ToolStripButtonRemove.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonRemove.Enabled = false;
-            _ToolStripButtonRemove.Image = (Image)resources.GetObject("ToolStripButtonRemove.Image");
-            _ToolStripButtonRemove.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonRemove.Name = "ToolStripButtonRemove";
-            _ToolStripButtonRemove.Size = new Size(23, 22);
-            _ToolStripButtonRemove.Text = "Remove Selected Nodes/Labels";
-            // 
-            // ToolStripSeparator2
-            // 
-            _ToolStripSeparator2.Name = "ToolStripSeparator2";
-            _ToolStripSeparator2.Size = new Size(6, 25);
-            // 
-            // ToolStripButtonFixID
-            // 
-            _ToolStripButtonFixID.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonFixID.Image = My.Resources.Resources.text_x_script;
-            _ToolStripButtonFixID.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonFixID.Name = "ToolStripButtonFixID";
-            _ToolStripButtonFixID.Size = new Size(23, 22);
-            _ToolStripButtonFixID.Text = "Reset Map IDs";
-            _ToolStripButtonFixID.ToolTipText = "Reset Map IDs";
-            // 
-            // ToolStripButtonDock
-            // 
-            _ToolStripButtonDock.Alignment = ToolStripItemAlignment.Right;
-            _ToolStripButtonDock.Checked = true;
-            _ToolStripButtonDock.CheckOnClick = true;
-            _ToolStripButtonDock.CheckState = CheckState.Checked;
-            _ToolStripButtonDock.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonDock.Image = My.Resources.Resources.document_save;
-            _ToolStripButtonDock.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonDock.Name = "ToolStripButtonDock";
-            _ToolStripButtonDock.Size = new Size(23, 22);
-            _ToolStripButtonDock.Text = "Docked";
-            // 
-            // ToolStripSeparator7
-            // 
-            _ToolStripSeparator7.Alignment = ToolStripItemAlignment.Right;
-            _ToolStripSeparator7.Name = "ToolStripSeparator7";
-            _ToolStripSeparator7.Size = new Size(6, 25);
-            // 
-            // ToolStripButtonZoomOut
-            // 
-            _ToolStripButtonZoomOut.Alignment = ToolStripItemAlignment.Right;
-            _ToolStripButtonZoomOut.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonZoomOut.Enabled = false;
-            _ToolStripButtonZoomOut.Image = (Image)resources.GetObject("ToolStripButtonZoomOut.Image");
-            _ToolStripButtonZoomOut.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonZoomOut.Name = "ToolStripButtonZoomOut";
-            _ToolStripButtonZoomOut.Size = new Size(23, 22);
-            _ToolStripButtonZoomOut.Text = "Zoom Out";
-            // 
-            // ToolStripButtonZoomIn
-            // 
-            _ToolStripButtonZoomIn.Alignment = ToolStripItemAlignment.Right;
-            _ToolStripButtonZoomIn.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonZoomIn.Image = (Image)resources.GetObject("ToolStripButtonZoomIn.Image");
-            _ToolStripButtonZoomIn.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonZoomIn.Name = "ToolStripButtonZoomIn";
-            _ToolStripButtonZoomIn.Size = new Size(23, 22);
-            _ToolStripButtonZoomIn.Text = "Zoom In";
-            // 
-            // ToolStripSeparator6
-            // 
-            _ToolStripSeparator6.Alignment = ToolStripItemAlignment.Right;
-            _ToolStripSeparator6.Name = "ToolStripSeparator6";
-            _ToolStripSeparator6.Size = new Size(6, 25);
-            // 
-            // ToolStripButtonDown
-            // 
-            _ToolStripButtonDown.Alignment = ToolStripItemAlignment.Right;
-            _ToolStripButtonDown.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonDown.Image = (Image)resources.GetObject("ToolStripButtonDown.Image");
-            _ToolStripButtonDown.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonDown.Name = "ToolStripButtonDown";
-            _ToolStripButtonDown.Size = new Size(23, 22);
-            _ToolStripButtonDown.Text = "Down";
-            // 
-            // ToolStripButtonUp
-            // 
-            _ToolStripButtonUp.Alignment = ToolStripItemAlignment.Right;
-            _ToolStripButtonUp.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonUp.Image = (Image)resources.GetObject("ToolStripButtonUp.Image");
-            _ToolStripButtonUp.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonUp.Name = "ToolStripButtonUp";
-            _ToolStripButtonUp.Size = new Size(23, 22);
-            _ToolStripButtonUp.Text = "Up";
-            // 
-            // ToolStripLabelZ
-            // 
-            _ToolStripLabelZ.Alignment = ToolStripItemAlignment.Right;
-            _ToolStripLabelZ.Name = "ToolStripLabelZ";
-            _ToolStripLabelZ.Size = new Size(45, 22);
-            _ToolStripLabelZ.Text = "Level: 0";
-            // 
-            // OpenFileDialog1
-            // 
-            _OpenFileDialog1.DefaultExt = "xml";
-            _OpenFileDialog1.Filter = "XML files|*.xml";
-            _OpenFileDialog1.InitialDirectory = @"Maps\";
-            _OpenFileDialog1.RestoreDirectory = true;
-            // 
-            // SaveFileDialog1
-            // 
-            _SaveFileDialog1.DefaultExt = "xml";
-            _SaveFileDialog1.Filter = "XML files|*.xml";
-            _SaveFileDialog1.InitialDirectory = @"Maps\";
-            _SaveFileDialog1.RestoreDirectory = true;
-            // 
-            // PanelDetails
-            // 
-            _PanelDetails.Controls.Add(_PanelNodeDetails);
-            _PanelDetails.Controls.Add(_PanelLabelDetails);
-            _PanelDetails.Dock = DockStyle.Bottom;
-            _PanelDetails.Location = new Point(0, 415);
-            _PanelDetails.Name = "PanelDetails";
-            _PanelDetails.Size = new Size(803, 175);
-            _PanelDetails.TabIndex = 17;
-            _PanelDetails.Visible = false;
-            // 
-            // PanelNodeDetails
-            // 
-            _PanelNodeDetails.Dock = DockStyle.Fill;
-            _PanelNodeDetails.Location = new Point(0, 0);
-            _PanelNodeDetails.MinimumSize = new Size(0, 175);
-            _PanelNodeDetails.Name = "PanelNodeDetails";
-            _PanelNodeDetails.Node = null;
-            _PanelNodeDetails.Size = new Size(803, 175);
-            _PanelNodeDetails.TabIndex = 0;
-            // 
-            // PanelLabelDetails
-            // 
-            _PanelLabelDetails.Dock = DockStyle.Fill;
-            _PanelLabelDetails.Label = null;
-            _PanelLabelDetails.Location = new Point(0, 0);
-            _PanelLabelDetails.MinimumSize = new Size(0, 97);
-            _PanelLabelDetails.Name = "PanelLabelDetails";
-            _PanelLabelDetails.Size = new Size(803, 175);
-            _PanelLabelDetails.TabIndex = 1;
-            // 
-            // StatusStripMain
-            // 
-            _StatusStripMain.BackColor = SystemColors.Control;
-            _StatusStripMain.GripStyle = ToolStripGripStyle.Visible;
-            _StatusStripMain.Items.AddRange(new ToolStripItem[] { _ToolStripStatusText });
-            _StatusStripMain.Location = new Point(0, 590);
-            _StatusStripMain.Name = "StatusStripMain";
-            _StatusStripMain.Size = new Size(803, 22);
-            _StatusStripMain.TabIndex = 18;
-            // 
-            // ToolStripStatusText
-            // 
-            _ToolStripStatusText.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
-
-            _ToolStripStatusText.BorderStyle = Border3DStyle.SunkenOuter;
-            _ToolStripStatusText.Name = "ToolStripStatusText";
-            _ToolStripStatusText.Size = new Size(788, 17);
-            _ToolStripStatusText.Spring = true;
-            _ToolStripStatusText.Text = "Ready.";
-            _ToolStripStatusText.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // PanelBase
-            // 
-            _PanelBase.AutoScroll = true;
-            _PanelBase.BackColor = Color.FromArgb(Conversions.ToInteger(Conversions.ToByte(255)), Conversions.ToInteger(Conversions.ToByte(255)), Conversions.ToInteger(Conversions.ToByte(192)));
-            _PanelBase.BorderStyle = BorderStyle.Fixed3D;
-            _PanelBase.Controls.Add(_PanelMap);
-            _PanelBase.Dock = DockStyle.Fill;
-            _PanelBase.Location = new Point(0, 50);
-            _PanelBase.Name = "PanelBase";
-            _PanelBase.Size = new Size(803, 365);
-            _PanelBase.TabIndex = 19;
-            // 
-            // PanelMap
-            // 
-            _PanelMap.BackColor = Color.FromArgb(Conversions.ToInteger(Conversions.ToByte(255)), Conversions.ToInteger(Conversions.ToByte(255)), Conversions.ToInteger(Conversions.ToByte(192)));
-            _PanelMap.Dock = DockStyle.Fill;
-            _PanelMap.DrawLines = false;
-            _PanelMap.Location = new Point(0, 0);
-            _PanelMap.Name = "PanelMap";
-            _PanelMap.Size = new Size(799, 361);
-            _PanelMap.TabIndex = 6;
-            // 
-            // ToolStripMaps
-            // 
-            _ToolStripMaps.GripStyle = ToolStripGripStyle.Hidden;
-            _ToolStripMaps.Items.AddRange(new ToolStripItem[] { _ToolStripDropDownButtonMaps, _ToolStripButtonReload });
-            _ToolStripMaps.Location = new Point(0, 25);
-            _ToolStripMaps.Name = "ToolStripMaps";
-            _ToolStripMaps.Size = new Size(803, 25);
-            _ToolStripMaps.TabIndex = 20;
-            _ToolStripMaps.Text = "ToolStripMaps";
-            // 
-            // ToolStripDropDownButtonMaps
-            // 
-            _ToolStripDropDownButtonMaps.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            _ToolStripDropDownButtonMaps.DropDownItems.AddRange(new ToolStripItem[] { _TestToolStripMenuItem });
-            _ToolStripDropDownButtonMaps.Image = (Image)resources.GetObject("ToolStripDropDownButtonMaps.Image");
-            _ToolStripDropDownButtonMaps.ImageTransparentColor = Color.Magenta;
-            _ToolStripDropDownButtonMaps.Name = "ToolStripDropDownButtonMaps";
-            _ToolStripDropDownButtonMaps.Size = new Size(80, 22);
-            _ToolStripDropDownButtonMaps.Text = "Untitled Map";
-            _ToolStripDropDownButtonMaps.ToolTipText = "Maps";
-            // 
-            // TestToolStripMenuItem
-            // 
-            _TestToolStripMenuItem.Name = "TestToolStripMenuItem";
-            _TestToolStripMenuItem.Size = new Size(95, 22);
-            _TestToolStripMenuItem.Text = "Test";
-            // 
-            // ToolStripButtonReload
-            // 
-            _ToolStripButtonReload.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            _ToolStripButtonReload.Image = (Image)resources.GetObject("ToolStripButtonReload.Image");
-            _ToolStripButtonReload.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonReload.Name = "ToolStripButtonReload";
-            _ToolStripButtonReload.Size = new Size(23, 22);
-            _ToolStripButtonReload.Text = "Reload Map List";
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MapForm));
+            this._ToolStripMain = new System.Windows.Forms.ToolStrip();
+            this._ToolStripButtonClear = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripButtonLoad = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripButtonSave = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this._ToolStripButtonWalk = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this._ToolStripButtonSnap = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripButtonProperties = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this._ToolStripButtonRecord = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripButtonLockPositions = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripButtonAllowDuplicates = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this._ToolStripButtonMoveNodes = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripButtonRemove = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this._ToolStripButtonFixID = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripButtonDock = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this._ToolStripButtonZoomOut = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripButtonZoomIn = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this._ToolStripButtonDown = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripButtonUp = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripLabelZ = new System.Windows.Forms.ToolStripLabel();
+            this._OpenFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this._SaveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this._PanelDetails = new System.Windows.Forms.Panel();
+            this._PanelNodeDetails = new GenieClient.NodeDetails();
+            this._PanelLabelDetails = new GenieClient.LabelDetails();
+            this._StatusStripMain = new System.Windows.Forms.StatusStrip();
+            this._ToolStripStatusText = new System.Windows.Forms.ToolStripStatusLabel();
+            this._PanelBase = new System.Windows.Forms.Panel();
+            this._PanelMap = new GenieClient.FlickerFreePanel();
+            this._ToolStripMaps = new System.Windows.Forms.ToolStrip();
+            this._ToolStripDropDownButtonMaps = new System.Windows.Forms.ToolStripDropDownButton();
+            this._TestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._ToolStripButtonReload = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripMain.SuspendLayout();
+            this._PanelDetails.SuspendLayout();
+            this._StatusStripMain.SuspendLayout();
+            this._PanelBase.SuspendLayout();
+            this._ToolStripMaps.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // _ToolStripMain
+            // 
+            this._ToolStripMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this._ToolStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._ToolStripButtonClear,
+            this._ToolStripButtonLoad,
+            this._ToolStripButtonSave,
+            this._ToolStripSeparator1,
+            this._ToolStripButtonWalk,
+            this._ToolStripSeparator3,
+            this._ToolStripButtonSnap,
+            this._ToolStripButtonProperties,
+            this._ToolStripSeparator4,
+            this._ToolStripButtonRecord,
+            this._ToolStripButtonLockPositions,
+            this._ToolStripButtonAllowDuplicates,
+            this._ToolStripSeparator5,
+            this._ToolStripButtonMoveNodes,
+            this._ToolStripButtonRemove,
+            this._ToolStripSeparator2,
+            this._ToolStripButtonFixID,
+            this._ToolStripButtonDock,
+            this._ToolStripSeparator7,
+            this._ToolStripButtonZoomOut,
+            this._ToolStripButtonZoomIn,
+            this._ToolStripSeparator6,
+            this._ToolStripButtonDown,
+            this._ToolStripButtonUp,
+            this._ToolStripLabelZ});
+            this._ToolStripMain.Location = new System.Drawing.Point(0, 0);
+            this._ToolStripMain.Name = "_ToolStripMain";
+            this._ToolStripMain.Size = new System.Drawing.Size(1299, 25);
+            this._ToolStripMain.TabIndex = 5;
+            this._ToolStripMain.KeyUp += new System.Windows.Forms.KeyEventHandler(this.GraphForm_KeyUp);
+            // 
+            // _ToolStripButtonClear
+            // 
+            this._ToolStripButtonClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonClear.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonClear.Image")));
+            this._ToolStripButtonClear.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonClear.Name = "_ToolStripButtonClear";
+            this._ToolStripButtonClear.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonClear.Text = "New";
+            this._ToolStripButtonClear.Click += new System.EventHandler(this.ToolStripButtonClear_Click);
+            // 
+            // _ToolStripButtonLoad
+            // 
+            this._ToolStripButtonLoad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonLoad.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonLoad.Image")));
+            this._ToolStripButtonLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonLoad.Name = "_ToolStripButtonLoad";
+            this._ToolStripButtonLoad.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonLoad.Text = "Load";
+            this._ToolStripButtonLoad.Click += new System.EventHandler(this.ToolStripButtonLoad_Click);
+            // 
+            // _ToolStripButtonSave
+            // 
+            this._ToolStripButtonSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonSave.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonSave.Image")));
+            this._ToolStripButtonSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonSave.Name = "_ToolStripButtonSave";
+            this._ToolStripButtonSave.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonSave.Text = "Save";
+            this._ToolStripButtonSave.Click += new System.EventHandler(this.ToolStripButtonSave_Click);
+            // 
+            // _ToolStripSeparator1
+            // 
+            this._ToolStripSeparator1.Name = "_ToolStripSeparator1";
+            this._ToolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // _ToolStripButtonWalk
+            // 
+            this._ToolStripButtonWalk.Checked = true;
+            this._ToolStripButtonWalk.CheckOnClick = true;
+            this._ToolStripButtonWalk.CheckState = System.Windows.Forms.CheckState.Checked;
+            this._ToolStripButtonWalk.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonWalk.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonWalk.Image")));
+            this._ToolStripButtonWalk.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonWalk.Name = "_ToolStripButtonWalk";
+            this._ToolStripButtonWalk.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonWalk.Text = "Auto Walk Path";
+            this._ToolStripButtonWalk.Click += new System.EventHandler(this.ToolStripButtonWalk_Click);
+            // 
+            // _ToolStripSeparator3
+            // 
+            this._ToolStripSeparator3.Name = "_ToolStripSeparator3";
+            this._ToolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // _ToolStripButtonSnap
+            // 
+            this._ToolStripButtonSnap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonSnap.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonSnap.Image")));
+            this._ToolStripButtonSnap.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this._ToolStripButtonSnap.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonSnap.Name = "_ToolStripButtonSnap";
+            this._ToolStripButtonSnap.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonSnap.Text = "Snap To Grid";
+            this._ToolStripButtonSnap.Click += new System.EventHandler(this.ToolStripButtonSnap_Click);
+            // 
+            // _ToolStripButtonProperties
+            // 
+            this._ToolStripButtonProperties.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonProperties.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonProperties.Image")));
+            this._ToolStripButtonProperties.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonProperties.Name = "_ToolStripButtonProperties";
+            this._ToolStripButtonProperties.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonProperties.Text = "Edit Panel";
+            this._ToolStripButtonProperties.Click += new System.EventHandler(this.ToolStripButtonProperties_Click);
+            // 
+            // _ToolStripSeparator4
+            // 
+            this._ToolStripSeparator4.Name = "_ToolStripSeparator4";
+            this._ToolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // _ToolStripButtonRecord
+            // 
+            this._ToolStripButtonRecord.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonRecord.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonRecord.Image")));
+            this._ToolStripButtonRecord.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonRecord.Name = "_ToolStripButtonRecord";
+            this._ToolStripButtonRecord.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonRecord.Text = "Record Mode";
+            this._ToolStripButtonRecord.Click += new System.EventHandler(this.ToolStripButtonRecord_Click);
+            // 
+            // _ToolStripButtonLockPositions
+            // 
+            this._ToolStripButtonLockPositions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonLockPositions.Enabled = false;
+            this._ToolStripButtonLockPositions.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonLockPositions.Image")));
+            this._ToolStripButtonLockPositions.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonLockPositions.Name = "_ToolStripButtonLockPositions";
+            this._ToolStripButtonLockPositions.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonLockPositions.Text = "Lock Positions";
+            this._ToolStripButtonLockPositions.Click += new System.EventHandler(this.ToolStripButtonLockPositions_Click);
+            // 
+            // _ToolStripButtonAllowDuplicates
+            // 
+            this._ToolStripButtonAllowDuplicates.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonAllowDuplicates.Enabled = false;
+            this._ToolStripButtonAllowDuplicates.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonAllowDuplicates.Image")));
+            this._ToolStripButtonAllowDuplicates.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonAllowDuplicates.Name = "_ToolStripButtonAllowDuplicates";
+            this._ToolStripButtonAllowDuplicates.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonAllowDuplicates.Text = "Allow Duplicate";
+            this._ToolStripButtonAllowDuplicates.ToolTipText = "Allow Duplicate Nodes";
+            this._ToolStripButtonAllowDuplicates.Click += new System.EventHandler(this.ToolStripButtonAllowDuplicates_Click);
+            // 
+            // _ToolStripSeparator5
+            // 
+            this._ToolStripSeparator5.Name = "_ToolStripSeparator5";
+            this._ToolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // _ToolStripButtonMoveNodes
+            // 
+            this._ToolStripButtonMoveNodes.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonMoveNodes.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonMoveNodes.Image")));
+            this._ToolStripButtonMoveNodes.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this._ToolStripButtonMoveNodes.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonMoveNodes.Name = "_ToolStripButtonMoveNodes";
+            this._ToolStripButtonMoveNodes.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonMoveNodes.Text = "Move Nodes/Labels";
+            this._ToolStripButtonMoveNodes.Click += new System.EventHandler(this.ToolStripButtonMoveNodes_Click);
+            // 
+            // _ToolStripButtonRemove
+            // 
+            this._ToolStripButtonRemove.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonRemove.Enabled = false;
+            this._ToolStripButtonRemove.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonRemove.Image")));
+            this._ToolStripButtonRemove.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonRemove.Name = "_ToolStripButtonRemove";
+            this._ToolStripButtonRemove.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonRemove.Text = "Remove Selected Nodes/Labels";
+            this._ToolStripButtonRemove.Click += new System.EventHandler(this.ToolStripButtonRemove_Click);
+            // 
+            // _ToolStripSeparator2
+            // 
+            this._ToolStripSeparator2.Name = "_ToolStripSeparator2";
+            this._ToolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // _ToolStripButtonFixID
+            // 
+            this._ToolStripButtonFixID.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonFixID.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonFixID.Image")));
+            this._ToolStripButtonFixID.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonFixID.Name = "_ToolStripButtonFixID";
+            this._ToolStripButtonFixID.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonFixID.Text = "Reset Map IDs";
+            this._ToolStripButtonFixID.ToolTipText = "Reset Map IDs";
+            this._ToolStripButtonFixID.Click += new System.EventHandler(this.ToolStripButton1_Click);
+            // 
+            // _ToolStripButtonDock
+            // 
+            this._ToolStripButtonDock.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this._ToolStripButtonDock.Checked = true;
+            this._ToolStripButtonDock.CheckOnClick = true;
+            this._ToolStripButtonDock.CheckState = System.Windows.Forms.CheckState.Checked;
+            this._ToolStripButtonDock.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonDock.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonDock.Image")));
+            this._ToolStripButtonDock.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonDock.Name = "_ToolStripButtonDock";
+            this._ToolStripButtonDock.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonDock.Text = "Docked";
+            this._ToolStripButtonDock.Click += new System.EventHandler(this.ToolStripButtonDock_Click);
+            // 
+            // _ToolStripSeparator7
+            // 
+            this._ToolStripSeparator7.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this._ToolStripSeparator7.Name = "_ToolStripSeparator7";
+            this._ToolStripSeparator7.Size = new System.Drawing.Size(6, 25);
+            // 
+            // _ToolStripButtonZoomOut
+            // 
+            this._ToolStripButtonZoomOut.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this._ToolStripButtonZoomOut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonZoomOut.Enabled = false;
+            this._ToolStripButtonZoomOut.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonZoomOut.Image")));
+            this._ToolStripButtonZoomOut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonZoomOut.Name = "_ToolStripButtonZoomOut";
+            this._ToolStripButtonZoomOut.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonZoomOut.Text = "Zoom Out";
+            this._ToolStripButtonZoomOut.Click += new System.EventHandler(this.ToolStripButtonZoomOut_Click);
+            // 
+            // _ToolStripButtonZoomIn
+            // 
+            this._ToolStripButtonZoomIn.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this._ToolStripButtonZoomIn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonZoomIn.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonZoomIn.Image")));
+            this._ToolStripButtonZoomIn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonZoomIn.Name = "_ToolStripButtonZoomIn";
+            this._ToolStripButtonZoomIn.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonZoomIn.Text = "Zoom In";
+            this._ToolStripButtonZoomIn.Click += new System.EventHandler(this.ToolStripButtonZoomIn_Click);
+            // 
+            // _ToolStripSeparator6
+            // 
+            this._ToolStripSeparator6.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this._ToolStripSeparator6.Name = "_ToolStripSeparator6";
+            this._ToolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+            // 
+            // _ToolStripButtonDown
+            // 
+            this._ToolStripButtonDown.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this._ToolStripButtonDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonDown.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonDown.Image")));
+            this._ToolStripButtonDown.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonDown.Name = "_ToolStripButtonDown";
+            this._ToolStripButtonDown.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonDown.Text = "Down";
+            this._ToolStripButtonDown.Click += new System.EventHandler(this.ToolStripButtonDown_Click);
+            // 
+            // _ToolStripButtonUp
+            // 
+            this._ToolStripButtonUp.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this._ToolStripButtonUp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonUp.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonUp.Image")));
+            this._ToolStripButtonUp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonUp.Name = "_ToolStripButtonUp";
+            this._ToolStripButtonUp.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonUp.Text = "Up";
+            this._ToolStripButtonUp.Click += new System.EventHandler(this.ToolStripButtonUp_Click);
+            // 
+            // _ToolStripLabelZ
+            // 
+            this._ToolStripLabelZ.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this._ToolStripLabelZ.Name = "_ToolStripLabelZ";
+            this._ToolStripLabelZ.Size = new System.Drawing.Size(46, 22);
+            this._ToolStripLabelZ.Text = "Level: 0";
+            // 
+            // _OpenFileDialog1
+            // 
+            this._OpenFileDialog1.DefaultExt = "xml";
+            this._OpenFileDialog1.Filter = "XML files|*.xml";
+            this._OpenFileDialog1.InitialDirectory = "Maps\\";
+            this._OpenFileDialog1.RestoreDirectory = true;
+            // 
+            // _SaveFileDialog1
+            // 
+            this._SaveFileDialog1.DefaultExt = "xml";
+            this._SaveFileDialog1.Filter = "XML files|*.xml";
+            this._SaveFileDialog1.InitialDirectory = "Maps\\";
+            this._SaveFileDialog1.RestoreDirectory = true;
+            // 
+            // _PanelDetails
+            // 
+            this._PanelDetails.Controls.Add(this._PanelNodeDetails);
+            this._PanelDetails.Controls.Add(this._PanelLabelDetails);
+            this._PanelDetails.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this._PanelDetails.Location = new System.Drawing.Point(0, 413);
+            this._PanelDetails.Name = "_PanelDetails";
+            this._PanelDetails.Size = new System.Drawing.Size(1299, 175);
+            this._PanelDetails.TabIndex = 17;
+            this._PanelDetails.Visible = false;
+            // 
+            // _PanelNodeDetails
+            // 
+            this._PanelNodeDetails.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._PanelNodeDetails.Location = new System.Drawing.Point(0, 0);
+            this._PanelNodeDetails.MinimumSize = new System.Drawing.Size(0, 175);
+            this._PanelNodeDetails.Name = "_PanelNodeDetails";
+            this._PanelNodeDetails.Node = null;
+            this._PanelNodeDetails.Size = new System.Drawing.Size(1299, 175);
+            this._PanelNodeDetails.TabIndex = 0;
+            this._PanelNodeDetails.NewNode += new GenieClient.NodeDetails.NewNodeEventHandler(this.PanelNodeDetails_NewNode);
+            this._PanelNodeDetails.CopyNode += new GenieClient.NodeDetails.CopyNodeEventHandler(this.PanelNodeDetails_CopyNode);
+            this._PanelNodeDetails.RemoveNode += new GenieClient.NodeDetails.RemoveNodeEventHandler(this.PanelNodeDetails_RemoveNode);
+            this._PanelNodeDetails.AddNode += new GenieClient.NodeDetails.AddNodeEventHandler(this.PanelNodeDetails_AddNode);
+            this._PanelNodeDetails.UpdateMap += new GenieClient.NodeDetails.UpdateMapEventHandler(this.PanelNodeDetails_UpdateMap);
+            this._PanelNodeDetails.ArcChanged += new GenieClient.NodeDetails.ArcChangedEventHandler(this.PanelNodeDetails_ArcChanged);
+            this._PanelNodeDetails.NewLabel += new GenieClient.NodeDetails.NewLabelEventHandler(this.EventAddLabel);
+            // 
+            // _PanelLabelDetails
+            // 
+            this._PanelLabelDetails.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._PanelLabelDetails.Label = null;
+            this._PanelLabelDetails.Location = new System.Drawing.Point(0, 0);
+            this._PanelLabelDetails.MinimumSize = new System.Drawing.Size(0, 97);
+            this._PanelLabelDetails.Name = "_PanelLabelDetails";
+            this._PanelLabelDetails.Size = new System.Drawing.Size(1299, 175);
+            this._PanelLabelDetails.TabIndex = 1;
+            this._PanelLabelDetails.NewLabel += new GenieClient.LabelDetails.NewLabelEventHandler(this.EventAddLabel);
+            this._PanelLabelDetails.UpdateMap += new GenieClient.LabelDetails.UpdateMapEventHandler(this.PanelNodeDetails_UpdateMap);
+            // 
+            // _StatusStripMain
+            // 
+            this._StatusStripMain.BackColor = System.Drawing.SystemColors.Control;
+            this._StatusStripMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
+            this._StatusStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._ToolStripStatusText});
+            this._StatusStripMain.Location = new System.Drawing.Point(0, 588);
+            this._StatusStripMain.Name = "_StatusStripMain";
+            this._StatusStripMain.Size = new System.Drawing.Size(1299, 24);
+            this._StatusStripMain.TabIndex = 18;
+            // 
+            // _ToolStripStatusText
+            // 
+            this._ToolStripStatusText.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this._ToolStripStatusText.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this._ToolStripStatusText.Name = "_ToolStripStatusText";
+            this._ToolStripStatusText.Size = new System.Drawing.Size(1284, 19);
+            this._ToolStripStatusText.Spring = true;
+            this._ToolStripStatusText.Text = "Ready.";
+            this._ToolStripStatusText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // _PanelBase
+            // 
+            this._PanelBase.AutoScroll = true;
+            this._PanelBase.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this._PanelBase.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this._PanelBase.Controls.Add(this._PanelMap);
+            this._PanelBase.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._PanelBase.Location = new System.Drawing.Point(0, 50);
+            this._PanelBase.Name = "_PanelBase";
+            this._PanelBase.Size = new System.Drawing.Size(1299, 363);
+            this._PanelBase.TabIndex = 19;
+            // 
+            // _PanelMap
+            // 
+            this._PanelMap.AutoScroll = true;
+            this._PanelMap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this._PanelMap.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._PanelMap.DrawLines = false;
+            this._PanelMap.Location = new System.Drawing.Point(0, 0);
+            this._PanelMap.Name = "_PanelMap";
+            this._PanelMap.Size = new System.Drawing.Size(1295, 359);
+            this._PanelMap.TabIndex = 6;
+            this._PanelMap.Paint += new System.Windows.Forms.PaintEventHandler(this.FlickerFreePanel1_Paint);
+            this._PanelMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FlickerFreePanel1_MouseDown);
+            this._PanelMap.MouseLeave += new System.EventHandler(this.FlickerFreePanel1_MouseLeave);
+            this._PanelMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FlickerFreePanel1_MouseMove);
+            this._PanelMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FlickerFreePanel1_MouseUp);
+            // 
+            // _ToolStripMaps
+            // 
+            this._ToolStripMaps.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this._ToolStripMaps.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._ToolStripDropDownButtonMaps,
+            this._ToolStripButtonReload});
+            this._ToolStripMaps.Location = new System.Drawing.Point(0, 25);
+            this._ToolStripMaps.Name = "_ToolStripMaps";
+            this._ToolStripMaps.Size = new System.Drawing.Size(1299, 25);
+            this._ToolStripMaps.TabIndex = 20;
+            this._ToolStripMaps.Text = "ToolStripMaps";
+            // 
+            // _ToolStripDropDownButtonMaps
+            // 
+            this._ToolStripDropDownButtonMaps.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this._ToolStripDropDownButtonMaps.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._TestToolStripMenuItem});
+            this._ToolStripDropDownButtonMaps.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripDropDownButtonMaps.Image")));
+            this._ToolStripDropDownButtonMaps.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripDropDownButtonMaps.Name = "_ToolStripDropDownButtonMaps";
+            this._ToolStripDropDownButtonMaps.Size = new System.Drawing.Size(89, 22);
+            this._ToolStripDropDownButtonMaps.Text = "Untitled Map";
+            this._ToolStripDropDownButtonMaps.ToolTipText = "Maps";
+            // 
+            // _TestToolStripMenuItem
+            // 
+            this._TestToolStripMenuItem.Name = "_TestToolStripMenuItem";
+            this._TestToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this._TestToolStripMenuItem.Text = "Test";
+            // 
+            // _ToolStripButtonReload
+            // 
+            this._ToolStripButtonReload.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this._ToolStripButtonReload.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonReload.Image")));
+            this._ToolStripButtonReload.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonReload.Name = "_ToolStripButtonReload";
+            this._ToolStripButtonReload.Size = new System.Drawing.Size(23, 22);
+            this._ToolStripButtonReload.Text = "Reload Map List";
+            this._ToolStripButtonReload.Click += new System.EventHandler(this.ToolStripButtonReload_Click);
             // 
             // MapForm
             // 
-            AutoScaleDimensions = new SizeF(6.0F, 13.0F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(803, 612);
-            Controls.Add(_PanelBase);
-            Controls.Add(_PanelDetails);
-            Controls.Add(_StatusStripMain);
-            Controls.Add(_ToolStripMaps);
-            Controls.Add(_ToolStripMain);
-            DoubleBuffered = true;
-            Icon = (Icon)resources.GetObject("$this.Icon");
-            KeyPreview = true;
-            Name = "MapForm";
-            SizeGripStyle = SizeGripStyle.Show;
-            StartPosition = FormStartPosition.Manual;
-            Text = "AutoMapper";
-            _ToolStripMain.ResumeLayout(false);
-            _ToolStripMain.PerformLayout();
-            _PanelDetails.ResumeLayout(false);
-            _StatusStripMain.ResumeLayout(false);
-            _StatusStripMain.PerformLayout();
-            _PanelBase.ResumeLayout(false);
-            _ToolStripMaps.ResumeLayout(false);
-            _ToolStripMaps.PerformLayout();
-            FormClosing += new FormClosingEventHandler(MapForm_FormClosing);
-            KeyDown += new KeyEventHandler(GraphForm_KeyDown);
-            KeyUp += new KeyEventHandler(GraphForm_KeyUp);
-            Load += new EventHandler(GraphForm_Load);
-            Resize += new EventHandler(GraphForm_Resize);
-            Resize += new EventHandler(PanelBase_Resize);
-            VisibleChanged += new EventHandler(MapForm_VisibleChanged);
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1299, 612);
+            this.Controls.Add(this._PanelBase);
+            this.Controls.Add(this._PanelDetails);
+            this.Controls.Add(this._StatusStripMain);
+            this.Controls.Add(this._ToolStripMaps);
+            this.Controls.Add(this._ToolStripMain);
+            this.DoubleBuffered = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
+            this.Name = "MapForm";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.Text = "AutoMapper";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MapForm_FormClosing);
+            this.Load += new System.EventHandler(this.GraphForm_Load);
+            this.VisibleChanged += new System.EventHandler(this.MapForm_VisibleChanged);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GraphForm_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.GraphForm_KeyUp);
+            this.Resize += new System.EventHandler(this.PanelBase_Resize);
+            this._ToolStripMain.ResumeLayout(false);
+            this._ToolStripMain.PerformLayout();
+            this._PanelDetails.ResumeLayout(false);
+            this._StatusStripMain.ResumeLayout(false);
+            this._StatusStripMain.PerformLayout();
+            this._PanelBase.ResumeLayout(false);
+            this._ToolStripMaps.ResumeLayout(false);
+            this._ToolStripMaps.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         private ToolStrip _ToolStripMain;
@@ -653,8 +685,6 @@ namespace GenieClient.Mapper
                 }
             }
         }
-
-        private FlickerFreePanel _PanelMap;
 
         internal FlickerFreePanel PanelMap
         {
@@ -1479,6 +1509,7 @@ namespace GenieClient.Mapper
         }
 
         private ToolStripSeparator _ToolStripSeparator7;
+        public FlickerFreePanel _PanelMap;
 
         internal ToolStripSeparator ToolStripSeparator7
         {

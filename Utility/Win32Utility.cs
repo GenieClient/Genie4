@@ -19,7 +19,7 @@ namespace GenieClient
         private const int WM_SETREDRAW = 0xB;
         private const int EM_GETFIRSTVISIBLELINE = 0xCE;
         private const int EM_LINESCROLL = 0xB6;
-        private const int EM_GETLINECOUNT = 0xBA;
+        // private const int EM_GETLINECOUNT = 0xBA;
 
         private struct SCROLLINFO
         {

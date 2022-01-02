@@ -31,7 +31,7 @@ namespace GenieClient.Genie
                 }
             }
 
-            public new int Add(double dSeconds, string sAction)
+            public int Add(double dSeconds, string sAction)
             {
                 object argvalue = new EventItem(DateTime.Now.AddMilliseconds(Utility.EvalDoubleTime(dSeconds.ToString(), 0)), sAction);
                 Add(argvalue);

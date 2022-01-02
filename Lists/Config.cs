@@ -364,7 +364,9 @@ namespace GenieClient.Genie
                 oStreamWriter.Close();
                 return true;
             }
+            #pragma warning disable CS0168
             catch (Exception ex)
+            #pragma warning restore CS0168
             {
                 return false;
             }
@@ -530,7 +532,7 @@ namespace GenieClient.Genie
                                         break;
                                     }
                             }
-
+                            
                             ConfigChanged?.Invoke(ConfigFieldUpdated.Autolog);
                             break;
                         }

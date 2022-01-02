@@ -992,7 +992,9 @@ namespace GenieClient.Genie
                                                     string argsVariable3 = "$" + oArgs[1].ToString();
                                                     VariableChanged(argsVariable3);
                                                 }
+#pragma warning disable CS0168
                                                 catch (Exception ex)
+#pragma warning restore CS0168
                                                 {
                                                     EchoText("Invalid #math expression: " + Utility.ArrayToString(oArgs, 1));
                                                 }
@@ -2314,7 +2316,11 @@ namespace GenieClient.Genie
                                         }
 
                                     case "goto":
+                                    case "go":
+                                    case "g":
                                     case "walk":
+                                    case "walkto":
+                                    case "path":
                                         {
                                             EventMapperCommand?.Invoke(sRow.Replace("#", "#mapper "));
                                             break;
@@ -2322,6 +2328,7 @@ namespace GenieClient.Genie
 
                                     case "mapper":
                                     case "map":
+                                    case "m":
                                         {
                                             EventMapperCommand?.Invoke(sRow);
                                             break;
@@ -2568,7 +2575,9 @@ namespace GenieClient.Genie
                     objFile.Close();
                 }
             }
+#pragma warning disable CS0168
             catch (FileNotFoundException ex)
+#pragma warning restore CS0168
             {
                 EchoText("Topic does not exist.");
             }
@@ -2796,10 +2805,10 @@ namespace GenieClient.Genie
         private void ListSubstitutes(string sPattern)
         {
             EchoText(Constants.vbNewLine + "Active substitutes: " + Constants.vbNewLine);
-            bool bUsePattern = false;
+            // bool bUsePattern = false;
             if (sPattern.Length > 0)
             {
-                bUsePattern = true;
+                // bUsePattern = true;
                 EchoText("Filter: " + sPattern + Constants.vbNewLine);
             }
 
@@ -2835,10 +2844,10 @@ namespace GenieClient.Genie
         private void ListGags(string sPattern)
         {
             EchoText(Constants.vbNewLine + "Active gags: " + Constants.vbNewLine);
-            bool bUsePattern = false;
+            // bool bUsePattern = false;
             if (sPattern.Length > 0)
             {
-                bUsePattern = true;
+                // bUsePattern = true;
                 EchoText("Filter: " + sPattern + Constants.vbNewLine);
             }
 

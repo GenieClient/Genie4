@@ -112,7 +112,7 @@ namespace GenieClient
 
         private Bitmap ImageToGrayScale(Bitmap b)
         {
-            int iColor = 0;
+            // int iColor = 0;
             var oOutput = new Bitmap(b.Width, b.Height);
             for (int X = 0, loopTo = b.Width - 1; X <= loopTo; X++)
             {

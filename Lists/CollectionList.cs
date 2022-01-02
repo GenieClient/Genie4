@@ -19,7 +19,9 @@ namespace GenieClient.Genie.Collections
                 m_RWLock.EnterWriteLock();
                 return true;
             }
+#pragma warning disable CS0168
             catch (Exception ex)
+#pragma warning restore CS0168
             {
                 return false;
             }
@@ -32,7 +34,9 @@ namespace GenieClient.Genie.Collections
                 m_RWLock.EnterReadLock();
                 return true;
             }
+#pragma warning disable CS0168
             catch (Exception ex)
+#pragma warning restore CS0168
             {
                 return false;
             }
@@ -45,7 +49,9 @@ namespace GenieClient.Genie.Collections
                 m_RWLock.ExitWriteLock();
                 return true;
             }
+            #pragma warning disable CS0168
             catch (Exception ex)
+            #pragma warning restore CS0168
             {
                 return false;
             }
@@ -58,7 +64,9 @@ namespace GenieClient.Genie.Collections
                 m_RWLock.ExitReadLock();
                 return true;
             }
+            #pragma warning disable CS0168
             catch (Exception ex)
+            #pragma warning restore CS0168
             {
                 return false;
             }

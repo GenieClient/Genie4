@@ -89,7 +89,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public new bool Add(string sKey, bool bHighlightWholeRow, string sColorName, bool bCaseSensitive = true, string SoundFile = "", string ClassName = "", bool IsActive = true)
+        public bool Add(string sKey, bool bHighlightWholeRow, string sColorName, bool bCaseSensitive = true, string SoundFile = "", string ClassName = "", bool IsActive = true)
         {
             if (sKey.Length == 0)
             {
@@ -126,7 +126,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public new int Remove(string sKey)
+        public int Remove(string sKey)
         {
             if (base.ContainsKey(sKey) == true)
             {

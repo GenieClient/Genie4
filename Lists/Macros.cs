@@ -20,7 +20,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public new bool Add(string sKey, string sMacro)
+        public bool Add(string sKey, string sMacro)
         {
             Keys oKey;
             oKey = KeyCode.StringToKey(sKey);
@@ -44,7 +44,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public new int Remove(string sKey)
+        public int Remove(string sKey)
         {
             Keys oKey;
             oKey = KeyCode.StringToKey(sKey);
@@ -98,7 +98,9 @@ namespace GenieClient.Genie
                     return false;
                 }
             }
+            #pragma warning disable CS0168
             catch (Exception Err)
+            #pragma warning restore CS0168
             {
                 return false;
             }
@@ -159,7 +161,9 @@ namespace GenieClient.Genie
 
                 return true;
             }
+            #pragma warning disable CS0168
             catch (Exception ex)
+            #pragma warning restore CS0168
             {
                 return false;
             }

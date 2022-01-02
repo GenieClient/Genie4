@@ -183,7 +183,7 @@ namespace GenieClient.Mapper
 
         private ArrayList m_Movement = new ArrayList();
         private bool m_RoomUpdated = false;
-        private bool m_AddDupeRooms = true;
+        // private bool m_AddDupeRooms = true;
         private bool m_RisingMists = false;
 
         public void VariableChanged(string var)
@@ -274,7 +274,9 @@ namespace GenieClient.Mapper
                     }
                 }
             }
+            #pragma warning disable CS0168
             catch (Exception ex)
+            #pragma warning restore CS0168
             {
                 EchoText("[" + Name + "] Invalid maps in genie map directory.");
             }
@@ -1023,6 +1025,7 @@ namespace GenieClient.Mapper
 
                                 if (m_Form.LoadXML(sArg) == true)
                                 {
+                                    EchoText("[" + Name + "] Successfully loaded map: " + sArg, true);
                                     UpdateCurrentRoom(true);
                                     return;
                                 }
@@ -1039,20 +1042,28 @@ namespace GenieClient.Mapper
                         {
                             if (sArg.Length > 0)
                             {
+                                // Filename is specified:
                                 if (sArg.Contains(@"\") == false)
                                 {
                                     sArg = LocalDirectory.Path + @"\Maps\" + sArg;
                                 }
-
                                 if (sArg.ToLower().EndsWith(".xml") == false)
                                 {
                                     sArg += ".xml";
                                 }
-
-                                m_Form.SaveXML(sArg);
-                                EchoText("[" + Name + "] Map saved: " + sArg, true);
+                                if (m_Form.SaveXML(sArg) == false)
+                                {
+                                    EchoText("[" + Name + "] Failed to save map: " + sArg, true);
+                                }
+                                else
+                                {
+                                    EchoText("[" + Name + "] Map saved: " + sArg, true);
+                                }
+                                break;
                             }
-                            else if (m_Form.SaveXML() == false)
+                            
+                            // No file name specified, attempt to use current file name:
+                            if (m_Form.SaveXML() == false)
                             {
                                 EchoText("[" + Name + "] Failed to save map: " + m_Form.MapFile, true);
                             }
@@ -1060,18 +1071,19 @@ namespace GenieClient.Mapper
                             {
                                 EchoText("[" + Name + "] Map saved: " + m_Form.MapFile, true);
                             }
-
                             break;
                         }
 
                     case "clear":
                         {
+                            EchoText("[" + Name + "] Clearing map.", true);
                             m_Form.ClearMap();
                             break;
                         }
 
                     case "reset":
                         {
+                            EchoText("[" + Name + "] Resetting.", true);
                             m_LastNode = null;
                             m_Form.ClearMap();
                             UpdateCurrentRoom();
@@ -1081,7 +1093,13 @@ namespace GenieClient.Mapper
                     case "record":
                         {
                             if (sArg.Length > 0)
-                                m_Form.SetRecordToggle(StringToBoolean(sArg));
+                            {
+                                bool recordSetting = StringToBoolean(sArg);
+                                EchoText("[" + Name + "] Record " + recordSetting, true);
+                                m_Form.SetRecordToggle(recordSetting);
+                                break;
+                            }
+                            EchoText("[" + Name + "] Record - need to specify true or false.", true);
                             break;
                         }
 
@@ -1095,15 +1113,26 @@ namespace GenieClient.Mapper
 
                     case "snap":
                         {
-                            if (sArg.Length > 0)
-                                m_Form.SetSnapToggle(StringToBoolean(sArg));
+                            if (sArg.Length > 0) {
+                                bool snapSetting = StringToBoolean(sArg);
+                                EchoText("[" + Name + "] Snap to grid - " + snapSetting, true);
+                                m_Form.SetSnapToggle(snapSetting);
+                                break;
+                            }
+                            EchoText("[" + Name + "] Snap - need to specify true or false.", true);
                             break;
                         }
 
                     case "allowdupes":
                         {
                             if (sArg.Length > 0)
-                                m_Form.SetAllowDuplicatesToggle(StringToBoolean(sArg));
+                            {
+                                bool dupesSetting = StringToBoolean(sArg);
+                                EchoText("[" + Name + "] Allowdupes - " + dupesSetting, true);
+                                m_Form.SetAllowDuplicatesToggle(dupesSetting);
+                                break;
+                            }
+                            EchoText("[" + Name + "] Allowdupes - need to specify true or false.", true);
                             break;
                         }
 
@@ -1119,7 +1148,6 @@ namespace GenieClient.Mapper
                             {
                                 m_Form.Close();
                             }
-
                             break;
                         }
 
@@ -1133,13 +1161,14 @@ namespace GenieClient.Mapper
                             {
                                 m_DebugEnabled = !m_DebugEnabled;
                             }
-
                             EchoText("[" + Name + "] Debug = " + m_DebugEnabled.ToString(), true);
                             break;
                         }
 
                     case "walk":
                     case "walkto":
+                    case "g":
+                    case "go":
                     case "goto":
                         {
                             if (sArg.Length > 0)
@@ -1147,11 +1176,11 @@ namespace GenieClient.Mapper
                                 int iNodeID = 0;
                                 if (sArg.Length > 3)
                                 {
-                                }
                                 // Other zone
                                 // - Find the destination map
                                 // - Find what path it needs to take trough the different zones
                                 // Integer.TryParse(sArg.Substring(0, 3), iNodeID)
+                                }
                                 else
                                 {
                                     int.TryParse(sArg, out iNodeID);
@@ -1178,19 +1207,25 @@ namespace GenieClient.Mapper
                                     var n = m_Nodes.Find(iNodeID);
                                     if (!Information.IsNothing(n))
                                     {
+                                        EchoText("#goto " + sArg, true);
+                                        SendText("#parse DESTINATION FOUND");
                                         WalkToNode(n);
                                     }
                                     else
                                     {
-                                        EchoText("[" + Name + "] Destination ID #" + iNodeID.ToString() + " not found.", true);
+                                        EchoText("[" + Name + "] Destination ID #" + iNodeID.ToString() + " not found - your current location is unknown.", true);
                                         SendText("#parse DESTINATION NOT FOUND");
                                     }
                                 }
                                 else
                                 {
-                                    EchoText("[" + Name + "] Destination ID not found.", true);
+                                    EchoText("[" + Name + "] Destination ID \"" + sArg + "\" not found.", true);
                                     SendText("#parse DESTINATION NOT FOUND");
                                 }
+                            }
+                            else
+                            {
+                                EchoText("[" + Name + "] Goto - please specify a room id to travel to.", true);
                             }
 
                             break;
@@ -1214,7 +1249,10 @@ namespace GenieClient.Mapper
 
                                 EchoRoomsOnDisk(oNode);
                             }
-
+                            else
+                            {
+                                EchoText("[" + Name + "] Locate - please specify room title or title|description to locate.", true);
+                            }
                             break;
                         }
 
@@ -1222,13 +1260,16 @@ namespace GenieClient.Mapper
                         {
                             if (sArg.Contains("|"))
                             {
-                                m_Form.SelectNodes(sArg.Split('|')[0], sArg.Split('|')[1]);
+                                // selecting multiple nodes doesn't seem to work
+                                string[] splitArgs = sArg.Split('|');
+                                m_Form.SelectNodes(splitArgs[0], splitArgs[1]);
+                                EchoText("[" + Name + "] Selected nodes " + splitArgs[0] + " and " + splitArgs[1]  + ".", true);
                             }
                             else
                             {
+                                EchoText("[" + Name + "] Selected node " + sArg + ".", true);
                                 m_Form.SelectNodes(sArg);
                             }
-
                             break;
                         }
 
@@ -1236,14 +1277,20 @@ namespace GenieClient.Mapper
                         {
                             if (sArg.Length == 0)
                             {
+                                // delete the room the player is in:
                                 if (!Information.IsNothing(m_LastNode))
                                 {
                                     m_Form.EraseRoom(m_LastNode);
+                                    EchoText("[" + Name + "] Deleting current room (" + m_LastNode.ID + ")", true);
+                                } else
+                                {
+                                    EchoText("[" + Name + "] Delete - can't delete, current room is unknown.", true);
                                 }
                             }
                             else
                             {
-                                int iNodeID = 0;
+                                // delete the room the player specifies:
+                                int iNodeID;
                                 int.TryParse(sArg, out iNodeID);
                                 if (iNodeID > 0)
                                 {
@@ -1251,10 +1298,17 @@ namespace GenieClient.Mapper
                                     if (!Information.IsNothing(n))
                                     {
                                         m_Form.EraseRoom(n);
+                                        EchoText("[" + Name + "] Delete - removed room \"" + iNodeID + "\".", true);
                                     }
+                                    else
+                                    {
+                                        EchoText("[" + Name + "] Delete - could not locate room \"" + sArg + "\".", true);
+                                    }
+                                } else
+                                {
+                                    EchoText("[" + Name + "] Delete - invalid room specified \"" + sArg + "\"", true);
                                 }
                             }
-
                             break;
                         }
 
@@ -1263,28 +1317,30 @@ namespace GenieClient.Mapper
                     case "labels":
                     case "notes":
                         {
-                            // Label current room
-                            if (!Information.IsNothing(m_LastNode))
+                            if (sArg.Length == 0)
                             {
-                                if (sArg.Length > 0)
+                                // Show all labels in map zone (doesn't matter if player is located or not)
+                                EchoText("[" + Name + "] Listing current zone labels:", true);
+                                SendText("#parse [" + Name + "] Listing current zone labels:");
+                                foreach (Node n in m_Nodes)
                                 {
-                                    EchoText("[" + Name + "] Label added for current room: " + sArg, true);
-                                    m_LastNode.Note = Conversions.ToString(Interaction.IIf(m_LastNode.Note.Length > 0, m_LastNode.Note + "|", "") + sArg);
-                                }
-                                else
-                                {
-                                    // Show all labels in current zone
-                                    EchoText("[" + Name + "] Listing current zone labels:", true);
-                                    foreach (Node n in m_Nodes)
+                                    if (n.Note.Length > 0)
                                     {
-                                        if (n.Note.Length > 0)
-                                        {
-                                            EchoText(Constants.vbTab + n.Note + " (" + n.ID.ToString() + ")", true);
-                                        }
+                                        EchoText(Constants.vbTab + n.Note + " (" + n.ID.ToString() + ")", true);
+                                        SendText("#parse " + Constants.vbTab + n.Note + " (" + n.ID.ToString() + ")");
                                     }
                                 }
+                                break;
                             }
-
+                            // Label current room:
+                            if (!Information.IsNothing(m_LastNode))
+                            {
+                                EchoText("[" + Name + "] Label added for current room: " + sArg, true);
+                                m_LastNode.Note = Conversions.ToString(Interaction.IIf(m_LastNode.Note.Length > 0, m_LastNode.Note + "|", "") + sArg);   
+                            } else
+                            {
+                                EchoText("[" + Name + "] Current location unknown, cannot add note.", true);
+                            }
                             break;
                         }
 
@@ -1302,6 +1358,9 @@ namespace GenieClient.Mapper
                                         m_Form.UpdateGraph(m_LastNode, m_Nodes, m_eLastMovement);
                                     }
                                 }
+                            } else
+                            {
+                                EchoText("[" + Name + "] Please specify a color (ex: green).", true);
                             }
 
                             break;
@@ -1356,8 +1415,10 @@ namespace GenieClient.Mapper
                             {
                                 int.TryParse(sArg, out m_TimeOutMS);
                                 EchoText("[" + Name + "] Time out set to (milliseconds): " + m_TimeOutMS.ToString(), true);
+                            } else
+                            {
+                                EchoText("[" + Name + "] Please specify timeout in milliseconds.", true);
                             }
-
                             break;
                         }
 
@@ -1365,7 +1426,7 @@ namespace GenieClient.Mapper
                         {
                             if (sArg.Length > 0)
                             {
-                                int ID = 0;
+                                int ID;
                                 int.TryParse(sArg, out ID);
                                 if (ID > 0)
                                 {
@@ -1380,10 +1441,18 @@ namespace GenieClient.Mapper
                                         }
 
                                         m_LastNode = oNode;
+                                    } else
+                                    {
+                                        EchoText("[" + Name + "] Room id " + ID + " not found on this map.", true);
                                     }
+                                } else
+                                {
+                                    EchoText("[" + Name + "] Invalid roomid specified - please enter a number.", true);
                                 }
+                            } else
+                            {
+                                EchoText("[" + Name + "] Please specify a roomid.", true);
                             }
-
                             break;
                         }
 
@@ -1391,7 +1460,7 @@ namespace GenieClient.Mapper
                         {
                             if (sArg.Length > 0)
                             {
-                                int ID = 0;
+                                int ID;
                                 int.TryParse(sArg, out ID);
                                 if (ID > 0)
                                 {
@@ -1403,6 +1472,124 @@ namespace GenieClient.Mapper
                                 }
                             }
 
+                            break;
+                        }
+                    case "help":
+                        {
+                            EchoText("", true);
+                            EchoText("AutoMapper commands", true);
+                            EchoText("All commands start with #mapper (or #m), some can be used without prefix, like #goto.");
+                            EchoText("", true);
+
+                            EchoText("#allowdupes - Toggles mapper to allow or disallow duplicate room descriptions when recording.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper allowdupes true", true);
+                            EchoText(Constants.vbTab + "Example: #mapper allowdupes false", true);
+                            EchoText("", true);
+
+                            EchoText("#clear - Clears the current map of all rooms.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper clear", true);
+                            EchoText("", true);
+
+                            EchoText("#color - sets the color of the current room", true);
+                            EchoText(Constants.vbTab + "Example: #mapper color green", true);
+                            EchoText("", true);
+
+                            EchoText("#debug - Displays setting or toggles mapper debug mode to display additional info.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper debug", true);
+                            EchoText(Constants.vbTab + "Example: #mapper debug true", true);
+                            EchoText("", true);
+
+                            EchoText("#delete - Deletes the current room or a specified room.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper delete - removes the current room from the map.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper delete 1 - removes room 1 from the map.", true);
+                            EchoText("", true);
+
+                            EchoText("#find / #locate - Searches all maps for a specific room. Specify name or name|description.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper find First Provincial Bank, Lobby", true);
+                            EchoText(Constants.vbTab + "Example: #mapper find First Provincial Bank, Lobby|Marble tiled floors covered with heavy rugs and walls of polished jasper that gleam a cool blue mark this bank as solid and secure (and expensive).  An official money-changing booth is to one side and a row of tellers windows faces you.  Several guards, armed and armored, stand ready for trouble of any sort.  Near the tellers stands a table of fine wood for those who need to do some writing.", true);
+                            EchoText("", true);
+
+                            EchoText("#goto / #go / #g / #walk / #walkto - Used to travel to another room on the current map.", true);
+                            EchoText(Constants.vbTab + "Example: #goto 1 ", true);
+                            EchoText("", true);
+
+                            EchoText("#hide - Hides the automapper window.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper hide", true);
+                            EchoText(Constants.vbTab + "See also: #show", true);
+                            EchoText("", true);
+
+                            EchoText("#id / #zoneid - displays or sets the current zone id.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper zoneid - shows the current id", true);
+                            EchoText(Constants.vbTab + "Example: #mapper zoneid 1 - sets the id to 1", true);
+                            EchoText("", true);
+
+                            EchoText("#load - Attempts to load a map from disk.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper load Map1_Crossing", true);
+                            EchoText(Constants.vbTab + "See also: #save for path options", true);
+                            EchoText("", true);
+
+                            EchoText("#lock / #locknodes - Toggles the room lock setting when recording.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper lock true", true);
+                            EchoText(Constants.vbTab + "Example: #mapper lock false", true);
+                            EchoText(Constants.vbTab + "Note: locking can prevent room shifts when rooms overlap.", true);
+                            EchoText("", true);
+
+                            EchoText("#name / #zonename - displays or sets the current zone name.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper zonename - shows the current name", true);
+                            EchoText(Constants.vbTab + "Example: #mapper zonename The Crossing - sets the name", true);
+                            EchoText("", true);
+
+                            EchoText("#note / #label / #notes / #labels - Displays all zone notes or adds a note to the current room.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper notes - displays all notes", true);
+                            EchoText(Constants.vbTab + "Example: #mapper note hunting room - adds note \"hunting room\" to current room.", true);
+                            EchoText("", true);
+
+                            EchoText("#path - Used to determine the path to another room without initiating travel.", true);
+                            EchoText(Constants.vbTab + "Example: #path 1 ", true);
+                            EchoText(Constants.vbTab + "Will also set the 'mapperpath' global variable.", true);
+                            EchoText("", true);
+
+                            EchoText("#record - Toggles map 'recording' mode where new rooms are added as you move.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper record true", true);
+                            EchoText(Constants.vbTab + "Example: #mapper record false", true);
+                            EchoText("", true);
+
+                            EchoText("#reset - Reloads all maps from disk and attempts to located the player.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper reset", true);
+                            EchoText("", true);
+
+                            EchoText("#roomid - Sets the current roomid", true);
+                            EchoText(Constants.vbTab + "Example: #mapper roomid 1 ", true);
+                            EchoText("", true);
+
+                            EchoText("#save - Saves the current map to disk.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper save - uses current file name", true);
+                            EchoText(Constants.vbTab + "Example: #mapper save the_crossing - saves to /Maps/the_crossing.xml", true);
+                            EchoText(Constants.vbTab + "Example: #mapper save /Mazes/the_maze.xml - saves to /Mazes/the_maze.xml", true);
+                            EchoText("", true);
+
+                            EchoText("#select - Highlights & selects the specified roomid on the map.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper select 1", true);
+                            EchoText("", true);
+
+                            EchoText("#show - Shows the automapper window.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper show", true);
+                            EchoText(Constants.vbTab + "See also: #hide", true);
+                            EchoText("", true);
+
+                            EchoText("#snap - Toggles mapper snap-to-grid feature when dragging rooms.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper snap true", true);
+                            EchoText(Constants.vbTab + "Example: #mapper snap false", true);
+                            EchoText("", true);
+
+                            EchoText("#timeout - Configures automapper timeout in ms.", true);
+                            EchoText(Constants.vbTab + "Example: #mapper timeout 1500 (default)", true);
+                            EchoText("", true);
+                            break;
+                        }
+                    default:
+                        {
+                            EchoText("[" + Name + "] Unknown option \"" + switchExpr + "\".", true);
                             break;
                         }
                 }
@@ -1422,8 +1609,8 @@ namespace GenieClient.Mapper
                 m_Form.UpdateMap();
                 if (m_Nodes.PathText.Length > 0)
                 {
-                    if (m_DebugEnabled == true)
-                        EchoText("[" + Name + "] Mapper path: " + m_Nodes.PathVariableText);
+                    EchoText("[" + Name + "] mapperpath: " + m_Nodes.PathVariableText, true);
+                    SendText("#parse [" + Name + "] mapperpath: " + m_Nodes.PathVariableText);
                     set_GlobalVariable("mapperpath", m_Nodes.PathVariableText);
                 }
             }

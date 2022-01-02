@@ -38,7 +38,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public new bool Add(string sKey, string sColorName)
+        public bool Add(string sKey, string sColorName)
         {
             if (sKey.Length == 0)
             {
@@ -75,7 +75,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public new int Remove(string sKey)
+        public int Remove(string sKey)
         {
             if (base.ContainsKey(sKey) == true)
             {
@@ -193,7 +193,9 @@ namespace GenieClient.Genie
 
                 return true;
             }
+            #pragma warning disable CS0168
             catch (Exception ex)
+            #pragma warning restore CS0168
             {
                 return false;
             }

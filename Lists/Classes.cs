@@ -84,7 +84,7 @@ namespace GenieClient.Genie
             Add("default", argvalue);
         }
 
-        public new bool Add(string sKey, string sValue)
+        public bool Add(string sKey, string sValue)
         {
             bool bActive = false;
             var switchExpr = sValue.ToLower();
@@ -120,7 +120,7 @@ namespace GenieClient.Genie
             return true;
         }
 
-        public new int Remove(string sKey)
+        public int Remove(string sKey)
         {
             if (base.ContainsKey(sKey) == true)
             {
@@ -171,7 +171,9 @@ namespace GenieClient.Genie
                     return false;
                 }
             }
+            #pragma warning disable CS0168
             catch (Exception Err)
+            #pragma warning restore CS0168
             {
                 return false;
             }
@@ -226,7 +228,9 @@ namespace GenieClient.Genie
 
                 return true;
             }
+            #pragma warning disable CS0168
             catch (Exception ex)
+            #pragma warning restore CS0168
             {
                 return false;
             }

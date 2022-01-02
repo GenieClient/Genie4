@@ -27,7 +27,7 @@ namespace GenieClient.Genie
                 }
             }
 
-            public new int Add(double dDelay, bool bWaitForRoundtime, string sAction)
+            public int Add(double dDelay, bool bWaitForRoundtime, string sAction)
             {
                 object argvalue = new EventItem(dDelay, bWaitForRoundtime, sAction);
                 Add(argvalue);

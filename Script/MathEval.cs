@@ -56,7 +56,7 @@ namespace GenieClient.Genie.Script
 
         private Collection m_tokens;
         private int[,] m_State;
-        private string[] m_KeyWords;
+        // private string[] m_KeyWords;
         private string m_colstring;
         private const string ALPHA = "_ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         private const string DIGITS = "#0123456789";
@@ -324,8 +324,6 @@ namespace GenieClient.Genie.Script
                         {
                             return Math.Round(Conversions.ToDouble(args[1]));
                         }
-
-                        break;
                     }
 
                 case "ln":
@@ -702,7 +700,6 @@ namespace GenieClient.Genie.Script
             else
             {
                 throw new Exception("Invalid expression.");
-                return 0;
             }
 
             double val;
@@ -745,7 +742,6 @@ namespace GenieClient.Genie.Script
                     default:
                         {
                             throw new Exception("Invalid expression.");
-                            break;
                         }
                 }
             }
@@ -762,7 +758,6 @@ namespace GenieClient.Genie.Script
             else
             {
                 throw new Exception("Invalid expression.");
-                return null;
             }
 
             if ((symbol.Token ?? "") == "(")
@@ -779,7 +774,6 @@ namespace GenieClient.Genie.Script
                     else
                     {
                         throw new Exception("Invalid expression.");
-                        return null;
                     }
 
                     symbol = (ClassSymbol)tokens.Dequeue();
@@ -790,7 +784,6 @@ namespace GenieClient.Genie.Script
             else
             {
                 throw new Exception("Invalid expression.");
-                return null;
             }
         }
         /* TODO ERROR: Skipped EndRegionDirectiveTrivia */

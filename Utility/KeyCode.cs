@@ -178,7 +178,9 @@ namespace GenieClient.Genie
             {
                 return (System.Windows.Forms.Keys)Conversions.ToInteger(new KeysConverter().ConvertFromString(sHotkey));
             }
+            #pragma warning disable CS0168
             catch (Exception ex) // Unfortunately there is no specific error for convert errors.
+            #pragma warning restore CS0168
             {
                 return default;
             }

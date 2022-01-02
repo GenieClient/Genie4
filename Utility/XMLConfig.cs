@@ -102,128 +102,83 @@ namespace GenieClient.Genie
         public string GetValue(string path, string attribute, string DefaultValue)
         {
             string ro = GetValueObject(path, attribute);
-            try
+            if (!Information.IsNothing(ro))
             {
-                if (!Information.IsNothing(ro))
+                try
                 {
+                    // can this throw?
                     return Convert.ToString(ro);
                 }
-                else
-                {
-                    return DefaultValue;
-                }
+                catch { }
             }
-            catch
-            {
-                return DefaultValue;
-            }
+            return DefaultValue;
         }
 
         public bool GetValue(string path, string attribute, bool DefaultValue)
         {
             string ro = GetValueObject(path, attribute);
-            try
+            if (ro != null && ro.Length > 0 && (ro.Equals("True") || ro.Equals("False")))
             {
-                if (ro.Length > 0)
-                {
-                    if (ro.Equals("True") || ro.Equals("False"))
-                    {
-                        return Convert.ToBoolean(ro);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return DefaultValue;
-                }
+                return Convert.ToBoolean(ro);
             }
-            catch
-            {
-                return DefaultValue;
-            }
+            return DefaultValue;
         }
 
         public int GetValue(string path, string attribute, int DefaultValue)
         {
             string ro = GetValueObject(path, attribute);
-            try
+            if (ro != null && ro.Length > 0)
             {
-                if (ro.Length > 0)
+                try
                 {
                     return Convert.ToInt32(ro);
                 }
-                else
-                {
-                    return DefaultValue;
-                }
+                catch { }
             }
-            catch
-            {
-                return DefaultValue;
-            }
+            // If value doesn't exist or is invalid, return default:
+            return DefaultValue;
         }
 
         public double GetValue(string path, string attribute, double DefaultValue)
         {
             string ro = GetValueObject(path, attribute);
-            try
+            if (ro != null && ro.Length > 0)
             {
-                if (ro.Length > 0)
+                try
                 {
                     return Convert.ToDouble(ro);
                 }
-                else
-                {
-                    return DefaultValue;
-                }
+                catch { }
             }
-            catch
-            {
-                return DefaultValue;
-            }
+            return DefaultValue;
         }
 
         public float GetValueSingle(string path, string attribute, float DefaultValue)
         {
             string ro = GetValueObject(path, attribute);
-            try
+            if (ro != null && ro.Length > 0)
             {
-                if (ro.Length > 0)
+                try
                 {
                     return Convert.ToSingle(ro);
                 }
-                else
-                {
-                    return DefaultValue;
-                }
+                catch { }
             }
-            catch
-            {
-                return DefaultValue;
-            }
+            return DefaultValue;
         }
 
         public DateTime GetValue(string path, string attribute, DateTime DefaultValue)
         {
             string ro = GetValueObject(path, attribute);
-            try
+            if (ro != null && ro.Length > 0)
             {
-                if (ro.Length > 0)
+                try
                 {
                     return Convert.ToDateTime(ro);
                 }
-                else
-                {
-                    return DefaultValue;
-                }
+                catch { }
             }
-            catch
-            {
-                return DefaultValue;
-            }
+            return DefaultValue;
         }
 
         private string GetValueObject(string path, string attribute)
@@ -250,20 +205,13 @@ namespace GenieClient.Genie
                 if (!(xmlNode is null))
                 {
                     XmlElement targetElem = (XmlElement)xmlNode.SelectSingleNode(key);
-                    if (!(targetElem is null))
-                    {
-                        if (targetElem.HasAttribute(attribute) == false)
-                            return null;
+                    if (!(targetElem is null) && targetElem.HasAttribute(attribute) != false)
                         return targetElem.GetAttribute(attribute);
-                    }
                 }
-
-                return null;
             }
             catch
-            {
-                return null;
-            }
+            { }
+            return null;
         }
 
         public bool SetValue(string path, string attribute, string val)

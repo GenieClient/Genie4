@@ -7,7 +7,7 @@ namespace GenieClient.Genie
 {
     public class Aliases : Collections.SortedList
     {
-        public new bool Add(string sKey, string sAlias)
+        public bool Add(string sKey, string sAlias)
         {
             if (base.ContainsKey(sKey) == true)
             {
@@ -22,7 +22,7 @@ namespace GenieClient.Genie
             return true;
         }
 
-        public new int Remove(string sKey)
+        public int Remove(string sKey)
         {
             if (base.ContainsKey(sKey) == true)
             {
@@ -70,7 +70,9 @@ namespace GenieClient.Genie
                     return false;
                 }
             }
+            #pragma warning disable CS0168
             catch (Exception Err)
+            #pragma warning restore CS0168
             {
                 return false;
             }
@@ -125,7 +127,9 @@ namespace GenieClient.Genie
 
                 return true;
             }
+            #pragma warning disable CS0168
             catch (Exception ex)
+            #pragma warning restore CS0168
             {
                 return false;
             }

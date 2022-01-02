@@ -9,7 +9,7 @@ namespace GenieClient.Genie.Collections
         private ReaderWriterLockSlim m_oRWLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
         private const int m_iDefaultTimeout = 250;
 
-        public bool AcquireWriterLock()
+public bool AcquireWriterLock()
         {
             try
             {
@@ -20,7 +20,9 @@ namespace GenieClient.Genie.Collections
                 m_oRWLock.EnterWriteLock();
                 return true;
             }
+#pragma warning disable CS0168
             catch (Exception ex)
+#pragma warning restore CS0168
             {
                 return false;
             }
@@ -33,7 +35,9 @@ namespace GenieClient.Genie.Collections
                 m_oRWLock.EnterReadLock();
                 return true;
             }
+#pragma warning disable CS0168
             catch (Exception ex)
+#pragma warning restore CS0168
             {
                 return false;
             }
@@ -45,7 +49,9 @@ namespace GenieClient.Genie.Collections
                 m_oRWLock.ExitWriteLock();
                 return true;
             }
+            #pragma warning disable CS0168
             catch (Exception ex)
+            #pragma warning restore CS0168
             {
                 return false;
             }
@@ -58,7 +64,9 @@ namespace GenieClient.Genie.Collections
                 m_oRWLock.ExitReadLock();
                 return true;
             }
+            #pragma warning disable CS0168
             catch (Exception ex)
+            #pragma warning restore CS0168
             {
                 return false;
             }
@@ -163,12 +171,12 @@ namespace GenieClient.Genie.Collections
             }
         }
 
-        public new object get_Item(int index)
+        public object get_Item(int index)
         {
             return base[index];
         }
 
-        public new void set_Item(int index, object value)
+        public void set_Item(int index, object value)
         {
             if (AcquireWriterLock())
             {

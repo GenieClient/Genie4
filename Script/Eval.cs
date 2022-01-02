@@ -457,7 +457,6 @@ namespace GenieClient.Genie.Script
             if (iEnd >= oSections.Count | iStart < 0)
             {
                 throw new Exception("Invalid argument to ParseSection()");
-                return;
             }
 
             if (iStart >= 2 && ((Sections)oSections[iStart - 2]).BlockType == ParseType.FunctionType)
@@ -848,7 +847,6 @@ namespace GenieClient.Genie.Script
             if (iEnd >= oSections.Count | iStart < 0)
             {
                 throw new Exception("Invalid argument to ParseFunction()");
-                return;
             }
 
             ArrayList args;
@@ -1186,7 +1184,6 @@ namespace GenieClient.Genie.Script
                 default:
                     {
                         throw new Exception("Invalid function name.");
-                        break;
                     }
             }
         }
@@ -1219,7 +1216,9 @@ namespace GenieClient.Genie.Script
                     return false;
                 }
             }
+            #pragma warning disable CS0168
             catch (Exception ex)
+            #pragma warning restore CS0168
             {
                 return false;
             }

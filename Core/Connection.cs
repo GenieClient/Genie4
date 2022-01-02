@@ -269,7 +269,7 @@ namespace GenieClient.Genie
                 PrintSocketError("Connection failure", ex.ErrorCode);
             }
         }
-
+        
         private void SendCallback(IAsyncResult ar)
         {
             try

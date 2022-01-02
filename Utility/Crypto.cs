@@ -200,7 +200,7 @@ namespace GenieClient
 
         public static bool DecryptString()
         {
-            byte[] encText = null;
+            // byte[] encText = null;
             byte[] clearText = null;
             try
             {
@@ -232,7 +232,9 @@ namespace GenieClient
                 fs.Dispose();
                 File.Delete(Target);
             }
+            #pragma warning disable CS0168
             catch (Exception ex)
+            #pragma warning restore CS0168
             {
                 _exception = new CryptographicException(ERR_FILE_WRITE);
                 return false;
@@ -244,7 +246,9 @@ namespace GenieClient
             {
                 inStream = File.ReadAllBytes(Filename);
             }
+            #pragma warning disable CS0168
             catch (Exception ex)
+            #pragma warning restore CS0168
             {
                 _exception = new CryptographicException(ERR_FILE_READ);
                 return false;
@@ -296,7 +300,9 @@ namespace GenieClient
                 fs.Dispose();
                 File.Delete(Target);
             }
+            #pragma warning disable CS0168
             catch (Exception ex)
+            #pragma warning restore CS0168
             {
                 _exception = new CryptographicException(ERR_FILE_WRITE);
                 return false;
@@ -308,7 +314,9 @@ namespace GenieClient
             {
                 inStream = File.ReadAllBytes(Filename);
             }
+            #pragma warning disable CS0168
             catch (Exception ex)
+            #pragma warning restore CS0168
             {
                 _exception = new CryptographicException(ERR_FILE_READ);
                 return false;
@@ -492,7 +500,6 @@ namespace GenieClient
                     default:
                         {
                             throw new CryptographicException(ERR_INVALID_PROVIDER);
-                            break;
                         }
                 }
 
@@ -594,7 +601,6 @@ namespace GenieClient
                     default:
                         {
                             throw new CryptographicException(ERR_INVALID_PROVIDER);
-                            break;
                         }
                 }
 
@@ -838,7 +844,6 @@ namespace GenieClient
             if (!(maxBytes % RSA_DECRYPTBLOCKSIZE).Equals(0))
             {
                 throw new CryptographicException("Encrypted text is an invalid length");
-                return null;
             }
 
             // Calculate the number of blocks we will have to work on
@@ -985,7 +990,6 @@ namespace GenieClient
             else
             {
                 throw new IOException("Specified file does not exist");
-                return null;
             }
         }
         /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
