@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
@@ -36,12 +37,20 @@ namespace GenieClient.My
             {
             }
 
-            string jint = "GenieClient.Libs.Jint.dll";
-            string antlr3 = "GenieClient.Libs.Antlr3.Runtime.dll";
-            string interfaces = "GenieClient.Libs.Interfaces.dll";
-            EmbeddedAssembly.Load(jint, "Jint.dll");
-            EmbeddedAssembly.Load(antlr3, "Antlr3.Runtime.dll");
-            EmbeddedAssembly.Load(interfaces, "Interfaces.dll");
+            Dictionary<string, string> embeddedAssemblies = new Dictionary<string, string>();
+            
+            //3rd party assemblies
+            embeddedAssemblies.Add("GenieClient.Libs.Jint.dll", "Jint.dll");
+            embeddedAssemblies.Add("GenieClient.Libs.Antlr3.Runtime.dll", "Antlr3.Runtime.dll");
+            embeddedAssemblies.Add("GenieClient.Libs.Interfaces.dll", "Interfaces.dll");
+            embeddedAssemblies.Add("GenieClient.Libs.lua51.dll", "lua51.dll");
+            embeddedAssemblies.Add("GenieClient.Libs.LuaInterfaces.dll", "LuaInterface.dll");
+
+            foreach (KeyValuePair<string, string> embeddedAssembly in embeddedAssemblies)
+            {
+                EmbeddedAssembly.Load(embeddedAssembly.Key, embeddedAssembly.Value);
+            }
+
 
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
