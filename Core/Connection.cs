@@ -215,7 +215,7 @@ namespace GenieClient.Genie
 
                 // Complete the connection
                 s.EndDisconnect(ar);
-                ParseData(Constants.vbNewLine); // Show lines not yet sent out
+                ParseData(System.Environment.NewLine); // Show lines not yet sent out
                 PrintText(Utility.GetTimeStamp() + " Connection closed.");
                 EventDisconnected?.Invoke();
             }
@@ -354,7 +354,7 @@ namespace GenieClient.Genie
                 if (Conversions.ToString(c) == Constants.vbCr)
                 {
                     m_RowBuffer.Append(m_ParseBuffer);
-                    m_RowBuffer.Append(Constants.vbNewLine);
+                    m_RowBuffer.Append(System.Environment.NewLine);
                     ParseRow(m_RowBuffer); // Event for parse row
                     m_RowBuffer.Clear();
                     m_ParseBuffer.Clear();
@@ -389,13 +389,13 @@ namespace GenieClient.Genie
 
         private void PrintText(string sText)
         {
-            EventPrintText?.Invoke(sText + Constants.vbNewLine);
+            EventPrintText?.Invoke(sText + System.Environment.NewLine);
             EventDataRecieveEnd?.Invoke();
         }
 
         private void PrintError(string sText)
         {
-            EventPrintError?.Invoke(sText + Constants.vbNewLine);
+            EventPrintError?.Invoke(sText + System.Environment.NewLine);
             EventDataRecieveEnd?.Invoke();
         }
 

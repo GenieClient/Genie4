@@ -83,7 +83,7 @@ namespace GenieClient
 
         private void ButtonDelete_Click(object sender, EventArgs e)
         {
-            if (Interaction.MsgBox("This will permanently delete: " + Plugin.Name + Constants.vbNewLine + "Are you sure this is what you want to do?", MsgBoxStyle.YesNo, "Warning") == MsgBoxResult.Yes)
+            if (Interaction.MsgBox("This will permanently delete: " + Plugin.Name + System.Environment.NewLine + "Are you sure this is what you want to do?", MsgBoxStyle.YesNo, "Warning") == MsgBoxResult.Yes)
             {
                 PluginButtonDelete?.Invoke(this);
             }

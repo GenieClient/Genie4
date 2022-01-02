@@ -24,7 +24,7 @@ namespace GenieClient
 
         public void EchoText(string Text)
         {
-            EventEchoText?.Invoke(Text + Constants.vbNewLine, Color.Cyan, Color.Transparent);
+            EventEchoText?.Invoke(Text + System.Environment.NewLine, Color.Cyan, Color.Transparent);
         }
 
         public void SendText(string Text)

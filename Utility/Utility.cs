@@ -223,7 +223,7 @@ namespace GenieClient
 
                 default:
                     {
-                        Debug.Print("Found unknown HTML character \"" + sText + "\"" + Constants.vbNewLine);
+                        Debug.Print("Found unknown HTML character \"" + sText + "\"" + System.Environment.NewLine);
                         return "";
                     }
             }

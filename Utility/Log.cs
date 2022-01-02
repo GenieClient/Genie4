@@ -30,7 +30,7 @@ namespace GenieClient.Genie
                     string sFileName = Path.Combine(sDirectory, sCharacterName + sInstanceName + "_" + DateTime.Now.ToString("yyyy-MM-dd") + ".log");
                     if (File.Exists(sFileName) == false)
                     {
-                        sText = "*** LOG CREATED AT " + DateTime.Now.ToString() + " ***" + Constants.vbNewLine + Constants.vbNewLine + sText;
+                        sText = "*** LOG CREATED AT " + DateTime.Now.ToString() + " ***" + System.Environment.NewLine + System.Environment.NewLine + sText;
                     }
 
                     var oStreamWriter = new StreamWriter(sFileName, true);

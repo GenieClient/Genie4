@@ -160,7 +160,7 @@ namespace GenieClient
                 {
                     if (Clipboard.GetText().Length > 100)
                     {
-                        if (Interaction.MsgBox("Clipboard size is rather large (" + Clipboard.GetText().Length + ")" + Constants.vbNewLine + "Are you sure you want to paste it to input box?", MsgBoxStyle.YesNo) == MsgBoxResult.Yes)
+                        if (Interaction.MsgBox("Clipboard size is rather large (" + Clipboard.GetText().Length + ")" + System.Environment.NewLine + "Are you sure you want to paste it to input box?", MsgBoxStyle.YesNo) == MsgBoxResult.Yes)
                         {
                             Paste(Clipboard.GetText().Replace(Constants.vbCr, " ").Replace(Constants.vbLf, "").TrimEnd());
                         }

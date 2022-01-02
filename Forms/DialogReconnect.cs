@@ -25,7 +25,7 @@ namespace GenieClient
 
         public void AddAttempt(string text)
         {
-            TextBoxLog.AppendText(DateTime.Now.ToString() + ": " + text + Constants.vbNewLine);
+            TextBoxLog.AppendText(DateTime.Now.ToString() + ": " + text + System.Environment.NewLine);
         }
     }
 }

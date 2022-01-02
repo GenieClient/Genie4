@@ -21,7 +21,7 @@ namespace GenieClient
             InitializeComponent();
 
             // Add any initialization after the InitializeComponent() call.
-            TextBoxInfo.Text = My.MyProject.Application.Info.ProductName + Constants.vbNewLine + string.Format("Version {0}", My.MyProject.Application.Info.Version.ToString()) + Constants.vbNewLine + string.Format("Build Date {0}", Utility.AssemblyBuildDate(Assembly.GetExecutingAssembly())) + Constants.vbNewLine + My.MyProject.Application.Info.Copyright + Constants.vbNewLine + My.MyProject.Application.Info.CompanyName + Constants.vbNewLine + My.MyProject.Application.Info.Description + Constants.vbNewLine;
+            TextBoxInfo.Text = My.MyProject.Application.Info.ProductName + System.Environment.NewLine + string.Format("Version {0}", My.MyProject.Application.Info.Version.ToString()) + System.Environment.NewLine + string.Format("Build Date {0}", Utility.AssemblyBuildDate(Assembly.GetExecutingAssembly())) + System.Environment.NewLine + My.MyProject.Application.Info.Copyright + System.Environment.NewLine + My.MyProject.Application.Info.CompanyName + System.Environment.NewLine + My.MyProject.Application.Info.Description + System.Environment.NewLine;
 
 
 

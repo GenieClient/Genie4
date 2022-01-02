@@ -467,7 +467,7 @@ namespace GenieClient.Genie
                     bgcolor = m_oGlobals.PresetList["inputother"].BgColor;
                 }
 
-                string argsText = sShowText + Constants.vbNewLine;
+                string argsText = sShowText + System.Environment.NewLine;
                 PrintInputText(argsText, color, bgcolor);
             }
 
@@ -482,7 +482,7 @@ namespace GenieClient.Genie
 
             if (m_oGlobals.Config.bAutoLog == true)
             {
-                m_oGlobals.Log?.LogText(sShowText + Constants.vbNewLine, Conversions.ToString(m_oGlobals.VariableList["charactername"]), Conversions.ToString(m_oGlobals.VariableList["game"]));
+                m_oGlobals.Log?.LogText(sShowText + System.Environment.NewLine, Conversions.ToString(m_oGlobals.VariableList["charactername"]), Conversions.ToString(m_oGlobals.VariableList["game"]));
             }
         }
 
@@ -554,7 +554,7 @@ namespace GenieClient.Genie
                                     if (sTextBuffer.StartsWith("< ") | sTextBuffer.StartsWith("> ") | sTextBuffer.StartsWith("* "))
                                     {
                                         m_bBold = false;
-                                        string argsText = sTextBuffer + Constants.vbNewLine;
+                                        string argsText = sTextBuffer + System.Environment.NewLine;
                                         bool argbIsPrompt = false;
                                         WindowTarget argoWindowTarget = 0;
                                         PrintTextWithParse(argsText, bIsPrompt: argbIsPrompt, oWindowTarget: argoWindowTarget);
@@ -830,21 +830,21 @@ namespace GenieClient.Genie
 
                         if (Strings.Len(m_sRoomDesc) > 0)
                         {
-                            string argsText2 = m_sRoomDesc + Constants.vbNewLine;
+                            string argsText2 = m_sRoomDesc + System.Environment.NewLine;
                             bool argbIsRoomOutput2 = true;
                             PrintTextWithParse(argsText2, m_oGlobals.PresetList["roomdesc"].FgColor, m_oGlobals.PresetList["roomdesc"].BgColor, false, WindowTarget.Room, argbIsRoomOutput2);
                         }
 
                         if (Strings.Len(m_sRoomObjs) > 0)
                         {
-                            string argsText3 = m_sRoomObjs + Constants.vbNewLine;
+                            string argsText3 = m_sRoomObjs + System.Environment.NewLine;
                             bool argbIsRoomOutput3 = true;
                             PrintTextWithParse(argsText3, default, default, false, targetRoom, argbIsRoomOutput3);
                         }
 
                         if (Strings.Len(m_sRoomPlayers) > 0)
                         {
-                            string argsText4 = m_sRoomPlayers + Constants.vbNewLine;
+                            string argsText4 = m_sRoomPlayers + System.Environment.NewLine;
                             bool argbIsRoomOutput4 = true;
                             PrintTextWithParse(argsText4, default, default, false, targetRoom, argbIsRoomOutput4);
                         }
@@ -861,7 +861,7 @@ namespace GenieClient.Genie
                                 m_sRoomExits += ".";
                             }
 
-                            string argsText5 = m_sRoomExits + Constants.vbNewLine;
+                            string argsText5 = m_sRoomExits + System.Environment.NewLine;
                             bool argbIsRoomOutput5 = true;
                             PrintTextWithParse(argsText5, Color.Transparent, Color.Transparent, false, targetRoom, argbIsRoomOutput5);
                         }
@@ -928,7 +928,7 @@ namespace GenieClient.Genie
                 m_sEncryptionKey = sText;
                 m_oSocket.Send("A" + Constants.vbTab + m_sAccountName.ToUpper() + Constants.vbTab);
                 m_oSocket.Send(Utility.EncryptText(m_sEncryptionKey, m_sAccountPassword));
-                m_oSocket.Send(Constants.vbNewLine);
+                m_oSocket.Send(System.Environment.NewLine);
             }
             else
             {
@@ -957,7 +957,7 @@ namespace GenieClient.Genie
                                         {
                                             m_sLoginKey = Conversions.ToString(oData[3]);
                                             m_sAccountOwner = Conversions.ToString(oData[4]);
-                                            m_oSocket.Send("G" + Constants.vbTab + m_sAccountGame.ToUpper() + Constants.vbNewLine);
+                                            m_oSocket.Send("G" + Constants.vbTab + m_sAccountGame.ToUpper() + System.Environment.NewLine);
                                             break;
                                         }
 
@@ -991,7 +991,7 @@ namespace GenieClient.Genie
 
                         case "G":
                             {
-                                m_oSocket.Send("C" + Constants.vbNewLine);
+                                m_oSocket.Send("C" + System.Environment.NewLine);
                                 break;
                             }
 
@@ -1423,7 +1423,7 @@ namespace GenieClient.Genie
                                         // Exception - Thoughts reset back to Main window after one line send.
                                         // m_oTargetWindow = WindowTarget.Thoughts
                                         // sReturn &= Parse(oXmlNode)
-                                        string argsText = GetTextFromXML(oXmlNode) + Constants.vbNewLine;
+                                        string argsText = GetTextFromXML(oXmlNode) + System.Environment.NewLine;
                                         bool argbIsRoomOutput = false;
                                         WindowTarget windowTarget = WindowTarget.Thoughts;
                                         PrintTextWithParse(argsText, m_oGlobals.PresetList["thoughts"].FgColor, m_oGlobals.PresetList["thoughts"].BgColor, false, windowTarget, bIsRoomOutput: argbIsRoomOutput);
@@ -2483,7 +2483,7 @@ namespace GenieClient.Genie
                     int I = sText.IndexOf("You also see");
                     if (I > 0)
                     {
-                        string argsText = sText.Substring(0, I).Trim() + Constants.vbNewLine;
+                        string argsText = sText.Substring(0, I).Trim() + System.Environment.NewLine;
                         bool argbIsPrompt = false;
                         WindowTarget argoWindowTarget = 0;
                         PrintTextWithParse(argsText, bIsPrompt: argbIsPrompt, oWindowTarget: argoWindowTarget);
@@ -2778,17 +2778,17 @@ namespace GenieClient.Genie
                             {
                                 if (sl.SubstituteRegex.Match(Utility.Trim(text)).Success)
                                 {
-                                    bool bNewLineStart = text.StartsWith(Constants.vbNewLine);
-                                    bool bNewLineEnd = text.EndsWith(Constants.vbNewLine);
+                                    bool bNewLineStart = text.StartsWith(System.Environment.NewLine);
+                                    bool bNewLineEnd = text.EndsWith(System.Environment.NewLine);
                                     text = sl.SubstituteRegex.Replace(Utility.Trim(text), sl.sReplaceBy.ToString());
                                     if (bNewLineStart == true)
                                     {
-                                        text = Constants.vbNewLine + text;
+                                        text = System.Environment.NewLine + text;
                                     }
 
                                     if (bNewLineEnd == true)
                                     {
-                                        text += Constants.vbNewLine;
+                                        text += System.Environment.NewLine;
                                     }
                                 }
                             }
@@ -2850,7 +2850,7 @@ namespace GenieClient.Genie
                 }
             }
 
-            if (text.EndsWith(Constants.vbNewLine) | text.StartsWith(Constants.vbNewLine))
+            if (text.EndsWith(System.Environment.NewLine) | text.StartsWith(System.Environment.NewLine))
             {
                 m_oLastFgColor = default;
             }
@@ -2934,7 +2934,7 @@ namespace GenieClient.Genie
             if (m_bLastRowWasPrompt)
             {
                 m_bLastRowWasPrompt = false;
-                var rowVar = Constants.vbNewLine + text;
+                var rowVar = System.Environment.NewLine + text;
                 EventPrintError?.Invoke(rowVar);
             }
             else
@@ -2955,7 +2955,7 @@ namespace GenieClient.Genie
             {
                 case ConnectStates.ConnectingKeyServer:
                     {
-                        m_oSocket.Send("K" + Constants.vbNewLine);
+                        m_oSocket.Send("K" + System.Environment.NewLine);
                         m_oConnectState = ConnectStates.ConnectedKey;
                         break;
                     }

@@ -1995,7 +1995,7 @@ namespace GenieClient.Mapper
         {
             if (AlwaysEcho == false && (Information.IsNothing(m_Form) || m_Form.Visible == false))
                 return;
-            EventEchoText?.Invoke(Text + Constants.vbNewLine, Color.Cyan, Color.Transparent);
+            EventEchoText?.Invoke(Text + System.Environment.NewLine, Color.Cyan, Color.Transparent);
         }
 
         public void SendText(string Text)

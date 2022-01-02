@@ -138,7 +138,7 @@ namespace GenieClient
             ButtonDownload.Tag = true;
             LabelFile.Text = "";
             LabelSpeed.Text = "";
-            LabelNewVersion.Text = "An update is available for Genie!" + Constants.vbNewLine + Constants.vbNewLine + "Your Version: " + My.MyProject.Application.Info.Version.ToString() + Constants.vbNewLine + "Update Version: " + strUpdateString + Constants.vbNewLine;
+            LabelNewVersion.Text = "An update is available for Genie!" + System.Environment.NewLine + System.Environment.NewLine + "Your Version: " + My.MyProject.Application.Info.Version.ToString() + System.Environment.NewLine + "Update Version: " + strUpdateString + System.Environment.NewLine;
 
 
 

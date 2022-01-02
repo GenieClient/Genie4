@@ -207,7 +207,7 @@ namespace GenieClient
         {
             if (ListViewBase.SelectedItems.Count == 1)
             {
-                if (MessageBox.Show("Do NOT remove a cardinal direction. These exits need to match the room in the game. Instead set destination to 0 to clear the link." + Constants.vbNewLine + "If you still want to delete this arc please click YES.", "AutoMapper", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show("Do NOT remove a cardinal direction. These exits need to match the room in the game. Instead set destination to 0 to clear the link." + System.Environment.NewLine + "If you still want to delete this arc please click YES.", "AutoMapper", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     int i = 0;
                     int iMatch = 0;

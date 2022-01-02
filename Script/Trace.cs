@@ -119,7 +119,7 @@ namespace GenieClient.Genie.Script
             {
                 if (!Information.IsNothing(m_TraceList[I]) && m_TraceList[I].Length > 0)
                 {
-                    s += Constants.vbTab + m_TraceList[I] + Constants.vbNewLine;
+                    s += Constants.vbTab + m_TraceList[I] + System.Environment.NewLine;
                 }
             }
 
@@ -127,7 +127,7 @@ namespace GenieClient.Genie.Script
             {
                 if (!Information.IsNothing(m_TraceList[I]) && m_TraceList[I].Length > 0)
                 {
-                    s += Constants.vbTab + m_TraceList[I] + Constants.vbNewLine;
+                    s += Constants.vbTab + m_TraceList[I] + System.Environment.NewLine;
                 }
             }
 

@@ -313,12 +313,12 @@ namespace GenieClient
                     var argoColor = Color.Transparent;
                     var argoBgColor = Color.Transparent;
                     Font argoFont = null;
-                    var newLineVar = Constants.vbNewLine;
+                    var newLineVar = System.Environment.NewLine;
                     AddToBuffer(newLineVar, argoColor, argoBgColor, false, oFont: argoFont);
                     m_bPendingNewLine = false;
                 }
 
-                if (sText.EndsWith(Constants.vbNewLine))
+                if (sText.EndsWith(System.Environment.NewLine))
                 {
                     if (m_bIsMainWindow == false)
                     {
@@ -822,7 +822,7 @@ namespace GenieClient
                 if (SelectionLength > 0)
                 {
                     string sTemp = SelectedText.ToString();
-                    sTemp = sTemp.Replace(Constants.vbLf, Constants.vbNewLine);
+                    sTemp = sTemp.Replace(Constants.vbLf, System.Environment.NewLine);
                     Clipboard.SetDataObject(sTemp, true);
                     SelectionLength = 0;
                 }
@@ -864,7 +864,7 @@ namespace GenieClient
             Select(position, text.Length + hyperlink.Length + 1);
             SetSelectionLink(Handle, true);
             Select(position + text.Length + hyperlink.Length + 1, 0);
-            AppendText(Constants.vbNewLine);
+            AppendText(System.Environment.NewLine);
         }
 
         private void InsertLink(string hyperlink, int position, int length)

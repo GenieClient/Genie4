@@ -925,7 +925,7 @@ namespace GenieClient
             {
                 string sVariableList = string.Empty;
                 foreach (DictionaryEntry de in m_oLocalVarList)
-                    sVariableList += de.Key.ToString() + "=" + de.Value.ToString() + Constants.vbNewLine;
+                    sVariableList += de.Key.ToString() + "=" + de.Value.ToString() + System.Environment.NewLine;
                 return sVariableList;
             }
         }
@@ -1762,14 +1762,14 @@ namespace GenieClient
                             }
                             else
                             {
-                                sJSBlockContent += oLine.sRowContent + Constants.vbNewLine;
+                                sJSBlockContent += oLine.sRowContent + System.Environment.NewLine;
                             }
                         }
                         else if (oLine.oFunction == ScriptFunctions.jsblock)
                         {
                             if (m_oCurrentLine.SkipBlock == false)
                             {
-                                sJSBlockContent = oLine.sRowContent + Constants.vbNewLine;
+                                sJSBlockContent = oLine.sRowContent + System.Environment.NewLine;
                                 iJsBlockLine = oLine.iFileRow;
                                 iJsFileId = oLine.iFileId;
                             }
@@ -1863,7 +1863,7 @@ namespace GenieClient
 
         private void PrintTrace()
         {
-            PrintText("Trace follows:" + Constants.vbNewLine);
+            PrintText("Trace follows:" + System.Environment.NewLine);
             PrintText(TraceList);
         }
 
@@ -4026,7 +4026,7 @@ namespace GenieClient
                 sErrorMessage += "(" + iFileRow.ToString() + ")";
             }
 
-            EventPrintError?.Invoke(sErrorMessage + ": " + sText + "]" + Constants.vbNewLine);
+            EventPrintError?.Invoke(sErrorMessage + ": " + sText + "]" + System.Environment.NewLine);
         }
 
         private void PrintJSError(string sText, [Optional, DefaultParameterValue(0)] int iFileId, [Optional, DefaultParameterValue(0)] int iFileRow)
@@ -4052,7 +4052,7 @@ namespace GenieClient
                 sErrorMessage += "(" + iFileRow.ToString() + ")";
             }
 
-            EventPrintError?.Invoke(sErrorMessage + ": " + sText + "]" + Constants.vbNewLine);
+            EventPrintError?.Invoke(sErrorMessage + ": " + sText + "]" + System.Environment.NewLine);
         }
 
         private void PrintDebug(int iLevel, string sText, [Optional, DefaultParameterValue(0)] int iFileId, [Optional, DefaultParameterValue(0)] int iFileRow)
@@ -4087,22 +4087,22 @@ namespace GenieClient
             // Everything above 9 has to be an exact match to show
             if (DebugLevel > 9 & DebugLevel == iLevel)
             {
-                EventPrintText?.Invoke(sDebugMessage + sText + Constants.vbNewLine, Color.RoyalBlue, Color.Transparent);
+                EventPrintText?.Invoke(sDebugMessage + sText + System.Environment.NewLine, Color.RoyalBlue, Color.Transparent);
             }
             else if (DebugLevel <= 9 & DebugLevel >= iLevel)
             {
-                EventPrintText?.Invoke(sDebugMessage + sText + Constants.vbNewLine, Color.RoyalBlue, Color.Transparent);
+                EventPrintText?.Invoke(sDebugMessage + sText + System.Environment.NewLine, Color.RoyalBlue, Color.Transparent);
             }
         }
 
         private void PrintText(string sText)
         {
-            EventPrintText?.Invoke(sText + Constants.vbNewLine, Color.White, Color.Transparent);
+            EventPrintText?.Invoke(sText + System.Environment.NewLine, Color.White, Color.Transparent);
         }
 
         private void PrintEcho(string sText)
         {
-            EventPrintText?.Invoke(sText + Constants.vbNewLine, m_oGlobals.PresetList["scriptecho"].FgColor, Color.Transparent);
+            EventPrintText?.Invoke(sText + System.Environment.NewLine, m_oGlobals.PresetList["scriptecho"].FgColor, Color.Transparent);
         }
 
         private void SendText(string text, bool queue = false)

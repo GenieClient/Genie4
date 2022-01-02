@@ -394,7 +394,7 @@ namespace GenieClient.Genie
                         }
                         catch (Exception ex)
                         {
-                            throw new Exception("Failed to load setting: " + strLine + Constants.vbNewLine + ex.Message + Constants.vbNewLine);
+                            throw new Exception("Failed to load setting: " + strLine + System.Environment.NewLine + ex.Message + System.Environment.NewLine);
                         }
                     }
 
