@@ -1157,7 +1157,7 @@ namespace GenieClient.Genie
 
                 if (base.ContainsKey(sTrigger) == true)
                 {
-                    Remove(sTrigger);
+                    base.Remove(sTrigger);
                 }
             }
 

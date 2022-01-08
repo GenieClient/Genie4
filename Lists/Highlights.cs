@@ -130,7 +130,7 @@ namespace GenieClient.Genie
         {
             if (base.ContainsKey(sKey) == true)
             {
-                Remove(sKey);
+                base.Remove(sKey);
                 return 1;
             }
             else
