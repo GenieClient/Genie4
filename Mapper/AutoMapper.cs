@@ -192,7 +192,7 @@ namespace GenieClient.Mapper
             {
                 m_RoomUpdated = true;
             }
-            else if ((var ?? "") == "prompt" & m_RoomUpdated == true) // Check for room change on prompt
+            else if ((var ?? "") == "prompt" && m_RoomUpdated == true) // Check for room change on prompt
             {
                 UpdateCurrentRoom();
             }
@@ -203,7 +203,7 @@ namespace GenieClient.Mapper
             else if ((var ?? "") == "roomexits")
             {
                 m_RisingMists = get_GlobalVariable(var).Contains("obscured by a thick fog");
-                if (m_RisingMists & m_DebugEnabled)
+                if (m_RisingMists && m_DebugEnabled)
                     EchoText("[" + Name + "] RisingMists = TRUE");
             }
         }
@@ -460,14 +460,14 @@ namespace GenieClient.Mapper
                 EchoText("[" + Name + "] Move = " + sMove);
 
             // Set position
-            if (m_Recording == true & !Information.IsNothing(m_LastNode))
+            if (m_Recording == true && !Information.IsNothing(m_LastNode))
             {
                 if (!Information.IsNothing(m_LastNode.Position))
                 {
                     if (Information.IsNothing(oNode.Position))
                     {
                         oNode.Position = new Point3D(m_LastNode.Position);
-                        if (oDirMove != Direction.None & oDirMove != Direction.Climb & oDirMove != Direction.Go)
+                        if (oDirMove != Direction.None && oDirMove != Direction.Climb && oDirMove != Direction.Go)
                         {
                             oNode.Position.Offset(oDirMove);
                         }
@@ -486,7 +486,7 @@ namespace GenieClient.Mapper
             int iFindCount = m_Nodes.FindCount(oNode);
             if (m_DebugEnabled == true)
                 EchoText("[" + Name + "] Find count = " + iFindCount.ToString());
-            if (bMapChanged == false & iFindCount == 0 & Information.IsNothing(m_LastNode) & m_Recording == false) // Locate room on disk and load map
+            if (bMapChanged == false && iFindCount == 0 && Information.IsNothing(m_LastNode) && m_Recording == false) // Locate room on disk and load map
             {
                 if (m_DebugEnabled == true)
                     EchoText("[" + Name + "] Checking Map On Disk");
@@ -575,7 +575,7 @@ namespace GenieClient.Mapper
                         }
                     }
 
-                    if (!Information.IsNothing(oMatchNode) & bMultiMatch == false)
+                    if (!Information.IsNothing(oMatchNode) && bMultiMatch == false)
                     {
                         oNode = oMatchNode;
                         if (m_DebugEnabled == true)
@@ -641,19 +641,19 @@ namespace GenieClient.Mapper
                         }
                     }
 
-                    if (m_Recording == true & iFindCount == 0)
+                    if (m_Recording == true && iFindCount == 0)
                     {
                         EchoText("[" + Name + "] Added new node #" + oNode.ID);
                         m_Nodes.Add(oNode);
                     }
-                    else if (bMultiMatch == false & m_AllowDuplicates == true)
+                    else if (bMultiMatch == false && m_AllowDuplicates == true)
                     {
                         EchoText("[" + Name + "] Added duplicate room #" + oNode.ID);
                         m_Nodes.Add(oNode);
                     }
                     else if (bMultiMatch == true)
                     {
-                        if (m_Recording == true & m_AllowDuplicates == true & oDirMove != Direction.Climb & oDirMove != Direction.Go & oDirMove != Direction.None & oDirMove != Direction.Out)
+                        if (m_Recording == true && m_AllowDuplicates == true && oDirMove != Direction.Climb && oDirMove != Direction.Go && oDirMove != Direction.None && oDirMove != Direction.Out)
                         {
                             EchoText("[" + Name + "] Added new multi match room #" + oNode.ID);
                             m_Nodes.Add(oNode);
@@ -683,7 +683,7 @@ namespace GenieClient.Mapper
                         if (m_DebugEnabled == true)
                             EchoText("[" + Name + "] Located link node to #" + oNode.ID);
                     }
-                    else if (m_Recording == true & m_AllowDuplicates == true & oDirMove != Direction.Climb & oDirMove != Direction.Go & oDirMove != Direction.None & oDirMove != Direction.Out)
+                    else if (m_Recording == true && m_AllowDuplicates == true && oDirMove != Direction.Climb && oDirMove != Direction.Go && oDirMove != Direction.None && oDirMove != Direction.Out)
                     {
                         EchoText("[" + Name + "] Added new multi match room #" + oNode.ID);
                         m_Nodes.Add(oNode);
@@ -713,7 +713,7 @@ namespace GenieClient.Mapper
                             if (m_Recording == true)
                                 EchoText(oArc.Direction.ToString() + ": <not set>");
                         }
-                        else if (oArc.Direction == Direction.Go | oArc.Direction == Direction.Climb)
+                        else if (oArc.Direction == Direction.Go || oArc.Direction == Direction.Climb)
                         {
                             sPortals += Interaction.IIf(sPortals.Length > 0, ", ", "") + oArc.Move;
                         }
@@ -723,7 +723,7 @@ namespace GenieClient.Mapper
                         }
                     }
 
-                    if (m_RisingMists & sDirections.Length > 0)
+                    if (m_RisingMists && sDirections.Length > 0)
                         EchoText("Mapped directions: " + sDirections, true);
                     if (sPortals.Length > 0)
                         EchoText("Mapped exits: " + sPortals, true);
@@ -731,7 +731,7 @@ namespace GenieClient.Mapper
                     if (m_Recording == true)
                     {
                         bool bExitAdded = false;
-                        if (oDirMove == Direction.Go | oDirMove == Direction.Climb)
+                        if (oDirMove == Direction.Go || oDirMove == Direction.Climb)
                         {
                             if (m_LastNode.Arcs.Contains(sMove) == false)
                             {
@@ -747,7 +747,7 @@ namespace GenieClient.Mapper
                             // Automatically set return in opposite direction on Duplicate mode TEMP TEMP TEMP TEMP
                             if (m_AllowDuplicates == true)
                             {
-                                if (!Information.IsNothing(oDirReverseMove) & !Information.IsNothing(m_LastNode))
+                                if (!Information.IsNothing(oDirReverseMove) && !Information.IsNothing(m_LastNode))
                                 {
                                     if (oNode.Arcs.Contains(oDirReverseMove))
                                     {
@@ -1760,7 +1760,7 @@ namespace GenieClient.Mapper
             if (Text.Length < 50 && Text.Contains(Constants.vbCr) == false)
             {
                 var argoDateEnd = DateTime.Now;
-                if (m_Movement.Count > 0 & Utility.GetTimeDiffInMilliseconds(m_LastInputTime, argoDateEnd) > m_TimeOutMS)
+                if (m_Movement.Count > 0 && Utility.GetTimeDiffInMilliseconds(m_LastInputTime, argoDateEnd) > m_TimeOutMS)
                 {
                     m_Movement.Clear();
                     if (m_DebugEnabled == true)
@@ -1780,7 +1780,7 @@ namespace GenieClient.Mapper
                     }
                 }
 
-                if (Text.ToLower().StartsWith("go ") | Text.ToLower().StartsWith("climb "))
+                if (Text.ToLower().StartsWith("go ") || Text.ToLower().StartsWith("climb "))
                 {
                     m_Movement.Add(Text);
                     if (m_DebugEnabled == true)
@@ -1962,7 +1962,7 @@ namespace GenieClient.Mapper
         private void GraphForm_ToggleRecord(bool toggle)
         {
             m_Recording = toggle;
-            if (toggle == true & m_Nodes.Count > 0)
+            if (toggle == true && m_Nodes.Count > 0)
             {
                 m_LastNode = null;
             }

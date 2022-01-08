@@ -1208,7 +1208,7 @@ namespace GenieClient.Genie
                                                                 oGlobals.ClassList.Add(sItem.Substring(1).ToLower(), argsValue);
                                                             }
                                                         }
-                                                        else if (sItem.StartsWith("-") & sItem.Length > 1)
+                                                        else if (sItem.StartsWith("-") && sItem.Length > 1)
                                                         {
                                                             if ((sItem.Substring(1).ToLower() ?? "") == "all")
                                                             {
