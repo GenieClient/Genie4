@@ -701,6 +701,7 @@ namespace GenieClient.Genie
                     }
                 }
 
+                
                 bool argbIsPrompt1 = false;
                 WindowTarget argoWindowTarget1 = 0;
                 PrintTextWithParse(sTextBuffer, bIsPrompt: argbIsPrompt1, oWindowTarget: argoWindowTarget1);
@@ -2095,7 +2096,9 @@ namespace GenieClient.Genie
                                     strBuffer += m_oGlobals.Config.sPrompt;
                                     bool argbIsPrompt = true;
                                     WindowTarget argoWindowTarget = 0;
-                                    PrintTextWithParse(strBuffer, argbIsPrompt, oWindowTarget: argoWindowTarget);
+                                    
+                                        PrintTextWithParse(strBuffer, argbIsPrompt, oWindowTarget: argoWindowTarget);
+                                    
                                 }
 
                                 string argkey44 = "prompt";
@@ -2476,6 +2479,7 @@ namespace GenieClient.Genie
 
         public void PrintTextWithParse(string sText, Color color, Color bgcolor, bool bIsPrompt = false, WindowTarget oWindowTarget = WindowTarget.Unknown, bool bIsRoomOutput = false)
         {
+            
             if (sText.Trim().Length > 0)
             {
                 if (sText.Contains("You also see"))
@@ -2629,7 +2633,6 @@ namespace GenieClient.Genie
             {
                 oWindowTarget = m_oTargetWindow;
             }
-
             PrintTextToWindow(sText, color, bgcolor, oWindowTarget, bIsPrompt, bIsRoomOutput);
         }
 
@@ -2809,17 +2812,27 @@ namespace GenieClient.Genie
             {
                 if (text.Trim().Length == 0)
                 {
-                    if (m_bLastRowWasBlank == true | m_bLastRowWasPrompt == true)
+                    if (m_bLastRowWasBlank == true || m_bLastRowWasPrompt == true)
                     {
                         return;
                     }
 
                     m_bLastRowWasBlank = true;
                 }
+                else if (Regex.IsMatch(text, @"^\w*\> ?$"))
+                {
+                    if (m_bLastRowWasBlank)
+                    {
+                        return;
+                    }
+                    m_bLastRowWasPrompt = true;
+                }
                 else
                 {
+                    m_bLastRowWasPrompt = false;
                     m_bLastRowWasBlank = false;
                 }
+                
             }
 
             if (targetwindow == WindowTarget.Main | targetwindow == WindowTarget.Thoughts | targetwindow == WindowTarget.Combat)
