@@ -136,14 +136,19 @@ namespace GenieClient.Mapper
             m_Offset = m_NodeList.GetOffset();
             m_Offset.X *= m_Scale;
             m_Offset.Y *= m_Scale;
+            _mapOffsetX = m_Offset.X;
+            _mapOffsetY = m_Offset.Y;
             PanelMap.Invalidate();
         }
 
         public Font m_Font = FormMain.DefaultFont; // New Font("Arial", 8, FontStyle.Regular)
         private bool m_AllowRecord = false;
 
+        private int _mapOffsetX;
+        private int _mapOffsetY;
         private Point3D GetOffset()
         {
+            if(m_NodeList is not null) return new Point3D(_mapOffsetX, _mapOffsetY);
             return new Point3D((int)(this.Width / 2 * m_Scale), (int)(this.Height / 2 * m_Scale));
         }
 
@@ -823,6 +828,8 @@ namespace GenieClient.Mapper
                     m_Offset = m_NodeList.GetOffset();
                 m_Offset.X *= m_Scale;
                 m_Offset.Y *= m_Scale;
+                _mapOffsetX = m_Offset.X;
+                _mapOffsetY = m_Offset.Y;
                 PanelMap.Invalidate();
                 xnlist = xdoc.SelectNodes("zone/label");
                 foreach (XmlNode xn in xnlist)
@@ -2142,6 +2149,8 @@ namespace GenieClient.Mapper
                 var m_Offset = m_NodeList.GetOffset();
                 m_Offset.X *= m_Scale;
                 m_Offset.Y *= m_Scale;
+                _mapOffsetX = m_Offset.X;
+                _mapOffsetY = m_Offset.Y;
                 PanelMap.Invalidate();
                 UpdateNodeDetails();
             }
@@ -2223,6 +2232,8 @@ namespace GenieClient.Mapper
             var m_Offset = m_NodeList.GetOffset();
             m_Offset.X *= m_Scale;
             m_Offset.Y *= m_Scale;
+            _mapOffsetX = m_Offset.X;
+            _mapOffsetY = m_Offset.Y;
             PanelMap.Invalidate();
             if (m_Scale > 5)
             {
@@ -2242,6 +2253,8 @@ namespace GenieClient.Mapper
             var m_Offset = m_NodeList.GetOffset();
             m_Offset.X *= m_Scale;
             m_Offset.Y *= m_Scale;
+            _mapOffsetX = m_Offset.X;
+            _mapOffsetY = m_Offset.Y;
             PanelMap.Invalidate();
             if (m_Scale < 6)
             {
