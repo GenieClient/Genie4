@@ -124,7 +124,7 @@ namespace GenieClient.Mapper
                 else
                 {
                     m_CurrentLevelZ = n.Position.Z;
-                    if (m_ToggleRecording == true&& ToolStripButtonLockPositions.Checked == false)
+                    if (m_ToggleRecording == true && ToolStripButtonLockPositions.Checked == false)
                     {
                         m_NodeList.ArrangeSingle(n, dir);
                     }
@@ -699,7 +699,7 @@ namespace GenieClient.Mapper
                         a.DestinationID = int.Parse(GetValue(xarc, "destination", "0"));
                         bool bHidden = false;
                         string sHidden = GetValue(xarc, "hidden").ToLower();
-                        if (sHidden.Length > 0&& ((sHidden ?? "") == "true" || (sHidden ?? "") == "1"))
+                        if (sHidden.Length > 0 && ((sHidden ?? "") == "true" || (sHidden ?? "") == "1"))
                             bHidden = true;
                         a.HideArc = bHidden;
                         string sExit = GetValue(xarc, "exit", "").ToLower();
@@ -1016,7 +1016,7 @@ namespace GenieClient.Mapper
         {
             ToolStripButtonRecord.Checked = toggle;
             m_ToggleRecording = ToolStripButtonRecord.Checked;
-            if (ToolStripButtonRecord.Checked == true&& m_AllowRecord == false)
+            if (ToolStripButtonRecord.Checked == true && m_AllowRecord == false)
             {
                 if (!Information.IsNothing(m_NodeList) && m_NodeList.Count > 0)
                 {
@@ -1059,7 +1059,7 @@ namespace GenieClient.Mapper
                     ClickNode?.Invoke(m_CurrentZoneID, m_MovingNode.ID);
                 }
 
-                if (m_ToggleMoveNodes == true&& !Information.IsNothing(m_MovingLabel))
+                if (m_ToggleMoveNodes == true && !Information.IsNothing(m_MovingLabel))
                 {
                     if (m_SelectedLabels.Contains(m_MovingLabel))
                     {
@@ -1070,7 +1070,7 @@ namespace GenieClient.Mapper
                     }
                     else
                     {
-                        if (m_ShiftPress == false&& m_ControlPress == false)
+                        if (m_ShiftPress == false && m_ControlPress == false)
                         {
                             m_SelectedNodes.Clear();
                             m_SelectedLabels.Clear();
@@ -1082,7 +1082,7 @@ namespace GenieClient.Mapper
                 else if (!Information.IsNothing(m_MovingNode))
                 {
                     // Load linked node on left click
-                    if (m_ToggleMoveNodes == false&& m_MovingNode.IsLabelFile == true)
+                    if (m_ToggleMoveNodes == false && m_MovingNode.IsLabelFile == true)
                     {
                         string sFile = string.Empty;
                         foreach (string s in m_MovingNode.Note.Split('|'))
@@ -1183,9 +1183,9 @@ namespace GenieClient.Mapper
                 {
                     int iX = n.Position.X * m_Scale - X;
                     int iY = n.Position.Y * m_Scale - Y;
-                    if (iX < 5 * m_Scale&& iX > -5 * m_Scale)
+                    if (iX < 5 * m_Scale && iX > -5 * m_Scale)
                     {
-                        if (iY < 5 * m_Scale&& iY > -5 * m_Scale)
+                        if (iY < 5 * m_Scale && iY > -5 * m_Scale)
                         {
                             if (n.Position.Z == Z)
                             {
@@ -1208,9 +1208,9 @@ namespace GenieClient.Mapper
                 {
                     if (l.Position.Z == Z)
                     {
-                        if (X >= l.Rectangle.X&& X < l.Rectangle.X + l.Rectangle.Width)
+                        if (X >= l.Rectangle.X && X < l.Rectangle.X + l.Rectangle.Width)
                         {
-                            if (Y >= l.Rectangle.Y&& Y < l.Rectangle.Y + l.Rectangle.Height)
+                            if (Y >= l.Rectangle.Y && Y < l.Rectangle.Y + l.Rectangle.Height)
                             {
                                 oLabel = l;
                             }
@@ -1301,7 +1301,7 @@ namespace GenieClient.Mapper
                 m_Lasso.Y /= m_Scale;
                 m_Lasso.Width /= m_Scale;
                 m_Lasso.Height /= m_Scale;
-                if (m_ShiftPress == false&& m_ControlPress == false)
+                if (m_ShiftPress == false && m_ControlPress == false)
                 {
                     m_SelectedNodes.Clear();
                     m_SelectedLabels.Clear();
@@ -1312,9 +1312,9 @@ namespace GenieClient.Mapper
                 {
                     if (!Information.IsNothing(n.Position))
                     {
-                        if (n.Position.X >= m_Lasso.X&& n.Position.X <= m_Lasso.X + m_Lasso.Width)
+                        if (n.Position.X >= m_Lasso.X && n.Position.X <= m_Lasso.X + m_Lasso.Width)
                         {
-                            if (n.Position.Y >= m_Lasso.Y&& n.Position.Y <= m_Lasso.Y + m_Lasso.Height)
+                            if (n.Position.Y >= m_Lasso.Y && n.Position.Y <= m_Lasso.Y + m_Lasso.Height)
                             {
                                 if (n.Position.Z == m_CurrentLevelZ)
                                 {
@@ -1340,9 +1340,9 @@ namespace GenieClient.Mapper
                 {
                     if (!Information.IsNothing(l.Position))
                     {
-                        if (l.Position.X >= m_Lasso.X&& l.Position.X <= m_Lasso.X + m_Lasso.Width)
+                        if (l.Position.X >= m_Lasso.X && l.Position.X <= m_Lasso.X + m_Lasso.Width)
                         {
-                            if (l.Position.Y >= m_Lasso.Y&& l.Position.Y <= m_Lasso.Y + m_Lasso.Height)
+                            if (l.Position.Y >= m_Lasso.Y && l.Position.Y <= m_Lasso.Y + m_Lasso.Height)
                             {
                                 if (l.Position.Z == m_CurrentLevelZ)
                                 {
@@ -1683,7 +1683,7 @@ namespace GenieClient.Mapper
                             }
                         }
 
-                        if (n.IsLabelFile == true&& n.Position.Z == m_CurrentLevelZ) // Other map
+                        if (n.IsLabelFile == true && n.Position.Z == m_CurrentLevelZ) // Other map
                         {
                             var oWhere = ConvertPoint(n.Position, 4 * m_Scale);
                             e.Graphics.FillRectangle(new SolidBrush(oColorRoom), oWhere.X + 1, oWhere.Y + 1, 8 * m_Scale, 8 * m_Scale);
@@ -1755,7 +1755,7 @@ namespace GenieClient.Mapper
                             }
                         }
 
-                        if (n.IsLabelFile == true&& n.Position.Z == m_CurrentLevelZ) // Other map
+                        if (n.IsLabelFile == true && n.Position.Z == m_CurrentLevelZ) // Other map
                         {
                             var oWhere = ConvertPoint(n.Position, 4 * m_Scale);
                             e.Graphics.FillRectangle(new SolidBrush(oColorRoom), oWhere.X + 1, oWhere.Y + 1, 8 * m_Scale, 8 * m_Scale);
