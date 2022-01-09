@@ -46,7 +46,7 @@ namespace GenieClient.Mapper
         public event ClickNodeEventHandler ClickNode;
 
         public delegate void ClickNodeEventHandler(string zoneid, int nodeid);
-
+        private Genie.Globals m_oGlobals = null;
         private NodeList m_NodeList = null;
         private Node m_CurrentNode = null;
         private Node m_PathDestination = null;
@@ -57,11 +57,11 @@ namespace GenieClient.Mapper
 
         private static int m_Scale = 1;
 
-        public MapForm()
+        public MapForm(Genie.Globals Globals)
         {
             // This call is required by the Windows Form Designer.
             InitializeComponent();
-
+            m_oGlobals = Globals;
             // Add any initialization after the InitializeComponent() call.
         }
 
@@ -279,7 +279,7 @@ namespace GenieClient.Mapper
                 _Zones.Clear();
                 var al = new SortedList(new INaturalComparer());
                 int iunknown = 1;
-                var diDirectory = new DirectoryInfo(LocalDirectory.Path + @"\Maps");
+                var diDirectory = new DirectoryInfo(m_oGlobals.Config.MapDir);
                 foreach (FileInfo dif in diDirectory.GetFiles())
                 {
                     if ((dif.Extension.ToLower() ?? "") == ".xml")
@@ -532,7 +532,7 @@ namespace GenieClient.Mapper
                 XmlNodeList xnlist;
                 if (sPath.Contains(@"\") == false)
                 {
-                    sPath = LocalDirectory.Path + @"\Maps\" + sPath;
+                    sPath = m_oGlobals.Config.MapDir + @"\" + sPath;
                 }
 
                 xdoc = new XmlDocument();
@@ -609,7 +609,7 @@ namespace GenieClient.Mapper
                 XmlNodeList xnlist;
                 if (sPath.Contains(@"\") == false)
                 {
-                    sPath = LocalDirectory.Path + @"\Maps\" + sPath;
+                    sPath = m_oGlobals.Config.MapDir + "\\" + sPath;
                 }
 
                 if (sPath.Length == 0)
@@ -996,7 +996,7 @@ namespace GenieClient.Mapper
             }
             else
             {
-                SaveFileDialog1.InitialDirectory = LocalDirectory.Path + @"\Maps";
+                SaveFileDialog1.InitialDirectory = m_oGlobals.Config.MapDir;
             }
 
             if (SaveFileDialog1.ShowDialog() == DialogResult.OK)

@@ -15,12 +15,12 @@ namespace GenieClient.Mapper
     {
         public AutoMapper()
         {
-            m_Form = new MapForm();
+            m_Form = new MapForm(m_oGlobals);
         }
 
         public AutoMapper(ref Genie.Globals globals)
         {
-            m_Form = new MapForm();
+            m_Form = new MapForm(globals);
             m_oGlobals = globals;
             CreateMapForm();
         }
@@ -119,7 +119,7 @@ namespace GenieClient.Mapper
 
         private void CreateMapForm()
         {
-            m_Form = new MapForm();
+            m_Form = new MapForm(m_oGlobals);
             m_Form.ZoneID = get_GlobalVariable("zoneid");
             m_Form.ZoneName = get_GlobalVariable("zonename");
         }
@@ -235,7 +235,7 @@ namespace GenieClient.Mapper
             {
                 var xdoc = new XmlDocument();
                 XmlNodeList xnlist;
-                var diDirectory = new DirectoryInfo(LocalDirectory.Path + @"\Maps");
+                var diDirectory = new DirectoryInfo(m_oGlobals.Config.MapDir);
                 foreach (FileInfo dif in diDirectory.GetFiles())
                 {
                     if ((dif.Extension.ToLower() ?? "") == ".xml")
@@ -288,7 +288,7 @@ namespace GenieClient.Mapper
         {
             var xdoc = new XmlDocument();
             XmlNodeList xnlist;
-            var diDirectory = new DirectoryInfo(LocalDirectory.Path + @"\Maps");
+            var diDirectory = new DirectoryInfo(m_oGlobals.Config.MapDir);
             bool bMatch = false;
             foreach (FileInfo dif in diDirectory.GetFiles())
             {
@@ -341,7 +341,7 @@ namespace GenieClient.Mapper
         private void UpdateCurrentRoom(bool bMapChanged = false)
         {
             if (Information.IsNothing(m_Form))
-                m_Form = new MapForm();
+                m_Form = new MapForm(m_oGlobals);
             if (Information.IsNothing(m_Form.NodeList))
                 m_Form.SetNodeList(m_Nodes);
             m_RoomUpdated = false;
@@ -998,7 +998,7 @@ namespace GenieClient.Mapper
             {
                 if (Information.IsNothing(m_Form))
                 {
-                    m_Form = new MapForm();
+                    m_Form = new MapForm(m_oGlobals);
                 }
 
                 if (Information.IsNothing(m_Form.NodeList))
@@ -1015,7 +1015,7 @@ namespace GenieClient.Mapper
                             {
                                 if (sArg.Contains(@"\") == false)
                                 {
-                                    sArg = LocalDirectory.Path + @"\Maps\" + sArg;
+                                    sArg = m_oGlobals.Config.MapDir + "\\" + sArg;
                                 }
 
                                 if (sArg.ToLower().EndsWith(".xml") == false)
@@ -1045,7 +1045,7 @@ namespace GenieClient.Mapper
                                 // Filename is specified:
                                 if (sArg.Contains(@"\") == false)
                                 {
-                                    sArg = LocalDirectory.Path + @"\Maps\" + sArg;
+                                    sArg = m_oGlobals.Config.MapDir + "==" + sArg;
                                 }
                                 if (sArg.ToLower().EndsWith(".xml") == false)
                                 {

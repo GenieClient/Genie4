@@ -262,28 +262,7 @@ namespace GenieClient.My
                 }
             }
 
-            [EditorBrowsable(EditorBrowsableState.Never)]
-            public MapForm m_MapForm;
-
-            public MapForm MapForm
-            {
-                [DebuggerHidden]
-                get
-                {
-                    m_MapForm = MyForms.Create__Instance__<MapForm>(m_MapForm);
-                    return m_MapForm;
-                }
-
-                [DebuggerHidden]
-                set
-                {
-                    if (value == m_MapForm)
-                        return;
-                    if (value is object)
-                        throw new ArgumentException("Property can only be set to Nothing");
-                    Dispose__Instance__<MapForm>(ref m_MapForm);
-                }
-            }
+           
 
             [EditorBrowsable(EditorBrowsableState.Never)]
             public ScriptExplorer m_ScriptExplorer;

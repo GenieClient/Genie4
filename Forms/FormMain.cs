@@ -523,9 +523,17 @@ namespace GenieClient
             {
                 sPluginPath = Application.StartupPath;
             }
-
-            // Get list of plugins
-            var oAvailablePlugins = PluginServices.FindPlugins(sPluginPath);
+            if (!Directory.Exists(sPluginPath))
+            {
+                //if the plugin path doesn't exist, let the user know and return
+                string argsText1 = "Plugin Path Not Found! No Plugins were loaded. Please create a path at " + sPluginPath + System.Environment.NewLine;
+                Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
+                AddText(argsText1, oTargetWindow: argoTargetWindow1);
+                
+                return 0;
+            }
+                // Get list of plugins
+                var oAvailablePlugins = PluginServices.FindPlugins(sPluginPath);
             m_oPlugins.Clear();
             if (!Information.IsNothing(oAvailablePlugins))
             {
