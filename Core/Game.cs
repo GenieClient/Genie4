@@ -2819,7 +2819,7 @@ namespace GenieClient.Genie
 
                     m_bLastRowWasBlank = true;
                 }
-                else if (Regex.IsMatch(text, @"^\w*\> ?$"))
+                else if (Regex.IsMatch(text, @"^.*\> ?$"))
                 {
                     if (m_bLastRowWasBlank)
                     {
