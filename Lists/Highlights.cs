@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using GenieClient.Genie.Collections;
 
 namespace GenieClient.Genie
 {
@@ -40,7 +41,7 @@ namespace GenieClient.Genie
         {
             if (AcquireReaderLock())
             {
-                var al = new ArrayList();
+                var al = new ThreadedArrayList();
                 try
                 {
                     foreach (string s in base.Keys)
@@ -145,7 +146,7 @@ namespace GenieClient.Genie
             {
                 try
                 {
-                    var al = new ArrayList();
+                    var al = new ThreadedArrayList();
                     foreach (string s in base.Keys)
                     {
                         if (((Highlight)base[s]).IsActive == true)
@@ -193,7 +194,7 @@ namespace GenieClient.Genie
             {
                 try
                 {
-                    var al = new ArrayList();
+                    var al = new ThreadedArrayList();
                     foreach (string s in base.Keys)
                     {
                         if (((Highlight)base[s]).IsActive == true)

@@ -12,11 +12,10 @@ using System.Threading;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using GenieClient.Genie.Collections;
 
 namespace GenieClient
 {
-    // Imports Microsoft.Win32
-
     public partial class FormMain
     {
         public FormMain()
@@ -35,7 +34,7 @@ namespace GenieClient
             // Add any initialization after the InitializeComponent() call.
             LocalDirectory.CheckUserDirectory();
             bool bCustomConfigFile = false;
-            var al = new ArrayList();
+            var al = new ThreadedArrayList();
             al = Utility.ParseArgs(Interaction.Command());
             foreach (string cmd in al)
             {
@@ -427,7 +426,7 @@ namespace GenieClient
         private FormSkin m_oOutputDeath;
         private FormSkin m_oOutputRoom;
         private FormSkin m_oOutputLog;
-        private ArrayList m_oFormList = new ArrayList();
+        private ThreadedArrayList m_oFormList = new ThreadedArrayList();
         private string m_sConfigFile = string.Empty;
         // private string m_sUpdateVersion = string.Empty;
         // private bool m_bIsUpdateMajor = false;
@@ -437,7 +436,7 @@ namespace GenieClient
         // Private WithEvents m_oWorker As New System.ComponentModel.BackgroundWorker
         // Private m_bRunWorker As Boolean = True
 
-        public ArrayList FormList
+        public ThreadedArrayList FormList
         {
             get
             {
@@ -1493,7 +1492,7 @@ namespace GenieClient
                             {
                                 try
                                 {
-                                    var oMatchList = new Genie.Collections.ArrayList();
+                                    var oMatchList = new Genie.Collections.ThreadedArrayList();
                                     int I = 0;
                                     int iCurrentId = 0;
                                     foreach (DictionaryEntry de in m_oGlobals.AliasList)
@@ -1538,7 +1537,7 @@ namespace GenieClient
                         try
                         {
                             TextBoxInput.Tag = TextBoxInput.Text; // Save match pattern
-                            var oMatchList = new Genie.Collections.ArrayList();
+                            var oMatchList = new Genie.Collections.ThreadedArrayList();
                             foreach (DictionaryEntry de in m_oGlobals.AliasList)
                             {
                                 if (de.Key.ToString().StartsWith(TextBoxInput.Text))
@@ -2828,7 +2827,7 @@ namespace GenieClient
             }
         }
 
-        private Script LoadScript(string sScriptName, ArrayList oArgList)
+        private Script LoadScript(string sScriptName, ThreadedArrayList oArgList)
         {
             if (m_oGlobals.Config.bAbortDupeScript == true)
             {
@@ -3806,7 +3805,7 @@ namespace GenieClient
                                             m_oRegMatch = oTrigger.oRegexTrigger.Match(sText);
                                             if (m_oRegMatch.Success == true)
                                             {
-                                                var RegExpArg = new ArrayList();
+                                                var RegExpArg = new ThreadedArrayList();
                                                 if (m_oRegMatch.Groups.Count > 0)
                                                 {
                                                     int J;
@@ -3960,7 +3959,7 @@ namespace GenieClient
             }
         }
 
-        private void TriggerAction(string sAction, ArrayList oArgs)
+        private void TriggerAction(string sAction, ThreadedArrayList oArgs)
         {
             if (m_bTriggersEnabled == true)
             {
@@ -4027,7 +4026,7 @@ namespace GenieClient
         {
             try
             {
-                var al = new ArrayList();
+                var al = new ThreadedArrayList();
                 al = Utility.ParseArgs(sText, true);
                 string ScriptName = Conversions.ToString(al[0].ToString().ToLower().Trim().Substring(1));
                 if (ScriptName.EndsWith(".cmd") == false)
@@ -4258,7 +4257,7 @@ namespace GenieClient
 
                                         if (s.Length > 0 & (s ?? "") != "0")
                                         {
-                                            TriggerAction(oTrigger.sAction, new ArrayList());
+                                            TriggerAction(oTrigger.sAction, new ThreadedArrayList());
                                         }
                                     }
                                 }
@@ -6362,7 +6361,7 @@ namespace GenieClient
 
         private void Command_EventClassChange()
         {
-            var al = new ArrayList();
+            var al = new ThreadedArrayList();
             if (m_oGlobals.ClassList.AcquireReaderLock())
             {
                 try

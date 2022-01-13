@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
-// Imports Jint
+using GenieClient.Genie.Collections;
 
 namespace GenieClient.Genie
 {
@@ -233,7 +233,7 @@ namespace GenieClient.Genie
                     if (sRow.Trim().StartsWith(Conversions.ToString(oGlobals.Config.cCommandChar)))
                     {
                         // Get result from function then send result to game
-                        var oArgs = new ArrayList();
+                        var oArgs = new Genie.Collections.ThreadedArrayList();
                         oArgs = Utility.ParseArgs(sRow);
                         if (oArgs.Count > 0)
                         {
@@ -2510,7 +2510,7 @@ namespace GenieClient.Genie
         private string ParseAlias(string sText)
         {
             string sResult = "";
-            var oArgs = new ArrayList();
+            var oArgs = new Genie.Collections.ThreadedArrayList();
             oArgs = Utility.ParseArgs(sText);
             string sKey = GetKeywordString(sText);
             if (oGlobals.AliasList.ContainsKey(sKey) == true)
@@ -2601,24 +2601,7 @@ namespace GenieClient.Genie
             // EchoText("Send: " & sText & vbNewLine)
             SendText(sText, bUserInput, sOrigin);
         }
-
-        // Private Function ParseAllArgs(ByoList As ArrayList, Optional ByVal iStartIndex As Integer = 1) As String
-        // Dim sResult As String = String.Empty
-
-        // For i As Integer = iStartIndex To oList.Count - 1
-        // If Not IsNothing(oList.Item(i)) Then
-        // sResult &= " " & ParseCommand(oList.Item(i).ToString)
-        // End If
-        // Next
-
-        // If sResult.Length > 0 Then
-        // sResult = sResult.Substring(1) ' Remove first space
-        // End If
-
-        // Return sResult
-        // End Function
-
-        private string ParseAllArgs(ArrayList oList, int iStartIndex = 1, bool bParseQuickSend = true)
+        private string ParseAllArgs(ThreadedArrayList oList, int iStartIndex = 1, bool bParseQuickSend = true)
         {
             string sResult = string.Empty;
             string sCommand = string.Empty;

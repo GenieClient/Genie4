@@ -10,6 +10,7 @@ using System.Threading;
 using System.Xml;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using GenieClient.Genie.Collections;
 
 namespace GenieClient.Genie
 {
@@ -912,9 +913,9 @@ namespace GenieClient.Genie
             }
         }
 
-        private ArrayList _CharacterList = new ArrayList();
+        private ThreadedArrayList _CharacterList = new ThreadedArrayList();
 
-        public ArrayList CharacterList
+        public ThreadedArrayList CharacterList
         {
             get
             {
@@ -933,7 +934,7 @@ namespace GenieClient.Genie
             }
             else
             {
-                var oData = new ArrayList();
+                var oData = new ThreadedArrayList();
                 foreach (string strLine in sText.Split(Conversions.ToChar(Constants.vbTab)))
                     oData.Add(strLine);
                 if (oData.Count > 0)
