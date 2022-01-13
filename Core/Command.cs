@@ -3,6 +3,7 @@ using System.Collections;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -23,6 +24,10 @@ namespace GenieClient.Genie
         public event EventDisconnectEventHandler EventDisconnect;
 
         public delegate void EventDisconnectEventHandler();
+
+        public event EventExitEventHandler EventExit;
+
+        public delegate void EventExitEventHandler();
 
         public event EventEchoTextEventHandler EventEchoText;
 
@@ -304,9 +309,6 @@ namespace GenieClient.Genie
                                             sResult = "";
                                             break;
                                         }
-                                    // Case "jint"
-                                    // Dim jint As New JintEngine()
-                                    // EchoText(jint.Run("var blah = 1;return blah + 10;").ToString())
                                     case "link":
                                         {
                                             string sWindow = string.Empty;
@@ -400,7 +402,11 @@ namespace GenieClient.Genie
                                             EventDisconnect?.Invoke();
                                             break;
                                         }
-
+                                    case "exit":
+                                        {
+                                            EventExit?.Invoke();
+                                            break;
+                                        }
                                     case "clear":
                                         {
                                             ClearWindow(oGlobals.ParseGlobalVars(ParseAllArgs(oArgs, 1)));

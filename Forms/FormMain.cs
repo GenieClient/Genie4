@@ -297,6 +297,7 @@ namespace GenieClient
                     _m_oCommand.EventReconnect -= ReconnectToGame;
                     _m_oCommand.EventConnect -= ConnectToGame;
                     _m_oCommand.EventDisconnect -= DisconnectFromGame;
+                    _m_oCommand.EventExit -= DisconnectAndExit;
                     _m_oCommand.EventClassChange -= Command_EventClassChange;
                     _m_oCommand.EventPresetChanged -= ClassCommand_PresetChanged;
                     _m_oCommand.EventShowScriptExplorer -= Command_ShowScriptExplorer;
@@ -344,6 +345,7 @@ namespace GenieClient
                     _m_oCommand.EventReconnect += ReconnectToGame;
                     _m_oCommand.EventConnect += ConnectToGame;
                     _m_oCommand.EventDisconnect += DisconnectFromGame;
+                    _m_oCommand.EventExit += DisconnectAndExit;
                     _m_oCommand.EventClassChange += Command_EventClassChange;
                     _m_oCommand.EventPresetChanged += ClassCommand_PresetChanged;
                     _m_oCommand.EventShowScriptExplorer += Command_ShowScriptExplorer;
@@ -5404,6 +5406,11 @@ namespace GenieClient
         private void DisconnectFromGame()
         {
             m_oGame.Disconnect();
+        }
+
+        private void DisconnectAndExit()
+        {
+            m_oGame.Disconnect(true);
         }
 
         private void ConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
