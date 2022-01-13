@@ -154,6 +154,9 @@ _For more discussion, join the discord group [DiscordGroup](https://discord.gg/M
 - [ ] Refactor Core Logic away from GUI
 - [ ] Convert GUI to Cross-Platform
 - [ ] Upgrade Plugin Interface
+- [ ] Get Latest Version (OneButton) <AInstallLogo>
+    <img src="https://cdn.advancedinstaller.com/svg/pressinfo/AiLogoColor.svg" width="70" height="40"></AInstallLogo>
+
 
 See the [open issues](https://github.com/GenieClient/Genie4/issues) for a full list of proposed features (and known issues).
 
