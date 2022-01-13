@@ -1892,8 +1892,8 @@ namespace GenieClient.Genie
                         sClass = oArgs[2].ToString();
                     }
 
-                    var arg1 = oArgs[1].ToString();
-                    var arg2 = oArgs[2].ToString();
+                    var arg1 = oArgs[0].ToString();
+                    var arg2 = oArgs[1].ToString();
                     Add(arg2, false, sClass);
 
                 }
