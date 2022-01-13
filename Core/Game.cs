@@ -10,6 +10,7 @@ using System.Threading;
 using System.Xml;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using GenieClient.Genie.Collections;
 
 namespace GenieClient.Genie
 {
@@ -99,20 +100,14 @@ namespace GenieClient.Genie
                 {
                     _m_oSocket.EventConnected -= GameSocket_EventConnected;
                     _m_oSocket.EventDisconnected -= GameSocket_EventDisconnected;
-
-                    // Private Sub GameSocket_EventDataSent() Handles oSocket.EventDataSent
-                    // If m_oConnectState = ConnectStates.ConnectingGameServer Then
-                    // m_oConnectState = ConnectStates.ConnectedGameHandshake
-                    // oSocket.Send(oGlobals.Config.sConnectString & vbLf)
-                    // End If
-                    // End Sub
+                    _m_oSocket.EventConnectionLost -= GameSocket_EventConnectionLost;
 
                     _m_oSocket.EventParseRow -= GameSocket_EventParseRow;
                     _m_oSocket.EventParsePartialRow -= GameSocket_EventParsePartialRow;
                     _m_oSocket.EventDataRecieveEnd -= GameSocket_EventDataRecieveEnd;
+
                     _m_oSocket.EventPrintText -= GameSocket_EventPrintText;
                     _m_oSocket.EventPrintError -= GameSocket_EventPrintError;
-                    _m_oSocket.EventConnectionLost -= GameSocket_EventConnectionLost;
                 }
 
                 _m_oSocket = value;
@@ -120,12 +115,12 @@ namespace GenieClient.Genie
                 {
                     _m_oSocket.EventConnected += GameSocket_EventConnected;
                     _m_oSocket.EventDisconnected += GameSocket_EventDisconnected;
+                    _m_oSocket.EventConnectionLost += GameSocket_EventConnectionLost;
                     _m_oSocket.EventParseRow += GameSocket_EventParseRow;
                     _m_oSocket.EventParsePartialRow += GameSocket_EventParsePartialRow;
                     _m_oSocket.EventDataRecieveEnd += GameSocket_EventDataRecieveEnd;
                     _m_oSocket.EventPrintText += GameSocket_EventPrintText;
                     _m_oSocket.EventPrintError += GameSocket_EventPrintError;
-                    _m_oSocket.EventConnectionLost += GameSocket_EventConnectionLost;
                 }
             }
         }
@@ -387,11 +382,11 @@ namespace GenieClient.Genie
             DoConnect(argsHostName, argiPort);
         }
 
-        public void Disconnect()
+        public void Disconnect(bool ExitOnDisconnect = false)
         {
             if (m_oSocket.IsConnected)
             {
-                m_oSocket.Disconnect();
+                m_oSocket.Disconnect(ExitOnDisconnect);
             }
         }
 
@@ -912,9 +907,9 @@ namespace GenieClient.Genie
             }
         }
 
-        private ArrayList _CharacterList = new ArrayList();
+        private ThreadedArrayList _CharacterList = new ThreadedArrayList();
 
-        public ArrayList CharacterList
+        public ThreadedArrayList CharacterList
         {
             get
             {
@@ -933,7 +928,7 @@ namespace GenieClient.Genie
             }
             else
             {
-                var oData = new ArrayList();
+                var oData = new ThreadedArrayList();
                 foreach (string strLine in sText.Split(Conversions.ToChar(Constants.vbTab)))
                     oData.Add(strLine);
                 if (oData.Count > 0)
@@ -2819,7 +2814,7 @@ namespace GenieClient.Genie
 
                     m_bLastRowWasBlank = true;
                 }
-                else if (Regex.IsMatch(text, @"^.*\> ?$"))
+                else if (Regex.IsMatch(text, @"^.*\" + m_oGlobals.Config.sPrompt + "?$"))
                 {
                     if (m_bLastRowWasBlank)
                     {
@@ -3005,6 +3000,10 @@ namespace GenieClient.Genie
             }
         }
 
+        private void GameSocket_EventExit()
+        {
+            Disconnect(true);
+        }
         private void GameSocket_EventParseRow(StringBuilder row)
         {
             var rowVar = row.ToString();

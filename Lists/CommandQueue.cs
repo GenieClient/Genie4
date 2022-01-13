@@ -11,7 +11,7 @@ namespace GenieClient.Genie
         private object m_oThreadLock = new object(); // Thread safety
         private DateTime m_oNextTime;
 
-        public class Queue : Collections.ArrayList
+        public class Queue : Collections.ThreadedArrayList
         {
             public class EventItem
             {

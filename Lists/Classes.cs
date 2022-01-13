@@ -6,11 +6,11 @@ using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient.Genie
 {
-    public class Classes : Collections.SortedList
+    public class Classes : Collections.ThreadedSortedList
     {
         public void ActivateAll()
         {
-            var oList = new ArrayList();
+            var oList = new Collections.ThreadedArrayList();
             if (AcquireReaderLock())
             {
                 try
@@ -33,7 +33,7 @@ namespace GenieClient.Genie
 
         public void InActivateAll()
         {
-            var oList = new ArrayList();
+            var oList = new Collections.ThreadedArrayList();
             if (AcquireReaderLock())
             {
                 try

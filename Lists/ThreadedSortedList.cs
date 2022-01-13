@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace GenieClient.Genie.Collections
 {
-    public class SortedList : System.Collections.SortedList
+    public class ThreadedSortedList : System.Collections.SortedList
     {
         private ReaderWriterLockSlim m_oRWLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
@@ -75,11 +75,11 @@ namespace GenieClient.Genie.Collections
             }
         }
 
-        public SortedList() : base()
+        public ThreadedSortedList() : base()
         {
         }
 
-        public SortedList(IComparer comparer) : base(comparer)
+        public ThreadedSortedList(IComparer comparer) : base(comparer)
         {
         }
 

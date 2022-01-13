@@ -153,9 +153,9 @@ namespace GenieClient.Genie
             }
         }
 
-        public void Disconnect()
+        public void Disconnect(bool ExitOnDisconnect = false)
         {
-            Disconnect(m_SocketClient);
+            Disconnect(m_SocketClient, ExitOnDisconnect);
         }
 
         public void Send(string sText)
@@ -189,18 +189,18 @@ namespace GenieClient.Genie
             }
         }
 
-        private void Disconnect(Socket s)
+        private void Disconnect(Socket ConnectedSocket, bool ExitOnDisconnect = false)
         {
-            if (Information.IsNothing(s))
+            if (Information.IsNothing(ConnectedSocket))
             {
                 return;
             }
 
-            if (s.Connected == true)
+            if (ConnectedSocket.Connected == true)
             {
                 // PrintText("Disconnecting from: " & s.RemoteEndPoint.ToString())
 
-                s.BeginDisconnect(false, new AsyncCallback(DisconnectCallback), s);
+                ConnectedSocket.BeginDisconnect(false, new AsyncCallback(DisconnectCallback), new object[] { ConnectedSocket, ExitOnDisconnect });
             }
 
             m_SocketClient = null;
@@ -211,13 +211,21 @@ namespace GenieClient.Genie
             try
             {
                 // Retrieve the socket from the state object
-                Socket s = (Socket)ar.AsyncState;
-
+                Socket s = (Socket)(ar.AsyncState as object[])[0];
+                bool ExitOnDisconnect = (bool)(ar.AsyncState as object[])[1];
                 // Complete the connection
                 s.EndDisconnect(ar);
                 ParseData(System.Environment.NewLine); // Show lines not yet sent out
                 PrintText(Utility.GetTimeStamp() + " Connection closed.");
-                EventDisconnected?.Invoke();
+                if (ExitOnDisconnect)
+                {
+                    System.Windows.Forms.Application.Exit();
+                }
+                else
+                {
+                    EventDisconnected?.Invoke();
+                }
+                
             }
             catch (SocketException ex)
             {
