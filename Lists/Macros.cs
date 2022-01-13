@@ -6,7 +6,7 @@ using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient.Genie
 {
-    public class Macros : Collections.SortedList
+    public class Macros : Collections.ThreadedSortedList
     {
         public class Macro
         {

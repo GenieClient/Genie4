@@ -6,7 +6,7 @@ using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient.Genie
 {
-    public class Classes : Collections.SortedList
+    public class Classes : Collections.ThreadedSortedList
     {
         public void ActivateAll()
         {

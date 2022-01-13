@@ -6,7 +6,7 @@ using GenieClient.Genie.Collections;
 
 namespace GenieClient.Genie
 {
-    public class Highlights : Collections.SortedList
+    public class Highlights : Collections.ThreadedSortedList
     {
         private Regex m_oRegexString = null;
         private Regex m_oRegexLine = null;

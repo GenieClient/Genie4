@@ -293,7 +293,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public class Presets : Collections.SortedList
+        public class Presets : Collections.ThreadedSortedList
         {
             public class Preset
             {
@@ -546,7 +546,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public class Variables : Collections.SortedList
+        public class Variables : Collections.ThreadedSortedList
         {
             public enum VariableType
             {
@@ -1024,7 +1024,7 @@ namespace GenieClient.Genie
             return TriggerList.Add(sTrigger, sAction, bIgnoreCase, bIsEvalTrigger, ClassName);
         }
 
-        public class Triggers : Collections.SortedList
+        public class Triggers : Collections.ThreadedSortedList
         {
             public class Trigger
             {
@@ -1275,7 +1275,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public class HighlightLineBeginsWith : Collections.SortedList
+        public class HighlightLineBeginsWith : Collections.ThreadedSortedList
         {
             public class Highlight
             {
@@ -1383,7 +1383,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public class HighlightRegExp : Collections.SortedList
+        public class HighlightRegExp : Collections.ThreadedSortedList
         {
             public class Highlight
             {
