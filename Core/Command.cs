@@ -181,6 +181,9 @@ namespace GenieClient.Genie
 
         public delegate void DisablePluginEventHandler(string filename);
 
+        public event LaunchBrowserEventHandler LaunchBrowser;
+        public delegate void LaunchBrowserEventHandler(string url);
+
         public event ReloadPluginsEventHandler ReloadPlugins;
 
         public delegate void ReloadPluginsEventHandler();
@@ -405,6 +408,13 @@ namespace GenieClient.Genie
                                     case "exit":
                                         {
                                             EventExit?.Invoke();
+                                            break;
+                                        }
+                                    case "browser":
+                                        {
+                                            string url = oGlobals.ParseGlobalVars(oArgs[1].ToString());
+                                            if (!url.StartsWith("http://") && !url.StartsWith("https://")) url = "http://" + url;
+                                            LaunchBrowser?.Invoke(url);
                                             break;
                                         }
                                     case "clear":
