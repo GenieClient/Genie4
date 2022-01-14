@@ -3565,6 +3565,14 @@ namespace GenieClient
                     {
                         case ScriptFunctions.include:
                             {
+                                if (m_oScriptFiles.Contains(strArgument))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    m_oScriptFiles.Add(strArgument);
+                                }
                                 if (strArgument.ToLower().EndsWith(".js"))
                                 {
                                     if (AppendFile(strArgument, true) == false)
