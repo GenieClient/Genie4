@@ -5640,10 +5640,10 @@ namespace GenieClient
         {
             LabelLHC.Text = Conversions.ToString(m_oGlobals.VariableList["lefthand"]);
             LabelRHC.Text = Conversions.ToString(m_oGlobals.VariableList["righthand"]);
-            if (m_oGlobals.Config.bShowSpellTimer == true && m_oGlobals.oSpellTimeStart != DateTime.MinValue)
+            if (m_oGlobals.Config.bShowSpellTimer == true && m_oGlobals.SpellTimeStart != DateTime.MinValue)
             {
                 var argoDateEnd = DateTime.Now;
-                LabelSpellC.Text = Conversions.ToString("(" + Utility.GetTimeDiffInSeconds(m_oGlobals.oSpellTimeStart, argoDateEnd) + ") " + m_oGlobals.VariableList["preparedspell"]);
+                LabelSpellC.Text = Conversions.ToString("(" + Utility.GetTimeDiffInSeconds(m_oGlobals.SpellTimeStart, argoDateEnd) + ") " + m_oGlobals.VariableList["preparedspell"]);
             }
             else
             {
@@ -5699,12 +5699,18 @@ namespace GenieClient
 
         private void SetSpellTime()
         {
-            m_oGlobals.oSpellTimeStart = DateTime.Now;
+            m_oGlobals.SpellTimeStart = DateTime.Now;
         }
 
         private void ClearSpellTime()
         {
-            m_oGlobals.oSpellTimeStart = default;
+            m_oGlobals.SpellTimeStart = default;
+        }
+
+        public delegate void SetCastTimeDelegate(int TimeCastWillFinish);
+        private void SetCastTime(int TimeToCast)
+        {
+            m_oGlobals.SpellTimeFinish = DateTime.Now.AddMilliseconds(TimeToCast * 1000 + m_oGlobals.Config.dRTOffset * 1000);
         }
 
         public delegate void SetRoundtimeDelegate(int iTime);
@@ -5726,6 +5732,27 @@ namespace GenieClient
             catch (Exception ex)
             {
                 HandleGenieException("RoundTime", ex.Message, ex.ToString());
+                /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+            }
+        }
+
+        private void Game_EventCasttime(int iTime)
+        {
+            try
+            {
+                if (InvokeRequired == true)
+                {
+                    Invoke(new SetCasttimeDelegate(SetCastTime), iTime);
+                }
+                else
+                {
+                    SetRoundTime(iTime);
+                }
+            }
+            /* TODO ERROR: Skipped IfDirectiveTrivia */
+            catch (Exception ex)
+            {
+                HandleGenieException("CastTime", ex.Message, ex.ToString());
                 /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
             }
         }
@@ -5905,6 +5932,14 @@ namespace GenieClient
             }
         }
 
+
+        private bool HasCastTime
+        {
+            get
+            {
+                return DateTime.Now < 
+            }
+        }
         private void SetRoundTime(int iTime)
         {
             if (iTime == 0)
@@ -7058,7 +7093,7 @@ namespace GenieClient
             }
 
             TickScripts();
-            if (m_oGlobals.Config.bShowSpellTimer == true && m_oGlobals.oSpellTimeStart != DateTime.MinValue)
+            if (m_oGlobals.Config.bShowSpellTimer == true && m_oGlobals.SpellTimeStart != DateTime.MinValue)
             {
                 SafeSetStatusBarLabels();
             }

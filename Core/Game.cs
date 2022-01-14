@@ -47,6 +47,10 @@ namespace GenieClient.Genie
 
         public delegate void EventRoundTimeEventHandler(int time);
 
+        public event EventCastTimeEventHandler EventCastTime;
+
+        public delegate void EventCastTimeEventHandler(int time);
+
         public event EventSpellTimeEventHandler EventSpellTime;
 
         public delegate void EventSpellTimeEventHandler();
@@ -179,6 +183,7 @@ namespace GenieClient.Genie
         private string m_sCharacterName = string.Empty;
         private string m_sGameName = string.Empty;
         private int m_iRoundTime = 0;
+        private int castTime = 0;
         private int m_iGameTime = 0;
         private string m_sTriggerBuffer = string.Empty;
         private bool m_bLastRowWasPrompt = false;
@@ -1938,6 +1943,12 @@ namespace GenieClient.Genie
                         {
                             string argstrAttributeName24 = "value";
                             m_iRoundTime = int.Parse(GetAttributeData(oXmlNode, argstrAttributeName24));
+                            break;
+                        }
+
+                    case "castTime":
+                        {
+                            int.TryParse(GetAttributeData(oXmlNode, "value"), out castTime);
                             break;
                         }
 

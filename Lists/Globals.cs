@@ -140,8 +140,11 @@ namespace GenieClient.Genie
             }
         }
 
-        public DateTime oSpellTimeStart;
+        public DateTime SpellTimeStart;
+        public DateTime SpellTimeFinish;
         private static DateTime m_oBlankTimer = DateTime.Parse("0001-01-01");
+
+
 
         public string ParseGlobalVars(object sVar)
         {
@@ -202,8 +205,8 @@ namespace GenieClient.Genie
         public string ParseSpecialVariables(string sText)
         {
             var argoDateEnd = DateTime.Now;
-            double d = Utility.GetTimeDiffInMilliseconds(oSpellTimeStart, argoDateEnd);
-            if (d > 0 & oSpellTimeStart != m_oBlankTimer)
+            double d = Utility.GetTimeDiffInMilliseconds(SpellTimeStart, argoDateEnd);
+            if (d > 0 & SpellTimeStart != m_oBlankTimer)
             {
                 sText = sText.Replace("@spelltime@", (d / 1000).ToString());
             }
