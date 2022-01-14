@@ -312,6 +312,7 @@ namespace GenieClient
                     _m_oCommand.EventSaveProfile -= Command_SaveProfile;
                     _m_oCommand.EventRawToggle -= Command_RawToggle;
                     _m_oCommand.EventChangeIcon -= Command_ChangeIcon;
+                    _m_oCommand.LaunchBrowser -= Command_LaunchBrowser;
                 }
 
                 _m_oCommand = value;
@@ -360,6 +361,7 @@ namespace GenieClient
                     _m_oCommand.EventSaveProfile += Command_SaveProfile;
                     _m_oCommand.EventRawToggle += Command_RawToggle;
                     _m_oCommand.EventChangeIcon += Command_ChangeIcon;
+                    _m_oCommand.LaunchBrowser += Command_LaunchBrowser;
                 }
             }
         }
@@ -7337,6 +7339,11 @@ namespace GenieClient
                     AddText(argsText7, argoColor7, argoBgColor7, oTargetWindow: argoTargetWindow7, sTargetWindow: argsTargetWindow7);
                 }
             }
+        }
+
+        private void Command_LaunchBrowser(string url)
+        {
+            Utility.OpenBrowser(url);
         }
 
         private string m_sCurrentProfileName = string.Empty;
