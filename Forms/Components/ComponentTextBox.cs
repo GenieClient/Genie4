@@ -25,7 +25,7 @@ namespace GenieClient
 
         public delegate void PageDownEventHandler();
 
-        private Genie.Collections.ThreadedArrayList HistoryArray = new Genie.Collections.ThreadedArrayList();
+        private ArrayList HistoryArray = new ArrayList();
         private int HistoryPos = -1;
         private int HistorySize = 20;
         private int HistoryMinLenght = 3;

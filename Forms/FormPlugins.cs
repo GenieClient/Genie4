@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using System.Windows.Forms;
 using GeniePlugin.Interfaces;
-using GenieClient.Genie.Collections;
 
 namespace GenieClient
 {
@@ -14,7 +13,7 @@ namespace GenieClient
             InitializeComponent();
         }
 
-        public FormPlugins(ref ThreadedArrayList pluginList)
+        public FormPlugins(ref ArrayList pluginList)
         {
             // This call is required by the designer.
             InitializeComponent();
@@ -55,7 +54,7 @@ namespace GenieClient
             }
         }
 
-        private ThreadedArrayList m_PluginList;
+        private ArrayList m_PluginList;
 
         private void PopulatePluginList()
         {

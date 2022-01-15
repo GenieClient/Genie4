@@ -10,7 +10,7 @@ namespace GenieClient.Genie
     {
         public void ActivateAll()
         {
-            var oList = new Collections.ThreadedArrayList();
+            var oList = new ArrayList();
             if (AcquireReaderLock())
             {
                 try
@@ -33,7 +33,7 @@ namespace GenieClient.Genie
 
         public void InActivateAll()
         {
-            var oList = new Collections.ThreadedArrayList();
+            var oList = new ArrayList();
             if (AcquireReaderLock())
             {
                 try

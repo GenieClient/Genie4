@@ -9,7 +9,7 @@ namespace GenieClient.Genie
         public Queue EventList = new Queue();
         private object m_oThreadLock = new object(); // Thread safety
 
-        public class Queue : Collections.ThreadedArrayList
+        public class Queue : Collections.ArrayList
         {
             public class EventItem
             {
