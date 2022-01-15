@@ -140,8 +140,11 @@ namespace GenieClient.Genie
             }
         }
 
-        public DateTime oSpellTimeStart;
+        public DateTime SpellTimeStart;
+        public DateTime RoundTimeEnd;
         private static DateTime m_oBlankTimer = DateTime.Parse("0001-01-01");
+
+
 
         public string ParseGlobalVars(object sVar)
         {
@@ -202,8 +205,8 @@ namespace GenieClient.Genie
         public string ParseSpecialVariables(string sText)
         {
             var argoDateEnd = DateTime.Now;
-            double d = Utility.GetTimeDiffInMilliseconds(oSpellTimeStart, argoDateEnd);
-            if (d > 0 & oSpellTimeStart != m_oBlankTimer)
+            double d = Utility.GetTimeDiffInMilliseconds(SpellTimeStart, argoDateEnd);
+            if (d > 0 & SpellTimeStart != m_oBlankTimer)
             {
                 sText = sText.Replace("@spelltime@", (d / 1000).ToString());
             }
@@ -478,66 +481,23 @@ namespace GenieClient.Genie
 
             public void SetDefaultPresets()
             {
-                string argsKey = "roomname";
-                string argsColorName = "Yellow,DarkBlue";
-                Add(argsKey, argsColorName);
-                string argsKey1 = "roomdesc";
-                string argsColorName1 = "Silver";
-                Add(argsKey1, argsColorName1);
-                string argsKey2 = "creatures";
-                string argsColorName2 = "Cyan";
-                Add(argsKey2, argsColorName2);
-                string argsKey3 = "speech";
-                string argsColorName3 = "Yellow";
-                Add(argsKey3, argsColorName3);
-                string argsKey4 = "whispers";
-                string argsColorName4 = "Magenta";
-                Add(argsKey4, argsColorName4);
-                string argsKey5 = "thoughts";
-                string argsColorName5 = "Cyan";
-                Add(argsKey5, argsColorName5);
-                // Add("watching", "0")
-                // Add("commands", "0")
-                // Add("echo", "0")
-                // Add("scriptecho", "0")
-                // Add("scriptcommands", "0")
-                // Add("scripterrors", "0")
-                // Add("scriptdebug", "0")
-
-                // Add("default", "WhiteSmoke")
-                // Add("object", "Transparent,#152525")
-                // Add("objectnoun", "Cyan,#152525")
-
-                string argsKey6 = "roundtime";
-                string argsColorName6 = "MediumBlue,#00004b";
-                Add(argsKey6, argsColorName6);
-                string argsKey7 = "health";
-                string argsColorName7 = "Maroon,#400000";
-                Add(argsKey7, argsColorName7);
-                string argsKey8 = "mana";
-                string argsColorName8 = "Navy,#000040";
-                Add(argsKey8, argsColorName8);
-                string argsKey9 = "stamina";
-                string argsColorName9 = "Green,#004000";
-                Add(argsKey9, argsColorName9);
-                string argsKey10 = "spirit";
-                string argsColorName10 = "Purple,#400040";
-                Add(argsKey10, argsColorName10);
-                string argsKey11 = "concentration";
-                string argsColorName11 = "Navy,#000040";
-                Add(argsKey11, argsColorName11);
-                string argsKey12 = "inputuser";
-                string argsColorName12 = "Yellow";
-                Add(argsKey12, argsColorName12);
-                string argsKey13 = "inputother";
-                string argsColorName13 = "GreenYellow";
-                Add(argsKey13, argsColorName13);
-                string argsKey14 = "scriptecho";
-                string argsColorName14 = "Cyan";
-                Add(argsKey14, argsColorName14);
-                string argsKey15 = "familiar";
-                string argsColorName15 = "PaleGreen";
-                Add(argsKey15, argsColorName15);
+                Add("roomname", "Yellow,DarkBlue");
+                Add("roomdesc", "Silver");
+                Add("creatures", "Cyan");
+                Add("speech", "Yellow");
+                Add("whispers", "Magenta");
+                Add("thoughts", "Cyan");
+                Add("roundtime", "MediumBlue");
+                Add("health", "Maroon");
+                Add("mana", "Navy");
+                Add("stamina", "Green");
+                Add("spirit", "Purple");
+                Add("concentration", "Navy");
+                Add("inputuser", "Yellow");
+                Add("inputother", "GreenYellow");
+                Add("scriptecho", "Cyan");
+                Add("familiar", "PaleGreen");
+                Add("castbar", "Magenta");
             }
 
             public Presets()
@@ -954,9 +914,8 @@ namespace GenieClient.Genie
                 string argkey40 = "righthandnoun";
                 string argvalue40 = "";
                 Add(argkey40, argvalue40, VariableType.Reserved);
-                string argkey41 = "gametime";
-                string argvalue41 = "0";
-                Add(argkey41, argvalue41, VariableType.Reserved);
+                Add("gametime", "0", VariableType.Reserved);
+                Add("casttime", "0", VariableType.Reserved);
                 string argkey42 = "poisoned";
                 string argvalue42 = "0";
                 Add(argkey42, argvalue42, VariableType.Reserved);

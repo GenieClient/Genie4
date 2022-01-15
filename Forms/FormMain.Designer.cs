@@ -33,6 +33,7 @@ namespace GenieClient
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            GenieClient.ComponentRoundtime _Castbar;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this._StatusStripMain = new System.Windows.Forms.StatusStrip();
             this._ToolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -146,6 +147,7 @@ namespace GenieClient
             this._PanelInput = new System.Windows.Forms.Panel();
             this._TextBoxInput = new GenieClient.ComponentTextBox();
             this._OpenFileDialogProfile = new System.Windows.Forms.OpenFileDialog();
+            this._Castbar = new GenieClient.ComponentRoundtime();
             this._StatusStripMain.SuspendLayout();
             this._MenuStripMain.SuspendLayout();
             this._PanelBars.SuspendLayout();
@@ -174,7 +176,7 @@ namespace GenieClient
             this._StatusStripMain.Location = new System.Drawing.Point(0, 744);
             this._StatusStripMain.Name = "_StatusStripMain";
             this._StatusStripMain.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this._StatusStripMain.Size = new System.Drawing.Size(1149, 24);
+            this._StatusStripMain.Size = new System.Drawing.Size(1449, 24);
             this._StatusStripMain.TabIndex = 2;
             // 
             // _ToolStripStatusLabel1
@@ -184,7 +186,7 @@ namespace GenieClient
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this._ToolStripStatusLabel1.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this._ToolStripStatusLabel1.Name = "_ToolStripStatusLabel1";
-            this._ToolStripStatusLabel1.Size = new System.Drawing.Size(1132, 19);
+            this._ToolStripStatusLabel1.Size = new System.Drawing.Size(1432, 19);
             this._ToolStripStatusLabel1.Spring = true;
             this._ToolStripStatusLabel1.Text = "Ready";
             this._ToolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -303,7 +305,7 @@ namespace GenieClient
             this._MenuStripMain.Location = new System.Drawing.Point(0, 0);
             this._MenuStripMain.Name = "_MenuStripMain";
             this._MenuStripMain.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            this._MenuStripMain.Size = new System.Drawing.Size(1149, 24);
+            this._MenuStripMain.Size = new System.Drawing.Size(1449, 24);
             this._MenuStripMain.TabIndex = 1;
             this._MenuStripMain.Text = "MenuStrip1";
             // 
@@ -853,38 +855,38 @@ namespace GenieClient
             // _ToolStripSeparator3
             // 
             this._ToolStripSeparator3.Name = "_ToolStripSeparator3";
-            this._ToolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+            this._ToolStripSeparator3.Size = new System.Drawing.Size(129, 6);
             // 
             // _ChangelogToolStripMenuItem
             // 
             this._ChangelogToolStripMenuItem.Name = "_ChangelogToolStripMenuItem";
-            this._ChangelogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this._ChangelogToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this._ChangelogToolStripMenuItem.Text = "&Changelog";
             this._ChangelogToolStripMenuItem.Click += new System.EventHandler(this.ChangelogToolStripMenuItem_Click);
             // 
             // _ToolStripSeparator10
             // 
             this._ToolStripSeparator10.Name = "_ToolStripSeparator10";
-            this._ToolStripSeparator10.Size = new System.Drawing.Size(177, 6);
+            this._ToolStripSeparator10.Size = new System.Drawing.Size(129, 6);
             // 
             // _OpenGenieDiscordToolStripMenuItem
             // 
             this._OpenGenieDiscordToolStripMenuItem.Name = "_OpenGenieDiscordToolStripMenuItem";
-            this._OpenGenieDiscordToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this._OpenGenieDiscordToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this._OpenGenieDiscordToolStripMenuItem.Text = "&Discord";
             this._OpenGenieDiscordToolStripMenuItem.Click += new System.EventHandler(this.OpenGenieDiscordToolStripMenuItem_Click);
             // 
             // OpenGenieGithubToolStripMenuItem
             // 
             this.OpenGenieGithubToolStripMenuItem.Name = "OpenGenieGithubToolStripMenuItem";
-            this.OpenGenieGithubToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.OpenGenieGithubToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.OpenGenieGithubToolStripMenuItem.Text = "GitHub";
             this.OpenGenieGithubToolStripMenuItem.Click += new System.EventHandler(this.OpenGenieGithubToolStripMenuItem_Click);
             // 
             // _OpenGenieDocsToolStripMenuItem
             // 
             this._OpenGenieDocsToolStripMenuItem.Name = "_OpenGenieDocsToolStripMenuItem";
-            this._OpenGenieDocsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this._OpenGenieDocsToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this._OpenGenieDocsToolStripMenuItem.Text = "&Wiki";
             this._OpenGenieDocsToolStripMenuItem.Click += new System.EventHandler(this.OpenGenieWikiToolStripMenuItem_Click);
             // 
@@ -892,10 +894,10 @@ namespace GenieClient
             // 
             this._LabelSpellC.Dock = System.Windows.Forms.DockStyle.Fill;
             this._LabelSpellC.ForeColor = System.Drawing.Color.White;
-            this._LabelSpellC.Location = new System.Drawing.Point(913, 0);
+            this._LabelSpellC.Location = new System.Drawing.Point(925, 0);
             this._LabelSpellC.Margin = new System.Windows.Forms.Padding(0);
             this._LabelSpellC.Name = "_LabelSpellC";
-            this._LabelSpellC.Size = new System.Drawing.Size(236, 43);
+            this._LabelSpellC.Size = new System.Drawing.Size(242, 43);
             this._LabelSpellC.TabIndex = 12;
             this._LabelSpellC.Text = "None";
             this._LabelSpellC.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -904,10 +906,10 @@ namespace GenieClient
             // 
             this._LabelRHC.Dock = System.Windows.Forms.DockStyle.Fill;
             this._LabelRHC.ForeColor = System.Drawing.Color.White;
-            this._LabelRHC.Location = new System.Drawing.Point(667, 0);
+            this._LabelRHC.Location = new System.Drawing.Point(673, 0);
             this._LabelRHC.Margin = new System.Windows.Forms.Padding(0);
             this._LabelRHC.Name = "_LabelRHC";
-            this._LabelRHC.Size = new System.Drawing.Size(234, 43);
+            this._LabelRHC.Size = new System.Drawing.Size(240, 43);
             this._LabelRHC.TabIndex = 11;
             this._LabelRHC.Text = "Empty";
             this._LabelRHC.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -919,7 +921,7 @@ namespace GenieClient
             this._LabelLHC.Location = new System.Drawing.Point(420, 0);
             this._LabelLHC.Margin = new System.Windows.Forms.Padding(0);
             this._LabelLHC.Name = "_LabelLHC";
-            this._LabelLHC.Size = new System.Drawing.Size(235, 43);
+            this._LabelLHC.Size = new System.Drawing.Size(241, 43);
             this._LabelLHC.TabIndex = 10;
             this._LabelLHC.Text = "Empty";
             this._LabelLHC.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -929,7 +931,7 @@ namespace GenieClient
             this._LabelSpell.Dock = System.Windows.Forms.DockStyle.Fill;
             this._LabelSpell.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this._LabelSpell.ForeColor = System.Drawing.Color.DimGray;
-            this._LabelSpell.Location = new System.Drawing.Point(901, 0);
+            this._LabelSpell.Location = new System.Drawing.Point(913, 0);
             this._LabelSpell.Margin = new System.Windows.Forms.Padding(0);
             this._LabelSpell.Name = "_LabelSpell";
             this._LabelSpell.Size = new System.Drawing.Size(12, 43);
@@ -942,7 +944,7 @@ namespace GenieClient
             this._LabelRH.Dock = System.Windows.Forms.DockStyle.Fill;
             this._LabelRH.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this._LabelRH.ForeColor = System.Drawing.Color.DimGray;
-            this._LabelRH.Location = new System.Drawing.Point(655, 0);
+            this._LabelRH.Location = new System.Drawing.Point(661, 0);
             this._LabelRH.Margin = new System.Windows.Forms.Padding(0);
             this._LabelRH.Name = "_LabelRH";
             this._LabelRH.Size = new System.Drawing.Size(12, 43);
@@ -983,7 +985,7 @@ namespace GenieClient
             this._PanelBars.Location = new System.Drawing.Point(0, 724);
             this._PanelBars.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._PanelBars.Name = "_PanelBars";
-            this._PanelBars.Size = new System.Drawing.Size(1149, 20);
+            this._PanelBars.Size = new System.Drawing.Size(1449, 20);
             this._PanelBars.TabIndex = 10;
             // 
             // _TableLayoutPanelBars
@@ -1005,7 +1007,7 @@ namespace GenieClient
             this._TableLayoutPanelBars.Name = "_TableLayoutPanelBars";
             this._TableLayoutPanelBars.RowCount = 1;
             this._TableLayoutPanelBars.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._TableLayoutPanelBars.Size = new System.Drawing.Size(1149, 20);
+            this._TableLayoutPanelBars.Size = new System.Drawing.Size(1449, 20);
             this._TableLayoutPanelBars.TabIndex = 0;
             // 
             // _ComponentBarsConc
@@ -1017,10 +1019,10 @@ namespace GenieClient
             this._ComponentBarsConc.Dock = System.Windows.Forms.DockStyle.Fill;
             this._ComponentBarsConc.ForegroundColor = System.Drawing.Color.Teal;
             this._ComponentBarsConc.IsConnected = false;
-            this._ComponentBarsConc.Location = new System.Drawing.Point(458, 0);
+            this._ComponentBarsConc.Location = new System.Drawing.Point(578, 0);
             this._ComponentBarsConc.Margin = new System.Windows.Forms.Padding(0);
             this._ComponentBarsConc.Name = "_ComponentBarsConc";
-            this._ComponentBarsConc.Size = new System.Drawing.Size(229, 20);
+            this._ComponentBarsConc.Size = new System.Drawing.Size(289, 20);
             this._ComponentBarsConc.TabIndex = 20;
             this._ComponentBarsConc.Value = 100;
             // 
@@ -1033,10 +1035,10 @@ namespace GenieClient
             this._ComponentBarsFatigue.Dock = System.Windows.Forms.DockStyle.Fill;
             this._ComponentBarsFatigue.ForegroundColor = System.Drawing.Color.Green;
             this._ComponentBarsFatigue.IsConnected = false;
-            this._ComponentBarsFatigue.Location = new System.Drawing.Point(687, 0);
+            this._ComponentBarsFatigue.Location = new System.Drawing.Point(867, 0);
             this._ComponentBarsFatigue.Margin = new System.Windows.Forms.Padding(0);
             this._ComponentBarsFatigue.Name = "_ComponentBarsFatigue";
-            this._ComponentBarsFatigue.Size = new System.Drawing.Size(229, 20);
+            this._ComponentBarsFatigue.Size = new System.Drawing.Size(289, 20);
             this._ComponentBarsFatigue.TabIndex = 17;
             this._ComponentBarsFatigue.Value = 100;
             // 
@@ -1049,10 +1051,10 @@ namespace GenieClient
             this._ComponentBarsMana.Dock = System.Windows.Forms.DockStyle.Fill;
             this._ComponentBarsMana.ForegroundColor = System.Drawing.Color.Navy;
             this._ComponentBarsMana.IsConnected = false;
-            this._ComponentBarsMana.Location = new System.Drawing.Point(229, 0);
+            this._ComponentBarsMana.Location = new System.Drawing.Point(289, 0);
             this._ComponentBarsMana.Margin = new System.Windows.Forms.Padding(0);
             this._ComponentBarsMana.Name = "_ComponentBarsMana";
-            this._ComponentBarsMana.Size = new System.Drawing.Size(229, 20);
+            this._ComponentBarsMana.Size = new System.Drawing.Size(289, 20);
             this._ComponentBarsMana.TabIndex = 19;
             this._ComponentBarsMana.Value = 100;
             // 
@@ -1065,10 +1067,10 @@ namespace GenieClient
             this._ComponentBarsSpirit.Dock = System.Windows.Forms.DockStyle.Fill;
             this._ComponentBarsSpirit.ForegroundColor = System.Drawing.Color.Purple;
             this._ComponentBarsSpirit.IsConnected = false;
-            this._ComponentBarsSpirit.Location = new System.Drawing.Point(916, 0);
+            this._ComponentBarsSpirit.Location = new System.Drawing.Point(1156, 0);
             this._ComponentBarsSpirit.Margin = new System.Windows.Forms.Padding(0);
             this._ComponentBarsSpirit.Name = "_ComponentBarsSpirit";
-            this._ComponentBarsSpirit.Size = new System.Drawing.Size(233, 20);
+            this._ComponentBarsSpirit.Size = new System.Drawing.Size(293, 20);
             this._ComponentBarsSpirit.TabIndex = 18;
             this._ComponentBarsSpirit.Value = 100;
             // 
@@ -1084,19 +1086,20 @@ namespace GenieClient
             this._ComponentBarsHealth.Location = new System.Drawing.Point(0, 0);
             this._ComponentBarsHealth.Margin = new System.Windows.Forms.Padding(0);
             this._ComponentBarsHealth.Name = "_ComponentBarsHealth";
-            this._ComponentBarsHealth.Size = new System.Drawing.Size(229, 20);
+            this._ComponentBarsHealth.Size = new System.Drawing.Size(289, 20);
             this._ComponentBarsHealth.TabIndex = 0;
             this._ComponentBarsHealth.Value = 100;
             // 
             // _PanelStatus
             // 
             this._PanelStatus.BackColor = System.Drawing.Color.Black;
+            this._PanelStatus.Controls.Add(this._Castbar);
             this._PanelStatus.Controls.Add(this._TableLayoutPanelFlow);
             this._PanelStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
             this._PanelStatus.Location = new System.Drawing.Point(0, 658);
             this._PanelStatus.Margin = new System.Windows.Forms.Padding(0);
             this._PanelStatus.Name = "_PanelStatus";
-            this._PanelStatus.Size = new System.Drawing.Size(1149, 43);
+            this._PanelStatus.Size = new System.Drawing.Size(1449, 43);
             this._PanelStatus.TabIndex = 12;
             this._PanelStatus.Visible = false;
             // 
@@ -1125,7 +1128,8 @@ namespace GenieClient
             this._TableLayoutPanelFlow.Name = "_TableLayoutPanelFlow";
             this._TableLayoutPanelFlow.RowCount = 1;
             this._TableLayoutPanelFlow.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._TableLayoutPanelFlow.Size = new System.Drawing.Size(1149, 43);
+            this._TableLayoutPanelFlow.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this._TableLayoutPanelFlow.Size = new System.Drawing.Size(1167, 43);
             this._TableLayoutPanelFlow.TabIndex = 0;
             // 
             // _PanelFixed
@@ -1175,7 +1179,7 @@ namespace GenieClient
             this._ToolStripButtons.Location = new System.Drawing.Point(0, 24);
             this._ToolStripButtons.Name = "_ToolStripButtons";
             this._ToolStripButtons.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this._ToolStripButtons.Size = new System.Drawing.Size(1149, 25);
+            this._ToolStripButtons.Size = new System.Drawing.Size(1449, 25);
             this._ToolStripButtons.TabIndex = 14;
             this._ToolStripButtons.VisibleChanged += new System.EventHandler(this.ToolStripButtons_VisibleChanged);
             // 
@@ -1218,7 +1222,7 @@ namespace GenieClient
             this._PanelInput.Margin = new System.Windows.Forms.Padding(0);
             this._PanelInput.Name = "_PanelInput";
             this._PanelInput.Padding = new System.Windows.Forms.Padding(4, 2, 0, 0);
-            this._PanelInput.Size = new System.Drawing.Size(1149, 23);
+            this._PanelInput.Size = new System.Drawing.Size(1449, 23);
             this._PanelInput.TabIndex = 0;
             // 
             // _TextBoxInput
@@ -1234,7 +1238,7 @@ namespace GenieClient
             this._TextBoxInput.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._TextBoxInput.Multiline = true;
             this._TextBoxInput.Name = "_TextBoxInput";
-            this._TextBoxInput.Size = new System.Drawing.Size(1145, 21);
+            this._TextBoxInput.Size = new System.Drawing.Size(1445, 21);
             this._TextBoxInput.TabIndex = 0;
             this._TextBoxInput.WordWrap = false;
             this._TextBoxInput.SendText += new GenieClient.ComponentTextBox.SendTextEventHandler(this.TextBoxInput_SendText);
@@ -1249,12 +1253,27 @@ namespace GenieClient
             this._OpenFileDialogProfile.RestoreDirectory = true;
             this._OpenFileDialogProfile.Title = "Open Profile";
             // 
+            // componentCastbar
+            // 
+            this._Castbar.BackColor = System.Drawing.Color.Black;
+            this._Castbar.BackgroundColor = System.Drawing.Color.Black;
+            this._Castbar.BackgroundColorRT = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(75)))));
+            this._Castbar.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this._Castbar.BorderColorRT = System.Drawing.Color.White;
+            this._Castbar.ForegroundColor = System.Drawing.Color.Magenta;
+            this._Castbar.IsConnected = false;
+            this._Castbar.Location = new System.Drawing.Point(1172, 7);
+            this._Castbar.Margin = new System.Windows.Forms.Padding(5);
+            this._Castbar.Name = "componentCastbar";
+            this._Castbar.Size = new System.Drawing.Size(117, 30);
+            this._Castbar.TabIndex = 1;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ClientSize = new System.Drawing.Size(1149, 768);
+            this.ClientSize = new System.Drawing.Size(1449, 768);
             this.Controls.Add(this._PanelStatus);
             this.Controls.Add(this._PanelInput);
             this.Controls.Add(this._PanelBars);
@@ -1592,7 +1611,29 @@ namespace GenieClient
                 }
             }
         }
+        
+        internal ComponentRoundtime Castbar
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _Castbar;
+            }
 
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_Castbar != null)
+                {
+                }
+
+                _Castbar = value;
+                if (_Castbar != null)
+                {
+                }
+
+            }
+            }
         private ComponentRoundtime _oRTControl;
 
         internal ComponentRoundtime oRTControl
@@ -4013,6 +4054,7 @@ namespace GenieClient
         private ToolStripMenuItem _SaveSizedDefaultLayoutToolStripMenuItem;
         private ToolStripMenuItem OpenGenieGithubToolStripMenuItem;
         private ToolStripMenuItem _OpenGenieDiscordToolStripMenuItem;
+        private ComponentRoundtime _Castbar;
 
         internal ToolStripMenuItem SaveSizedDefaultLayoutToolStripMenuItem
         {

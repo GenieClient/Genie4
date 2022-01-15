@@ -47,6 +47,10 @@ namespace GenieClient.Genie
 
         public delegate void EventRoundTimeEventHandler(int time);
 
+        public event EventCastTimeEventHandler EventCastTime;
+
+        public delegate void EventCastTimeEventHandler();
+
         public event EventSpellTimeEventHandler EventSpellTime;
 
         public delegate void EventSpellTimeEventHandler();
@@ -1938,6 +1942,20 @@ namespace GenieClient.Genie
                         {
                             string argstrAttributeName24 = "value";
                             m_iRoundTime = int.Parse(GetAttributeData(oXmlNode, argstrAttributeName24));
+                            break;
+                        }
+
+                    case "castTime":
+                        {
+                            if (m_oGlobals.VariableList.Contains("casttime"))
+                            {
+                                m_oGlobals.VariableList["casttime"] = GetAttributeData(oXmlNode, "value");
+                            }
+                            else
+                            {
+                                m_oGlobals.VariableList.Add("casttime", GetAttributeData(oXmlNode, "value"));
+                            }
+                            EventCastTime?.Invoke();
                             break;
                         }
 

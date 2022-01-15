@@ -226,6 +226,7 @@ namespace GenieClient
                     _m_oGame.EventStatusBarUpdate -= Game_EventStatusBarUpdate;
                     _m_oGame.EventClearSpellTime -= Game_EventClearSpellTime;
                     _m_oGame.EventSpellTime -= Game_EventSpellTime;
+                    _m_oGame.EventCastTime -= Game_EventCastTime; 
                     _m_oGame.EventRoundTime -= Game_EventRoundtime;
                     _m_oGame.EventTriggerPrompt -= Game_EventTriggerPrompt;
                     _m_oGame.EventTriggerMove -= Game_EventTriggerMove;
@@ -247,6 +248,7 @@ namespace GenieClient
                     _m_oGame.EventStatusBarUpdate += Game_EventStatusBarUpdate;
                     _m_oGame.EventClearSpellTime += Game_EventClearSpellTime;
                     _m_oGame.EventSpellTime += Game_EventSpellTime;
+                    _m_oGame.EventCastTime += Game_EventCastTime;
                     _m_oGame.EventRoundTime += Game_EventRoundtime;
                     _m_oGame.EventTriggerPrompt += Game_EventTriggerPrompt;
                     _m_oGame.EventTriggerMove += Game_EventTriggerMove;
@@ -4191,6 +4193,7 @@ namespace GenieClient
                         ComponentBarsConc.IsConnected = bConnected;
                         IconBar.IsConnected = bConnected;
                         oRTControl.IsConnected = bConnected;
+                        Castbar.IsConnected = bConnected;
                         SafeUpdateMainWindowTitle();
                         if (bConnected == true)
                         {
@@ -5640,10 +5643,10 @@ namespace GenieClient
         {
             LabelLHC.Text = Conversions.ToString(m_oGlobals.VariableList["lefthand"]);
             LabelRHC.Text = Conversions.ToString(m_oGlobals.VariableList["righthand"]);
-            if (m_oGlobals.Config.bShowSpellTimer == true && m_oGlobals.oSpellTimeStart != DateTime.MinValue)
+            if (m_oGlobals.Config.bShowSpellTimer == true && m_oGlobals.SpellTimeStart != DateTime.MinValue)
             {
                 var argoDateEnd = DateTime.Now;
-                LabelSpellC.Text = Conversions.ToString("(" + Utility.GetTimeDiffInSeconds(m_oGlobals.oSpellTimeStart, argoDateEnd) + ") " + m_oGlobals.VariableList["preparedspell"]);
+                LabelSpellC.Text = Conversions.ToString("(" + Utility.GetTimeDiffInSeconds(m_oGlobals.SpellTimeStart, argoDateEnd) + ") " + m_oGlobals.VariableList["preparedspell"]);
             }
             else
             {
@@ -5699,12 +5702,26 @@ namespace GenieClient
 
         private void SetSpellTime()
         {
-            m_oGlobals.oSpellTimeStart = DateTime.Now;
+            m_oGlobals.SpellTimeStart = DateTime.Now;
         }
 
         private void ClearSpellTime()
         {
-            m_oGlobals.oSpellTimeStart = default;
+            m_oGlobals.SpellTimeStart = default;
+        }
+
+        private void SetCastTime()
+        {
+            int gameTime;
+            int castTime;
+            if (int.TryParse(m_oGlobals.VariableList["gametime"].ToString(), out gameTime) && int.TryParse(m_oGlobals.VariableList["casttime"].ToString(), out castTime) && m_oGlobals.VariableList["preparedspell"].ToString() != "None")
+            {
+                Castbar.SetRT(castTime - gameTime);
+            }
+            else
+            {
+                Castbar.SetRT(0);
+            }
         }
 
         public delegate void SetRoundtimeDelegate(int iTime);
@@ -5726,6 +5743,27 @@ namespace GenieClient
             catch (Exception ex)
             {
                 HandleGenieException("RoundTime", ex.Message, ex.ToString());
+                /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+            }
+        }
+        public delegate void SetCastTimeDelegate();
+        private void Game_EventCastTime()
+        {
+            try
+            {
+                if (InvokeRequired == true)
+                {
+                    Invoke(new SetCastTimeDelegate(SetCastTime));
+                }
+                else
+                {
+                    SetCastTime();
+                }
+            }
+            /* TODO ERROR: Skipped IfDirectiveTrivia */
+            catch (Exception ex)
+            {
+                HandleGenieException("CastTime", ex.Message, ex.ToString());
                 /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
             }
         }
@@ -5888,22 +5926,15 @@ namespace GenieClient
             }
         }
 
-        private DateTime m_oRoundtimeEnd;
-
-        private bool HasRoundtime
+        private bool HasRoundTime
         {
             get
             {
-                if (DateTime.Now < m_oRoundtimeEnd)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return DateTime.Now < m_oGlobals.RoundTimeEnd; 
             }
         }
+
+        
 
         private void SetRoundTime(int iTime)
         {
@@ -5931,7 +5962,7 @@ namespace GenieClient
                 ShowDialogException("RoundTime", "Unable to acquire reader lock.");
             }
 
-            m_oRoundtimeEnd = DateTime.Now.AddMilliseconds(iTime * 1000 + m_oGlobals.Config.dRTOffset * 1000);
+            m_oGlobals.RoundTimeEnd = DateTime.Now.AddMilliseconds(iTime * 1000 + m_oGlobals.Config.dRTOffset * 1000);
         }
 
         public void InputKeyDown(KeyEventArgs e)
@@ -6564,6 +6595,14 @@ namespace GenieClient
                                 break;
                             }
 
+                        case "castbar":
+                            {
+                                Castbar.ForegroundColor = m_oGlobals.PresetList["castbar"].FgColor;
+                                Castbar.BackgroundColorRT = m_oGlobals.PresetList["castbar"].BgColor;
+                                Castbar.Refresh();
+                                break;
+                            }
+
                         case "health":
                             {
                                 ComponentBarsHealth.ForegroundColor = m_oGlobals.PresetList["health"].FgColor;
@@ -6613,6 +6652,9 @@ namespace GenieClient
                                 oRTControl.ForegroundColor = m_oGlobals.PresetList["roundtime"].FgColor;
                                 oRTControl.BackgroundColorRT = m_oGlobals.PresetList["roundtime"].BgColor;
                                 oRTControl.Refresh();
+                                Castbar.ForegroundColor = m_oGlobals.PresetList["castbar"].FgColor;
+                                Castbar.BackgroundColorRT = m_oGlobals.PresetList["castbar"].BgColor;
+                                Castbar.Refresh();
                                 ComponentBarsHealth.ForegroundColor = m_oGlobals.PresetList["health"].FgColor;
                                 ComponentBarsHealth.BackgroundColor = m_oGlobals.PresetList["health"].BgColor;
                                 ComponentBarsHealth.BorderColor = m_oGlobals.PresetList["health"].BgColor;
@@ -7040,8 +7082,7 @@ namespace GenieClient
             string argsAction = m_oGlobals.Events.Poll();
             RunQueueCommand(argsAction, ""); // , "Event")
             int iSent = 0;
-            bool argbInRoundtime = HasRoundtime;
-            string sCommandQueue = m_oGlobals.CommandQueue.Poll(argbInRoundtime);
+            string sCommandQueue = m_oGlobals.CommandQueue.Poll(HasRoundTime);
             while (sCommandQueue.Length > 0)
             {
                 RunQueueCommand(sCommandQueue, ""); // , "Queue")
@@ -7053,12 +7094,11 @@ namespace GenieClient
                 // Exit While
                 // End If
 
-                bool argbInRoundtime1 = HasRoundtime;
-                sCommandQueue = m_oGlobals.CommandQueue.Poll(argbInRoundtime1);
+                sCommandQueue = m_oGlobals.CommandQueue.Poll(HasRoundTime);
             }
 
             TickScripts();
-            if (m_oGlobals.Config.bShowSpellTimer == true && m_oGlobals.oSpellTimeStart != DateTime.MinValue)
+            if (m_oGlobals.Config.bShowSpellTimer == true && m_oGlobals.SpellTimeStart != DateTime.MinValue)
             {
                 SafeSetStatusBarLabels();
             }
