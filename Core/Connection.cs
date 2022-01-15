@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -143,7 +144,8 @@ namespace GenieClient.Genie
 
                 m_sHostname = sHostname;
                 m_SocketClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                m_IPEndPoint = new IPEndPoint(Dns.GetHostEntry(sHostname).AddressList[0], iPort);
+                var hostEntryList = Dns.GetHostEntry(sHostname);
+                m_IPEndPoint = new IPEndPoint(hostEntryList.AddressList.Where(i => i.AddressFamily == AddressFamily.InterNetwork).FirstOrDefault(), iPort);
                 m_SocketClient.BeginConnect(m_IPEndPoint, new AsyncCallback(ConnectCallback), m_SocketClient);
             }
             catch (SocketException ex)

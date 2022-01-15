@@ -197,6 +197,7 @@ namespace GenieClient.Genie
         private ConnectStates m_oConnectState;
         private object m_oThreadLock = new object(); // Thread safety
         private bool m_bFamiliarLineParse = false;
+        public bool IsLich = false;
 
         /* TODO ERROR: Skipped RegionDirectiveTrivia */
         public enum WindowTarget
@@ -1085,11 +1086,11 @@ namespace GenieClient.Genie
                                     {
                                         if (strRow.IndexOf("GAMEHOST=") > -1)
                                         {
-                                            m_sConnectHost = strRow.Substring(9);
+                                            m_sConnectHost = IsLich ? m_oGlobals.Config.LichServer : strRow.Substring(9);
                                         }
                                         else if (strRow.IndexOf("GAMEPORT=") > -1)
                                         {
-                                            m_sConnectPort = int.Parse(strRow.Substring(9));
+                                            m_sConnectPort = IsLich ? m_oGlobals.Config.LichPort : int.Parse(strRow.Substring(9));
                                         }
                                         else if (strRow.IndexOf("KEY=") > -1)
                                         {

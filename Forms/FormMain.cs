@@ -5363,8 +5363,9 @@ namespace GenieClient
             }
         }
 
-        private void ReconnectToGame()
+        private void ReconnectToGame(bool isLich = false)
         {
+            m_oGame.IsLich = isLich;
             try
             {
                 if (m_oGame.AccountName.Length > 0)
@@ -5386,8 +5387,9 @@ namespace GenieClient
             }
         }
 
-        private void ConnectToGame(string sAccountName, string sPassword, string sCharacter, string sGame)
+        private void ConnectToGame(string sAccountName, string sPassword, string sCharacter, string sGame, bool isLich = false)
         {
+            m_oGame.IsLich = isLich;
             try
             {
                 if (sPassword.Length > 0)
@@ -7235,7 +7237,7 @@ namespace GenieClient
                 {
                     if (sAccount.Length > 0 & sPassword.Length > 0)
                     {
-                        ConnectToGame(sAccount, sPassword, sCharacter, sGame);
+                        ConnectToGame(sAccount, sPassword, sCharacter, sGame, m_oGame.IsLich);
                     }
                     else
                     {
