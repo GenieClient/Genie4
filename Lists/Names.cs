@@ -7,7 +7,7 @@ using Microsoft.VisualBasic;
 
 namespace GenieClient.Genie
 {
-    public class Names : Collections.ThreadedSortedList
+    public class Names : Collections.SortedList
     {
         private Regex m_oRegexNames = null;
 
@@ -90,7 +90,7 @@ namespace GenieClient.Genie
 
         public void RebuildIndex()
         {
-            var al = new Collections.ThreadedArrayList();
+            var al = new ArrayList();
             foreach (string s in base.Keys)
                 al.Add(s);
             al.Sort();

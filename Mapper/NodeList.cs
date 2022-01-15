@@ -1309,7 +1309,7 @@ namespace GenieClient.Mapper
             }
         }
 
-        private Genie.Collections.ThreadedArrayList m_PathList = new Genie.Collections.ThreadedArrayList();
+        private ArrayList m_PathList = new ArrayList();
 
         public string PathText
         {

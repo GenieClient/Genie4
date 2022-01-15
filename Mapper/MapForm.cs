@@ -277,7 +277,7 @@ namespace GenieClient.Mapper
             {
                 ToolStripDropDownButtonMaps.DropDownItems.Clear();
                 _Zones.Clear();
-                var al = new Genie.Collections.ThreadedSortedList(new INaturalComparer());
+                var al = new SortedList(new INaturalComparer());
                 int iunknown = 1;
                 var diDirectory = new DirectoryInfo(m_oGlobals.Config.MapDir);
                 foreach (FileInfo dif in diDirectory.GetFiles())

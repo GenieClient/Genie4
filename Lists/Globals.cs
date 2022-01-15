@@ -9,7 +9,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
-using GenieClient.Genie.Collections;
 
 namespace GenieClient.Genie
 {
@@ -64,7 +63,7 @@ namespace GenieClient.Genie
         public GagRegExp GagList = new GagRegExp();
         public string GenieKey = string.Empty;
         public string GenieAccount = string.Empty;
-        public ThreadedArrayList PluginList = new ThreadedArrayList();
+        public ArrayList PluginList = new ArrayList();
         public bool PluginsEnabled = true;
         public Hashtable PluginVerifiedKeyList = new Hashtable();
         public Hashtable PluginPremiumKeyList = new Hashtable();
@@ -296,7 +295,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public class Presets : Collections.ThreadedSortedList
+        public class Presets : Collections.SortedList
         {
             public class Preset
             {
@@ -506,7 +505,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public class Variables : Collections.ThreadedSortedList
+        public class Variables : Collections.SortedList
         {
             public enum VariableType
             {
@@ -600,7 +599,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new ThreadedArrayList();
+                    var al = new ArrayList();
                     try
                     {
                         foreach (string s in base.Keys)
@@ -983,7 +982,7 @@ namespace GenieClient.Genie
             return TriggerList.Add(sTrigger, sAction, bIgnoreCase, bIsEvalTrigger, ClassName);
         }
 
-        public class Triggers : Collections.ThreadedSortedList
+        public class Triggers : Collections.SortedList
         {
             public class Trigger
             {
@@ -1021,7 +1020,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new ThreadedArrayList();
+                    var al = new ArrayList();
                     try
                     {
                         foreach (string s in base.Keys)
@@ -1234,7 +1233,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public class HighlightLineBeginsWith : Collections.ThreadedSortedList
+        public class HighlightLineBeginsWith : Collections.SortedList
         {
             public class Highlight
             {
@@ -1264,7 +1263,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new ThreadedArrayList();
+                    var al = new ArrayList();
                     try
                     {
                         foreach (string s in base.Keys)
@@ -1342,7 +1341,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public class HighlightRegExp : Collections.ThreadedSortedList
+        public class HighlightRegExp : Collections.SortedList
         {
             public class Highlight
             {
@@ -1382,7 +1381,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new ThreadedArrayList();
+                    var al = new ArrayList();
                     try
                     {
                         foreach (string s in base.Keys)
@@ -1460,7 +1459,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public class SubstituteRegExp : Collections.ThreadedArrayList
+        public class SubstituteRegExp : Collections.ArrayList
         {
             public class Substitute
             {
@@ -1530,7 +1529,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new ThreadedArrayList();
+                    var al = new ArrayList();
                     try
                     {
                         for (int I = 0, loopTo = base.Count - 1; I <= loopTo; I++)
@@ -1690,7 +1689,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public class GagRegExp : Collections.ThreadedArrayList
+        public class GagRegExp : Collections.ArrayList
         {
             public class Gag
             {
@@ -1758,7 +1757,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new ThreadedArrayList();
+                    var al = new ArrayList();
                     try
                     {
                         for (int I = 0, loopTo = base.Count - 1; I <= loopTo; I++)
@@ -2069,7 +2068,7 @@ namespace GenieClient.Genie
 
         private void AddHighlight(string sLine)
         {
-            var oArgs = new ThreadedArrayList();
+            var oArgs = new ArrayList();
             oArgs = Utility.ParseArgs(sLine);
             if (oArgs.Count > 0)
             {

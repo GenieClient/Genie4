@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace GenieClient.Genie.Collections
 {
-    public class ThreadedArrayList : System.Collections.ArrayList
+    public class ArrayList : System.Collections.ArrayList
     {
         private ReaderWriterLockSlim m_oRWLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
         private const int m_iDefaultTimeout = 250;
@@ -72,11 +72,11 @@ public bool AcquireWriterLock()
             }
         }
 
-        public ThreadedArrayList() : base()
+        public ArrayList() : base()
         {
         }
 
-        public ThreadedArrayList(IComparer comparer) : base((ICollection)comparer)
+        public ArrayList(IComparer comparer) : base((ICollection)comparer)
         {
         }
 
