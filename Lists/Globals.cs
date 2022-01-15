@@ -141,7 +141,7 @@ namespace GenieClient.Genie
         }
 
         public DateTime SpellTimeStart;
-        public DateTime SpellTimeFinish;
+        public DateTime RoundTimeEnd;
         private static DateTime m_oBlankTimer = DateTime.Parse("0001-01-01");
 
 
@@ -497,6 +497,7 @@ namespace GenieClient.Genie
                 Add("inputother", "GreenYellow");
                 Add("scriptecho", "Cyan");
                 Add("familiar", "PaleGreen");
+                Add("castbar", "Magenta");
             }
 
             public Presets()
@@ -913,9 +914,8 @@ namespace GenieClient.Genie
                 string argkey40 = "righthandnoun";
                 string argvalue40 = "";
                 Add(argkey40, argvalue40, VariableType.Reserved);
-                string argkey41 = "gametime";
-                string argvalue41 = "0";
-                Add(argkey41, argvalue41, VariableType.Reserved);
+                Add("gametime", "0", VariableType.Reserved);
+                Add("casttime", "0", VariableType.Reserved);
                 string argkey42 = "poisoned";
                 string argvalue42 = "0";
                 Add(argkey42, argvalue42, VariableType.Reserved);

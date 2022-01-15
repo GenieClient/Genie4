@@ -33,7 +33,7 @@ namespace GenieClient
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            GenieClient.ComponentRoundtime componentCastbar;
+            GenieClient.ComponentRoundtime _Castbar;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this._StatusStripMain = new System.Windows.Forms.StatusStrip();
             this._ToolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -147,7 +147,7 @@ namespace GenieClient
             this._PanelInput = new System.Windows.Forms.Panel();
             this._TextBoxInput = new GenieClient.ComponentTextBox();
             this._OpenFileDialogProfile = new System.Windows.Forms.OpenFileDialog();
-            componentCastbar = new GenieClient.ComponentRoundtime();
+            this._Castbar = new GenieClient.ComponentRoundtime();
             this._StatusStripMain.SuspendLayout();
             this._MenuStripMain.SuspendLayout();
             this._PanelBars.SuspendLayout();
@@ -1093,7 +1093,7 @@ namespace GenieClient
             // _PanelStatus
             // 
             this._PanelStatus.BackColor = System.Drawing.Color.Black;
-            this._PanelStatus.Controls.Add(componentCastbar);
+            this._PanelStatus.Controls.Add(this._Castbar);
             this._PanelStatus.Controls.Add(this._TableLayoutPanelFlow);
             this._PanelStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
             this._PanelStatus.Location = new System.Drawing.Point(0, 658);
@@ -1255,18 +1255,18 @@ namespace GenieClient
             // 
             // componentCastbar
             // 
-            componentCastbar.BackColor = System.Drawing.Color.Black;
-            componentCastbar.BackgroundColor = System.Drawing.Color.Black;
-            componentCastbar.BackgroundColorRT = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(75)))));
-            componentCastbar.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            componentCastbar.BorderColorRT = System.Drawing.Color.White;
-            componentCastbar.ForegroundColor = System.Drawing.Color.Magenta;
-            componentCastbar.IsConnected = false;
-            componentCastbar.Location = new System.Drawing.Point(1172, 7);
-            componentCastbar.Margin = new System.Windows.Forms.Padding(5);
-            componentCastbar.Name = "componentCastbar";
-            componentCastbar.Size = new System.Drawing.Size(117, 30);
-            componentCastbar.TabIndex = 1;
+            this._Castbar.BackColor = System.Drawing.Color.Black;
+            this._Castbar.BackgroundColor = System.Drawing.Color.Black;
+            this._Castbar.BackgroundColorRT = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(75)))));
+            this._Castbar.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this._Castbar.BorderColorRT = System.Drawing.Color.White;
+            this._Castbar.ForegroundColor = System.Drawing.Color.Magenta;
+            this._Castbar.IsConnected = false;
+            this._Castbar.Location = new System.Drawing.Point(1172, 7);
+            this._Castbar.Margin = new System.Windows.Forms.Padding(5);
+            this._Castbar.Name = "componentCastbar";
+            this._Castbar.Size = new System.Drawing.Size(117, 30);
+            this._Castbar.TabIndex = 1;
             // 
             // FormMain
             // 
@@ -1611,24 +1611,24 @@ namespace GenieClient
                 }
             }
         }
-        private ComponentRoundtime _castbar;
+        
         internal ComponentRoundtime Castbar
         {
             [MethodImpl(MethodImplOptions.Synchronized)]
             get
             {
-                return _castbar;
+                return _Castbar;
             }
 
             [MethodImpl(MethodImplOptions.Synchronized)]
             set
             {
-                if (_castbar != null)
+                if (_Castbar != null)
                 {
                 }
 
-                _castbar = value;
-                if (_castbar != null)
+                _Castbar = value;
+                if (_Castbar != null)
                 {
                 }
 
@@ -4054,7 +4054,7 @@ namespace GenieClient
         private ToolStripMenuItem _SaveSizedDefaultLayoutToolStripMenuItem;
         private ToolStripMenuItem OpenGenieGithubToolStripMenuItem;
         private ToolStripMenuItem _OpenGenieDiscordToolStripMenuItem;
-        private ComponentRoundtime componentCastbar;
+        private ComponentRoundtime _Castbar;
 
         internal ToolStripMenuItem SaveSizedDefaultLayoutToolStripMenuItem
         {
