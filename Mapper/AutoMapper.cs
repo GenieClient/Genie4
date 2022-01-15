@@ -181,7 +181,7 @@ namespace GenieClient.Mapper
             return Text;
         }
 
-        private ArrayList m_Movement = new ArrayList();
+        private Genie.Collections.ArrayList m_Movement = new Genie.Collections.ArrayList();
         private bool m_RoomUpdated = false;
         // private bool m_AddDupeRooms = true;
         private bool m_RisingMists = false;
