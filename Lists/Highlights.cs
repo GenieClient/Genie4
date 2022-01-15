@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace GenieClient.Genie
 {
-    public class Highlights : Collections.ThreadedSortedList
+    public class Highlights : Collections.SortedList
     {
         private Regex m_oRegexString = null;
         private Regex m_oRegexLine = null;

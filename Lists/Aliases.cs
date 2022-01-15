@@ -5,7 +5,7 @@ using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient.Genie
 {
-    public class Aliases : Collections.ThreadedSortedList
+    public class Aliases : Collections.SortedList
     {
         public bool Add(string sKey, string sAlias)
         {

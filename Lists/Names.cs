@@ -7,7 +7,7 @@ using Microsoft.VisualBasic;
 
 namespace GenieClient.Genie
 {
-    public class Names : Collections.ThreadedSortedList
+    public class Names : Collections.SortedList
     {
         private Regex m_oRegexNames = null;
 
