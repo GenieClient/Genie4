@@ -1955,10 +1955,39 @@ namespace GenieClient.Genie
                             {
                                 m_oGlobals.VariableList.Add("casttime", GetAttributeData(oXmlNode, "value"));
                             }
+                            VariableChanged("$casttime");
                             EventCastTime?.Invoke();
                             break;
                         }
+                    case "spelltime":
+                        {
+                            if(m_oGlobals.VariableList["preparedspell"].ToString() == "None")
+                            {
+                                if (m_oGlobals.VariableList.Contains("spellstarttime"))
+                                {
+                                    m_oGlobals.VariableList["spellstarttime"] = "0";
+                                }
+                                else
+                                {
+                                    m_oGlobals.VariableList.Add("spellstarttime", "0");
 
+                                }
+                            }
+                            else
+                            {
+                                if (m_oGlobals.VariableList.Contains("spellstarttime"))
+                                {
+                                    m_oGlobals.VariableList["spellstarttime"] = GetAttributeData(oXmlNode, "value");
+                                }
+                                else
+                                {
+                                    m_oGlobals.VariableList.Add("spellstarttime", GetAttributeData(oXmlNode, "value"));
+
+                                }
+                            }
+                            VariableChanged("$spellstarttime");
+                            break;
+                        }
                     case "prompt":
                         {
                             string strBuffer = GetTextFromXML(oXmlNode);

@@ -5706,6 +5706,7 @@ namespace GenieClient
         private void SetSpellTime()
         {
             m_oGlobals.SpellTimeStart = DateTime.Now;
+            m_oGlobals.VariableList["spellstarttime"] = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds().ToString();
         }
 
         private void ClearSpellTime()
