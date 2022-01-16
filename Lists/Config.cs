@@ -50,6 +50,13 @@ namespace GenieClient.Genie
         // Public sConnectString As String = "/FE:GENIE /VERSION:GENIE3 /XML"
         public string sConnectString = "FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_XP /XML";
         public int[] iPickerColors = new int[17];
+        public string RubyPath { get; set; } = @"C:\ruby4lich\bin\ruby.exe";
+        public string CmdPath { get; set; } = @"C:\Windows\System32\cmd.exe";
+        public string LichPath { get; set; } = @"C:\ruby4lich\lich.rbw";
+        public string LichArguments { get; set; } = @"--genie --dragonrealms";
+        public string LichServer { get; set; } = "localhost";
+        public int LichPort { get; set; } = 11024;
+        public int LichStartPause { get; set; } = 5;
 
         public string ScriptDir
         {
@@ -359,6 +366,13 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine("#config {usertimeout} {" + iUserActivityTimeout + "}");
                 oStreamWriter.WriteLine("#config {usertimeoutcommand} {" + sUserActivityCommand + "}");
                 oStreamWriter.WriteLine("#config {showlinks} {" + bShowLinks + "}");
+                oStreamWriter.WriteLine($"#config {{rubypath}} {{{RubyPath}}}");
+                oStreamWriter.WriteLine($"#config {{cmdpath}} {{{CmdPath}}}");
+                oStreamWriter.WriteLine($"#config {{lichpath}} {{{LichPath}}}");
+                oStreamWriter.WriteLine($"#config {{licharguments}} {{{LichArguments}}}");
+                oStreamWriter.WriteLine($"#config {{lichserver}} {{{LichServer}}}");
+                oStreamWriter.WriteLine($"#config {{lichport}} {{{LichPort}}}");
+                oStreamWriter.WriteLine($"#config {{lichstartpause}} {{{LichStartPause}}}");
                 oStreamWriter.Close();
                 return true;
             }
@@ -903,6 +917,48 @@ namespace GenieClient.Genie
                                 // sConnectString = sValue
                             }
 
+                            break;
+                        }
+
+                    case "cmdpath":
+                        {
+                            if (!string.IsNullOrEmpty(sValue)) CmdPath = @$"{sValue}";
+                            break;
+                        }
+
+                    case "rubypath":
+                        {
+                            if (!string.IsNullOrEmpty(sValue)) RubyPath = @$"{sValue}";
+                            break;
+                        }
+
+                    case "lichpath":
+                        {
+                            if (!string.IsNullOrEmpty(sValue)) LichPath = @$"{sValue}";
+                            break;
+                        }
+
+                    case "licharguments":
+                        {
+                            if (!string.IsNullOrEmpty(sValue)) LichArguments = @$"{sValue}";
+                            break;
+                        }
+
+                    case "lichstartpause":
+                        {
+                            if (!string.IsNullOrEmpty(sValue)) LichStartPause = Convert.ToInt32(sValue);
+                            break;
+                        }
+
+                    case "lichserver":
+                        {
+                            if (!string.IsNullOrEmpty(sValue)) LichServer = @$"{sValue}";
+                            break;
+                        }
+
+                    case "lichport":
+                        {
+                            if (!string.IsNullOrEmpty(sValue)) LichPort = Convert.ToInt32(sValue);
                             break;
                         }
 

@@ -15,11 +15,11 @@ namespace GenieClient.Genie
     {
         public event EventReconnectEventHandler EventReconnect;
 
-        public delegate void EventReconnectEventHandler();
+        public delegate void EventReconnectEventHandler(bool isLich);
 
         public event EventConnectEventHandler EventConnect;
 
-        public delegate void EventConnectEventHandler(string sAccountName, string sPassword, string sCharacter, string sGame);
+        public delegate void EventConnectEventHandler(string sAccountName, string sPassword, string sCharacter, string sGame, bool isLich);
 
         public event EventDisconnectEventHandler EventDisconnect;
 
@@ -371,32 +371,40 @@ namespace GenieClient.Genie
 
                                     case "connect":
                                         {
-                                            if (oArgs.Count == 1)
-                                            {
-                                                // EchoText("Reconnect Command Received" & vbNewLine)
-                                                EventReconnect?.Invoke();
-                                            }
-                                            else if (oArgs.Count == 5)
-                                            {
-                                                // EchoText("Connect Command Received" & vbNewLine);
-                                                var arg1 = oGlobals.ParseGlobalVars(oArgs[1].ToString());
-                                                var arg2 = oGlobals.ParseGlobalVars(oArgs[2].ToString());
-                                                var arg3 = oGlobals.ParseGlobalVars(oArgs[3].ToString());
-                                                var arg4 = oGlobals.ParseGlobalVars(oArgs[4].ToString());
+                                            Connect(oArgs);
+                                            break;
+                                        }
 
-                                                EventConnect?.Invoke(arg1, arg2, arg3, arg4);
-                                            }
-                                            else if (oArgs.Count == 2)
-                                            {
-                                                var arg1 = oGlobals.ParseGlobalVars(oArgs[1].ToString());
-                                                var argEmpty = "";
-                                                EventConnect?.Invoke(arg1, argEmpty, argEmpty, argEmpty);
-                                            }
-                                            else
-                                            {
-                                                EchoText("Invalid number of arguments in #connect command. Syntax: #connect account password character game" + System.Environment.NewLine);
-                                            }
+                                    case "lc":
+                                    case "lconnect":
+                                    case "lichconnect":
+                                        {
+                                            EchoText("Starting Lich Server\n");
+                                            string lichLaunch = $"/C {oGlobals.Config.RubyPath} {oGlobals.Config.LichPath} {oGlobals.Config.LichArguments}";
 
+                                            Utility.ExecuteProcess(oGlobals.Config.CmdPath, lichLaunch, false);
+                                            int count = 0;
+                                            while (count < oGlobals.Config.LichStartPause)
+                                            {
+                                                Thread.Sleep(1000);
+                                                count++;
+                                            }
+                                            Connect(oArgs, true);
+                                            break;
+                                        }
+
+                                    case "ls":
+                                    case "lichsettings":
+                                        {
+                                            EchoText($"\nLich Settings\n");
+                                            EchoText($"----------------------------------------------------\n");
+                                            EchoText($"Cmd Path:\t\t {oGlobals.Config.CmdPath}\n");
+                                            EchoText($"Ruby Path:\t\t {oGlobals.Config.RubyPath}\n");
+                                            EchoText($"Lich Path:\t\t {oGlobals.Config.LichPath}\n");
+                                            EchoText($"Lich Arguments:\t {oGlobals.Config.LichArguments}\n");
+                                            EchoText($"Lich Start Pause:\t {oGlobals.Config.LichStartPause}\n");
+                                            EchoText($"Lich Server:\t\t {oGlobals.Config.LichServer}\n");
+                                            EchoText($"Lich Port:\t\t {oGlobals.Config.LichPort}\n\n");
                                             break;
                                         }
 
@@ -2449,6 +2457,36 @@ namespace GenieClient.Genie
 
             /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
             return sResult;
+        }
+
+        private void Connect(ArrayList args, bool isLich = false)
+        {
+            if (args.Count == 1)
+            {
+                // EchoText("Reconnect Command Received" & vbNewLine)
+                EventReconnect?.Invoke(isLich);
+            }
+            else if (args.Count == 5)
+            {
+                // EchoText("Connect Command Received" & vbNewLine);
+                var arg1 = oGlobals.ParseGlobalVars(args[1].ToString());
+                var arg2 = oGlobals.ParseGlobalVars(args[2].ToString());
+                var arg3 = oGlobals.ParseGlobalVars(args[3].ToString());
+                var arg4 = oGlobals.ParseGlobalVars(args[4].ToString());
+
+                EventConnect?.Invoke(arg1, arg2, arg3, arg4, isLich);
+            }
+            else if (args.Count == 2)
+            {
+                var arg1 = oGlobals.ParseGlobalVars(args[1].ToString());
+                var argEmpty = "";
+                EventConnect?.Invoke(arg1, argEmpty, argEmpty, argEmpty, isLich);
+            }
+            else
+            {
+                EchoText("Invalid number of arguments in #connect command. Syntax: #connect account password character game" + Constants.vbNewLine);
+            }
+
         }
 
         public string Eval(string sText)
