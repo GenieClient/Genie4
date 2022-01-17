@@ -7,6 +7,13 @@ namespace GenieClient.Genie
 {
     public class CommandQueue
     {
+        public struct CommandRestrictions 
+        {
+            public bool WaitForRoundtime = false;
+            public bool WaitForStunned = false;
+            public bool WaitForWebbed = false;
+        }
+
         public Queue EventList = new Queue();
         private object m_oThreadLock = new object(); // Thread safety
         private DateTime m_oNextTime;
@@ -15,36 +22,61 @@ namespace GenieClient.Genie
         {
             public class EventItem
             {
-                public double dDelay;
-                public string sAction;
-                public bool bWaitForRoundtime;
+                public double Delay;
+                public string Action;
+                public CommandRestrictions Restrictions;
 
-                public EventItem(double dInDelay, bool bInWaitForRoundtime, string sInAction)
+                public EventItem(double InDelay, string InAction, CommandRestrictions InRestrictions)
                 {
-                    dDelay = dInDelay;
-                    sAction = sInAction;
-                    bWaitForRoundtime = bInWaitForRoundtime;
+                    Delay = InDelay;
+                    Action = InAction;
+                    Restrictions = InRestrictions;
+                }
+
+                public bool IsRestricted(bool InRoundtime, bool IsWebbed, bool IsStunned)
+                {
+                    if (Restrictions.WaitForRoundtime && InRoundtime) return true;
+                    if (Restrictions.WaitForStunned && IsStunned) return true;
+                    if (Restrictions.WaitForWebbed && IsWebbed) return true;
+                    return false;
                 }
             }
 
-            public int Add(double dDelay, bool bWaitForRoundtime, string sAction)
+            public int Add(double dDelay, bool bWaitForRoundtime, string sAction, bool WaitForWebbed, bool WaitForStunned)
             {
-                object argvalue = new EventItem(dDelay, bWaitForRoundtime, sAction);
+                CommandRestrictions restrictions = new CommandRestrictions();
+                restrictions.WaitForRoundtime = bWaitForRoundtime;
+                restrictions.WaitForWebbed = WaitForWebbed; 
+                restrictions.WaitForStunned = WaitForStunned;
+                object argvalue = new EventItem(dDelay, sAction, restrictions);
+                Add(argvalue);
+                return default;
+            }
+            public int Add(double Delay, string Action, CommandRestrictions Restrictions)
+            {
+                object argvalue = new EventItem(Delay, Action, Restrictions);
                 Add(argvalue);
                 return default;
             }
         }
 
-        public int AddToQueue(double dDelay, bool bWaitForRoundtime, string sAction)
+
+        public int AddToQueue(double Delay, string Action, bool WaitForRoundtime, bool WaitForWebbed, bool WaitForStunned)
         {
             if (Monitor.TryEnter(m_oThreadLock, 250))
             {
                 try
                 {
-                    EventList.Add(dDelay, bWaitForRoundtime, sAction);
+                    CommandRestrictions restrictions = new CommandRestrictions 
+                    { 
+                        WaitForRoundtime = WaitForRoundtime, 
+                        WaitForStunned = WaitForStunned, 
+                        WaitForWebbed = WaitForWebbed 
+                    };
+                    EventList.Add(Delay, Action, restrictions);
                     if (EventList.Count == 1) // Only item in list. Set the timer!
                     {
-                        SetNextTime(dDelay);
+                        SetNextTime(Delay);
                     }
                 }
                 finally
@@ -59,7 +91,6 @@ namespace GenieClient.Genie
 
             return default;
         }
-
         public void Clear()
         {
             if (Monitor.TryEnter(m_oThreadLock, 250))
@@ -80,7 +111,7 @@ namespace GenieClient.Genie
         }
 
         // Called on regular intervals to see if our Queue has anything ready to be checked out
-        public string Poll(bool bInRoundtime)
+        public string Poll(bool InRoundtime, bool IsWebbed, bool IsStunned)
         {
             string sReturn = string.Empty;
             if (Monitor.TryEnter(m_oThreadLock))
@@ -97,16 +128,16 @@ namespace GenieClient.Genie
                         if (DateTime.Now >= m_oNextTime)
                         {
                             Queue.EventItem ei = (Queue.EventItem)EventList.get_Item(0);
-                            if (!(bInRoundtime == true & ei.bWaitForRoundtime == true))
+                            if (!ei.IsRestricted(InRoundtime, IsWebbed, IsStunned))
                             {
-                                sReturn = ei.sAction;
+                                sReturn = ei.Action;
                                 Debug.WriteLine("Now: " + DateTime.Now);
                                 Debug.WriteLine("Send: " + sReturn);
-                                double i1 = ei.dDelay;
+                                double i1 = ei.Delay;
                                 EventList.RemoveAt(0);
                                 if (EventList.Count > 0)
                                 {
-                                    SetNextTime(((Queue.EventItem)EventList.get_Item(0)).dDelay);
+                                    SetNextTime(((Queue.EventItem)EventList.get_Item(0)).Delay);
                                 }
                             }
                         }
@@ -122,6 +153,8 @@ namespace GenieClient.Genie
 
             return sReturn;
         }
+
+
 
         private void SetNextTime(double dDelay)
         {
