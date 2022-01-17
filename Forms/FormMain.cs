@@ -5861,7 +5861,7 @@ namespace GenieClient
 
                     double argdDelay = iPauseTime;
                     string argsAction = m_oGlobals.ParseGlobalVars(sText);
-                    m_oGlobals.CommandQueue.AddToQueue(argdDelay, true, argsAction);
+                    m_oGlobals.CommandQueue.AddToQueue(argdDelay, argsAction, true, false, false);
                 }
             }
             /* TODO ERROR: Skipped IfDirectiveTrivia */
@@ -5938,7 +5938,6 @@ namespace GenieClient
             }
         }
 
-        
 
         private void SetRoundTime(int iTime)
         {
@@ -7086,7 +7085,7 @@ namespace GenieClient
             string argsAction = m_oGlobals.Events.Poll();
             RunQueueCommand(argsAction, ""); // , "Event")
             int iSent = 0;
-            string sCommandQueue = m_oGlobals.CommandQueue.Poll(HasRoundTime);
+            string sCommandQueue = m_oGlobals.CommandQueue.Poll(HasRoundTime, m_oGlobals.VariableList["webbed"].ToString() == "1", m_oGlobals.VariableList["stunned"].ToString() == "1");
             while (sCommandQueue.Length > 0)
             {
                 RunQueueCommand(sCommandQueue, ""); // , "Queue")
@@ -7098,7 +7097,7 @@ namespace GenieClient
                 // Exit While
                 // End If
 
-                sCommandQueue = m_oGlobals.CommandQueue.Poll(HasRoundTime);
+                sCommandQueue = m_oGlobals.CommandQueue.Poll(HasRoundTime, m_oGlobals.VariableList["webbed"].ToString() == "1", m_oGlobals.VariableList["stunned"].ToString() == "1");
             }
 
             TickScripts();
