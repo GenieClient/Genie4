@@ -555,6 +555,7 @@ namespace GenieClient
             counter,
             delay,
             deletevariable,
+            dofunc,
             echo,
             elsefunc,
             elseiffunc,
@@ -3796,7 +3797,10 @@ namespace GenieClient
                     {
                         return ScriptFunctions.send;
                     }
-
+                case "do":
+                    {
+                        return ScriptFunctions.dofunc;
+                    }
                 case "exit":
                     {
                         return ScriptFunctions.exitfunc;
