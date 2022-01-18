@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -14,6 +15,9 @@ namespace GenieClient
     public class Script
     {
         private const int m_iDefaultTimeout = 3500;
+        private const string GENIE_INTERNAL_ACTION_DO = "550276ca-49f0-4067-aa5b-b3cba4869564";
+        private const string PARAMETER_REGEX = @"\{.*?\}";
+        //private static readonly Regex PARAMETER_REGEX = new Regex(@"\{.*?\}"); //for script commands to receive data as {string of text} {parameters as a string}
 
         /* TODO ERROR: Skipped RegionDirectiveTrivia */
         private class ScriptLine
@@ -526,7 +530,6 @@ namespace GenieClient
                         sText = sText.Substring(0, sText.Length - 1);
                     }
                 }
-
                 return base.Add(new Match(sText, sLabel, bIsRegExp, bIgnoreCase));
             }
         }
@@ -606,6 +609,7 @@ namespace GenieClient
             delayed,
             wait,
             waitfor,
+            waitdo,
             waiteval,
             move,
             matchwait,
@@ -625,7 +629,7 @@ namespace GenieClient
 
         public event EventSendTextEventHandler EventSendText;
 
-        public delegate void EventSendTextEventHandler(string sText, string sScript, bool bToQueue);
+        public delegate void EventSendTextEventHandler(string Text, string Script, bool ToQueue, bool DoCommand);
 
         public event EventDebugChangedEventHandler EventDebugChanged;
 
@@ -640,13 +644,18 @@ namespace GenieClient
         private ArrayList m_oScript = new ArrayList();
         private ArrayList m_oScriptFiles = new ArrayList();
         private Hashtable m_oScriptLabels = new Hashtable();
+        private Dictionary<string, Func<bool>> ScriptInternalLabels;
         private CurrentLine m_oCurrentLine = new CurrentLine();
         private ClassVariableList m_oLocalVarList = new ClassVariableList();
         private ClassActionList m_oActions = new ClassActionList();
-        private ClassMatchList m_oMatchList = new ClassMatchList();
+        private ClassMatchList MatchList = new ClassMatchList();
         private ScriptState m_CurrentState = ScriptState.running;
         private string m_sFileName = string.Empty;
         private DateTime m_oPauseEnd;
+        private string DoCommandText = string.Empty;
+        private string DoCommandRepeatRegex = string.Empty;
+        private string DoCommandAdditionalRegex = string.Empty;
+        private ClassMatchList DoCommandMatchList = new ClassMatchList();
         private bool m_bWaitForStringResume = true;
         private bool m_bWaitForStringIsRegExp = false;
         // private bool m_bWaitForStringIgnoreCase = false;
@@ -656,6 +665,7 @@ namespace GenieClient
         private bool m_bWaitForPrompt = true;
         private bool m_bWaitForMatch = true;
         private string m_sWaitForMatchLabel = string.Empty;
+        private Func<bool> WaitForMatchAction = null;
         private string m_sWaitForEventText = string.Empty;
         private bool m_bWaitForEvent = true;
         private DateTime m_oMatchTimeout;
@@ -967,6 +977,15 @@ namespace GenieClient
         {
             m_oGlobals = cl;
             ScriptID = Guid.NewGuid().ToString();
+            
+            ScriptInternalLabels = new Dictionary<string, Func<bool>>();
+            LoadInternalLabels();
+        }
+
+        private void LoadInternalLabels()
+        {
+            ScriptInternalLabels = new Dictionary<string, Func<bool>>();
+            ScriptInternalLabels.Add(GENIE_INTERNAL_ACTION_DO, RepeatDoCommand);
         }
 
         // Public Shared Operator =(ByVal lsc As ClassScript, ByVal rsc As ClassScript) As Boolean
@@ -1210,23 +1229,23 @@ namespace GenieClient
                     {
                         if (m_CurrentState == ScriptState.matchwait)
                         {
-                            foreach (ClassMatchList.Match ml in m_oMatchList)
+                            foreach (ClassMatchList.Match match in MatchList)
                             {
-                                if (ml.IsRegExp == false)
+                                if (match.IsRegExp == false)
                                 {
-                                    if (text.Contains(ml.Text) == true)
+                                    if (text.Contains(match.Text) == true)
                                     {
-                                        m_sWaitForMatchLabel = ml.Label.ToLower();
+                                        m_sWaitForMatchLabel = match.Label.ToLower();
                                         m_bWaitForMatch = true;
                                         if (bBufferWait)
                                             SetBufferWait();
-                                        m_oMatchList.Clear();
+                                        MatchList.Clear();
                                         break;
                                     }
                                 }
-                                else if (!Information.IsNothing(ml.RegexMatch))
+                                else if (!Information.IsNothing(match.RegexMatch))
                                 {
-                                    m_oRegMatch = ml.RegexMatch.Match(text.Trim());
+                                    m_oRegMatch = match.RegexMatch.Match(text.Trim());
                                     if (m_oRegMatch.Success == true)
                                     {
                                         if (m_oRegMatch.Groups.Count > 0)
@@ -1238,11 +1257,11 @@ namespace GenieClient
                                                 m_oCurrentLine.ArgList.Add(m_oRegMatch.Groups[J].Value);
                                         }
 
-                                        m_sWaitForMatchLabel = ml.Label.ToLower();
+                                        m_sWaitForMatchLabel = match.Label.ToLower();
                                         m_bWaitForMatch = true;
                                         if (bBufferWait)
                                             SetBufferWait();
-                                        m_oMatchList.Clear();
+                                        MatchList.Clear();
                                         break;
                                     }
                                 }
@@ -1539,6 +1558,18 @@ namespace GenieClient
                             RunScript();
                         }
                     }
+                    else if (m_CurrentState == ScriptState.waitdo)
+                    {
+                        if (!string.IsNullOrWhiteSpace(DoCommandText) & m_bBufferEnd == true)
+                        {
+                            int argiLevel7 = 20;
+                            string argsText7 = "Resume ScriptState.WaitFor";
+                            int argiFileId8 = 0;
+                            int argiFileRow8 = 0;
+                            PrintDebug(argiLevel7, argsText7, iFileId: argiFileId8, iFileRow: argiFileRow8);
+                            RunScript();
+                        }
+                    }
                     else if (m_CurrentState == ScriptState.waiteval)
                     {
                         if (m_bWaitForEvent == true)
@@ -1568,8 +1599,7 @@ namespace GenieClient
                     {
                         if (m_bWaitForMatch == true & m_bBufferEnd == true)
                         {
-                            m_oMatchList.Clear();
-                            if (m_oScriptLabels.ContainsKey(m_sWaitForMatchLabel) == true)
+                            if (m_oScriptLabels.ContainsKey(m_sWaitForMatchLabel))
                             {
                                 int argiLevel2 = 20;
                                 string argsText2 = "Resume ScriptState.MatchWait";
@@ -1585,9 +1615,14 @@ namespace GenieClient
                                 int argiFileRow3 = 0;
                                 PrintDebug(argiLevel3, argsText3, iFileId: argiFileId3, iFileRow: argiFileRow3);
                                 m_oCurrentLine.ClearBlocks(); // Remove all {} depth on goto
+                                MatchList.Clear();
                                 RunScript(Conversions.ToInteger(m_oScriptLabels[m_sWaitForMatchLabel]));
                             }
-                            else
+                            else if (ScriptInternalLabels.ContainsKey(m_sWaitForMatchLabel))
+                            {
+                                ScriptInternalLabels[m_sWaitForMatchLabel]();
+                            }
+                            else 
                             {
                                 int argiFileId4 = 0;
                                 int argiFileRow4 = 0;
@@ -1608,7 +1643,8 @@ namespace GenieClient
                                 PrintDebug(argiLevel4, argsText4, iFileId: argiFileId5, iFileRow: argiFileRow5);
                                 m_oTraceList.Add("matchwait timeout", GetFileName());
                                 // PrintText("MatchWait Timeout")
-                                m_oMatchList.Clear();
+                                MatchList.Clear();
+                                WaitForMatchAction = null;
                                 m_bMatchTimeoutState = false;
                                 RunScript();
                             }
@@ -2115,7 +2151,8 @@ namespace GenieClient
                     } // So we can abort previous script thread if any
                       // Reset all depth in blocks
                     m_oCurrentLine.Clear();
-                    m_oMatchList.Clear();
+                    MatchList.Clear();
+                    WaitForMatchAction = null;
                     m_oCurrentLine.LineValue = iResult;
                     return;
                 }
@@ -2513,7 +2550,7 @@ namespace GenieClient
                         EvalWaitString(Utility.GetArgumentString(ParsedLine));
                         break;
                     }
-
+                    
                 case ScriptFunctions.waiteval:
                     {
                         int argiLevel11 = 2;
@@ -2566,7 +2603,17 @@ namespace GenieClient
                         EvalSend(Utility.GetArgumentString(ParsedLine));
                         break;
                     }
-
+                case ScriptFunctions.dofunc:
+                    {
+                        DoCommandMatchList.Clear();
+                        DoCommandMatchList.AddRange(MatchList);
+                        if (!EvalDo(Utility.GetArgumentString(ParsedLine)))
+                        {
+                            PrintError("Invalid RegExp in Do: " + Utility.GetArgumentString(ParsedLine), oLine.iFileId, oLine.iFileRow);
+                            AbortOnScriptError();
+                        }
+                        break;
+                    }
                 case ScriptFunctions.save:
                     {
                         EvalSetvariableSave(Utility.GetArgumentString(ParsedLine));
@@ -3091,7 +3138,8 @@ namespace GenieClient
         {
             if ((sText.ToLower() ?? "") == "clear")
             {
-                m_oMatchList.Clear();
+                MatchList.Clear();
+                WaitForMatchAction = null;
                 return true;
             }
 
@@ -3100,7 +3148,7 @@ namespace GenieClient
                 return false;
             }
 
-            m_oMatchList.Add(Utility.GetArgumentString(sText).Trim(), Utility.GetKeywordString(sText).Trim(), bIsRegExp);
+            MatchList.Add(Utility.GetArgumentString(sText).Trim(), Utility.GetKeywordString(sText).Trim(), bIsRegExp);
             return true;
         }
 
@@ -3212,6 +3260,62 @@ namespace GenieClient
             }
         }
 
+        private bool EvalDo(string FullCommand)
+        {
+            if (FullCommand.Trim().Length > 0)
+            {
+                if ((FullCommand.ToLower() ?? "") == "clear")
+                {
+                    MatchList.Clear();
+                    return true;
+                }
+
+                if (!Utility.ValidateRegExp(FullCommand))
+                {
+                    return false;
+                }
+                Match doRegex = Regex.Match(FullCommand, PARAMETER_REGEX);
+                if(doRegex.Captures.Count == 0)
+                {   
+                    DoCommandText = FullCommand;
+                    DoCommandAdditionalRegex = "";
+                    DoCommandRepeatRegex = m_oGlobals.VariableList["repeatregex"].ToString();
+                }
+                else if(doRegex.Groups.Count == 1)
+                {   
+                    DoCommandText = doRegex.Captures[0].ToString();
+                    DoCommandText = DoCommandText.Substring(1, DoCommandText.Length - 2);
+                    DoCommandAdditionalRegex = "";
+                    DoCommandRepeatRegex = m_oGlobals.VariableList["repeatregex"].ToString();
+                }
+                else if(doRegex.Groups.Count > 1)
+                {
+                    DoCommandText = doRegex.Captures[0].ToString();
+                    DoCommandText = DoCommandText.Substring(1, DoCommandText.Length - 2);
+                    DoCommandAdditionalRegex = doRegex.Captures[1].ToString();
+                    DoCommandAdditionalRegex = DoCommandAdditionalRegex.Substring(1, DoCommandAdditionalRegex.Length - 2);
+                    DoCommandRepeatRegex = m_oGlobals.VariableList["repeatregex"].ToString() + "|" + DoCommandAdditionalRegex;
+                }
+                MatchList.Add(DoCommandRepeatRegex, GENIE_INTERNAL_ACTION_DO, true);
+                SendText(FullCommand, true, true);
+            }
+            return true;
+        }
+
+        private bool RepeatDoCommand()
+        {
+            MatchList.Clear();
+            MatchList.AddRange(DoCommandMatchList);
+            if (string.IsNullOrWhiteSpace(DoCommandAdditionalRegex))
+            {
+                EvalDo(DoCommandText);
+            }
+            else
+            {
+                EvalDo("{" + DoCommandText + "} {" + DoCommandRepeatRegex + "}");
+            }
+            return false;
+        }
         private void EvalSetvariableSave(string sText)
         {
             AddLocalVariable("s", sText);
@@ -3282,7 +3386,7 @@ namespace GenieClient
                 m_oScriptFiles.Clear();
                 m_oCurrentLine.Clear();
                 m_oActions.Clear();
-                m_oMatchList.Clear();
+                MatchList.Clear();
                 m_oTimerStart = default;
                 m_dTimerLastTime = 0;
                 m_bWaitForEvent = true;
@@ -4117,9 +4221,9 @@ namespace GenieClient
             EventPrintText?.Invoke(sText + System.Environment.NewLine, m_oGlobals.PresetList["scriptecho"].FgColor, Color.Transparent);
         }
 
-        private void SendText(string text, bool queue = false)
+        private void SendText(string text, bool queue = false, bool docommand = false)
         {
-            EventSendText?.Invoke(text, ScriptName, queue);
+            EventSendText?.Invoke(text, ScriptName, queue, docommand);
         }
     }
 }
