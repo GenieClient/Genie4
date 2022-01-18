@@ -782,47 +782,18 @@ namespace GenieClient.Genie
 
                                     case "send":
                                         {
-                                            if (oArgs.Count > 1)
-                                            {
-                                                string s = oGlobals.ParseGlobalVars(ParseAllArgs(oArgs, 1));
-                                                if ((s.ToLower() ?? "") == "clear")
-                                                {
-                                                    oGlobals.CommandQueue.Clear();
-                                                }
-                                                else
-                                                {
-                                                    double dPauseTime = 0;
-                                                    string sNumber = string.Empty;
-                                                    foreach (char c in s.ToCharArray())
-                                                    {
-                                                        if (Information.IsNumeric(c) | c == '.')
-                                                        {
-                                                            sNumber += Conversions.ToString(c);
-                                                        }
-                                                        else
-                                                        {
-                                                            break;
-                                                        }
-                                                    }
-
-                                                    if (sNumber.Length > 0 & (sNumber ?? "") != ".")
-                                                    {
-                                                        s = s.Substring(sNumber.Length).Trim();
-                                                        dPauseTime = double.Parse(sNumber);
-                                                    }
-
-                                                    if (s.Trim().Length > 0)
-                                                    {
-                                                        // Put it in queue
-                                                        oGlobals.CommandQueue.AddToQueue(dPauseTime, true, s);
-                                                    }
-                                                }
-                                            }
+                                            Send(oArgs);
 
                                             sResult = "";
                                             break;
                                         }
 
+                                    case "do":
+                                        {
+                                            Do(oArgs);
+                                            sResult = "";
+                                            break;
+                                        }
                                     case "put":
                                         {
                                             if (oArgs.Count > 1)
@@ -1115,7 +1086,7 @@ namespace GenieClient.Genie
                                                 if (sAction.Trim().Length > 0)
                                                 {
                                                     double argdDelay = Utility.StringToDouble(oArgs[1].ToString());
-                                                    oGlobals.CommandQueue.AddToQueue(argdDelay, true, sAction);
+                                                    oGlobals.CommandQueue.AddToQueue(argdDelay, sAction, false, false, false);
                                                 }
                                             }
                                             else if (oArgs.Count == 2)
@@ -2458,7 +2429,85 @@ namespace GenieClient.Genie
             /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
             return sResult;
         }
+     
+        private void Do(ArrayList oArgs)
+        {
+            if (oArgs.Count > 1)
+            {
+                string s = oGlobals.ParseGlobalVars(ParseAllArgs(oArgs, 1));
+                if ((s.ToLower() ?? "") == "clear")
+                {
+                    oGlobals.CommandQueue.Clear();
+                }
+                else
+                {
+                    double dPauseTime = 0;
+                    string sNumber = string.Empty;
+                    foreach (char c in s.ToCharArray())
+                    {
+                        if (Information.IsNumeric(c) | c == '.')
+                        {
+                            sNumber += Conversions.ToString(c);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
 
+                    if (sNumber.Length > 0 & (sNumber ?? "") != ".")
+                    {
+                        s = s.Substring(sNumber.Length).Trim();
+                        dPauseTime = double.Parse(sNumber);
+                    }
+
+                    if (s.Trim().Length > 0)
+                    {
+                        // Put it in queue
+                        oGlobals.CommandQueue.AddToQueue(dPauseTime, s, true, true, true);
+                    }
+                }
+            }
+        }
+        private void Send(ArrayList oArgs)
+        {
+            if (oArgs.Count > 1)
+            {
+                string s = oGlobals.ParseGlobalVars(ParseAllArgs(oArgs, 1));
+                if ((s.ToLower() ?? "") == "clear")
+                {
+                    oGlobals.CommandQueue.Clear();
+                }
+                else
+                {
+                    double dPauseTime = 0;
+                    string sNumber = string.Empty;
+                    foreach (char c in s.ToCharArray())
+                    {
+                        if (Information.IsNumeric(c) | c == '.')
+                        {
+                            sNumber += Conversions.ToString(c);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                    if (sNumber.Length > 0 & (sNumber ?? "") != ".")
+                    {
+                        s = s.Substring(sNumber.Length).Trim();
+                        dPauseTime = double.Parse(sNumber);
+                    }
+
+                    if (s.Trim().Length > 0)
+                    {
+                        // Put it in queue
+                        oGlobals.CommandQueue.AddToQueue(dPauseTime, s, true, false, false);
+                    }
+                }
+            }
+        }
         private void Connect(ArrayList args, bool isLich = false)
         {
             if (args.Count == 1)
@@ -3380,9 +3429,9 @@ namespace GenieClient.Genie
                     int J = 0;
                     for (int I = 0, loopTo = oGlobals.CommandQueue.EventList.Count - 1; I <= loopTo; I++)
                     {
-                        if (bUsePattern == false | ((CommandQueue.Queue.EventItem)oGlobals.CommandQueue.EventList.get_Item(I)).sAction.Contains(sPattern))
+                        if (bUsePattern == false | ((CommandQueue.Queue.EventItem)oGlobals.CommandQueue.EventList.get_Item(I)).Action.Contains(sPattern))
                         {
-                            EchoText("(" + ((CommandQueue.Queue.EventItem)oGlobals.CommandQueue.EventList.get_Item(I)).dDelay + ") " + ((CommandQueue.Queue.EventItem)oGlobals.CommandQueue.EventList.get_Item(I)).sAction + System.Environment.NewLine);
+                            EchoText("(" + ((CommandQueue.Queue.EventItem)oGlobals.CommandQueue.EventList.get_Item(I)).Delay + ") " + ((CommandQueue.Queue.EventItem)oGlobals.CommandQueue.EventList.get_Item(I)).Action + System.Environment.NewLine);
                             J += 1;
                         }
                     }

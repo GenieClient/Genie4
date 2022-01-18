@@ -864,6 +864,7 @@ namespace GenieClient.Genie
                 Add("zoneid", "0", VariableType.Reserved);
                 Add("zonename", "0", VariableType.Reserved);
                 Add("scriptlist", "none", VariableType.Reserved);
+                Add("repeatregex", @"^\.\.\.wait|^Sorry\, you may only type ahead|^You are still stunned|^You can\'t do that while|^You don\'t seem to be able", VariableType.Reserved);
             }
         }
 
