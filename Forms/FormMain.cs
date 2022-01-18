@@ -909,18 +909,18 @@ namespace GenieClient
             SafePluginSendText(sText, sPlugin, false);
         }
 
-        public delegate void PluginSendTextDelegate(string sText, string sPlugin, bool bToQueue);
+        public delegate void PluginSendTextDelegate(string Text, string Plugin, bool ToQueue, bool DoCommand);
 
         public void SafePluginSendText(string sText, string sScript, bool bToQueue)
         {
             if (InvokeRequired == true)
             {
-                var parameters = new object[] { sText, sScript, false };
+                var parameters = new object[] { sText, sScript, false, false };
                 Invoke(new PluginSendTextDelegate(Script_EventSendText), parameters);
             }
             else
             {
-                Script_EventSendText(sText, sScript, false);
+                Script_EventSendText(sText, sScript, false, false);
             }
         }
 
@@ -3812,7 +3812,7 @@ namespace GenieClient
                                             m_oRegMatch = oTrigger.oRegexTrigger.Match(sText);
                                             if (m_oRegMatch.Success == true)
                                             {
-                                                var RegExpArg = new ArrayList();
+                                                var RegExpArg = new Genie.Collections.ArrayList();
                                                 if (m_oRegMatch.Groups.Count > 0)
                                                 {
                                                     int J;
@@ -3966,7 +3966,7 @@ namespace GenieClient
             }
         }
 
-        private void TriggerAction(string sAction, ArrayList oArgs)
+        private void TriggerAction(string sAction, Genie.Collections.ArrayList oArgs)
         {
             if (m_bTriggersEnabled == true)
             {
@@ -4265,7 +4265,7 @@ namespace GenieClient
 
                                         if (s.Length > 0 & (s ?? "") != "0")
                                         {
-                                            TriggerAction(oTrigger.sAction, new ArrayList());
+                                            TriggerAction(oTrigger.sAction, new Genie.Collections.ArrayList());
                                         }
                                     }
                                 }
@@ -5817,31 +5817,24 @@ namespace GenieClient
             oLabel.Text = sText;
         }
 
-        private void Script_EventSendText(string sText, string sScript, bool bToQueue)
+        private void Script_EventSendText(string Text, string Script, bool ToQueue, bool DoCommand)
         {
             try
             {
                 bool bSendText = true;
-                if (sText.StartsWith(Conversions.ToString(m_oGlobals.Config.cCommandChar))) // Don't send text to game that start with #
+                if (Text.StartsWith(Conversions.ToString(m_oGlobals.Config.cCommandChar))) // Don't send text to game that start with #
                 {
                     bSendText = false;
                 }
-
-                if (bToQueue == false)
+                if (!ToQueue)
                 {
-                    m_oCommand.ParseCommand(sText, bSendText, false, sScript);
+                    m_oCommand.ParseCommand(Text, bSendText, false, Script);
                 }
-
-                // If bSendText = True Then
-                // If oGlobals.Config.bTriggerOnInput = True Then
-                // ParseTriggers(sText)
-                // End If
-                // End If
                 else
                 {
                     int iPauseTime = 0;
                     string sNumber = string.Empty;
-                    foreach (char c in sText.ToCharArray())
+                    foreach (char c in Text.ToCharArray())
                     {
                         if (Information.IsNumeric(c) | c == '.')
                         {
@@ -5855,13 +5848,13 @@ namespace GenieClient
 
                     if (sNumber.Length > 0 & (sNumber ?? "") != ".")
                     {
-                        sText = sText.Substring(sNumber.Length).Trim();
+                        Text = Text.Substring(sNumber.Length).Trim();
                         iPauseTime = int.Parse(sNumber);
                     }
 
                     double argdDelay = iPauseTime;
-                    string argsAction = m_oGlobals.ParseGlobalVars(sText);
-                    m_oGlobals.CommandQueue.AddToQueue(argdDelay, argsAction, true, false, false);
+                    string argsAction = m_oGlobals.ParseGlobalVars(Text);
+                    m_oGlobals.CommandQueue.AddToQueue(argdDelay, argsAction, true, DoCommand, DoCommand);
                 }
             }
             /* TODO ERROR: Skipped IfDirectiveTrivia */
