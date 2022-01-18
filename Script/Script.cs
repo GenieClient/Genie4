@@ -3274,30 +3274,30 @@ namespace GenieClient
                 {
                     return false;
                 }
-                Match doRegex = Regex.Match(FullCommand, PARAMETER_REGEX);
-                if(doRegex.Captures.Count == 0)
+                MatchCollection doRegex = Regex.Matches(FullCommand, PARAMETER_REGEX);
+                if(doRegex.Count == 0)
                 {   
                     DoCommandText = FullCommand;
                     DoCommandAdditionalRegex = "";
                     DoCommandRepeatRegex = m_oGlobals.VariableList["repeatregex"].ToString();
                 }
-                else if(doRegex.Groups.Count == 1)
+                else if(doRegex.Count == 1)
                 {   
-                    DoCommandText = doRegex.Captures[0].ToString();
+                    DoCommandText = doRegex[0].Captures[0].ToString();
                     DoCommandText = DoCommandText.Substring(1, DoCommandText.Length - 2);
                     DoCommandAdditionalRegex = "";
                     DoCommandRepeatRegex = m_oGlobals.VariableList["repeatregex"].ToString();
                 }
-                else if(doRegex.Groups.Count > 1)
+                else if(doRegex.Count > 1)
                 {
-                    DoCommandText = doRegex.Captures[0].ToString();
+                    DoCommandText = doRegex[0].Captures[0].ToString();
                     DoCommandText = DoCommandText.Substring(1, DoCommandText.Length - 2);
-                    DoCommandAdditionalRegex = doRegex.Captures[1].ToString();
+                    DoCommandAdditionalRegex = doRegex[1].Captures[0].ToString() ;
                     DoCommandAdditionalRegex = DoCommandAdditionalRegex.Substring(1, DoCommandAdditionalRegex.Length - 2);
                     DoCommandRepeatRegex = m_oGlobals.VariableList["repeatregex"].ToString() + "|" + DoCommandAdditionalRegex;
                 }
                 MatchList.Add(DoCommandRepeatRegex, GENIE_INTERNAL_ACTION_DO, true);
-                SendText(FullCommand, true, true);
+                SendText(DoCommandText, true, true);
             }
             return true;
         }
