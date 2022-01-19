@@ -587,12 +587,6 @@ namespace GenieClient
                 Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
                 AddText(argsText1, oTargetWindow: argoTargetWindow1);
             }
-            else if (Plugin.Description.StartsWith("Premium "))
-            {
-                string argsText2 = "Invalid Key! To use this plugin you will need to first purchase a license for it. Visit http://genieclient.com for more information." + System.Environment.NewLine;
-                Genie.Game.WindowTarget argoTargetWindow2 = Genie.Game.WindowTarget.Main;
-                AddText(argsText2, oTargetWindow: argoTargetWindow2);
-            }
             else
             {
                 string argsText3 = "Failed" + System.Environment.NewLine;
@@ -3779,6 +3773,7 @@ namespace GenieClient
                         {
                             ParseTriggers(sText);
                         }
+                        //lastrow 
                     }
                 }
             }
@@ -6705,13 +6700,15 @@ namespace GenieClient
 
         private void OpenGenieWikiToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Utility.OpenBrowser("https://geniefe.fandom.com/");
+            Utility.OpenBrowser("https://github.com/GenieClient/Genie4/wiki");
         }
 
         private void OpenGenieGithubToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Utility.OpenBrowser("https://github.com/GenieClient/");
+            Utility.OpenBrowser("https://github.com/GenieClient/Genie4/");
         }
+
+
 
         private void MagicPanelsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -7627,5 +7624,19 @@ namespace GenieClient
             }
         }
 
+        private void playnetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Utility.OpenBrowser("http://play.net");
+        }
+
+        private void elanthipediaToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Utility.OpenBrowser("http://elanthipedia.play.net");
+        }
+
+        private void dRServiceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Utility.OpenBrowser("http://drservice.info");
+        }
     }
 }

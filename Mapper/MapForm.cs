@@ -277,7 +277,7 @@ namespace GenieClient.Mapper
             {
                 ToolStripDropDownButtonMaps.DropDownItems.Clear();
                 _Zones.Clear();
-                var al = new SortedList(new INaturalComparer());
+                var sortedMapsList = new Genie.Collections.SortedList(new INaturalComparer());
                 int iunknown = 1;
                 var diDirectory = new DirectoryInfo(m_oGlobals.Config.MapDir);
                 foreach (FileInfo dif in diDirectory.GetFiles())
@@ -291,18 +291,18 @@ namespace GenieClient.Mapper
                             iunknown += 1;
                         }
 
-                        if (al.ContainsKey(sName) == false)
+                        if (sortedMapsList.ContainsKey(sName) == false)
                         {
-                            al.Add(sName, dif.FullName);
+                            sortedMapsList.Add(sName, dif.FullName);
                         }
                     }
                 }
 
-                foreach (string s in al.Keys)
+                foreach (string s in sortedMapsList.Keys)
                 {
                     var mi = new ToolStripMenuItem();
                     mi.Text = s;
-                    mi.Tag = al[s].ToString();
+                    mi.Tag = sortedMapsList[s].ToString();
                     mi.Click += ToolStripMenuItemMapButton_Click;
                     ToolStripDropDownButtonMaps.DropDownItems.Add(mi);
                 }

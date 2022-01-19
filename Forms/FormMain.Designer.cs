@@ -33,8 +33,8 @@ namespace GenieClient
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            GenieClient.ComponentRoundtime _Castbar;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
+            this._Castbar = new GenieClient.ComponentRoundtime();
             this._StatusStripMain = new System.Windows.Forms.StatusStrip();
             this._ToolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this._ToolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -119,6 +119,11 @@ namespace GenieClient
             this._OpenGenieDiscordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenGenieGithubToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._OpenGenieDocsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.playnetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.elanthipediaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.dRServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._LabelSpellC = new System.Windows.Forms.Label();
             this._LabelRHC = new System.Windows.Forms.Label();
             this._LabelLHC = new System.Windows.Forms.Label();
@@ -147,7 +152,6 @@ namespace GenieClient
             this._PanelInput = new System.Windows.Forms.Panel();
             this._TextBoxInput = new GenieClient.ComponentTextBox();
             this._OpenFileDialogProfile = new System.Windows.Forms.OpenFileDialog();
-            this._Castbar = new GenieClient.ComponentRoundtime();
             this._StatusStripMain.SuspendLayout();
             this._MenuStripMain.SuspendLayout();
             this._PanelBars.SuspendLayout();
@@ -157,6 +161,21 @@ namespace GenieClient
             this._PanelFixed.SuspendLayout();
             this._PanelInput.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // _Castbar
+            // 
+            this._Castbar.BackColor = System.Drawing.Color.Black;
+            this._Castbar.BackgroundColor = System.Drawing.Color.Black;
+            this._Castbar.BackgroundColorRT = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(75)))));
+            this._Castbar.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this._Castbar.BorderColorRT = System.Drawing.Color.White;
+            this._Castbar.ForegroundColor = System.Drawing.Color.Magenta;
+            this._Castbar.IsConnected = false;
+            this._Castbar.Location = new System.Drawing.Point(1172, 7);
+            this._Castbar.Margin = new System.Windows.Forms.Padding(5);
+            this._Castbar.Name = "_Castbar";
+            this._Castbar.Size = new System.Drawing.Size(117, 30);
+            this._Castbar.TabIndex = 1;
             // 
             // _StatusStripMain
             // 
@@ -847,7 +866,9 @@ namespace GenieClient
             this._ToolStripSeparator10,
             this._OpenGenieDiscordToolStripMenuItem,
             this.OpenGenieGithubToolStripMenuItem,
-            this._OpenGenieDocsToolStripMenuItem});
+            this._OpenGenieDocsToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.toolStripMenuItem1});
             this._HelpToolStripMenuItem.Name = "_HelpToolStripMenuItem";
             this._HelpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this._HelpToolStripMenuItem.Text = "&Help";
@@ -855,40 +876,76 @@ namespace GenieClient
             // _ToolStripSeparator3
             // 
             this._ToolStripSeparator3.Name = "_ToolStripSeparator3";
-            this._ToolStripSeparator3.Size = new System.Drawing.Size(129, 6);
+            this._ToolStripSeparator3.Size = new System.Drawing.Size(177, 6);
             // 
             // _ChangelogToolStripMenuItem
             // 
             this._ChangelogToolStripMenuItem.Name = "_ChangelogToolStripMenuItem";
-            this._ChangelogToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this._ChangelogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this._ChangelogToolStripMenuItem.Text = "&Changelog";
             this._ChangelogToolStripMenuItem.Click += new System.EventHandler(this.ChangelogToolStripMenuItem_Click);
             // 
             // _ToolStripSeparator10
             // 
             this._ToolStripSeparator10.Name = "_ToolStripSeparator10";
-            this._ToolStripSeparator10.Size = new System.Drawing.Size(129, 6);
+            this._ToolStripSeparator10.Size = new System.Drawing.Size(177, 6);
             // 
             // _OpenGenieDiscordToolStripMenuItem
             // 
             this._OpenGenieDiscordToolStripMenuItem.Name = "_OpenGenieDiscordToolStripMenuItem";
-            this._OpenGenieDiscordToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this._OpenGenieDiscordToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this._OpenGenieDiscordToolStripMenuItem.Text = "&Discord";
             this._OpenGenieDiscordToolStripMenuItem.Click += new System.EventHandler(this.OpenGenieDiscordToolStripMenuItem_Click);
             // 
             // OpenGenieGithubToolStripMenuItem
             // 
             this.OpenGenieGithubToolStripMenuItem.Name = "OpenGenieGithubToolStripMenuItem";
-            this.OpenGenieGithubToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.OpenGenieGithubToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.OpenGenieGithubToolStripMenuItem.Text = "GitHub";
             this.OpenGenieGithubToolStripMenuItem.Click += new System.EventHandler(this.OpenGenieGithubToolStripMenuItem_Click);
             // 
             // _OpenGenieDocsToolStripMenuItem
             // 
             this._OpenGenieDocsToolStripMenuItem.Name = "_OpenGenieDocsToolStripMenuItem";
-            this._OpenGenieDocsToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this._OpenGenieDocsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this._OpenGenieDocsToolStripMenuItem.Text = "&Wiki";
             this._OpenGenieDocsToolStripMenuItem.Click += new System.EventHandler(this.OpenGenieWikiToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.playnetToolStripMenuItem,
+            this.elanthipediaToolStripMenuItem1,
+            this.dRServiceToolStripMenuItem});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem1.Text = "Community Links";
+            // 
+            // playnetToolStripMenuItem
+            // 
+            this.playnetToolStripMenuItem.Name = "playnetToolStripMenuItem";
+            this.playnetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.playnetToolStripMenuItem.Text = "Play.net";
+            this.playnetToolStripMenuItem.Click += new System.EventHandler(this.playnetToolStripMenuItem_Click);
+            // 
+            // elanthipediaToolStripMenuItem1
+            // 
+            this.elanthipediaToolStripMenuItem1.Name = "elanthipediaToolStripMenuItem1";
+            this.elanthipediaToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.elanthipediaToolStripMenuItem1.Text = "Elanthipedia";
+            this.elanthipediaToolStripMenuItem1.Click += new System.EventHandler(this.elanthipediaToolStripMenuItem1_Click);
+            // 
+            // dRServiceToolStripMenuItem
+            // 
+            this.dRServiceToolStripMenuItem.Name = "dRServiceToolStripMenuItem";
+            this.dRServiceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dRServiceToolStripMenuItem.Text = "DR Service";
+            this.dRServiceToolStripMenuItem.Click += new System.EventHandler(this.dRServiceToolStripMenuItem_Click);
             // 
             // _LabelSpellC
             // 
@@ -1252,21 +1309,6 @@ namespace GenieClient
             this._OpenFileDialogProfile.Filter = "Genie Profile|*.xml|All files|*.*";
             this._OpenFileDialogProfile.RestoreDirectory = true;
             this._OpenFileDialogProfile.Title = "Open Profile";
-            // 
-            // componentCastbar
-            // 
-            this._Castbar.BackColor = System.Drawing.Color.Black;
-            this._Castbar.BackgroundColor = System.Drawing.Color.Black;
-            this._Castbar.BackgroundColorRT = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(75)))));
-            this._Castbar.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this._Castbar.BorderColorRT = System.Drawing.Color.White;
-            this._Castbar.ForegroundColor = System.Drawing.Color.Magenta;
-            this._Castbar.IsConnected = false;
-            this._Castbar.Location = new System.Drawing.Point(1172, 7);
-            this._Castbar.Margin = new System.Windows.Forms.Padding(5);
-            this._Castbar.Name = "componentCastbar";
-            this._Castbar.Size = new System.Drawing.Size(117, 30);
-            this._Castbar.TabIndex = 1;
             // 
             // FormMain
             // 
@@ -4055,6 +4097,11 @@ namespace GenieClient
         private ToolStripMenuItem OpenGenieGithubToolStripMenuItem;
         private ToolStripMenuItem _OpenGenieDiscordToolStripMenuItem;
         private ComponentRoundtime _Castbar;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripMenuItem playnetToolStripMenuItem;
+        private ToolStripMenuItem elanthipediaToolStripMenuItem1;
+        private ToolStripMenuItem dRServiceToolStripMenuItem;
 
         internal ToolStripMenuItem SaveSizedDefaultLayoutToolStripMenuItem
         {
