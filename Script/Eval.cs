@@ -25,7 +25,7 @@ namespace GenieClient.Genie.Script
             NegateType // NOT
         }
 
-        private ArrayList oSections = new ArrayList();
+        private Genie.Collections.ArrayList oSections = new Genie.Collections.ArrayList();
 
         private class Sections
         {
@@ -822,7 +822,7 @@ namespace GenieClient.Genie.Script
             return false;
         }
 
-        private ArrayList m_RegExpResultList = new ArrayList();
+        private Genie.Collections.ArrayList m_RegExpResultList = new Genie.Collections.ArrayList();
 
         public bool DoEval(string sText, Globals oGlobals)
         {
@@ -833,7 +833,7 @@ namespace GenieClient.Genie.Script
             return GetBooleanResult();
         }
 
-        public ArrayList ResultList
+        public Genie.Collections.ArrayList ResultList
         {
             get
             {
@@ -1242,9 +1242,9 @@ namespace GenieClient.Genie.Script
         }
 
         // Builds the argument arraylist for ParseFunction()
-        private ArrayList BuildArgs(int iStart, int iEnd)
+        private Genie.Collections.ArrayList BuildArgs(int iStart, int iEnd)
         {
-            var ar = new ArrayList();
+            var ar = new Genie.Collections.ArrayList();
             for (int j = iStart, loopTo = iEnd; j <= loopTo; j++)
             {
                 if (((Sections)oSections[j]).bParsed == false)
