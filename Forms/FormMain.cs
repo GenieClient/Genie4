@@ -7638,5 +7638,15 @@ namespace GenieClient
         {
             Utility.OpenBrowser("http://drservice.info");
         }
+
+        private void lichDiscordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Utility.OpenBrowser("https://discord.gg/uxZWxuX");
+        }
+
+        private void isharonsGenieSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Utility.OpenBrowser("http://www.elanthia.org/GenieSettings/");
+        }
     }
 }

@@ -152,6 +152,8 @@ namespace GenieClient
             this._PanelInput = new System.Windows.Forms.Panel();
             this._TextBoxInput = new GenieClient.ComponentTextBox();
             this._OpenFileDialogProfile = new System.Windows.Forms.OpenFileDialog();
+            this.lichDiscordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.isharonsGenieSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._StatusStripMain.SuspendLayout();
             this._MenuStripMain.SuspendLayout();
             this._PanelBars.SuspendLayout();
@@ -921,7 +923,9 @@ namespace GenieClient
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.playnetToolStripMenuItem,
             this.elanthipediaToolStripMenuItem1,
-            this.dRServiceToolStripMenuItem});
+            this.dRServiceToolStripMenuItem,
+            this.lichDiscordToolStripMenuItem,
+            this.isharonsGenieSettingsToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem1.Text = "Community Links";
@@ -929,21 +933,21 @@ namespace GenieClient
             // playnetToolStripMenuItem
             // 
             this.playnetToolStripMenuItem.Name = "playnetToolStripMenuItem";
-            this.playnetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.playnetToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.playnetToolStripMenuItem.Text = "Play.net";
             this.playnetToolStripMenuItem.Click += new System.EventHandler(this.playnetToolStripMenuItem_Click);
             // 
             // elanthipediaToolStripMenuItem1
             // 
             this.elanthipediaToolStripMenuItem1.Name = "elanthipediaToolStripMenuItem1";
-            this.elanthipediaToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.elanthipediaToolStripMenuItem1.Size = new System.Drawing.Size(199, 22);
             this.elanthipediaToolStripMenuItem1.Text = "Elanthipedia";
             this.elanthipediaToolStripMenuItem1.Click += new System.EventHandler(this.elanthipediaToolStripMenuItem1_Click);
             // 
             // dRServiceToolStripMenuItem
             // 
             this.dRServiceToolStripMenuItem.Name = "dRServiceToolStripMenuItem";
-            this.dRServiceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dRServiceToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.dRServiceToolStripMenuItem.Text = "DR Service";
             this.dRServiceToolStripMenuItem.Click += new System.EventHandler(this.dRServiceToolStripMenuItem_Click);
             // 
@@ -1309,6 +1313,20 @@ namespace GenieClient
             this._OpenFileDialogProfile.Filter = "Genie Profile|*.xml|All files|*.*";
             this._OpenFileDialogProfile.RestoreDirectory = true;
             this._OpenFileDialogProfile.Title = "Open Profile";
+            // 
+            // lichDiscordToolStripMenuItem
+            // 
+            this.lichDiscordToolStripMenuItem.Name = "lichDiscordToolStripMenuItem";
+            this.lichDiscordToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.lichDiscordToolStripMenuItem.Text = "Lich Discord";
+            this.lichDiscordToolStripMenuItem.Click += new System.EventHandler(this.lichDiscordToolStripMenuItem_Click);
+            // 
+            // isharonsGenieSettingsToolStripMenuItem
+            // 
+            this.isharonsGenieSettingsToolStripMenuItem.Name = "isharonsGenieSettingsToolStripMenuItem";
+            this.isharonsGenieSettingsToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.isharonsGenieSettingsToolStripMenuItem.Text = "Isharon\'s Genie Settings";
+            this.isharonsGenieSettingsToolStripMenuItem.Click += new System.EventHandler(this.isharonsGenieSettingsToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -4102,6 +4120,8 @@ namespace GenieClient
         private ToolStripMenuItem playnetToolStripMenuItem;
         private ToolStripMenuItem elanthipediaToolStripMenuItem1;
         private ToolStripMenuItem dRServiceToolStripMenuItem;
+        private ToolStripMenuItem lichDiscordToolStripMenuItem;
+        private ToolStripMenuItem isharonsGenieSettingsToolStripMenuItem;
 
         internal ToolStripMenuItem SaveSizedDefaultLayoutToolStripMenuItem
         {
