@@ -11,7 +11,7 @@ using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
-using System.Linq;
+
 using AutoMapper;
 
 // Imports Jint
@@ -202,7 +202,6 @@ namespace GenieClient.Genie
         private Script.Eval m_oEval = new Script.Eval();
         private Script.MathEval m_oMathEval = new Script.MathEval();
         private Globals oGlobals;
-        private readonly IConfiguration config;
         private readonly IMapper mapper;
         private IEnumerable<GenieProfile> profiles;
         private IEnumerable<GameInstance> instances;
@@ -210,9 +209,7 @@ namespace GenieClient.Genie
 
         public Command(ref Globals cl, IConfiguration config, IMapper mapper)
         {
-            this.config = config;
             this.mapper = mapper;
-            this.profiles = config.LoadProfiles();
             this.instances = config.LoadGameInstances();
             oGlobals = cl;
         }
@@ -403,7 +400,7 @@ namespace GenieClient.Genie
 
                                             if (!string.IsNullOrEmpty(profileArg))
                                             {
-                                                this.SetCurrentProfile(profileArg);
+                                                oGlobals.SetCurrentProfile(profileArg);
                                                 this.MapInstances();
                                             }
 
@@ -504,7 +501,7 @@ namespace GenieClient.Genie
                                                         case "actions":
                                                             {
                                                                 EchoText("Triggers Saved" + System.Environment.NewLine);
-                                                                oGlobals.TriggerList.Save(oGlobals.Config.ConfigDir + @"\triggers.cfg");
+                                                                oGlobals.TriggerList.Save(oGlobals.CurrentProfile.ResourcePaths.Config + @"\triggers.cfg");
                                                                 break;
                                                             }
 
@@ -514,7 +511,8 @@ namespace GenieClient.Genie
                                                         case "settings":
                                                             {
                                                                 EchoText("Settings Saved" + System.Environment.NewLine);
-                                                                oGlobals.Config.Save(oGlobals.Config.ConfigDir + @"\settings.cfg");
+                                                                oGlobals.Config.Save(oGlobals.CurrentProfile.ResourcePaths.Config + @"\settings.cfg", oGlobals.CurrentProfile.ResourcePaths.Config);
+                                                                oGlobals.Configuration.SaveProfiles();
                                                                 break;
                                                             }
 
@@ -531,7 +529,7 @@ namespace GenieClient.Genie
                                                         case "substitute":
                                                             {
                                                                 EchoText("Substitutes Saved" + System.Environment.NewLine);
-                                                                oGlobals.SubstituteList.Save(oGlobals.Config.ConfigDir + @"\substitutes.cfg");
+                                                                oGlobals.SubstituteList.Save(oGlobals.CurrentProfile.ResourcePaths.Config + @"\substitutes.cfg");
                                                                 break;
                                                             }
 
@@ -550,7 +548,7 @@ namespace GenieClient.Genie
                                                         case "highlights":
                                                             {
                                                                 EchoText("Highlights Saved" + System.Environment.NewLine);
-                                                                oGlobals.SaveHighlights(oGlobals.Config.ConfigDir + @"\highlights.cfg");
+                                                                oGlobals.SaveHighlights(oGlobals.CurrentProfile.ResourcePaths.Config + @"\highlights.cfg");
                                                                 break;
                                                             }
 
@@ -558,7 +556,7 @@ namespace GenieClient.Genie
                                                         case "names":
                                                             {
                                                                 EchoText("Names Saved" + System.Environment.NewLine);
-                                                                oGlobals.NameList.Save(oGlobals.Config.ConfigDir + @"\names.cfg");
+                                                                oGlobals.NameList.Save(oGlobals.CurrentProfile.ResourcePaths.Config + @"\names.cfg");
                                                                 break;
                                                             }
 
@@ -566,7 +564,7 @@ namespace GenieClient.Genie
                                                         case "presets":
                                                             {
                                                                 EchoText("Presets Saved" + System.Environment.NewLine);
-                                                                oGlobals.PresetList.Save(oGlobals.Config.ConfigDir + @"\presets.cfg");
+                                                                oGlobals.PresetList.Save(oGlobals.CurrentProfile.ResourcePaths.Config + @"\presets.cfg");
                                                                 break;
                                                             }
 
@@ -594,21 +592,21 @@ namespace GenieClient.Genie
                                                                 EchoText("Classes Saved" + System.Environment.NewLine);
                                                                 oGlobals.ClassList.Save();
                                                                 EchoText("Triggers Saved" + System.Environment.NewLine);
-                                                                oGlobals.TriggerList.Save(oGlobals.Config.ConfigDir + @"\triggers.cfg");
+                                                                oGlobals.TriggerList.Save(oGlobals.CurrentProfile.ResourcePaths.Config + @"\triggers.cfg");
                                                                 EchoText("Settings Saved" + System.Environment.NewLine);
-                                                                oGlobals.Config.Save(oGlobals.Config.ConfigDir + @"\settings.cfg");
+                                                                oGlobals.Config.Save(oGlobals.CurrentProfile.ResourcePaths.Config + @"\settings.cfg", oGlobals.CurrentProfile.ResourcePaths.Config);
                                                                 EchoText("Macros Saved" + System.Environment.NewLine);
                                                                 oGlobals.MacroList.Save();
                                                                 EchoText("Substitutes Saved" + System.Environment.NewLine);
-                                                                oGlobals.SubstituteList.Save(oGlobals.Config.ConfigDir + @"\substitutes.cfg");
+                                                                oGlobals.SubstituteList.Save(oGlobals.CurrentProfile.ResourcePaths.Config + @"\substitutes.cfg");
                                                                 EchoText("Gags Saved" + System.Environment.NewLine);
                                                                 oGlobals.GagList.Save();
                                                                 EchoText("Highlights Saved" + System.Environment.NewLine);
-                                                                oGlobals.SaveHighlights(oGlobals.Config.ConfigDir + @"\highlights.cfg");
+                                                                oGlobals.SaveHighlights(oGlobals.CurrentProfile.ResourcePaths.Config + @"\highlights.cfg");
                                                                 EchoText("Names Saved" + System.Environment.NewLine);
-                                                                oGlobals.NameList.Save(oGlobals.Config.ConfigDir + @"\names.cfg");
+                                                                oGlobals.NameList.Save(oGlobals.CurrentProfile.ResourcePaths.Config + @"\names.cfg");
                                                                 EchoText("Presets Saved" + System.Environment.NewLine);
-                                                                oGlobals.PresetList.Save(oGlobals.Config.ConfigDir + @"\presets.cfg");
+                                                                oGlobals.PresetList.Save(oGlobals.CurrentProfile.ResourcePaths.Config + @"\presets.cfg");
                                                                 break;
                                                             }
                                                     }
@@ -665,7 +663,7 @@ namespace GenieClient.Genie
                                                             {
                                                                 EchoText("Triggers Loaded" + System.Environment.NewLine);
                                                                 oGlobals.TriggerList.Clear();
-                                                                oGlobals.TriggerList.Load(oGlobals.Config.ConfigDir + @"\triggers.cfg");
+                                                                oGlobals.TriggerList.Load(oGlobals.CurrentProfile.ResourcePaths.Config + @"\triggers.cfg");
                                                                 break;
                                                             }
 
@@ -675,7 +673,7 @@ namespace GenieClient.Genie
                                                         case "settings":
                                                             {
                                                                 EchoText("Settings Loaded" + System.Environment.NewLine);
-                                                                oGlobals.Config.Load(oGlobals.Config.ConfigDir + @"\settings.cfg");
+                                                                oGlobals.Config.Load(oGlobals.CurrentProfile.ResourcePaths.Config + @"\settings.cfg", oGlobals.CurrentProfile.ResourcePaths.Config);
                                                                 break;
                                                             }
 
@@ -694,7 +692,7 @@ namespace GenieClient.Genie
                                                             {
                                                                 EchoText("Substitutes Loaded" + System.Environment.NewLine);
                                                                 oGlobals.SubstituteList.Clear();
-                                                                oGlobals.SubstituteList.Load(oGlobals.Config.ConfigDir + @"\substitutes.cfg");
+                                                                oGlobals.SubstituteList.Load(oGlobals.CurrentProfile.ResourcePaths.Config + @"\substitutes.cfg");
                                                                 break;
                                                             }
 
@@ -717,7 +715,7 @@ namespace GenieClient.Genie
                                                                 oGlobals.HighlightRegExpList.Clear();
                                                                 oGlobals.HighlightBeginsWithList.Clear();
                                                                 EchoText("Highlights Loaded" + System.Environment.NewLine);
-                                                                oGlobals.LoadHighlights(oGlobals.Config.ConfigDir + @"\highlights.cfg");
+                                                                oGlobals.LoadHighlights(oGlobals.CurrentProfile.ResourcePaths.Config + @"\highlights.cfg");
                                                                 break;
                                                             }
 
@@ -726,7 +724,7 @@ namespace GenieClient.Genie
                                                             {
                                                                 EchoText("Names Loaded" + System.Environment.NewLine);
                                                                 oGlobals.NameList.Clear();
-                                                                oGlobals.NameList.Load(oGlobals.Config.ConfigDir + @"\names.cfg");
+                                                                oGlobals.NameList.Load(oGlobals.CurrentProfile.ResourcePaths.Config + @"\names.cfg");
                                                                 break;
                                                             }
 
@@ -735,7 +733,7 @@ namespace GenieClient.Genie
                                                             {
                                                                 EchoText("Presets Loaded" + System.Environment.NewLine);
                                                                 oGlobals.PresetList.Clear();
-                                                                oGlobals.PresetList.Load(oGlobals.Config.ConfigDir + @"\presets.cfg");
+                                                                oGlobals.PresetList.Load(oGlobals.CurrentProfile.ResourcePaths.Config + @"\presets.cfg");
                                                                 break;
                                                             }
 
@@ -767,15 +765,15 @@ namespace GenieClient.Genie
                                                                 oGlobals.ClassList.Load();
                                                                 EchoText("Triggers Loaded" + System.Environment.NewLine);
                                                                 oGlobals.TriggerList.Clear();
-                                                                oGlobals.TriggerList.Load(oGlobals.Config.ConfigDir + @"\triggers.cfg");
+                                                                oGlobals.TriggerList.Load(oGlobals.CurrentProfile.ResourcePaths.Config + @"\triggers.cfg");
                                                                 EchoText("Settings Loaded" + System.Environment.NewLine);
-                                                                oGlobals.Config.Load();
+                                                                oGlobals.Config.Load(default, oGlobals.CurrentProfile.ResourcePaths.Config);
                                                                 EchoText("Macros Loaded" + System.Environment.NewLine);
                                                                 oGlobals.MacroList.Clear();
                                                                 oGlobals.MacroList.Load();
                                                                 EchoText("Substitutes Loaded" + System.Environment.NewLine);
                                                                 oGlobals.SubstituteList.Clear();
-                                                                oGlobals.SubstituteList.Load(oGlobals.Config.ConfigDir + @"\substitutes.cfg");
+                                                                oGlobals.SubstituteList.Load(oGlobals.CurrentProfile.ResourcePaths.Config + @"\substitutes.cfg");
                                                                 EchoText("Gags Loaded" + System.Environment.NewLine);
                                                                 oGlobals.GagList.Clear();
                                                                 oGlobals.GagList.Load();
@@ -783,13 +781,13 @@ namespace GenieClient.Genie
                                                                 oGlobals.HighlightRegExpList.Clear();
                                                                 oGlobals.HighlightBeginsWithList.Clear();
                                                                 EchoText("Highlights Loaded" + System.Environment.NewLine);
-                                                                oGlobals.LoadHighlights(oGlobals.Config.ConfigDir + @"\highlights.cfg");
+                                                                oGlobals.LoadHighlights(oGlobals.CurrentProfile.ResourcePaths.Config + @"\highlights.cfg");
                                                                 EchoText("Names Loaded" + System.Environment.NewLine);
                                                                 oGlobals.NameList.Clear();
-                                                                oGlobals.NameList.Load(oGlobals.Config.ConfigDir + @"\names.cfg");
+                                                                oGlobals.NameList.Load(oGlobals.CurrentProfile.ResourcePaths.Config + @"\names.cfg");
                                                                 EchoText("Presets Loaded" + System.Environment.NewLine);
                                                                 oGlobals.PresetList.Clear();
-                                                                oGlobals.PresetList.Load(oGlobals.Config.ConfigDir + @"\presets.cfg");
+                                                                oGlobals.PresetList.Load(oGlobals.CurrentProfile.ResourcePaths.Config + @"\presets.cfg");
                                                                 break;
                                                             }
                                                     }
@@ -1357,14 +1355,14 @@ namespace GenieClient.Genie
                                                     case "load":
                                                         {
                                                             EchoText("Triggers Loaded" + System.Environment.NewLine);
-                                                            oGlobals.TriggerList.Load(oGlobals.Config.ConfigDir + @"\triggers.cfg");
+                                                            oGlobals.TriggerList.Load(oGlobals.CurrentProfile.ResourcePaths.Config + @"\triggers.cfg");
                                                             break;
                                                         }
 
                                                     case "save":
                                                         {
                                                             EchoText("Triggers Saved" + System.Environment.NewLine);
-                                                            oGlobals.TriggerList.Save(oGlobals.Config.ConfigDir + @"\triggers.cfg");
+                                                            oGlobals.TriggerList.Save(oGlobals.CurrentProfile.ResourcePaths.Config + @"\triggers.cfg");
                                                             break;
                                                         }
 
@@ -1377,7 +1375,7 @@ namespace GenieClient.Genie
 
                                                     case "edit":
                                                         {
-                                                            Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.Config.ConfigDir + @"\triggers.cfg""", AppWinStyle.NormalFocus, false);
+                                                            Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\triggers.cfg""", AppWinStyle.NormalFocus, false);
                                                             break;
                                                         }
 
@@ -1448,20 +1446,20 @@ namespace GenieClient.Genie
                                                     case "load":
                                                         {
                                                             EchoText("Settings Loaded" + System.Environment.NewLine);
-                                                            oGlobals.Config.Load(oGlobals.Config.ConfigDir + @"\settings.cfg");
+                                                            oGlobals.Config.Load(oGlobals.CurrentProfile.ResourcePaths.Config + @"\settings.cfg", oGlobals.CurrentProfile.ResourcePaths.Config);
                                                             break;
                                                         }
 
                                                     case "save":
                                                         {
                                                             EchoText("Settings Saved" + System.Environment.NewLine);
-                                                            oGlobals.Config.Save(oGlobals.Config.ConfigDir + @"\settings.cfg");
+                                                            oGlobals.Config.Save(oGlobals.CurrentProfile.ResourcePaths.Config + @"\settings.cfg", oGlobals.CurrentProfile.ResourcePaths.Config);
                                                             break;
                                                         }
 
                                                     case "edit":
                                                         {
-                                                            Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.Config.ConfigDir + @"\settings.cfg""", AppWinStyle.NormalFocus, false);
+                                                            Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\settings.cfg""", AppWinStyle.NormalFocus, false);
                                                             break;
                                                         }
 
@@ -1637,14 +1635,14 @@ namespace GenieClient.Genie
                                                         case "load":
                                                             {
                                                                 EchoText("Substitutes Loaded" + System.Environment.NewLine);
-                                                                oGlobals.SubstituteList.Load(oGlobals.Config.ConfigDir + @"\substitutes.cfg");
+                                                                oGlobals.SubstituteList.Load(oGlobals.CurrentProfile.ResourcePaths.Config + @"\substitutes.cfg");
                                                                 break;
                                                             }
 
                                                         case "save":
                                                             {
                                                                 EchoText("Substitutes Saved" + System.Environment.NewLine);
-                                                                oGlobals.SubstituteList.Save(oGlobals.Config.ConfigDir + @"\substitutes.cfg");
+                                                                oGlobals.SubstituteList.Save(oGlobals.CurrentProfile.ResourcePaths.Config + @"\substitutes.cfg");
                                                                 break;
                                                             }
 
@@ -1657,7 +1655,7 @@ namespace GenieClient.Genie
 
                                                         case "edit":
                                                             {
-                                                                Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.Config.ConfigDir + @"\substitutes.cfg""", AppWinStyle.NormalFocus, false);
+                                                                Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\substitutes.cfg""", AppWinStyle.NormalFocus, false);
                                                                 break;
                                                             }
 
@@ -1778,7 +1776,7 @@ namespace GenieClient.Genie
                                                         case "load":
                                                             {
                                                                 EchoText("Presets Loaded" + System.Environment.NewLine);
-                                                                oGlobals.PresetList.Load(oGlobals.Config.ConfigDir + @"\presets.cfg");
+                                                                oGlobals.PresetList.Load(oGlobals.CurrentProfile.ResourcePaths.Config + @"\presets.cfg");
                                                                 var loadVar = "all";
                                                                 EventPresetChanged?.Invoke(loadVar);
                                                                 break;
@@ -1787,7 +1785,7 @@ namespace GenieClient.Genie
                                                         case "save":
                                                             {
                                                                 EchoText("Presets Saved" + System.Environment.NewLine);
-                                                                oGlobals.PresetList.Save(oGlobals.Config.ConfigDir + @"\presets.cfg");
+                                                                oGlobals.PresetList.Save(oGlobals.CurrentProfile.ResourcePaths.Config + @"\presets.cfg");
                                                                 break;
                                                             }
 
@@ -1802,7 +1800,7 @@ namespace GenieClient.Genie
 
                                                         case "edit":
                                                             {
-                                                                Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.Config.ConfigDir + @"\presets.cfg""", AppWinStyle.NormalFocus, false);
+                                                                Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\presets.cfg""", AppWinStyle.NormalFocus, false);
                                                                 break;
                                                             }
 
@@ -1856,14 +1854,14 @@ namespace GenieClient.Genie
                                                     case "load":
                                                         {
                                                             EchoText("Highlights Loaded" + System.Environment.NewLine);
-                                                            oGlobals.LoadHighlights(oGlobals.Config.ConfigDir + @"\highlights.cfg");
+                                                            oGlobals.LoadHighlights(oGlobals.CurrentProfile.ResourcePaths.Config + @"\highlights.cfg");
                                                             break;
                                                         }
 
                                                     case "save":
                                                         {
                                                             EchoText("Highlights Saved" + System.Environment.NewLine);
-                                                            oGlobals.SaveHighlights(oGlobals.Config.ConfigDir + @"\highlights.cfg");
+                                                            oGlobals.SaveHighlights(oGlobals.CurrentProfile.ResourcePaths.Config + @"\highlights.cfg");
                                                             break;
                                                         }
 
@@ -1879,7 +1877,7 @@ namespace GenieClient.Genie
 
                                                     case "edit":
                                                         {
-                                                            Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.Config.ConfigDir + @"\highlights.cfg""", AppWinStyle.NormalFocus, false);
+                                                            Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\highlights.cfg""", AppWinStyle.NormalFocus, false);
                                                             break;
                                                         }
 
@@ -1979,14 +1977,14 @@ namespace GenieClient.Genie
                                                         case "load":
                                                             {
                                                                 EchoText("Names Loaded" + System.Environment.NewLine);
-                                                                oGlobals.NameList.Load(oGlobals.Config.ConfigDir + @"\names.cfg");
+                                                                oGlobals.NameList.Load(oGlobals.CurrentProfile.ResourcePaths.Config + @"\names.cfg");
                                                                 break;
                                                             }
 
                                                         case "save":
                                                             {
                                                                 EchoText("Names Saved" + System.Environment.NewLine);
-                                                                oGlobals.NameList.Save(oGlobals.Config.ConfigDir + @"\names.cfg");
+                                                                oGlobals.NameList.Save(oGlobals.CurrentProfile.ResourcePaths.Config + @"\names.cfg");
                                                                 break;
                                                             }
 
@@ -1999,7 +1997,7 @@ namespace GenieClient.Genie
 
                                                         case "edit":
                                                             {
-                                                                Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.Config.ConfigDir + @"\names.cfg""", AppWinStyle.NormalFocus, false);
+                                                                Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\names.cfg""", AppWinStyle.NormalFocus, false);
                                                                 break;
                                                             }
 
@@ -2045,7 +2043,7 @@ namespace GenieClient.Genie
 
                                                 if (sFile.IndexOf(@"\") == -1)
                                                 {
-                                                    string sLocation = oGlobals.Config.ScriptDir;
+                                                    string sLocation = oGlobals.CurrentProfile.ResourcePaths.Scripts;
                                                     if (sLocation.EndsWith(@"\"))
                                                     {
                                                         sFile = sLocation + sFile;
@@ -2473,28 +2471,6 @@ namespace GenieClient.Genie
             }
         }
 
-        private void SetCurrentProfile(string profileArg)
-        {
-            oGlobals.CurrentProfile = profiles
-                .Where(p => p.ProfileName.ToLower() == profileArg)
-                .FirstOrDefault();
-            
-            if(oGlobals.CurrentProfile == null)
-            {
-                oGlobals.CurrentProfile = profiles
-                    .Where(p => p.ProfileName.ToLower() == "default")
-                    .FirstOrDefault();
-            }
-
-            if (oGlobals.CurrentProfile == null)
-            {
-                oGlobals.CurrentProfile = new GenieProfile();
-            }
-
-            oGlobals.CurrentProfile.ProfileArg = profileArg.ToLower();
-
-        }
-
         private void Do(ArrayList oArgs)
         {
             if (oArgs.Count > 1)
@@ -2854,7 +2830,7 @@ namespace GenieClient.Genie
             EchoText("logdir=" + oGlobals.Config.sLogDir + System.Environment.NewLine);
             EchoText("configdir=" + oGlobals.Config.sConfigDir + System.Environment.NewLine);
             EchoText("plugindir=" + oGlobals.Config.PluginDir.ToString() + System.Environment.NewLine);
-            EchoText("mapdir=" + oGlobals.Config.MapDir.ToString() + System.Environment.NewLine);
+            EchoText("mapdir=" + oGlobals.CurrentProfile.ResourcePaths.Maps.ToString() + System.Environment.NewLine);
             EchoText("scriptdir=" + oGlobals.Config.sScriptDir + System.Environment.NewLine);
             EchoText("scriptchar=" + oGlobals.Config.ScriptChar.ToString() + System.Environment.NewLine);
             EchoText("scripttimeout=" + oGlobals.Config.iScriptTimeout.ToString() + System.Environment.NewLine);

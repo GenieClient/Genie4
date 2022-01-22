@@ -40,7 +40,7 @@ namespace GenieClient
 
         private void LoadTree()
         {
-            string sLocation = m_oGlobals.Config.ScriptDir;
+            string sLocation = m_oGlobals.CurrentProfile.ResourcePaths.Scripts;
             if (Information.IsNothing(m_oGlobals))
             {
                 return;
@@ -171,7 +171,7 @@ namespace GenieClient
         {
             if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(TreeView.SelectedNode.Tag, "File", false)))
             {
-                string sLocation = m_oGlobals.Config.ScriptDir;
+                string sLocation = m_oGlobals.CurrentProfile.ResourcePaths.Scripts;
                 if (!sLocation.EndsWith(@"\"))
                 {
                     sLocation += @"\";
@@ -187,7 +187,7 @@ namespace GenieClient
             {
                 if (Interaction.MsgBox("Are you sure you want to delete " + TreeView.SelectedNode.FullPath + "?", MsgBoxStyle.YesNo) == MsgBoxResult.Yes)
                 {
-                    string sLocation = m_oGlobals.Config.ScriptDir;
+                    string sLocation = m_oGlobals.CurrentProfile.ResourcePaths.Scripts;
                     if (!sLocation.EndsWith(@"\"))
                     {
                         sLocation += @"\";
@@ -206,7 +206,7 @@ namespace GenieClient
 
         private void ToolStripButtonNew_Click(object sender, EventArgs e)
         {
-            string sLocation = m_oGlobals.Config.ScriptDir;
+            string sLocation = m_oGlobals.CurrentProfile.ResourcePaths.Scripts;
             if (!sLocation.EndsWith(@"\"))
             {
                 sLocation += @"\";

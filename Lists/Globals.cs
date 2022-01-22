@@ -7,9 +7,11 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Linq;
 using GenieClient.Models;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using Microsoft.Extensions.Configuration;
 
 namespace GenieClient.Genie
 {
@@ -36,7 +38,6 @@ namespace GenieClient.Genie
                     _Config.ConfigChanged -= Config_ConfigChanged;
                 }
 
-                _Config = value;
                 if (_Config != null)
                 {
                     _Config.ConfigChanged += Config_ConfigChanged;
@@ -1825,9 +1826,13 @@ namespace GenieClient.Genie
             }
         }
 
-        public Globals()
+        private readonly IConfiguration _configuration;
+        public IConfiguration Configuration { get { return _configuration; } }  
+        public Globals(ref IConfiguration configuration)
         {
             VariableList.SetDefaultGlobalVars();
+            _configuration = configuration;
+            this.SetCurrentProfile("default");
         }
 
         public bool SaveHighlights(string sFileName = "highlights.cfg")
@@ -2072,6 +2077,28 @@ namespace GenieClient.Genie
                     }
                 }
             }
+        }
+
+        public void SetCurrentProfile(string profileArg)
+        {
+            IEnumerable<Models.GenieProfile> profiles = _configuration.LoadProfiles();
+            this.CurrentProfile = profiles
+                .Where(p => p.ProfileName.ToLower() == profileArg)
+                .FirstOrDefault();
+
+            if (this.CurrentProfile == null)
+            {
+                this.CurrentProfile = profiles
+                    .Where(p => p.ProfileName.ToLower() == "default")
+                    .FirstOrDefault();
+            }
+
+            if (this.CurrentProfile == null)
+            {
+                this.CurrentProfile = new GenieProfile();
+            }
+
+            this.CurrentProfile.ProfileArg = profileArg.ToLower();
         }
     }
 }

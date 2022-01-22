@@ -27,7 +27,7 @@ namespace GenieClient
         {
             this.config = config;
             this.mapper = mapper;
-            m_oGlobals = new Genie.Globals();
+            m_oGlobals = new Genie.Globals(ref config);
             m_oGame = new Genie.Game(ref _m_oGlobals);
             m_oCommand = new Genie.Command(ref _m_oGlobals, config, mapper);
             m_oAutoMapper = new Mapper.AutoMapper(ref _m_oGlobals);
@@ -82,7 +82,7 @@ namespace GenieClient
 
                                     if (m_sConfigFile.Contains(@"\") == false)
                                     {
-                                        m_sConfigFile = m_oGlobals.Config.ConfigDir + @"\Layout\" + m_sConfigFile;
+                                        m_sConfigFile = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Layout\" + m_sConfigFile;
                                     }
 
                                     bCustomConfigFile = false;
@@ -97,18 +97,18 @@ namespace GenieClient
             CreateGenieFolders();
             if (bCustomConfigFile == false)
             {
-                m_sConfigFile = m_oGlobals.Config.ConfigDir + @"\Layout\" + "default.layout";
+                m_sConfigFile = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Layout\" + "default.layout";
 
                 // TEMP MOVE TEMP MOVE TEMP MOVE
-                if (File.Exists(m_oGlobals.Config.ConfigDir + @"\Layout\" + "default.layout"))
+                if (File.Exists(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Layout\" + "default.layout"))
                 {
                 }
                 // 
-                else if (File.Exists(m_oGlobals.Config.ConfigDir + @"\config.xml"))
+                else if (File.Exists(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\config.xml"))
                 {
                     try
                     {
-                        File.Move(m_oGlobals.Config.ConfigDir + @"\config.xml", m_sConfigFile);
+                        File.Move(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\config.xml", m_sConfigFile);
                     }
 #pragma warning disable CS0168
                     catch (Exception ex)
@@ -530,8 +530,8 @@ namespace GenieClient
         /* TODO ERROR: Skipped RegionDirectiveTrivia */
         private int LoadPlugins()
         {
-            
-            string sPluginPath = m_oGlobals.Config.PluginDir;
+
+            string sPluginPath = m_oGlobals.CurrentProfile.ResourcePaths.Plugins;
             if (m_bDebugPlugin)
             {
                 sPluginPath = Application.StartupPath;
@@ -631,8 +631,8 @@ namespace GenieClient
         {
             if (!filename.Contains(@"\"))
             {
-                
-                string sPluginPath = m_oGlobals.Config.PluginDir;
+
+                string sPluginPath = m_oGlobals.CurrentProfile.ResourcePaths.Plugins;
                 if (m_bDebugPlugin)
                 {
                     sPluginPath = Application.StartupPath;
@@ -718,8 +718,8 @@ namespace GenieClient
             {
                 if ((kvp.Value.ToLower() ?? "") == (filename.ToLower() ?? ""))
                 {
-                    
-                    string sPluginPath = m_oGlobals.Config.PluginDir;
+
+                    string sPluginPath = m_oGlobals.CurrentProfile.ResourcePaths.Plugins;
                     if (m_bDebugPlugin)
                     {
                         sPluginPath = Application.StartupPath;
@@ -744,8 +744,8 @@ namespace GenieClient
             {
                 if ((kvp.Key.ToLower() ?? "") == (name.ToLower() ?? ""))
                 {
-                    
-                    string sPluginPath = m_oGlobals.Config.PluginDir;
+
+                    string sPluginPath = m_oGlobals.CurrentProfile.ResourcePaths.Plugins;
                     if (m_bDebugPlugin)
                     {
                         sPluginPath = Application.StartupPath;
@@ -1599,7 +1599,7 @@ namespace GenieClient
             AddText(argsText, oTargetWindow: argoTargetWindow);
             if (sPattern.IndexOf(@"\") == -1)
             {
-                string sLocation = m_oGlobals.Config.ScriptDir;
+                string sLocation = m_oGlobals.CurrentProfile.ResourcePaths.Scripts;
                 if (sLocation.EndsWith(@"\"))
                 {
                     sPattern = sLocation + sPattern;
@@ -1633,7 +1633,7 @@ namespace GenieClient
             int i = 0;
             if (sPattern.IndexOf(@"\") == -1)
             {
-                string sLocation = m_oGlobals.Config.ScriptDir;
+                string sLocation = m_oGlobals.CurrentProfile.ResourcePaths.Scripts;
                 if (sLocation.EndsWith(@"\"))
                 {
                     sPattern = sLocation + sPattern;
@@ -1782,49 +1782,49 @@ namespace GenieClient
 
             Application.DoEvents();
             AppendText("Loading Settings...");
-            m_oGlobals.Config.Load(m_oGlobals.Config.ConfigDir + @"\settings.cfg");
+            m_oGlobals.Config.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\settings.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Presets...");
-            m_oGlobals.PresetList.Load(m_oGlobals.Config.ConfigDir + @"\presets.cfg");
+            m_oGlobals.PresetList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\presets.cfg");
             string argsPreset = "all";
             PresetChanged(argsPreset);
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Global Variables...");
-            m_oGlobals.VariableList.Load(m_oGlobals.Config.ConfigDir + @"\variables.cfg");
+            m_oGlobals.VariableList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\variables.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Highlights...");
-            m_oGlobals.LoadHighlights(m_oGlobals.Config.ConfigDir + @"\highlights.cfg");
+            m_oGlobals.LoadHighlights(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\highlights.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Names...");
-            m_oGlobals.NameList.Load(m_oGlobals.Config.ConfigDir + @"\names.cfg");
+            m_oGlobals.NameList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\names.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Macros...");
-            m_oGlobals.MacroList.Load(m_oGlobals.Config.ConfigDir + @"\macros.cfg");
+            m_oGlobals.MacroList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\macros.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Aliases...");
-            m_oGlobals.AliasList.Load(m_oGlobals.Config.ConfigDir + @"\aliases.cfg");
+            m_oGlobals.AliasList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\aliases.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Substitutes...");
-            m_oGlobals.SubstituteList.Load(m_oGlobals.Config.ConfigDir + @"\substitutes.cfg");
+            m_oGlobals.SubstituteList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\substitutes.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Gags...");
-            m_oGlobals.GagList.Load(m_oGlobals.Config.ConfigDir + @"\gags.cfg");
+            m_oGlobals.GagList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\gags.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Triggers...");
-            m_oGlobals.TriggerList.Load(m_oGlobals.Config.ConfigDir + @"\triggers.cfg");
+            m_oGlobals.TriggerList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\triggers.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Classes...");
-            m_oGlobals.ClassList.Load(m_oGlobals.Config.ConfigDir + @"\classes.cfg");
+            m_oGlobals.ClassList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\classes.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
 
@@ -1878,7 +1878,7 @@ namespace GenieClient
 
         private void FormPlugin_ReloadPluginByName(string name)
         {
-            string sPluginPath = m_oGlobals.Config.PluginDir;
+            string sPluginPath = m_oGlobals.CurrentProfile.ResourcePaths.Plugins;
             if (m_bDebugPlugin)
             {
                 sPluginPath = Application.StartupPath;
@@ -1922,7 +1922,6 @@ namespace GenieClient
             Utility.CreateDirectory(LocalDirectory.Path + @"\Config\Layout");
             Utility.CreateDirectory(LocalDirectory.Path + @"\Config\PluginKeys");
             Utility.MoveLayoutFiles();
-            Utility.CreateDirectory(LocalDirectory.Path + @"\Help");
             Utility.CreateDirectory(LocalDirectory.Path + @"\Icons");
             Utility.CreateDirectory(LocalDirectory.Path + @"\Logs");
             Utility.CreateDirectory(LocalDirectory.Path + @"\Scripts");
@@ -6830,7 +6829,7 @@ namespace GenieClient
             {
                 if (sFile.ToLower().EndsWith(".xml"))
                     return false;
-                sFile = m_oGlobals.Config.ConfigDir + @"\Layout\" + sFile;
+                sFile = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Layout\" + sFile;
                 if (sFile.ToLower().EndsWith(".layout") == false)
                 {
                     sFile += ".layout";
@@ -6924,11 +6923,11 @@ namespace GenieClient
             {
                 if (sFile.ToLower().EndsWith(".xml"))
                 {
-                    sFile = m_oGlobals.Config.ConfigDir + @"\" + sFile;
+                    sFile = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\" + sFile;
                 }
                 else
                 {
-                    sFile = m_oGlobals.Config.ConfigDir + @"\Layout\" + sFile;
+                    sFile = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Layout\" + sFile;
                     if (sFile.ToLower().EndsWith(".layout") == false)
                     {
                         sFile += ".layout";
@@ -7011,9 +7010,9 @@ namespace GenieClient
 
         private void OpenLogInEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (File.Exists(Conversions.ToString(Conversions.ToString(LocalDirectory.Path + @"\Logs\" + m_oGlobals.VariableList["charactername"]) + m_oGlobals.VariableList["game"] + "_" + DateTime.Now.ToString("yyyy-MM-dd") + ".log")))
+            if (File.Exists(Conversions.ToString(Conversions.ToString(m_oGlobals.CurrentProfile.ResourcePaths.Logs + "\\" + m_oGlobals.VariableList["charactername"]) + m_oGlobals.VariableList["game"] + "_" + DateTime.Now.ToString("yyyy-MM-dd") + ".log")))
             {
-                Interaction.Shell(Conversions.ToString(Conversions.ToString("\"" + m_oGlobals.Config.sEditor + "\" \"" + LocalDirectory.Path + @"\Logs\" + m_oGlobals.VariableList["charactername"]) + m_oGlobals.VariableList["game"] + "_" + DateTime.Now.ToString("yyyy-MM-dd") + ".log\""), AppWinStyle.NormalFocus, false);
+                Interaction.Shell(Conversions.ToString(Conversions.ToString("\"" + m_oGlobals.Config.sEditor + "\" \"" + m_oGlobals.CurrentProfile.ResourcePaths.Logs + "\\" + m_oGlobals.VariableList["charactername"]) + m_oGlobals.VariableList["game"] + "_" + DateTime.Now.ToString("yyyy-MM-dd") + ".log\""), AppWinStyle.NormalFocus, false);
             }
             else
             {
@@ -7156,12 +7155,15 @@ namespace GenieClient
         }
 
         // Connect Using Profile
+        
         private void ConnectToolStripMenuItemConnectDialog_Click(object sender, EventArgs e)
         {
-            My.MyProject.Forms.DialogProfileConnect.ConfigDir = m_oGlobals.Config.ConfigDir;
+            My.MyProject.Forms.DialogProfileConnect.ConfigDir = m_oGlobals.CurrentProfile.ResourcePaths.Config;
             if (My.MyProject.Forms.DialogProfileConnect.ShowDialog(this) == DialogResult.OK)
             {
+                IEnumerable<Models.GenieProfile> profiles = config.LoadProfiles();
                 m_sCurrentProfileFile = string.Empty;
+                m_oGlobals.SetCurrentProfile(My.MyProject.Forms.DialogProfileConnect.ProfileName);
                 LoadProfile(My.MyProject.Forms.DialogProfileConnect.ProfileName + ".xml", true);
             }
         }
@@ -7219,7 +7221,7 @@ namespace GenieClient
             string ShortName = FileName;
             if (FileName.IndexOf(@"\") == -1)
             {
-                FileName = m_oGlobals.Config.ConfigDir + @"\Profiles\" + FileName;
+                FileName = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Profiles\" + FileName;
             }
 
             // Only load if profile changed
@@ -7244,7 +7246,7 @@ namespace GenieClient
                     m_oGame.AccountGame = sGame;
                 string sProfile = string.Empty;
                 sProfile = FileName.Substring(FileName.LastIndexOf(@"\") + 1).Replace(".xml", "");
-                m_oGlobals.Config.sConfigDirProfile = m_oGlobals.Config.ConfigDir + @"\Profiles\" + sProfile;
+                m_oGlobals.Config.sConfigDirProfile = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Profiles\" + sProfile;
                 LoadProfileSettings();
                 string sAccount = m_oProfile.GetValue("Genie/Profile", "Account", string.Empty);
                 string sPassword = m_oProfile.GetValue("Genie/Profile", "Password", string.Empty);
@@ -7333,7 +7335,7 @@ namespace GenieClient
                 }
 
                 m_oGlobals.MacroList.Clear();
-                m_oGlobals.MacroList.Load(m_oGlobals.Config.ConfigDir + @"\macros.cfg"); // Load default macros
+                m_oGlobals.MacroList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\macros.cfg"); // Load default macros
                 m_oGlobals.MacroList.Load(m_oGlobals.Config.ConfigProfileDir + @"\macros.cfg");
                 if (echo)
                 {
@@ -7356,7 +7358,7 @@ namespace GenieClient
                 }
 
                 m_oGlobals.AliasList.Clear();
-                m_oGlobals.AliasList.Load(m_oGlobals.Config.ConfigDir + @"\aliases.cfg"); // Load default aliases
+                m_oGlobals.AliasList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\aliases.cfg"); // Load default aliases
                 m_oGlobals.AliasList.Load(m_oGlobals.Config.ConfigProfileDir + @"\aliases.cfg");
                 if (echo)
                 {
@@ -7423,7 +7425,7 @@ namespace GenieClient
             {
                 SaveProfile(m_sCurrentProfileName);
                 string sProfile = m_sCurrentProfileName.Substring(m_sCurrentProfileName.LastIndexOf(@"\") + 1).Replace(".xml", "");
-                m_oGlobals.Config.sConfigDirProfile = m_oGlobals.Config.ConfigDir + @"\Profiles\" + sProfile;
+                m_oGlobals.Config.sConfigDirProfile = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Profiles\" + sProfile;
                 LoadProfileSettings(false);
             }
             else
@@ -7456,7 +7458,7 @@ namespace GenieClient
             m_oProfile.SetValue("Genie/Profile", "Character", m_oGame.AccountCharacter);
             m_oProfile.SetValue("Genie/Profile", "Game", m_oGame.AccountGame);
             string sLayout = m_oConfig.ConfigFile;
-            if (sLayout.Contains(m_oGlobals.Config.ConfigDir))
+            if (sLayout.Contains(m_oGlobals.CurrentProfile.ResourcePaths.Config))
             {
                 sLayout = sLayout.Substring(sLayout.LastIndexOf(@"\") + 1);
             }
@@ -7471,7 +7473,7 @@ namespace GenieClient
             {
                 if (FileName.IndexOf(@"\") == -1)
                 {
-                    FileName = m_oGlobals.Config.ConfigDir + @"\Profiles\" + FileName;
+                    FileName = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Profiles\" + FileName;
                 }
 
                 return m_oProfile.SaveToFile(FileName);

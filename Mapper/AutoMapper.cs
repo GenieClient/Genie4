@@ -235,7 +235,7 @@ namespace GenieClient.Mapper
             {
                 var xdoc = new XmlDocument();
                 XmlNodeList xnlist;
-                var diDirectory = new DirectoryInfo(m_oGlobals.Config.MapDir);
+                var diDirectory = new DirectoryInfo(m_oGlobals.CurrentProfile.ResourcePaths.Maps);
                 foreach (FileInfo dif in diDirectory.GetFiles())
                 {
                     if ((dif.Extension.ToLower() ?? "") == ".xml")
@@ -288,7 +288,7 @@ namespace GenieClient.Mapper
         {
             var xdoc = new XmlDocument();
             XmlNodeList xnlist;
-            var diDirectory = new DirectoryInfo(m_oGlobals.Config.MapDir);
+            var diDirectory = new DirectoryInfo(m_oGlobals.CurrentProfile.ResourcePaths.Maps);
             bool bMatch = false;
             foreach (FileInfo dif in diDirectory.GetFiles())
             {
@@ -1015,7 +1015,7 @@ namespace GenieClient.Mapper
                             {
                                 if (sArg.Contains(@"\") == false)
                                 {
-                                    sArg = m_oGlobals.Config.MapDir + "\\" + sArg;
+                                    sArg = m_oGlobals.CurrentProfile.ResourcePaths.Maps + "\\" + sArg;
                                 }
 
                                 if (sArg.ToLower().EndsWith(".xml") == false)
@@ -1045,7 +1045,7 @@ namespace GenieClient.Mapper
                                 // Filename is specified:
                                 if (sArg.Contains(@"\") == false)
                                 {
-                                    sArg = m_oGlobals.Config.MapDir + "==" + sArg;
+                                    sArg = m_oGlobals.CurrentProfile.ResourcePaths.Maps + "==" + sArg;
                                 }
                                 if (sArg.ToLower().EndsWith(".xml") == false)
                                 {

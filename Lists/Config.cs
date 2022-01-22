@@ -8,6 +8,7 @@ namespace GenieClient.Genie
 {
     public class Config
     {
+        
         public char m_cScriptChar = '.';
         public char cSeparatorChar = ';';
         public char cCommandChar = '#';
@@ -319,13 +320,17 @@ namespace GenieClient.Genie
             }
         }
 
-        public bool Save(string sFileName = "settings.cfg")
+        public bool Save(string sFileName = "settings.cfg", string ConfigPath = "")
         {
+            if (ConfigPath == "")
+            {
+                ConfigPath = ConfigDir;
+            }
             try
             {
                 if (sFileName.IndexOf(@"\") == -1)
                 {
-                    sFileName = ConfigDir + @"\" + sFileName;
+                    sFileName = ConfigPath + @"\" + sFileName;
                 }
 
                 if (File.Exists(sFileName) == true)
@@ -384,11 +389,15 @@ namespace GenieClient.Genie
             }
         }
 
-        public bool Load(string sFileName = "settings.cfg")
+        public bool Load(string sFileName = "settings.cfg", string ConfigPath = "")
         {
+            if (ConfigPath == "")
+            {
+                ConfigPath = ConfigDir;
+            }
             if (sFileName.IndexOf(@"\") == -1)
             {
-                sFileName = ConfigDir + @"\" + sFileName;
+                sFileName = ConfigPath + @"\" + sFileName;
             }
 
             if (File.Exists(sFileName) == true)

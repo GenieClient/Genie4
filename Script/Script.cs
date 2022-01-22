@@ -3409,7 +3409,7 @@ namespace GenieClient
             string sFriendlyName = sFile;
             if (sFile.IndexOf(@"\") == -1)
             {
-                string sLocation = m_oGlobals.Config.ScriptDir;
+                string sLocation = m_oGlobals.CurrentProfile.ResourcePaths.Scripts;
                 if (sLocation.EndsWith(@"\"))
                 {
                     sFile = sLocation + sFile;
@@ -3471,7 +3471,7 @@ namespace GenieClient
             string sFriendlyName = sFile;
             if (sFile.IndexOf(@"\") == -1)
             {
-                string sLocation = m_oGlobals.Config.ScriptDir;
+                string sLocation = m_oGlobals.CurrentProfile.ResourcePaths.Scripts;
                 if (sLocation.EndsWith(@"\"))
                 {
                     sFile = sLocation + sFile;

@@ -83,9 +83,9 @@ namespace GenieClient
 
         private void ComponentIconBar_Load(object sender, EventArgs e)
         {
-            if (Directory.Exists(LocalDirectory.Path + @"\Icons\"))
+            if (Directory.Exists(m_Globals.CurrentProfile.ResourcePaths.Icons))
             {
-                var oFiles = new DirectoryInfo(LocalDirectory.Path + @"\Icons\").GetFiles("*.png");
+                var oFiles = new DirectoryInfo(m_Globals.CurrentProfile.ResourcePaths.Icons).GetFiles("*.png");
                 foreach (FileInfo fi in oFiles)
                     AddImage(fi.Name);
                 var argp = PictureBoxCompass;

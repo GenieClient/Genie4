@@ -9,7 +9,7 @@ namespace GenieClient.Models
     public class GenieProfile
     {
         public string ProfileName { get; set; }
-        public string ResourcePath { get; set; }
+        public ResourcePaths ResourcePaths { get; set; }
         public LichSettings LichSettings { get; set; }
         public string ProfileArg { get; set; }
     }

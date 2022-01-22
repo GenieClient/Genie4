@@ -870,13 +870,13 @@ namespace GenieClient
 
         private void ButtonBrowse_Click(object sender, EventArgs e)
         {
-            OpenFileDialogSound.InitialDirectory = LocalDirectory.Path + @"\Sounds";
+            OpenFileDialogSound.InitialDirectory = m_Globals.CurrentProfile.ResourcePaths.Sounds;
             if (OpenFileDialogSound.ShowDialog() == DialogResult.OK)
             {
                 string sPath = OpenFileDialogSound.FileName;
-                if (sPath.StartsWith(LocalDirectory.Path + @"\Sounds"))
+                if (sPath.StartsWith(m_Globals.CurrentProfile.ResourcePaths.Sounds))
                 {
-                    sPath = sPath.Substring(LocalDirectory.Path.Length + 8);
+                    sPath = sPath.Substring(m_Globals.CurrentProfile.ResourcePaths.Sounds.Length + 1);
                 }
 
                 TextBoxSound.Text = sPath;
