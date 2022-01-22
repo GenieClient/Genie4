@@ -213,6 +213,7 @@ namespace GenieClient.Genie
             Room,
             Log,
             Raw,
+            Debug,
             Other
         }
 
@@ -1372,6 +1373,11 @@ namespace GenieClient.Genie
                                         m_oTargetWindow = WindowTarget.Room;
                                         break;
                                     }
+                                case "debug":
+                                    {
+                                        m_oTargetWindow = WindowTarget.Debug;
+                                        break;
+                                    }
 
                                 default:
                                     {
@@ -1436,6 +1442,11 @@ namespace GenieClient.Genie
                                     }
 
                                 case "death":
+                                    {
+                                        break;
+                                    }
+
+                                case "debug":
                                     {
                                         break;
                                     }
@@ -2751,6 +2762,11 @@ namespace GenieClient.Genie
                         sTargetWindowString = "raw";
                         m_sTargetWindow = "raw";
                         targetwindow = WindowTarget.Other;
+                        break;
+                    }
+                case WindowTarget.Debug:
+                    {
+                        sTargetWindowString = "debug";
                         break;
                     }
 

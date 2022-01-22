@@ -433,6 +433,7 @@ namespace GenieClient
         private FormSkin m_oOutputDeath;
         private FormSkin m_oOutputRoom;
         private FormSkin m_oOutputLog;
+        private FormSkin m_oOutputDebug;
         private ArrayList m_oFormList = new ArrayList();
         private string m_sConfigFile = string.Empty;
         // private string m_sUpdateVersion = string.Empty;
@@ -2511,6 +2512,11 @@ namespace GenieClient
                 SafeCreateOutputForm("room", "Room", null, 300, 200, 10, 10, false);
             }
 
+           if (Information.IsNothing(m_oOutputDebug))
+            {
+                SafeCreateOutputForm("debug", "Debug", null, 300, 200, 10, 10, false);
+            }
+
             if (Information.IsNothing(FindSkinFormByID("talk")))
             {
                 SafeCreateOutputForm("talk", "Talk", "conversation", 300, 200, 10, 10, false);
@@ -3826,7 +3832,12 @@ namespace GenieClient
                         /* TODO ERROR: Skipped IfDirectiveTrivia */
                         catch (Exception ex)
                         {
-                            HandleGenieException("TriggerAction", ex.Message, ex.ToString());
+                            ClassCommand_EchoText("Error in TriggerAction", "Debug");
+                            ClassCommand_EchoText("---------------------", "Debug");
+                            ClassCommand_EchoText(ex.Message, "Debug");
+                            ClassCommand_EchoText("---------------------", "Debug");
+                            ClassCommand_EchoText(ex.ToString(), "Debug");
+                            ClassCommand_EchoText("---------------------", "Debug");
                         }
                         /* TODO ERROR: Skipped EndIfDirectiveTrivia */
                         finally
@@ -3850,7 +3861,13 @@ namespace GenieClient
                         /* TODO ERROR: Skipped IfDirectiveTrivia */
                         catch (Exception ex)
                         {
-                            HandleGenieException("TriggerParse", ex.Message, ex.ToString());
+                            ClassCommand_EchoText("Error in TriggerParse", "Debug");
+                            ClassCommand_EchoText("---------------------", "Debug");
+                            ClassCommand_EchoText(ex.Message, "Debug");
+                            ClassCommand_EchoText("---------------------", "Debug");
+                            ClassCommand_EchoText(ex.ToString(), "Debug");
+                            ClassCommand_EchoText("---------------------", "Debug");
+                            
                         }
                         /* TODO ERROR: Skipped EndIfDirectiveTrivia */
                         finally
@@ -3956,8 +3973,12 @@ namespace GenieClient
             /* TODO ERROR: Skipped IfDirectiveTrivia */
             catch (Exception ex)
             {
-                HandleGenieException("ListScripts", ex.Message, ex.ToString());
-                /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                ClassCommand_EchoText("Error in ListScripts", "Debug");
+                ClassCommand_EchoText("---------------------", "Debug");
+                ClassCommand_EchoText(ex.Message, "Debug");
+                ClassCommand_EchoText("---------------------", "Debug");
+                ClassCommand_EchoText(ex.ToString(), "Debug");
+                ClassCommand_EchoText("---------------------", "Debug");
             }
         }
 
@@ -4283,6 +4304,15 @@ namespace GenieClient
                     {
                         foreach (Script oScript in m_oScriptList)
                             oScript.TriggerVariableChanged(sVariableName);
+                    }
+                    catch(Exception ex)
+                    {
+                        ClassCommand_EchoText("Error in TriggerVariableChange", "Debug");
+                        ClassCommand_EchoText("---------------------", "Debug");
+                        ClassCommand_EchoText(ex.Message, "Debug");
+                        ClassCommand_EchoText("---------------------", "Debug");
+                        ClassCommand_EchoText(ex.ToString(), "Debug");
+                        ClassCommand_EchoText("---------------------", "Debug");
                     }
                     finally
                     {
