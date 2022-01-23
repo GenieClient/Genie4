@@ -8,57 +8,63 @@ namespace GenieClient.Genie
 {
     public class Config
     {
-        public char m_cScriptChar = '.';
-        public char cSeparatorChar = ';';
-        public char cCommandChar = '#';
-        public char cQuickSendChar = '-';
-        public int iTypeAhead = 2;
-        public char cMyCommandChar = '/'; // For trigger systems and such. Will be parsed but not sent to game.
-        public int iArgumentCount = 15;
-        public bool bTriggerOnInput = true;
-        public int iBufferLineSize = 5;
-        public bool bShowSpellTimer = true;
-        public bool bAutoLog = true;
-        public string sEditor = "notepad.exe";
-        public string sPrompt = "> ";
-        public string sIgnoreMonsterList = "appears dead|(dead)";
-        public int iScriptTimeout = 5000;
-        public int iMaxGoSubDepth = 50;
-        public bool bReconnect = true;
-        public bool bReconnectWhenDead = false;
-        public bool bIgnoreScriptWarnings = false;
-        public bool bIgnoreCloseAlert = false;
-        public bool bGagsEnabled = true;
-        public bool bKeepInput = false;
-        public bool bPlaySounds = true;
-        public bool bAbortDupeScript = true;
-        public bool bParseGameOnly = false;
-        public bool bAutoMapper = true;
-        public int iServerActivityTimeout = 180;
-        public string sServerActivityCommand = "fatigue";
-        public int iUserActivityTimeout = 300;
-        public string sUserActivityCommand = "quit";
-        public double dRTOffset = 0;
-        public string sScriptDir = "Scripts";
-        public string sPluginDir = "Plugins";
-        public string sMapDir = "Maps";
-        public string sConfigDir = "Config";
-        public string sConfigDirProfile = "Config";
-        public bool bShowLinks = false;
-        public string sLogDir = "Logs";
+        public Globals Parent { get; }
+        public Config(Globals globals)
+        {
+            Parent = globals;
+        }
+        
+        private char m_cScriptChar = '.';
+        private char cSeparatorChar = ';';
+        private char cCommandChar = '#';
+        private char cQuickSendChar = '-';
+        private char cMyCommandChar = '/'; // For trigger systems and such. Will be parsed but not sent to game.
+        private int iTypeAhead = 2;
+        private int iArgumentCount = 15;
+        private bool bTriggerOnInput = true;
+        private int iBufferLineSize = 5;
+        private bool bShowSpellTimer = true;
+        private bool bAutoLog = true;
+        private string sEditor = "notepad.exe";
+        private string sPrompt = "> ";
+        private string sIgnoreMonsterList = "appears dead|(dead)";
+        private int iScriptTimeout = 5000;
+        private int iMaxGoSubDepth = 50;
+        private bool bReconnect = true;
+        private bool bReconnectWhenDead = false;
+        private bool bIgnoreScriptWarnings = false;
+        private bool bIgnoreCloseAlert = false;
+        private bool bGagsEnabled = true;
+        private bool bKeepInput = false;
+        private bool bPlaySounds = true;
+        private bool bAbortDupeScript = true;
+        private bool bParseGameOnly = false;
+        private bool bAutoMapper = true;
+        private int iServerActivityTimeout = 180;
+        private string sServerActivityCommand = "fatigue";
+        private int iUserActivityTimeout = 300;
+        private string sUserActivityCommand = "quit";
+        private double dRTOffset = 0;
+        private string sScriptDir = "Scripts";
+        private string sPluginDir = "Plugins";
+        private string sMapDir = "Maps";
+        private string sConfigDir = "Config";
+        private string sConfigDirProfile = "Config";
+        private bool bShowLinks = false;
+        private string sLogDir = "Logs";
 
-        // Public sConnectString As String = "/FE:GENIE /VERSION:GENIE3 /XML"
-        public string sConnectString = "FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_XP /XML";
         public int[] iPickerColors = new int[17];
-        public string RubyPath { get; set; } = @"C:\ruby4lich\bin\ruby.exe";
-        public string CmdPath { get; set; } = @"C:\Windows\System32\cmd.exe";
-        public string LichPath { get; set; } = @"C:\ruby4lich\lich.rbw";
-        public string LichArguments { get; set; } = @"--genie --dragonrealms";
-        public string LichServer { get; set; } = "localhost";
-        public int LichPort { get; set; } = 11024;
-        public int LichStartPause { get; set; } = 5;
+        // Public sConnectString As String = "/FE:GENIE /VERSION:GENIE3 /XML"
+       private string sConnectString = "FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_XP /XML";
+       private string RubyPath { get; set; } = @"C:\ruby4lich\bin\ruby.exe";
+       private string CmdPath { get; set; } = @"C:\Windows\System32\cmd.exe";
+       private string LichPath { get; set; } = @"C:\ruby4lich\lich.rbw";
+       private string LichArguments { get; set; } = @"--genie --dragonrealms";
+       private string LichServer { get; set; } = "localhost";
+       private int LichPort { get; set; } = 11024;
+       private int LichStartPause { get; set; } = 5;
 
-        public string ScriptDir
+        private string ScriptDir
         {
             get
             {
@@ -94,7 +100,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public string MapDir
+        private string MapDir
         {
             get
             {
@@ -128,7 +134,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public string PluginDir
+        private string PluginDir
         {
             get
             {
@@ -197,7 +203,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public string ConfigDir
+        private string ConfigDir
         {
             get
             {
@@ -233,7 +239,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public string ConfigProfileDir
+        private string ConfigProfileDir
         {
             get
             {
@@ -259,7 +265,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public char ScriptChar
+        private char ScriptChar
         {
             get
             {
@@ -319,13 +325,17 @@ namespace GenieClient.Genie
             }
         }
 
-        public bool Save(string sFileName = "settings.cfg")
+        public bool Save(string sFileName = "settings.cfg", string ConfigPath = "")
         {
+            if (ConfigPath == "")
+            {
+                ConfigPath = ConfigDir;
+            }
             try
             {
                 if (sFileName.IndexOf(@"\") == -1)
                 {
-                    sFileName = ConfigDir + @"\" + sFileName;
+                    sFileName = ConfigPath + @"\" + sFileName;
                 }
 
                 if (File.Exists(sFileName) == true)
@@ -384,11 +394,15 @@ namespace GenieClient.Genie
             }
         }
 
-        public bool Load(string sFileName = "settings.cfg")
+        public bool Load(string sFileName = "settings.cfg", string ConfigPath = "")
         {
+            if (ConfigPath == "")
+            {
+                ConfigPath = ConfigDir;
+            }
             if (sFileName.IndexOf(@"\") == -1)
             {
-                sFileName = ConfigDir + @"\" + sFileName;
+                sFileName = ConfigPath + @"\" + sFileName;
             }
 
             if (File.Exists(sFileName) == true)

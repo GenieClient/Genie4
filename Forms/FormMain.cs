@@ -10,6 +10,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
@@ -19,21 +21,26 @@ namespace GenieClient
 
     public partial class FormMain
     {
-        public FormMain()
+        private readonly IConfiguration config;
+        private readonly IMapper mapper;
+        public FormMain(IConfiguration config, IMapper mapper)
         {
-            m_oGlobals = new Genie.Globals();
+            LocalDirectory.ConfigureUserDirectory();
+            this.config = config;
+            this.mapper = mapper;
+            m_oGlobals = new Genie.Globals(ref config);
             m_oGame = new Genie.Game(ref _m_oGlobals);
-            m_oCommand = new Genie.Command(ref _m_oGlobals);
+            m_oCommand = new Genie.Command(ref _m_oGlobals, config, mapper);
             m_oAutoMapper = new Mapper.AutoMapper(ref _m_oGlobals);
             m_oOutputMain = new FormSkin("main", "Game", ref _m_oGlobals);
             m_oLegacyPluginHost = new LegacyPluginHost(this, ref _m_oGlobals);
             m_oPluginHost = new PluginHost(this, ref _m_oGlobals);
             m_PluginDialog = new FormPlugins(ref _m_oGlobals.PluginList);
+
             // This call is required by the Windows Form Designer.
             InitializeComponent();
 
             // Add any initialization after the InitializeComponent() call.
-            LocalDirectory.CheckUserDirectory();
             bool bCustomConfigFile = false;
             var al = new ArrayList();
             al = Utility.ParseArgs(Interaction.Command());
@@ -76,7 +83,7 @@ namespace GenieClient
 
                                     if (m_sConfigFile.Contains(@"\") == false)
                                     {
-                                        m_sConfigFile = m_oGlobals.Config.ConfigDir + @"\Layout\" + m_sConfigFile;
+                                        m_sConfigFile = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Layout\" + m_sConfigFile;
                                     }
 
                                     bCustomConfigFile = false;
@@ -91,18 +98,18 @@ namespace GenieClient
             CreateGenieFolders();
             if (bCustomConfigFile == false)
             {
-                m_sConfigFile = m_oGlobals.Config.ConfigDir + @"\Layout\" + "default.layout";
+                m_sConfigFile = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Layout\" + "default.layout";
 
                 // TEMP MOVE TEMP MOVE TEMP MOVE
-                if (File.Exists(m_oGlobals.Config.ConfigDir + @"\Layout\" + "default.layout"))
+                if (File.Exists(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Layout\" + "default.layout"))
                 {
                 }
                 // 
-                else if (File.Exists(m_oGlobals.Config.ConfigDir + @"\config.xml"))
+                else if (File.Exists(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\config.xml"))
                 {
                     try
                     {
-                        File.Move(m_oGlobals.Config.ConfigDir + @"\config.xml", m_sConfigFile);
+                        File.Move(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\config.xml", m_sConfigFile);
                     }
 #pragma warning disable CS0168
                     catch (Exception ex)
@@ -433,6 +440,7 @@ namespace GenieClient
         private FormSkin m_oOutputDeath;
         private FormSkin m_oOutputRoom;
         private FormSkin m_oOutputLog;
+        private FormSkin m_oOutputDebug;
         private ArrayList m_oFormList = new ArrayList();
         private string m_sConfigFile = string.Empty;
         // private string m_sUpdateVersion = string.Empty;
@@ -523,8 +531,8 @@ namespace GenieClient
         /* TODO ERROR: Skipped RegionDirectiveTrivia */
         private int LoadPlugins()
         {
-            
-            string sPluginPath = m_oGlobals.Config.PluginDir;
+
+            string sPluginPath = m_oGlobals.CurrentProfile.ResourcePaths.Plugins;
             if (m_bDebugPlugin)
             {
                 sPluginPath = Application.StartupPath;
@@ -587,12 +595,6 @@ namespace GenieClient
                 Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
                 AddText(argsText1, oTargetWindow: argoTargetWindow1);
             }
-            else if (Plugin.Description.StartsWith("Premium "))
-            {
-                string argsText2 = "Invalid Key! To use this plugin you will need to first purchase a license for it. Visit http://genieclient.com for more information." + System.Environment.NewLine;
-                Genie.Game.WindowTarget argoTargetWindow2 = Genie.Game.WindowTarget.Main;
-                AddText(argsText2, oTargetWindow: argoTargetWindow2);
-            }
             else
             {
                 string argsText3 = "Failed" + System.Environment.NewLine;
@@ -630,8 +632,8 @@ namespace GenieClient
         {
             if (!filename.Contains(@"\"))
             {
-                
-                string sPluginPath = m_oGlobals.Config.PluginDir;
+
+                string sPluginPath = m_oGlobals.CurrentProfile.ResourcePaths.Plugins;
                 if (m_bDebugPlugin)
                 {
                     sPluginPath = Application.StartupPath;
@@ -717,8 +719,8 @@ namespace GenieClient
             {
                 if ((kvp.Value.ToLower() ?? "") == (filename.ToLower() ?? ""))
                 {
-                    
-                    string sPluginPath = m_oGlobals.Config.PluginDir;
+
+                    string sPluginPath = m_oGlobals.CurrentProfile.ResourcePaths.Plugins;
                     if (m_bDebugPlugin)
                     {
                         sPluginPath = Application.StartupPath;
@@ -743,8 +745,8 @@ namespace GenieClient
             {
                 if ((kvp.Key.ToLower() ?? "") == (name.ToLower() ?? ""))
                 {
-                    
-                    string sPluginPath = m_oGlobals.Config.PluginDir;
+
+                    string sPluginPath = m_oGlobals.CurrentProfile.ResourcePaths.Plugins;
                     if (m_bDebugPlugin)
                     {
                         sPluginPath = Application.StartupPath;
@@ -1074,7 +1076,7 @@ namespace GenieClient
                 return;
             try
             {
-                if (m_oGlobals.Config.bAutoMapper)
+                if (m_oGlobals.CurrentProfile.AutoMapper)
                     m_oAutoMapper.ParseText(sText);
             }
             catch (Exception ex)
@@ -1140,7 +1142,7 @@ namespace GenieClient
                 return sText;
             try
             {
-                if (m_oGlobals.Config.bAutoMapper)
+                if (m_oGlobals.CurrentProfile.AutoMapper)
                     m_oAutoMapper.ParseInput(sText);
             }
             catch (Exception ex)
@@ -1154,7 +1156,7 @@ namespace GenieClient
                 {
                     try
                     {
-                        if ((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled | sText.StartsWith(Conversions.ToString(m_oGlobals.Config.cMyCommandChar)))
+                        if ((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled | sText.StartsWith(Conversions.ToString(m_oGlobals.AppSettings.ClientSettings.SpecialCharacters.Parse)))
                         {
                             sText = (oPlugin as GeniePlugin.Interfaces.IPlugin).ParseInput(sText);
                         }
@@ -1171,7 +1173,7 @@ namespace GenieClient
                 {
                     try
                     {
-                        if ((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled | sText.StartsWith(Conversions.ToString(m_oGlobals.Config.cMyCommandChar)))
+                        if ((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled | sText.StartsWith(Conversions.ToString(m_oGlobals.AppSettings.ClientSettings.SpecialCharacters.Parse)))
                         {
                             sText = (oPlugin as GeniePlugin.Plugins.IPlugin).ParseInput(sText);
                         }
@@ -1218,7 +1220,7 @@ namespace GenieClient
 
             try
             {
-                if (m_oGlobals.Config.bAutoMapper)
+                if (m_oGlobals.CurrentProfile.AutoMapper)
                     m_oAutoMapper.VariableChanged(sVar);
             }
             catch (Exception ex)
@@ -1383,7 +1385,7 @@ namespace GenieClient
         {
             if (bCloseNow == false)
             {
-                if (m_oGame.IsConnected == true & m_oGlobals.Config.bIgnoreCloseAlert == false)
+                if (m_oGame.IsConnected == true & m_oGlobals.AppSettings.ClientSettings.IgnoreCloseAlert == false)
                 {
                     if (Interaction.MsgBox("You are connected to the game. Are you sure you want to close?", MsgBoxStyle.YesNo, "Genie") == MsgBoxResult.No)
                     {
@@ -1428,7 +1430,7 @@ namespace GenieClient
         {
             if (e.KeyCode == Keys.Tab)
             {
-                if (TextBoxInput.Text.StartsWith(Conversions.ToString(m_oGlobals.Config.ScriptChar)) == true & TextBoxInput.Text.EndsWith(" ") == false)
+                if (TextBoxInput.Text.StartsWith(Conversions.ToString(m_oGlobals.AppSettings.ClientSettings.SpecialCharacters.Script)) == true & TextBoxInput.Text.EndsWith(" ") == false)
                 {
                     if (m_bLastKeyWasTab == true)
                     {
@@ -1598,7 +1600,7 @@ namespace GenieClient
             AddText(argsText, oTargetWindow: argoTargetWindow);
             if (sPattern.IndexOf(@"\") == -1)
             {
-                string sLocation = m_oGlobals.Config.ScriptDir;
+                string sLocation = m_oGlobals.CurrentProfile.ResourcePaths.Scripts;
                 if (sLocation.EndsWith(@"\"))
                 {
                     sPattern = sLocation + sPattern;
@@ -1632,7 +1634,7 @@ namespace GenieClient
             int i = 0;
             if (sPattern.IndexOf(@"\") == -1)
             {
-                string sLocation = m_oGlobals.Config.ScriptDir;
+                string sLocation = m_oGlobals.CurrentProfile.ResourcePaths.Scripts;
                 if (sLocation.EndsWith(@"\"))
                 {
                     sPattern = sLocation + sPattern;
@@ -1781,49 +1783,49 @@ namespace GenieClient
 
             Application.DoEvents();
             AppendText("Loading Settings...");
-            m_oGlobals.Config.Load(m_oGlobals.Config.ConfigDir + @"\settings.cfg");
+            m_oGlobals.Config.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\settings.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Presets...");
-            m_oGlobals.PresetList.Load(m_oGlobals.Config.ConfigDir + @"\presets.cfg");
+            m_oGlobals.PresetList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\presets.cfg");
             string argsPreset = "all";
             PresetChanged(argsPreset);
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Global Variables...");
-            m_oGlobals.VariableList.Load(m_oGlobals.Config.ConfigDir + @"\variables.cfg");
+            m_oGlobals.VariableList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\variables.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Highlights...");
-            m_oGlobals.LoadHighlights(m_oGlobals.Config.ConfigDir + @"\highlights.cfg");
+            m_oGlobals.LoadHighlights(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\highlights.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Names...");
-            m_oGlobals.NameList.Load(m_oGlobals.Config.ConfigDir + @"\names.cfg");
+            m_oGlobals.NameList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\names.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Macros...");
-            m_oGlobals.MacroList.Load(m_oGlobals.Config.ConfigDir + @"\macros.cfg");
+            m_oGlobals.MacroList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\macros.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Aliases...");
-            m_oGlobals.AliasList.Load(m_oGlobals.Config.ConfigDir + @"\aliases.cfg");
+            m_oGlobals.AliasList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\aliases.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Substitutes...");
-            m_oGlobals.SubstituteList.Load(m_oGlobals.Config.ConfigDir + @"\substitutes.cfg");
+            m_oGlobals.SubstituteList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\substitutes.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Gags...");
-            m_oGlobals.GagList.Load(m_oGlobals.Config.ConfigDir + @"\gags.cfg");
+            m_oGlobals.GagList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\gags.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Triggers...");
-            m_oGlobals.TriggerList.Load(m_oGlobals.Config.ConfigDir + @"\triggers.cfg");
+            m_oGlobals.TriggerList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\triggers.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Classes...");
-            m_oGlobals.ClassList.Load(m_oGlobals.Config.ConfigDir + @"\classes.cfg");
+            m_oGlobals.ClassList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\classes.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
 
@@ -1877,7 +1879,7 @@ namespace GenieClient
 
         private void FormPlugin_ReloadPluginByName(string name)
         {
-            string sPluginPath = m_oGlobals.Config.PluginDir;
+            string sPluginPath = m_oGlobals.CurrentProfile.ResourcePaths.Plugins;
             if (m_bDebugPlugin)
             {
                 sPluginPath = Application.StartupPath;
@@ -1921,7 +1923,6 @@ namespace GenieClient
             Utility.CreateDirectory(LocalDirectory.Path + @"\Config\Layout");
             Utility.CreateDirectory(LocalDirectory.Path + @"\Config\PluginKeys");
             Utility.MoveLayoutFiles();
-            Utility.CreateDirectory(LocalDirectory.Path + @"\Help");
             Utility.CreateDirectory(LocalDirectory.Path + @"\Icons");
             Utility.CreateDirectory(LocalDirectory.Path + @"\Logs");
             Utility.CreateDirectory(LocalDirectory.Path + @"\Scripts");
@@ -2517,6 +2518,11 @@ namespace GenieClient
                 SafeCreateOutputForm("room", "Room", null, 300, 200, 10, 10, false);
             }
 
+           if (Information.IsNothing(m_oOutputDebug))
+            {
+                SafeCreateOutputForm("debug", "Debug", null, 300, 200, 10, 10, false);
+            }
+
             if (Information.IsNothing(FindSkinFormByID("talk")))
             {
                 SafeCreateOutputForm("talk", "Talk", "conversation", 300, 200, 10, 10, false);
@@ -2836,7 +2842,7 @@ namespace GenieClient
 
         private Script LoadScript(string sScriptName, ArrayList oArgList)
         {
-            if (m_oGlobals.Config.bAbortDupeScript == true)
+            if (m_oGlobals.AppSettings.ClientSettings.ScriptSettings.AbortDuplicates == true)
             {
                 // Dupe check (Only run one script with same name - Replace if it already exists)
                 if (m_oScriptList.AcquireReaderLock())
@@ -3087,7 +3093,7 @@ namespace GenieClient
                             sTemp = LocalDirectory.Path + @"\Scripts\" + sTemp;
                         }
 
-                        Interaction.Shell("\"" + m_oGlobals.Config.sEditor + "\" \"" + sTemp, AppWinStyle.NormalFocus, false);
+                        Interaction.Shell("\"" + m_oGlobals.AppSettings.ClientSettings.Editor  + "\" \"" + sTemp, AppWinStyle.NormalFocus, false);
                     }
                 }
             }
@@ -3775,10 +3781,11 @@ namespace GenieClient
                     {
                         m_CommandSent = true;
                         m_oGame.SendText(sText, bUserInput, sOrigin);
-                        if (m_oGlobals.Config.bTriggerOnInput == true)
+                        if (m_oGlobals.CurrentProfile.TriggerOnInput == true)
                         {
                             ParseTriggers(sText);
                         }
+                        //lastrow 
                     }
                 }
             }
@@ -3831,7 +3838,12 @@ namespace GenieClient
                         /* TODO ERROR: Skipped IfDirectiveTrivia */
                         catch (Exception ex)
                         {
-                            HandleGenieException("TriggerAction", ex.Message, ex.ToString());
+                            ClassCommand_EchoText("Error in TriggerAction", "Debug");
+                            ClassCommand_EchoText("---------------------", "Debug");
+                            ClassCommand_EchoText(ex.Message, "Debug");
+                            ClassCommand_EchoText("---------------------", "Debug");
+                            ClassCommand_EchoText(ex.ToString(), "Debug");
+                            ClassCommand_EchoText("---------------------", "Debug");
                         }
                         /* TODO ERROR: Skipped EndIfDirectiveTrivia */
                         finally
@@ -3855,7 +3867,13 @@ namespace GenieClient
                         /* TODO ERROR: Skipped IfDirectiveTrivia */
                         catch (Exception ex)
                         {
-                            HandleGenieException("TriggerParse", ex.Message, ex.ToString());
+                            ClassCommand_EchoText("Error in TriggerParse", "Debug");
+                            ClassCommand_EchoText("---------------------", "Debug");
+                            ClassCommand_EchoText(ex.Message, "Debug");
+                            ClassCommand_EchoText("---------------------", "Debug");
+                            ClassCommand_EchoText(ex.ToString(), "Debug");
+                            ClassCommand_EchoText("---------------------", "Debug");
+                            
                         }
                         /* TODO ERROR: Skipped EndIfDirectiveTrivia */
                         finally
@@ -3961,8 +3979,12 @@ namespace GenieClient
             /* TODO ERROR: Skipped IfDirectiveTrivia */
             catch (Exception ex)
             {
-                HandleGenieException("ListScripts", ex.Message, ex.ToString());
-                /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+                ClassCommand_EchoText("Error in ListScripts", "Debug");
+                ClassCommand_EchoText("---------------------", "Debug");
+                ClassCommand_EchoText(ex.Message, "Debug");
+                ClassCommand_EchoText("---------------------", "Debug");
+                ClassCommand_EchoText(ex.ToString(), "Debug");
+                ClassCommand_EchoText("---------------------", "Debug");
             }
         }
 
@@ -3972,7 +3994,7 @@ namespace GenieClient
             {
                 if (sAction.Contains("$") == true)
                 {
-                    for (int i = 0, loopTo = m_oGlobals.Config.iArgumentCount - 1; i <= loopTo; i++)
+                    for (int i = 0, loopTo = m_oGlobals.AppSettings.ClientSettings.MaxArguments - 1; i <= loopTo; i++)
                     {
                         if (i > oArgs.Count - 1)
                         {
@@ -4288,6 +4310,15 @@ namespace GenieClient
                     {
                         foreach (Script oScript in m_oScriptList)
                             oScript.TriggerVariableChanged(sVariableName);
+                    }
+                    catch(Exception ex)
+                    {
+                        ClassCommand_EchoText("Error in TriggerVariableChange", "Debug");
+                        ClassCommand_EchoText("---------------------", "Debug");
+                        ClassCommand_EchoText(ex.Message, "Debug");
+                        ClassCommand_EchoText("---------------------", "Debug");
+                        ClassCommand_EchoText(ex.ToString(), "Debug");
+                        ClassCommand_EchoText("---------------------", "Debug");
                     }
                     finally
                     {
@@ -5326,7 +5357,7 @@ namespace GenieClient
 
         public void CheckReconnect()
         {
-            if (!m_oGlobals.Config.bReconnect)
+            if (!m_oGlobals.CurrentProfile.Reconnect)
                 return;
             if (Information.IsNothing(m_oGame))
                 return;
@@ -5349,7 +5380,7 @@ namespace GenieClient
             {
                 m_oGame.ReconnectTime = default;
                 m_oGame.ConnectAttempts += 1;
-                if (m_oGlobals.Config.bReconnectWhenDead == false)
+                if (m_oGlobals.CurrentProfile.ReconnectWhenDead == false)
                 {
                     if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oGlobals.VariableList["dead"], 1, false)))
                     {
@@ -5646,7 +5677,7 @@ namespace GenieClient
         {
             LabelLHC.Text = Conversions.ToString(m_oGlobals.VariableList["lefthand"]);
             LabelRHC.Text = Conversions.ToString(m_oGlobals.VariableList["righthand"]);
-            if (m_oGlobals.Config.bShowSpellTimer == true && m_oGlobals.SpellTimeStart != DateTime.MinValue)
+            if (m_oGlobals.CurrentProfile.ShowSpellTimer == true && m_oGlobals.SpellTimeStart != DateTime.MinValue)
             {
                 var argoDateEnd = DateTime.Now;
                 LabelSpellC.Text = Conversions.ToString("(" + Utility.GetTimeDiffInSeconds(m_oGlobals.SpellTimeStart, argoDateEnd) + ") " + m_oGlobals.VariableList["preparedspell"]);
@@ -5822,7 +5853,7 @@ namespace GenieClient
             try
             {
                 bool bSendText = true;
-                if (Text.StartsWith(Conversions.ToString(m_oGlobals.Config.cCommandChar))) // Don't send text to game that start with #
+                if (Text.StartsWith(Conversions.ToString(m_oGlobals.AppSettings.ClientSettings.SpecialCharacters.Command))) // Don't send text to game that start with #
                 {
                     bSendText = false;
                 }
@@ -5938,7 +5969,7 @@ namespace GenieClient
                 return;
             if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(oRTControl.CurrentRT, 0, false) | iTime > oRTControl.CurrentRT + 1))
             {
-                oRTControl.SetRT((int)(iTime + m_oGlobals.Config.dRTOffset));
+                oRTControl.SetRT((int)(iTime + m_oGlobals.CurrentGameInstance.RTOffset));
             }
 
             if (m_oScriptList.AcquireReaderLock())
@@ -5958,7 +5989,7 @@ namespace GenieClient
                 ShowDialogException("RoundTime", "Unable to acquire reader lock.");
             }
 
-            m_oGlobals.RoundTimeEnd = DateTime.Now.AddMilliseconds(iTime * 1000 + m_oGlobals.Config.dRTOffset * 1000);
+            m_oGlobals.RoundTimeEnd = DateTime.Now.AddMilliseconds(iTime * 1000 + m_oGlobals.CurrentGameInstance.RTOffset * 1000);
         }
 
         public void InputKeyDown(KeyEventArgs e)
@@ -6365,31 +6396,31 @@ namespace GenieClient
 
                 case Genie.Config.ConfigFieldUpdated.Autolog:
                     {
-                        AutoLogToolStripMenuItem.Checked = m_oGlobals.Config.bAutoLog;
+                        AutoLogToolStripMenuItem.Checked = m_oGlobals.CurrentProfile.LogSettings.AutoLog;
                         break;
                     }
 
                 case Genie.Config.ConfigFieldUpdated.Reconnect:
                     {
-                        AutoReconnectToolStripMenuItem.Checked = m_oGlobals.Config.bReconnect;
+                        AutoReconnectToolStripMenuItem.Checked = m_oGlobals.CurrentProfile.Reconnect;
                         break;
                     }
 
                 case Genie.Config.ConfigFieldUpdated.KeepInput:
                     {
-                        TextBoxInput.KeepInput = m_oGlobals.Config.bKeepInput;
+                        TextBoxInput.KeepInput = m_oGlobals.CurrentProfile.KeepInput;
                         break;
                     }
 
                 case Genie.Config.ConfigFieldUpdated.Muted:
                     {
-                        MuteSoundsToolStripMenuItem.Checked = !m_oGlobals.Config.bPlaySounds;
+                        MuteSoundsToolStripMenuItem.Checked = !m_oGlobals.CurrentProfile.PlaySounds;
                         break;
                     }
 
                 case Genie.Config.ConfigFieldUpdated.AutoMapper:
                     {
-                        AutoMapperEnabledToolStripMenuItem.Checked = m_oGlobals.Config.bAutoMapper;
+                        AutoMapperEnabledToolStripMenuItem.Checked = m_oGlobals.CurrentProfile.AutoMapper;
                         break;
                     }
             }
@@ -6446,7 +6477,7 @@ namespace GenieClient
 
         private void AutoReconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            m_oGlobals.Config.bReconnect = AutoReconnectToolStripMenuItem.Checked;
+            m_oGlobals.CurrentProfile.Reconnect = AutoReconnectToolStripMenuItem.Checked;
         }
 
         private void TimerReconnect_Tick(object sender, EventArgs e)
@@ -6465,19 +6496,19 @@ namespace GenieClient
         {
             if (!m_oGame.IsConnected)
                 return;
-            if (m_oGlobals.Config.iServerActivityTimeout == 0)
+            if (m_oGlobals.CurrentGameInstance.ActivityTimeout == 0)
                 return;
             var argoDateStart = m_oGame.LastServerActivity;
             var argoDateEnd = DateTime.Now;
             int iDiff = Utility.GetTimeDiffInSeconds(argoDateStart, argoDateEnd);
             if (m_bCheckServerResponse)
             {
-                if (iDiff >= m_oGlobals.Config.iServerActivityTimeout)
+                if (iDiff >= m_oGlobals.CurrentGameInstance.ActivityTimeout)
                 {
-                    if (iDiff >= m_oGlobals.Config.iServerActivityTimeout + ResponseTimeoutServer)
+                    if (iDiff >= m_oGlobals.CurrentGameInstance.ActivityTimeout + ResponseTimeoutServer)
                     {
                         m_bCheckServerResponse = false;
-                        if (m_oGlobals.Config.bReconnect == true)
+                        if (m_oGlobals.CurrentProfile.Reconnect == true)
                         {
                             string argsText = Utility.GetTimeStamp() + " Connection timeout. Attempting to reconnect.";
                             PrintError(argsText);
@@ -6497,11 +6528,11 @@ namespace GenieClient
                     m_bCheckServerResponse = false;
                 }
             }
-            else if (iDiff >= m_oGlobals.Config.iServerActivityTimeout)
+            else if (iDiff >= m_oGlobals.CurrentGameInstance.ActivityTimeout)
             {
                 /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                 m_bCheckServerResponse = true;
-                m_oGame.SendRaw(m_oGlobals.Config.sServerActivityCommand + System.Environment.NewLine);
+                m_oGame.SendRaw(m_oGlobals.CurrentGameInstance.ActivityCommand + System.Environment.NewLine);
             }
         }
 
@@ -6511,18 +6542,18 @@ namespace GenieClient
                 return;
             if (!m_oGame.IsConnected)
                 return;
-            if (m_oGlobals.Config.iUserActivityTimeout == 0)
+            if (m_oGlobals.CurrentProfile.ActivityTimeout == 0)
                 return;
             var argoDateStart = m_oGame.LastUserActivity;
             var argoDateEnd = DateTime.Now;
             int iDiff = Utility.GetTimeDiffInSeconds(argoDateStart, argoDateEnd);
             if (m_bCheckUserResponse)
             {
-                if (iDiff >= m_oGlobals.Config.iUserActivityTimeout)
+                if (iDiff >= m_oGlobals.CurrentProfile.ActivityTimeout)
                 {
-                    if (iDiff >= m_oGlobals.Config.iUserActivityTimeout + ResponseTimeoutUser)
+                    if (iDiff >= m_oGlobals.CurrentProfile.ActivityTimeout + ResponseTimeoutUser)
                     {
-                        m_oGame.SendText(m_oGlobals.Config.sUserActivityCommand, false, "IDLE TIMER");
+                        m_oGame.SendText(m_oGlobals.CurrentProfile.ActivityCommand, false, "IDLE TIMER");
                     }
                 }
                 else
@@ -6535,7 +6566,7 @@ namespace GenieClient
                     m_bCheckUserResponse = false;
                 }
             }
-            else if (iDiff >= m_oGlobals.Config.iUserActivityTimeout)
+            else if (iDiff >= m_oGlobals.CurrentProfile.ActivityTimeout)
             {
                 string argsText = System.Environment.NewLine + Utility.GetTimeStamp() + " GENIE HAS FLAGGED YOU AS IDLE. PLEASE RESPOND!";
                 PrintError(argsText);
@@ -6705,13 +6736,15 @@ namespace GenieClient
 
         private void OpenGenieWikiToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Utility.OpenBrowser("https://geniefe.fandom.com/");
+            Utility.OpenBrowser("https://github.com/GenieClient/Genie4/wiki");
         }
 
         private void OpenGenieGithubToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Utility.OpenBrowser("https://github.com/GenieClient/");
+            Utility.OpenBrowser("https://github.com/GenieClient/Genie4/");
         }
+
+
 
         private void MagicPanelsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -6755,7 +6788,7 @@ namespace GenieClient
 
         private void AutoLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            m_oGlobals.Config.bAutoLog = AutoLogToolStripMenuItem.Checked;
+            m_oGlobals.CurrentProfile.LogSettings.AutoLog = AutoLogToolStripMenuItem.Checked;
         }
 
         private void PluginsEnabledToolStripMenuItem_Click(object sender, EventArgs e)
@@ -6774,7 +6807,7 @@ namespace GenieClient
 
         private void IgnoresEnabledToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            m_oGlobals.Config.bGagsEnabled = IgnoresEnabledToolStripMenuItem.Checked;
+            m_oGlobals.CurrentProfile.GagsEnabled = IgnoresEnabledToolStripMenuItem.Checked;
         }
 
         private void LoadSettingsOpenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -6797,7 +6830,7 @@ namespace GenieClient
             {
                 if (sFile.ToLower().EndsWith(".xml"))
                     return false;
-                sFile = m_oGlobals.Config.ConfigDir + @"\Layout\" + sFile;
+                sFile = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Layout\" + sFile;
                 if (sFile.ToLower().EndsWith(".layout") == false)
                 {
                     sFile += ".layout";
@@ -6891,11 +6924,11 @@ namespace GenieClient
             {
                 if (sFile.ToLower().EndsWith(".xml"))
                 {
-                    sFile = m_oGlobals.Config.ConfigDir + @"\" + sFile;
+                    sFile = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\" + sFile;
                 }
                 else
                 {
-                    sFile = m_oGlobals.Config.ConfigDir + @"\Layout\" + sFile;
+                    sFile = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Layout\" + sFile;
                     if (sFile.ToLower().EndsWith(".layout") == false)
                     {
                         sFile += ".layout";
@@ -6978,9 +7011,9 @@ namespace GenieClient
 
         private void OpenLogInEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (File.Exists(Conversions.ToString(Conversions.ToString(LocalDirectory.Path + @"\Logs\" + m_oGlobals.VariableList["charactername"]) + m_oGlobals.VariableList["game"] + "_" + DateTime.Now.ToString("yyyy-MM-dd") + ".log")))
+            if (File.Exists(Conversions.ToString(Conversions.ToString(m_oGlobals.CurrentProfile.ResourcePaths.Logs + "\\" + m_oGlobals.VariableList["charactername"]) + m_oGlobals.VariableList["game"] + "_" + DateTime.Now.ToString("yyyy-MM-dd") + ".log")))
             {
-                Interaction.Shell(Conversions.ToString(Conversions.ToString("\"" + m_oGlobals.Config.sEditor + "\" \"" + LocalDirectory.Path + @"\Logs\" + m_oGlobals.VariableList["charactername"]) + m_oGlobals.VariableList["game"] + "_" + DateTime.Now.ToString("yyyy-MM-dd") + ".log\""), AppWinStyle.NormalFocus, false);
+                Interaction.Shell(Conversions.ToString(Conversions.ToString("\"" + m_oGlobals.AppSettings.ClientSettings.Editor  + "\" \"" + m_oGlobals.CurrentProfile.ResourcePaths.Logs + "\\" + m_oGlobals.VariableList["charactername"]) + m_oGlobals.VariableList["game"] + "_" + DateTime.Now.ToString("yyyy-MM-dd") + ".log\""), AppWinStyle.NormalFocus, false);
             }
             else
             {
@@ -6990,7 +7023,7 @@ namespace GenieClient
 
         private void MuteSoundsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            m_oGlobals.Config.bPlaySounds = !MuteSoundsToolStripMenuItem.Checked;
+            m_oGlobals.CurrentProfile.PlaySounds = !MuteSoundsToolStripMenuItem.Checked;
         }
 
         private void Command_FlashWindow()
@@ -7000,7 +7033,7 @@ namespace GenieClient
 
         private void Command_EventMapperCommand(string cmd)
         {
-            if (m_oGlobals.Config.bAutoMapper)
+            if (m_oGlobals.CurrentProfile.AutoMapper)
             {
                 try
                 {
@@ -7040,7 +7073,7 @@ namespace GenieClient
 
         private void ShowWindowToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (m_oGlobals.Config.bAutoMapper)
+            if (m_oGlobals.CurrentProfile.AutoMapper)
             {
                 m_oAutoMapper.Show(this);
             }
@@ -7094,7 +7127,7 @@ namespace GenieClient
             }
 
             TickScripts();
-            if (m_oGlobals.Config.bShowSpellTimer == true && m_oGlobals.SpellTimeStart != DateTime.MinValue)
+            if (m_oGlobals.CurrentProfile.ShowSpellTimer == true && m_oGlobals.SpellTimeStart != DateTime.MinValue)
             {
                 SafeSetStatusBarLabels();
             }
@@ -7119,16 +7152,19 @@ namespace GenieClient
         private void AutoMapperEnabledToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AutoMapperEnabledToolStripMenuItem.Checked = !AutoMapperEnabledToolStripMenuItem.Checked;
-            m_oGlobals.Config.bAutoMapper = AutoMapperEnabledToolStripMenuItem.Checked;
+            m_oGlobals.CurrentProfile.AutoMapper = AutoMapperEnabledToolStripMenuItem.Checked;
         }
 
         // Connect Using Profile
+        
         private void ConnectToolStripMenuItemConnectDialog_Click(object sender, EventArgs e)
         {
-            My.MyProject.Forms.DialogProfileConnect.ConfigDir = m_oGlobals.Config.ConfigDir;
+            My.MyProject.Forms.DialogProfileConnect.ConfigDir = m_oGlobals.CurrentProfile.ResourcePaths.Config;
             if (My.MyProject.Forms.DialogProfileConnect.ShowDialog(this) == DialogResult.OK)
             {
+                IEnumerable<Models.Profile> profiles = config.LoadProfiles();
                 m_sCurrentProfileFile = string.Empty;
+                m_oGlobals.SetCurrentProfile(My.MyProject.Forms.DialogProfileConnect.ProfileName);
                 LoadProfile(My.MyProject.Forms.DialogProfileConnect.ProfileName + ".xml", true);
             }
         }
@@ -7186,7 +7222,7 @@ namespace GenieClient
             string ShortName = FileName;
             if (FileName.IndexOf(@"\") == -1)
             {
-                FileName = m_oGlobals.Config.ConfigDir + @"\Profiles\" + FileName;
+                FileName = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Profiles\" + FileName;
             }
 
             // Only load if profile changed
@@ -7209,9 +7245,8 @@ namespace GenieClient
                     m_oGame.AccountCharacter = sCharacter;
                 if (sGame.Length > 0)
                     m_oGame.AccountGame = sGame;
-                string sProfile = string.Empty;
-                sProfile = FileName.Substring(FileName.LastIndexOf(@"\") + 1).Replace(".xml", "");
-                m_oGlobals.Config.sConfigDirProfile = m_oGlobals.Config.ConfigDir + @"\Profiles\" + sProfile;
+                
+                m_oGlobals.CurrentProfile.ResourcePaths.Profile = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Profiles\" + m_oGlobals.CurrentProfile.ProfileName;
                 LoadProfileSettings();
                 string sAccount = m_oProfile.GetValue("Genie/Profile", "Account", string.Empty);
                 string sPassword = m_oProfile.GetValue("Genie/Profile", "Password", string.Empty);
@@ -7265,7 +7300,7 @@ namespace GenieClient
 
         private void LoadProfileSettings(bool echo = true)
         {
-            if (Utility.CreateDirectory(m_oGlobals.Config.ConfigProfileDir))
+            if (Utility.CreateDirectory(m_oGlobals.CurrentProfile.ResourcePaths.Profile))
             {
                 if (echo)
                 {
@@ -7278,7 +7313,7 @@ namespace GenieClient
                 }
 
                 m_oGlobals.VariableList.ClearUser();
-                m_oGlobals.VariableList.Load(m_oGlobals.Config.ConfigProfileDir + @"\variables.cfg");
+                m_oGlobals.VariableList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Profile + @"\variables.cfg");
                 if (echo)
                 {
                     string argsText1 = "OK" + System.Environment.NewLine;
@@ -7300,8 +7335,8 @@ namespace GenieClient
                 }
 
                 m_oGlobals.MacroList.Clear();
-                m_oGlobals.MacroList.Load(m_oGlobals.Config.ConfigDir + @"\macros.cfg"); // Load default macros
-                m_oGlobals.MacroList.Load(m_oGlobals.Config.ConfigProfileDir + @"\macros.cfg");
+                m_oGlobals.MacroList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\macros.cfg"); // Load default macros
+                m_oGlobals.MacroList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Profile + @"\macros.cfg");
                 if (echo)
                 {
                     string argsText3 = "OK" + System.Environment.NewLine;
@@ -7323,8 +7358,8 @@ namespace GenieClient
                 }
 
                 m_oGlobals.AliasList.Clear();
-                m_oGlobals.AliasList.Load(m_oGlobals.Config.ConfigDir + @"\aliases.cfg"); // Load default aliases
-                m_oGlobals.AliasList.Load(m_oGlobals.Config.ConfigProfileDir + @"\aliases.cfg");
+                m_oGlobals.AliasList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\aliases.cfg"); // Load default aliases
+                m_oGlobals.AliasList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Profile + @"\aliases.cfg");
                 if (echo)
                 {
                     string argsText5 = "OK" + System.Environment.NewLine;
@@ -7346,7 +7381,7 @@ namespace GenieClient
                 }
 
                 m_oGlobals.ClassList.Clear();
-                m_oGlobals.ClassList.Load(m_oGlobals.Config.ConfigProfileDir + @"\classes.cfg");
+                m_oGlobals.ClassList.Load(m_oGlobals.CurrentProfile.ResourcePaths.Profile + @"\classes.cfg");
                 if (m_oGame.AccountCharacter.Length > 0)
                 {
                     if (!m_oGlobals.ClassList.ContainsKey(m_oGame.AccountCharacter.ToLower()))
@@ -7389,8 +7424,7 @@ namespace GenieClient
             if (m_sCurrentProfileName.Length > 0)
             {
                 SaveProfile(m_sCurrentProfileName);
-                string sProfile = m_sCurrentProfileName.Substring(m_sCurrentProfileName.LastIndexOf(@"\") + 1).Replace(".xml", "");
-                m_oGlobals.Config.sConfigDirProfile = m_oGlobals.Config.ConfigDir + @"\Profiles\" + sProfile;
+                m_oGlobals.CurrentProfile.ResourcePaths.Profile = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Profiles\" + m_oGlobals.CurrentProfile.ProfileName;
                 LoadProfileSettings(false);
             }
             else
@@ -7423,7 +7457,7 @@ namespace GenieClient
             m_oProfile.SetValue("Genie/Profile", "Character", m_oGame.AccountCharacter);
             m_oProfile.SetValue("Genie/Profile", "Game", m_oGame.AccountGame);
             string sLayout = m_oConfig.ConfigFile;
-            if (sLayout.Contains(m_oGlobals.Config.ConfigDir))
+            if (sLayout.Contains(m_oGlobals.CurrentProfile.ResourcePaths.Config))
             {
                 sLayout = sLayout.Substring(sLayout.LastIndexOf(@"\") + 1);
             }
@@ -7438,7 +7472,7 @@ namespace GenieClient
             {
                 if (FileName.IndexOf(@"\") == -1)
                 {
-                    FileName = m_oGlobals.Config.ConfigDir + @"\Profiles\" + FileName;
+                    FileName = m_oGlobals.CurrentProfile.ResourcePaths.Config + @"\Profiles\" + FileName;
                 }
 
                 return m_oProfile.SaveToFile(FileName);
@@ -7627,5 +7661,29 @@ namespace GenieClient
             }
         }
 
+        private void playnetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Utility.OpenBrowser("http://play.net");
+        }
+
+        private void elanthipediaToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Utility.OpenBrowser("http://elanthipedia.play.net");
+        }
+
+        private void dRServiceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Utility.OpenBrowser("http://drservice.info");
+        }
+
+        private void lichDiscordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Utility.OpenBrowser("https://discord.gg/uxZWxuX");
+        }
+
+        private void isharonsGenieSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Utility.OpenBrowser("http://www.elanthia.org/GenieSettings/");
+        }
     }
 }

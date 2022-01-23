@@ -1011,7 +1011,7 @@ namespace GenieClient
                 {
                     if (iTime > 0)
                     {
-                        m_oRoundTimeEnd = DateTime.Now.AddMilliseconds(iTime * 1000 + m_oGlobals.Config.dRTOffset * 1000);
+                        m_oRoundTimeEnd = DateTime.Now.AddMilliseconds(iTime * 1000 + m_oGlobals.CurrentGameInstance.RTOffset * 1000);
                     }
                 }
                 finally
@@ -1323,7 +1323,7 @@ namespace GenieClient
 
         private string EvalString(string sText, Genie.Globals oGlobals, [Optional, DefaultParameterValue(0)] int iFileId, [Optional, DefaultParameterValue(0)] int iFileRow)
         {
-            if (DebugLevel > 0 & m_oGlobals.Config.bIgnoreScriptWarnings == false)
+            if (DebugLevel > 0 & m_oGlobals.AppSettings.ClientSettings.ScriptSettings.IgnoreWarnings == false)
             {
                 if (sText.Contains("%"))
                 {
@@ -1340,7 +1340,7 @@ namespace GenieClient
 
         private bool Eval(string sText, Genie.Globals oGlobals, [Optional, DefaultParameterValue(0)] int iFileId, [Optional, DefaultParameterValue(0)] int iFileRow)
         {
-            if (DebugLevel > 0 & m_oGlobals.Config.bIgnoreScriptWarnings == false)
+            if (DebugLevel > 0 & m_oGlobals.AppSettings.ClientSettings.ScriptSettings.IgnoreWarnings == false)
             {
                 if (sText.Contains("%"))
                 {
@@ -1818,7 +1818,7 @@ namespace GenieClient
                         if (oLine.oFunction != ScriptFunctions.jsblock)
                         {
                             var argoDateEnd = DateTime.Now;
-                            if (Utility.GetTimeDiffInMilliseconds(oTimerStart, argoDateEnd) > m_oGlobals.Config.iScriptTimeout)
+                            if (Utility.GetTimeDiffInMilliseconds(oTimerStart, argoDateEnd) > m_oGlobals.AppSettings.ClientSettings.ScriptSettings.Timeout)
                             {
                                 PrintText("[Script timeout in " + GetFileAndRow(oLine.iFileId, oLine.iFileRow) + ": Possible infinite loop.]");
                                 PrintTrace();
@@ -2022,7 +2022,7 @@ namespace GenieClient
             int argiLevel1 = 5;
             string argsText1 = "action commands: " + ((ClassActionList.Action)m_oActions[sKey]).action.ToString();
             PrintDebug(argiLevel1, argsText1, iFileId, iFileRow);
-            foreach (string row in Utility.SafeSplit(((ClassActionList.Action)m_oActions[sKey]).action, m_oGlobals.Config.cSeparatorChar))
+            foreach (string row in Utility.SafeSplit(((ClassActionList.Action)m_oActions[sKey]).action, m_oGlobals.AppSettings.ClientSettings.SpecialCharacters.Separator))
             {
                 var sRow = row;
                 if (sRow.StartsWith("%"))
@@ -2046,7 +2046,7 @@ namespace GenieClient
                 if (sRow.Contains("$") == true)
                 {
                     sRow = sRow.Replace(@"\$", @"\¤");
-                    for (int i = 0, loopTo = m_oGlobals.Config.iArgumentCount - 1; i <= loopTo; i++)
+                    for (int i = 0, loopTo = m_oGlobals.AppSettings.ClientSettings.MaxArguments - 1; i <= loopTo; i++)
                     {
                         if (i > oArgs.Count - 1)
                         {
@@ -2174,7 +2174,7 @@ namespace GenieClient
             if (sText.Contains("$") == true)
             {
                 sText = sText.Replace(@"\$", @"\¤");
-                for (int i = 0, loopTo = m_oGlobals.Config.iArgumentCount - 1; i <= loopTo; i++)
+                for (int i = 0, loopTo = m_oGlobals.AppSettings.ClientSettings.MaxArguments - 1; i <= loopTo; i++)
                 {
                     if (i >= m_oCurrentLine.ArgList.Count)
                     {
@@ -2379,9 +2379,9 @@ namespace GenieClient
                             int argiLevel3 = 40;
                             string argsText3 = "Add jump (count = " + m_oCurrentLine.Count + ")";
                             PrintDebug(argiLevel3, argsText3, oLine.iFileId, oLine.iFileRow);
-                            if (m_oCurrentLine.Count > m_oGlobals.Config.iMaxGoSubDepth)
+                            if (m_oCurrentLine.Count > m_oGlobals.AppSettings.ClientSettings.ScriptSettings.MaxGoSubDepth)
                             {
-                                PrintError("Maximum GOSUB depth (" + m_oGlobals.Config.iMaxGoSubDepth.ToString() + ") on: " + strLabel, oLine.iFileId, oLine.iFileRow);
+                                PrintError("Maximum GOSUB depth (" + m_oGlobals.AppSettings.ClientSettings.ScriptSettings.MaxGoSubDepth.ToString() + ") on: " + strLabel, oLine.iFileId, oLine.iFileRow); ;
                                 PrintTrace();
                                 AbortOnScriptError();
                                 return default;
@@ -3409,7 +3409,7 @@ namespace GenieClient
             string sFriendlyName = sFile;
             if (sFile.IndexOf(@"\") == -1)
             {
-                string sLocation = m_oGlobals.Config.ScriptDir;
+                string sLocation = m_oGlobals.CurrentProfile.ResourcePaths.Scripts;
                 if (sLocation.EndsWith(@"\"))
                 {
                     sFile = sLocation + sFile;
@@ -3471,7 +3471,7 @@ namespace GenieClient
             string sFriendlyName = sFile;
             if (sFile.IndexOf(@"\") == -1)
             {
-                string sLocation = m_oGlobals.Config.ScriptDir;
+                string sLocation = m_oGlobals.CurrentProfile.ResourcePaths.Scripts;
                 if (sLocation.EndsWith(@"\"))
                 {
                     sFile = sLocation + sFile;
@@ -3856,7 +3856,7 @@ namespace GenieClient
 
                         case ScriptFunctions.empty:
                             {
-                                if (m_oGlobals.Config.bIgnoreScriptWarnings == false)
+                                if (m_oGlobals.AppSettings.ClientSettings.ScriptSettings.IgnoreWarnings == false)
                                 {
                                     PrintError("Unknown script command: " + sRow, iFileId, iFileRow);
                                     return false;
@@ -4110,7 +4110,7 @@ namespace GenieClient
             strLabel = strLabel.ToLower().Trim();
             if (m_oScriptLabels.ContainsKey(strLabel) == true)
             {
-                if (m_oGlobals.Config.bIgnoreScriptWarnings == false)
+                if (m_oGlobals.AppSettings.ClientSettings.ScriptSettings.IgnoreWarnings == false)
                 {
                     PrintError("Replacing duplicate label: " + strLabel, iFileId, iFileRow);
                 }

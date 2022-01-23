@@ -44,7 +44,7 @@ namespace GenieClient
             }
             else if ((Var ?? "") == "CommandChar")
             {
-                return Conversions.ToString(m_oGlobals.Config.cMyCommandChar);
+                return Conversions.ToString(m_oGlobals.AppSettings.ClientSettings.SpecialCharacters.Parse);
             }
             else if ((Var ?? "") == "PluginPath")
             {

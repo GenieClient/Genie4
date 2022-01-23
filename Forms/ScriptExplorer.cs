@@ -40,7 +40,7 @@ namespace GenieClient
 
         private void LoadTree()
         {
-            string sLocation = m_oGlobals.Config.ScriptDir;
+            string sLocation = m_oGlobals.CurrentProfile.ResourcePaths.Scripts;
             if (Information.IsNothing(m_oGlobals))
             {
                 return;
@@ -171,13 +171,13 @@ namespace GenieClient
         {
             if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(TreeView.SelectedNode.Tag, "File", false)))
             {
-                string sLocation = m_oGlobals.Config.ScriptDir;
+                string sLocation = m_oGlobals.CurrentProfile.ResourcePaths.Scripts;
                 if (!sLocation.EndsWith(@"\"))
                 {
                     sLocation += @"\";
                 }
 
-                Interaction.Shell("\"" + m_oGlobals.Config.sEditor + "\" \"" + sLocation + TreeView.SelectedNode.FullPath + "\"", AppWinStyle.NormalFocus, false);
+                Interaction.Shell("\"" + m_oGlobals.AppSettings.ClientSettings.Editor  + "\" \"" + sLocation + TreeView.SelectedNode.FullPath + "\"", AppWinStyle.NormalFocus, false);
             }
         }
 
@@ -187,7 +187,7 @@ namespace GenieClient
             {
                 if (Interaction.MsgBox("Are you sure you want to delete " + TreeView.SelectedNode.FullPath + "?", MsgBoxStyle.YesNo) == MsgBoxResult.Yes)
                 {
-                    string sLocation = m_oGlobals.Config.ScriptDir;
+                    string sLocation = m_oGlobals.CurrentProfile.ResourcePaths.Scripts;
                     if (!sLocation.EndsWith(@"\"))
                     {
                         sLocation += @"\";
@@ -206,7 +206,7 @@ namespace GenieClient
 
         private void ToolStripButtonNew_Click(object sender, EventArgs e)
         {
-            string sLocation = m_oGlobals.Config.ScriptDir;
+            string sLocation = m_oGlobals.CurrentProfile.ResourcePaths.Scripts;
             if (!sLocation.EndsWith(@"\"))
             {
                 sLocation += @"\";
@@ -251,7 +251,7 @@ namespace GenieClient
                     TreeView.Nodes.Add(tnFile);
                 }
 
-                Interaction.Shell("\"" + m_oGlobals.Config.sEditor + "\" \"" + sLocation + My.MyProject.Forms.DialogScriptName.ScriptName + "\"", AppWinStyle.NormalFocus, false);
+                Interaction.Shell("\"" + m_oGlobals.AppSettings.ClientSettings.Editor  + "\" \"" + sLocation + My.MyProject.Forms.DialogScriptName.ScriptName + "\"", AppWinStyle.NormalFocus, false);
             }
 
             My.MyProject.Forms.DialogScriptName.ScriptName = string.Empty;

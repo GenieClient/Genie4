@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace GenieClient
@@ -7,28 +8,63 @@ namespace GenieClient
     {
         public static string Path = Application.StartupPath;
         public static bool IsLocal = true;
+        public static string SettingsPath { get { return Path + FileName; } }
 
-        public static void CheckUserDirectory()
+        public static string FileName = "appsettings." + Environment.MachineName + ".json";
+        public static void ConfigureUserDirectory()
         {
-            string dir = System.IO.Path.Combine(Application.StartupPath, "Config");
-            if (!System.IO.Directory.Exists(dir))
+            try
             {
-                // No local settings, change to user data directory
-                SetUserDataDirectory();
+                // If there's a machine specific local appsettings, that's our default
+                if (File.Exists(SettingsPath)) return;
+
+                // If there's not, look for a local appsettings
+                FileName = "appsettings.json";
+                if (File.Exists(SettingsPath)) return;
+
+                //repeat this search in the appdata folder
+                FileName = "appsettings." + Environment.MachineName + ".json";
+                Path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + Application.ProductName;
+                IsLocal = false;
+
+                if (File.Exists(SettingsPath)) return;
+                FileName = "appsettings.json";
+            
+                if (!File.Exists(SettingsPath))
+                {
+                    FileName = "appsettings." + Environment.MachineName + ".json";
+                    CreateDefaultUserDataDirectory();
+                }
+            }
+            finally
+            {
+
             }
         }
 
-        public static void SetUserDataDirectory()
+        private static void CreateDefaultUserDataDirectory()
         {
-            string dir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            dir = System.IO.Path.Combine(dir, Application.ProductName);
-            if (!System.IO.Directory.Exists(dir))
+            if(!Application.StartupPath.Contains(@":\Program Files"))
             {
-                System.IO.Directory.CreateDirectory(dir);
+                Path = Application.StartupPath;
+                IsLocal = true;
             }
-
-            Path = dir;
-            IsLocal = false;
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(SettingsPath, new FileStreamOptions()))
+                {
+                    sw.Write(Models.AppSettings.CreateDefault());
+                }
+            }
+            catch (Exception ex)
+            {
+                Path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + Application.ProductName;
+                IsLocal = false;
+                using (StreamWriter sw = new StreamWriter(SettingsPath, new FileStreamOptions()))
+                {
+                    sw.Write(Models.AppSettings.CreateDefault());
+                }
+            }
         }
     }
 }

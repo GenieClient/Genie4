@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
+using GenieClient.Models;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
@@ -213,6 +214,7 @@ namespace GenieClient.Genie
             Room,
             Log,
             Raw,
+            Debug,
             Other
         }
 
@@ -399,7 +401,7 @@ namespace GenieClient.Genie
             string sShowText = sText;
             if (!m_oSocket.IsConnected)
             {
-                if (!sText.StartsWith(Conversions.ToString(m_oGlobals.Config.cMyCommandChar)))
+                if (!sText.StartsWith(Conversions.ToString(m_oGlobals.AppSettings.ClientSettings.SpecialCharacters.Parse)))
                 {
                     sShowText = "(" + sShowText + ")";
                 }
@@ -470,7 +472,7 @@ namespace GenieClient.Genie
                 PrintInputText(argsText, color, bgcolor);
             }
 
-            if (!sText.StartsWith(Conversions.ToString(m_oGlobals.Config.cMyCommandChar))) // Skip user commands
+            if (!sText.StartsWith(Conversions.ToString(m_oGlobals.AppSettings.ClientSettings.SpecialCharacters.Parse))) // Skip user commands
             {
                 m_oLastUserActivity = DateTime.Now;
                 m_oSocket.Send("<c>" + sText + Constants.vbCrLf);
@@ -479,7 +481,7 @@ namespace GenieClient.Genie
                 EventVariableChanged?.Invoke(lastCommandVar);
             }
 
-            if (m_oGlobals.Config.bAutoLog == true)
+            if (m_oGlobals.CurrentProfile.LogSettings.AutoLog == true)
             {
                 m_oGlobals.Log?.LogText(sShowText + System.Environment.NewLine, Conversions.ToString(m_oGlobals.VariableList["charactername"]), Conversions.ToString(m_oGlobals.VariableList["game"]));
             }
@@ -1086,11 +1088,11 @@ namespace GenieClient.Genie
                                     {
                                         if (strRow.IndexOf("GAMEHOST=") > -1)
                                         {
-                                            m_sConnectHost = IsLich ? m_oGlobals.Config.LichServer : strRow.Substring(9);
+                                            m_sConnectHost = IsLich ? m_oGlobals.CurrentProfile.LichSettings.LichServer : strRow.Substring(9);
                                         }
                                         else if (strRow.IndexOf("GAMEPORT=") > -1)
                                         {
-                                            m_sConnectPort = IsLich ? m_oGlobals.Config.LichPort : int.Parse(strRow.Substring(9));
+                                            m_sConnectPort = IsLich ? m_oGlobals.CurrentProfile.LichSettings.LichPort : int.Parse(strRow.Substring(9));
                                         }
                                         else if (strRow.IndexOf("KEY=") > -1)
                                         {
@@ -1152,7 +1154,7 @@ namespace GenieClient.Genie
                             if ((oXmlNode.ParentNode.Name ?? "") != "component")
                             {
                                 string sText = GetTextFromXML(oXmlNode);
-                                if (m_oGlobals.Config.bShowLinks)
+                                if (m_oGlobals.CurrentProfile.ShowLinks)
                                 {
                                     string argstrAttributeName = "cmd";
                                     string sCmd = GetAttributeData(oXmlNode, argstrAttributeName);
@@ -1372,6 +1374,11 @@ namespace GenieClient.Genie
                                         m_oTargetWindow = WindowTarget.Room;
                                         break;
                                     }
+                                case "debug":
+                                    {
+                                        m_oTargetWindow = WindowTarget.Debug;
+                                        break;
+                                    }
 
                                 default:
                                     {
@@ -1436,6 +1443,11 @@ namespace GenieClient.Genie
                                     }
 
                                 case "death":
+                                    {
+                                        break;
+                                    }
+
+                                case "debug":
                                     {
                                         break;
                                     }
@@ -2118,7 +2130,7 @@ namespace GenieClient.Genie
                                     SetRoundTime(rt);
                                     if (m_bStatusPromptEnabled == false)
                                         strBuffer += "R";
-                                    rt += Convert.ToInt32(m_oGlobals.Config.dRTOffset);
+                                    rt += Convert.ToInt32(m_oGlobals.CurrentGameInstance.RTOffset);
                                     var rtString = rt.ToString();
                                     string argkey42 = "roundtime";
                                     m_oGlobals.VariableList.Add(argkey42, rtString, Globals.Variables.VariableType.Reserved);
@@ -2132,10 +2144,10 @@ namespace GenieClient.Genie
 
                                 string argsVariable40 = "$roundtime";
                                 VariableChanged(argsVariable40);
-                                if (m_oGlobals.Config.sPrompt.Length > 0)
+                                if (m_oGlobals.AppSettings.ClientSettings.Prompt.Length > 0)
                                 {
                                     strBuffer = strBuffer.Replace(">", "");
-                                    strBuffer += m_oGlobals.Config.sPrompt;
+                                    strBuffer += m_oGlobals.AppSettings.ClientSettings.Prompt;
                                     bool argbIsPrompt = true;
                                     WindowTarget argoWindowTarget = 0;
                                     
@@ -2396,7 +2408,7 @@ namespace GenieClient.Genie
                 // PrintText(sValue & vbNewLine)
 
                 bool bIgnore = false;
-                foreach (string sIgnore in m_oGlobals.Config.sIgnoreMonsterList.Split('|'))
+                foreach (string sIgnore in m_oGlobals.CurrentProfile.IgnoreMonsterList.Split('|'))
                 {
                     if (Conversions.ToBoolean(sValue.Contains(sIgnore)))
                     {
@@ -2635,7 +2647,7 @@ namespace GenieClient.Genie
                                     color = o.FgColor;
                                     bgcolor = o.BgColor;
                                     m_oLastFgColor = color;
-                                    if (o.SoundFile.Length > 0 && m_oGlobals.Config.bPlaySounds)
+                                    if (o.SoundFile.Length > 0 && m_oGlobals.CurrentProfile.PlaySounds)
                                         Sound.PlayWaveFile(o.SoundFile);
                                 }
                             }
@@ -2664,7 +2676,7 @@ namespace GenieClient.Genie
                             color = oHighlightString.FgColor;
                             bgcolor = oHighlightString.BgColor;
                             m_oLastFgColor = color;
-                            if (oHighlightString.SoundFile.Length > 0 && m_oGlobals.Config.bPlaySounds)
+                            if (oHighlightString.SoundFile.Length > 0 && m_oGlobals.CurrentProfile.PlaySounds)
                                 Sound.PlayWaveFile(oHighlightString.SoundFile);
                         }
                     }
@@ -2753,6 +2765,11 @@ namespace GenieClient.Genie
                         targetwindow = WindowTarget.Other;
                         break;
                     }
+                case WindowTarget.Debug:
+                    {
+                        sTargetWindowString = "debug";
+                        break;
+                    }
 
                 case WindowTarget.Other:
                     {
@@ -2769,7 +2786,7 @@ namespace GenieClient.Genie
 
             if (targetwindow != WindowTarget.Room & targetwindow != WindowTarget.Inv & targetwindow != WindowTarget.Log & text.Trim().Length > 0)
             {
-                if (m_oGlobals.Config.bParseGameOnly == false | targetwindow == WindowTarget.Main)
+                if (m_oGlobals.CurrentProfile.ParseGameOnly == false | targetwindow == WindowTarget.Main)
                 {
                     string argsText = Utility.Trim(text);
                     TriggerParse(argsText);
@@ -2781,7 +2798,7 @@ namespace GenieClient.Genie
                 return;
             }
 
-            if (m_oGlobals.Config.bGagsEnabled == true && targetwindow != WindowTarget.Thoughts)
+            if (m_oGlobals.CurrentProfile.GagsEnabled == true && targetwindow != WindowTarget.Thoughts)
             {
                 // Gag List
                 if (m_oGlobals.GagList.AcquireReaderLock())
@@ -2861,7 +2878,7 @@ namespace GenieClient.Genie
 
                     m_bLastRowWasBlank = true;
                 }
-                else if (Regex.IsMatch(text, @"^.*\" + m_oGlobals.Config.sPrompt + "?$"))
+                else if (Regex.IsMatch(text, @"^.*\" + m_oGlobals.AppSettings.ClientSettings.Prompt + "?$"))
                 {
                     if (m_bLastRowWasBlank)
                     {
@@ -2879,7 +2896,7 @@ namespace GenieClient.Genie
 
             if (targetwindow == WindowTarget.Main | targetwindow == WindowTarget.Thoughts | targetwindow == WindowTarget.Combat)
             {
-                if (m_oGlobals.Config.bAutoLog == true)
+                if (m_oGlobals.CurrentProfile.LogSettings.AutoLog == true)
                 {
                     m_oGlobals.Log?.LogText(text, Conversions.ToString(m_oGlobals.VariableList["charactername"]), Conversions.ToString(m_oGlobals.VariableList["game"]));
                     //if (m_bLastRowWasPrompt == true)
@@ -3159,7 +3176,7 @@ namespace GenieClient.Genie
 
         private void GameSocket_EventConnectionLost()
         {
-            if (m_oGlobals.Config.bReconnect == true & m_bManualDisconnect == false)
+            if (m_oGlobals.CurrentProfile.Reconnect == true & m_bManualDisconnect == false)
             {
                 if (m_iConnectAttempts == 0) // Attempt to connect right away
                 {
