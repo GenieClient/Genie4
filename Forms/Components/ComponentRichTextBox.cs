@@ -332,7 +332,7 @@ namespace GenieClient
                 AddToBuffer(argsText, oColor, oBgColor, bMono, oFont: argoFont1);
             }
 
-            if (Conversions.ToBoolean(bNoCache == true | m_oRichTextBuffer.Lines.Length >= m_oParentForm.Globals.Config.iBufferLineSize))
+            if (Conversions.ToBoolean(bNoCache == true | m_oRichTextBuffer.Lines.Length >= m_oParentForm.Globals.AppSettings.ClientSettings.BufferLineSize))
             {
                 InvokeEndUpdate();
             }
@@ -445,7 +445,7 @@ namespace GenieClient
                                     }
                                 }
 
-                                if (Conversions.ToBoolean(oHighlight.SoundFile.Length > 0 && m_oParentForm.Globals.Config.bPlaySounds))
+                                if (Conversions.ToBoolean(oHighlight.SoundFile.Length > 0 && m_oParentForm.Globals.CurrentProfile.PlaySounds))
                                     Sound.PlayWaveFile(oHighlight.SoundFile);
                             }
                         }
@@ -498,7 +498,7 @@ namespace GenieClient
                             m_oRichTextBuffer.SelectionBackColor = oHighlightString.BgColor;
                         }
 
-                        if (Conversions.ToBoolean(oHighlightString.SoundFile.Length > 0 && m_oParentForm.Globals.Config.bPlaySounds))
+                        if (Conversions.ToBoolean(oHighlightString.SoundFile.Length > 0 && m_oParentForm.Globals.CurrentProfile.PlaySounds))
                             Sound.PlayWaveFile(oHighlightString.SoundFile);
                     }
                 }

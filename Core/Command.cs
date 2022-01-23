@@ -203,7 +203,6 @@ namespace GenieClient.Genie
         private Script.MathEval m_oMathEval = new Script.MathEval();
         private Globals oGlobals;
         private readonly IMapper mapper;
-        private IEnumerable<GenieProfile> profiles;
         private IEnumerable<GameInstance> instances;
 
 
@@ -232,7 +231,7 @@ namespace GenieClient.Genie
                 return sText;
             }
 
-            foreach (string stemp in Utility.SafeSplit(sText, oGlobals.Config.cSeparatorChar))
+            foreach (string stemp in Utility.SafeSplit(sText, oGlobals.AppSettings.ClientSettings.SpecialCharacters.Separator))
             {
                 var sStringTemp = stemp;
                 if (oGlobals.AliasList.ContainsKey(GetKeywordString(sStringTemp).ToLower()) == true) // Alias
@@ -240,20 +239,20 @@ namespace GenieClient.Genie
                     sStringTemp = ParseAlias(sStringTemp);
                 }
 
-                foreach (string row in Utility.SafeSplit(sStringTemp, oGlobals.Config.cSeparatorChar))
+                foreach (string row in Utility.SafeSplit(sStringTemp, oGlobals.AppSettings.ClientSettings.SpecialCharacters.Separator))
                 {
                     var sRow = row;
                     // Quick #send
                     if (bParseQuickSend)
                     {
-                        if (sRow.StartsWith(Conversions.ToString(oGlobals.Config.cQuickSendChar)))
+                        if (sRow.StartsWith(Conversions.ToString(oGlobals.AppSettings.ClientSettings.SpecialCharacters.Send)))
                         {
                             sRow = "#send " + sRow.Substring(1);
                         }
                     }
 
                     sResult = string.Empty;
-                    if (sRow.Trim().StartsWith(Conversions.ToString(oGlobals.Config.cCommandChar)))
+                    if (sRow.Trim().StartsWith(Conversions.ToString(oGlobals.AppSettings.ClientSettings.SpecialCharacters.Command)))
                     {
                         // Get result from function then send result to game
                         var oArgs = new ArrayList();
@@ -886,7 +885,7 @@ namespace GenieClient.Genie
 
                                                         case "edit":
                                                             {
-                                                                Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.Config.ConfigProfileDir + @"\variables.cfg""", AppWinStyle.NormalFocus, false);
+                                                                Interaction.Shell("\"" + oGlobals.AppSettings.ClientSettings.Editor + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\variables.cfg""", AppWinStyle.NormalFocus, false);
                                                                 break;
                                                             }
 
@@ -1175,7 +1174,7 @@ namespace GenieClient.Genie
 
                                                         case "edit":
                                                             {
-                                                                Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.Config.ConfigProfileDir + @"\aliases.cfg""", AppWinStyle.NormalFocus, false);
+                                                                Interaction.Shell("\"" + oGlobals.AppSettings.ClientSettings.Editor + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Profile + @"\aliases.cfg""", AppWinStyle.NormalFocus, false);
                                                                 break;
                                                             }
 
@@ -1278,7 +1277,7 @@ namespace GenieClient.Genie
 
                                                         case "edit":
                                                             {
-                                                                Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.Config.ConfigProfileDir + @"\classes.cfg""", AppWinStyle.NormalFocus, false);
+                                                                Interaction.Shell("\"" + oGlobals.AppSettings.ClientSettings.Editor  + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Profile + @"\classes.cfg""", AppWinStyle.NormalFocus, false);
                                                                 break;
                                                             }
 
@@ -1375,7 +1374,7 @@ namespace GenieClient.Genie
 
                                                     case "edit":
                                                         {
-                                                            Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\triggers.cfg""", AppWinStyle.NormalFocus, false);
+                                                            Interaction.Shell("\"" + oGlobals.AppSettings.ClientSettings.Editor  + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\triggers.cfg""", AppWinStyle.NormalFocus, false);
                                                             break;
                                                         }
 
@@ -1459,7 +1458,7 @@ namespace GenieClient.Genie
 
                                                     case "edit":
                                                         {
-                                                            Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\settings.cfg""", AppWinStyle.NormalFocus, false);
+                                                            Interaction.Shell("\"" + oGlobals.AppSettings.ClientSettings.Editor  + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\settings.cfg""", AppWinStyle.NormalFocus, false);
                                                             break;
                                                         }
 
@@ -1497,7 +1496,7 @@ namespace GenieClient.Genie
                                     case "beep":
                                     case "bell":
                                         {
-                                            if (oGlobals.Config.bPlaySounds == true)
+                                            if (oGlobals.CurrentProfile.PlaySounds == true)
                                             {
                                                 Interaction.Beep();
                                             }
@@ -1510,7 +1509,7 @@ namespace GenieClient.Genie
                                     case "playwave":
                                     case "playsound":
                                         {
-                                            if (oGlobals.Config.bPlaySounds == true)
+                                            if (oGlobals.CurrentProfile.PlaySounds == true)
                                             {
                                                 string sSound = GetArgumentString(sRow);
                                                 if ((sSound.ToLower() ?? "") == "stop")
@@ -1528,7 +1527,7 @@ namespace GenieClient.Genie
 
                                     case "playsystem":
                                         {
-                                            if (oGlobals.Config.bPlaySounds == true)
+                                            if (oGlobals.CurrentProfile.PlaySounds == true)
                                             {
                                                 string sSound = GetArgumentString(sRow);
                                                 if (sSound.Length > 0)
@@ -1577,7 +1576,7 @@ namespace GenieClient.Genie
 
                                                         case "edit":
                                                             {
-                                                                Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.Config.ConfigProfileDir + @"\macros.cfg""", AppWinStyle.NormalFocus, false);
+                                                                Interaction.Shell("\"" + oGlobals.AppSettings.ClientSettings.Editor  + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Profile + @"\macros.cfg""", AppWinStyle.NormalFocus, false);
                                                                 break;
                                                             }
 
@@ -1655,7 +1654,7 @@ namespace GenieClient.Genie
 
                                                         case "edit":
                                                             {
-                                                                Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\substitutes.cfg""", AppWinStyle.NormalFocus, false);
+                                                                Interaction.Shell("\"" + oGlobals.AppSettings.ClientSettings.Editor  + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\substitutes.cfg""", AppWinStyle.NormalFocus, false);
                                                                 break;
                                                             }
 
@@ -1738,7 +1737,7 @@ namespace GenieClient.Genie
 
                                                     case "edit":
                                                         {
-                                                            Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.Config.ConfigProfileDir + @"\gags.cfg""", AppWinStyle.NormalFocus, false);
+                                                            Interaction.Shell("\"" + oGlobals.AppSettings.ClientSettings.Editor  + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Profile + @"\gags.cfg""", AppWinStyle.NormalFocus, false);
                                                             break;
                                                         }
 
@@ -1800,7 +1799,7 @@ namespace GenieClient.Genie
 
                                                         case "edit":
                                                             {
-                                                                Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\presets.cfg""", AppWinStyle.NormalFocus, false);
+                                                                Interaction.Shell("\"" + oGlobals.AppSettings.ClientSettings.Editor  + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\presets.cfg""", AppWinStyle.NormalFocus, false);
                                                                 break;
                                                             }
 
@@ -1877,7 +1876,7 @@ namespace GenieClient.Genie
 
                                                     case "edit":
                                                         {
-                                                            Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\highlights.cfg""", AppWinStyle.NormalFocus, false);
+                                                            Interaction.Shell("\"" + oGlobals.AppSettings.ClientSettings.Editor  + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\highlights.cfg""", AppWinStyle.NormalFocus, false);
                                                             break;
                                                         }
 
@@ -1997,7 +1996,7 @@ namespace GenieClient.Genie
 
                                                         case "edit":
                                                             {
-                                                                Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\names.cfg""", AppWinStyle.NormalFocus, false);
+                                                                Interaction.Shell("\"" + oGlobals.AppSettings.ClientSettings.Editor  + "\" \"" + oGlobals.CurrentProfile.ResourcePaths.Config + @"\names.cfg""", AppWinStyle.NormalFocus, false);
                                                                 break;
                                                             }
 
@@ -2054,7 +2053,7 @@ namespace GenieClient.Genie
                                                     }
                                                 }
 
-                                                Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + sFile + "\"", AppWinStyle.NormalFocus, false);
+                                                Interaction.Shell("\"" + oGlobals.AppSettings.ClientSettings.Editor  + "\" \"" + sFile + "\"", AppWinStyle.NormalFocus, false);
                                             }
 
                                             break;
@@ -2082,7 +2081,7 @@ namespace GenieClient.Genie
                                                         sTemp = LocalDirectory.Path + @"\Help\" + sTemp;
                                                     }
 
-                                                    Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + sTemp + "\"", AppWinStyle.NormalFocus, false);
+                                                    Interaction.Shell("\"" + oGlobals.AppSettings.ClientSettings.Editor  + "\" \"" + sTemp + "\"", AppWinStyle.NormalFocus, false);
                                                 }
                                                 else
                                                 {
@@ -2434,7 +2433,7 @@ namespace GenieClient.Genie
                             }
                         }
                     }
-                    else if (sRow.StartsWith(Conversions.ToString(oGlobals.Config.ScriptChar)))
+                    else if (sRow.StartsWith(Conversions.ToString(oGlobals.AppSettings.ClientSettings.SpecialCharacters.Script)))
                     {
                         RunScript(sRow);
                     }
@@ -2463,7 +2462,7 @@ namespace GenieClient.Genie
         {
             foreach (var instance in this.instances)
             {
-                if (oGlobals.CurrentProfile.ProfileArg.EndsWith(instance.Code.ToLower()))
+                if (oGlobals.CurrentProfile.GameInstanceCode.EndsWith(instance.Code.ToLower()))
                 {
                     oGlobals.CurrentProfile.LichSettings =  this.mapper.Map<GameInstance, LichSettings>(instance, oGlobals.CurrentProfile.LichSettings);
                     break;
@@ -2663,7 +2662,7 @@ namespace GenieClient.Genie
                 if (sResult.Contains("$") == true)
                 {
                     sResult = sResult.Replace("$0", GetArgumentString(sText).Replace("\"", ""));
-                    for (int i = 1, loopTo = oGlobals.Config.iArgumentCount - 1; i <= loopTo; i++)
+                    for (int i = 1, loopTo = oGlobals.AppSettings.ClientSettings.MaxArguments - 1; i <= loopTo; i++)
                     {
                         if (i > oArgs.Count - 1)
                         {
@@ -2807,40 +2806,12 @@ namespace GenieClient.Genie
 
         private void ListSettings()
         {
-            EchoText(System.Environment.NewLine + "Active settings: " + System.Environment.NewLine);
-            EchoText("abortdupescript=" + oGlobals.Config.bAbortDupeScript.ToString() + System.Environment.NewLine);
-            EchoText("autolog=" + oGlobals.Config.bAutoLog.ToString() + System.Environment.NewLine);
-            EchoText("automapper=" + oGlobals.Config.bAutoMapper.ToString() + System.Environment.NewLine);
-            EchoText("commandchar=" + oGlobals.Config.cCommandChar.ToString() + System.Environment.NewLine);
-            EchoText("connectstring=" + oGlobals.Config.sConnectString.ToString() + System.Environment.NewLine);
-            EchoText("editor=" + oGlobals.Config.sEditor + System.Environment.NewLine);
-            EchoText("ignoreclosealert=" + oGlobals.Config.bIgnoreCloseAlert.ToString() + System.Environment.NewLine);
-            EchoText("ignorescriptwarnings=" + oGlobals.Config.bIgnoreScriptWarnings.ToString() + System.Environment.NewLine);
-            EchoText("keepinputtext=" + oGlobals.Config.bKeepInput.ToString() + System.Environment.NewLine);
-            EchoText("maxgosubdepth=" + oGlobals.Config.iMaxGoSubDepth + System.Environment.NewLine);
-            EchoText("maxrowbuffer=" + oGlobals.Config.iBufferLineSize.ToString() + System.Environment.NewLine);
-            EchoText("monstercountignorelist=" + oGlobals.Config.sIgnoreMonsterList + System.Environment.NewLine);
-            EchoText("muted=" + (!oGlobals.Config.bPlaySounds).ToString() + System.Environment.NewLine);
-            EchoText("mycommandchar=" + oGlobals.Config.cMyCommandChar.ToString() + System.Environment.NewLine);
-            EchoText("parsegameonly=" + oGlobals.Config.bParseGameOnly.ToString() + System.Environment.NewLine);
-            EchoText("prompt=" + oGlobals.Config.sPrompt + System.Environment.NewLine);
-            EchoText("reconnect=" + oGlobals.Config.bReconnect.ToString() + System.Environment.NewLine);
-            EchoText("roundtimeoffset=" + oGlobals.Config.dRTOffset + System.Environment.NewLine);
-            EchoText("showlinks=" + oGlobals.Config.bShowLinks.ToString() + System.Environment.NewLine);
-            EchoText("logdir=" + oGlobals.Config.sLogDir + System.Environment.NewLine);
-            EchoText("configdir=" + oGlobals.Config.sConfigDir + System.Environment.NewLine);
-            EchoText("plugindir=" + oGlobals.Config.PluginDir.ToString() + System.Environment.NewLine);
-            EchoText("mapdir=" + oGlobals.CurrentProfile.ResourcePaths.Maps.ToString() + System.Environment.NewLine);
-            EchoText("scriptdir=" + oGlobals.Config.sScriptDir + System.Environment.NewLine);
-            EchoText("scriptchar=" + oGlobals.Config.ScriptChar.ToString() + System.Environment.NewLine);
-            EchoText("scripttimeout=" + oGlobals.Config.iScriptTimeout.ToString() + System.Environment.NewLine);
-            EchoText("separatorchar=" + oGlobals.Config.cSeparatorChar.ToString() + System.Environment.NewLine);
-            EchoText("spelltimer=" + oGlobals.Config.bShowSpellTimer.ToString() + System.Environment.NewLine);
-            EchoText("triggeroninput=" + oGlobals.Config.bTriggerOnInput.ToString() + System.Environment.NewLine);
-            EchoText("servertimeout=" + oGlobals.Config.iServerActivityTimeout.ToString() + System.Environment.NewLine);
-            EchoText("servertimeoutcommand=" + oGlobals.Config.sServerActivityCommand.ToString() + System.Environment.NewLine);
-            EchoText("usertimeout=" + oGlobals.Config.iUserActivityTimeout.ToString() + System.Environment.NewLine);
-            EchoText("usertimeoutcommand=" + oGlobals.Config.sUserActivityCommand.ToString() + System.Environment.NewLine);
+            string settingsList = System.Environment.NewLine;
+            settingsList += oGlobals.AppSettings.ClientSettings.ListValues();
+            settingsList += oGlobals.CurrentGameInstance.ListValues();
+            settingsList += oGlobals.CurrentProfile.ListValues();
+            settingsList += System.Environment.NewLine;
+            EchoText(settingsList);
         }
 
         private void ListColors()

@@ -11,11 +11,15 @@ namespace GenieClient
 {
     public static class ConfigExtensions
     {
-        public static IEnumerable<GenieProfile> LoadProfiles(this IConfiguration config)
+        public static IEnumerable<Profile> LoadProfiles(this IConfiguration config)
         {
-            return config.GetSection("Profiles").Get<IEnumerable<GenieProfile>>();
+            return config.GetSection("Profiles").Get<IEnumerable<Profile>>();
         }
 
+        public static ClientSettings LoadClientSettings(this IConfiguration config)
+        {
+            return config.GetSection("ClientSettings").Get<ClientSettings>();
+        }
         public static void SaveProfiles(this IConfiguration config)
         {
             string json = System.Text.Json.JsonSerializer.Serialize(config);

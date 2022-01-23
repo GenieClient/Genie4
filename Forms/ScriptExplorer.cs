@@ -177,7 +177,7 @@ namespace GenieClient
                     sLocation += @"\";
                 }
 
-                Interaction.Shell("\"" + m_oGlobals.Config.sEditor + "\" \"" + sLocation + TreeView.SelectedNode.FullPath + "\"", AppWinStyle.NormalFocus, false);
+                Interaction.Shell("\"" + m_oGlobals.AppSettings.ClientSettings.Editor  + "\" \"" + sLocation + TreeView.SelectedNode.FullPath + "\"", AppWinStyle.NormalFocus, false);
             }
         }
 
@@ -251,7 +251,7 @@ namespace GenieClient
                     TreeView.Nodes.Add(tnFile);
                 }
 
-                Interaction.Shell("\"" + m_oGlobals.Config.sEditor + "\" \"" + sLocation + My.MyProject.Forms.DialogScriptName.ScriptName + "\"", AppWinStyle.NormalFocus, false);
+                Interaction.Shell("\"" + m_oGlobals.AppSettings.ClientSettings.Editor  + "\" \"" + sLocation + My.MyProject.Forms.DialogScriptName.ScriptName + "\"", AppWinStyle.NormalFocus, false);
             }
 
             My.MyProject.Forms.DialogScriptName.ScriptName = string.Empty;

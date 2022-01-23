@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GenieClient
 {
-    public class MapProfile : Profile
+    public class MapProfile : AutoMapper.Profile
     {
         public MapProfile()
         {

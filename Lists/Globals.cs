@@ -17,15 +17,17 @@ namespace GenieClient.Genie
 {
     public class Globals
     {
-        private Config _Config = new Config();
-       
-
+        private Config _Config = null;
         public Config Config
         {
 
             [MethodImpl(MethodImplOptions.Synchronized)]
             get
             {
+                if(_Config == null)
+                {
+                    _Config = new Config(this);
+                }
                 return _Config;
             }
 
@@ -70,7 +72,9 @@ namespace GenieClient.Genie
         public Hashtable PluginVerifiedKeyList = new Hashtable();
         public Hashtable PluginPremiumKeyList = new Hashtable();
         private Log _Log = new Log();
-        public GenieProfile CurrentProfile { get; set; }
+        public Profile CurrentProfile { get; set; }
+        public GameInstance CurrentGameInstance { get; set; }
+        public AppSettings AppSettings { get; set; }
 
         public Log Log
         {            
@@ -98,7 +102,7 @@ namespace GenieClient.Genie
 
         private void HandleGenieException(string section, string message, string description = null) // Pass it up
         {
-            Config.bAutoLog = false;
+            CurrentProfile.LogSettings.AutoLog = false;
             GenieError.Error(section, message, description);
         }
 
@@ -106,7 +110,7 @@ namespace GenieClient.Genie
         {
             if (oField == Config.ConfigFieldUpdated.LogDir)
             {
-                Log.LogDirectory = Config.sLogDir;
+                Log.LogDirectory = CurrentProfile.ResourcePaths.Logs;
             }
             else
             {
@@ -1826,12 +1830,17 @@ namespace GenieClient.Genie
             }
         }
 
-        private readonly IConfiguration _configuration;
-        public IConfiguration Configuration { get { return _configuration; } }  
+        public IConfiguration Configuration { get; }  
         public Globals(ref IConfiguration configuration)
         {
             VariableList.SetDefaultGlobalVars();
-            _configuration = configuration;
+            Configuration = configuration;
+            LoadAppSettings();
+        }
+
+        private void LoadAppSettings()
+        {
+            AppSettings = AppSettings.Load(LocalDirectory.SettingsPath);
             this.SetCurrentProfile("default");
         }
 
@@ -2078,27 +2087,44 @@ namespace GenieClient.Genie
                 }
             }
         }
-
-        public void SetCurrentProfile(string profileArg)
+        public void SetCurrentGameInstance(string GameInstanceCode)
         {
-            IEnumerable<Models.GenieProfile> profiles = _configuration.LoadProfiles();
-            this.CurrentProfile = profiles
-                .Where(p => p.ProfileName.ToLower() == profileArg)
+            this.CurrentGameInstance = AppSettings.GameInstances
+                .Where(i => i.Code.ToLower() == GameInstanceCode.ToLower())
+                .FirstOrDefault();
+            
+            if (this.CurrentGameInstance is null)
+            {
+                this.CurrentGameInstance = AppSettings.GameInstances
+                .Where(i => i.Code.ToLower() == "dr")
+                .FirstOrDefault();
+            }
+            if (this.CurrentGameInstance is null)
+            {
+                this.CurrentGameInstance = new GameInstance() { };
+            }
+        }
+        public void SetCurrentProfile(string GameInstanceCode)
+        {
+            
+            this.CurrentProfile = AppSettings.Profiles
+                .Where(p => p.ProfileName.ToLower() == GameInstanceCode)
                 .FirstOrDefault();
 
             if (this.CurrentProfile == null)
             {
-                this.CurrentProfile = profiles
+                this.CurrentProfile = AppSettings.Profiles
                     .Where(p => p.ProfileName.ToLower() == "default")
                     .FirstOrDefault();
             }
 
             if (this.CurrentProfile == null)
             {
-                this.CurrentProfile = new GenieProfile();
+                this.CurrentProfile = new Profile();
             }
 
-            this.CurrentProfile.ProfileArg = profileArg.ToLower();
+            this.CurrentProfile.GameInstanceCode = GameInstanceCode;
+            this.SetCurrentGameInstance(GameInstanceCode);
         }
     }
 }
