@@ -447,8 +447,15 @@ namespace GenieClient.Genie.Script
 
         private void ShowQueue()
         {
-            foreach (Sections o in oSections)
-                Debug.Print("-" + o.bParsed + " " + o.BlockType.ToString() + " " + o.sBlock);
+            try
+            {
+                foreach (Sections o in oSections)
+                    Debug.Print("-" + o.bParsed + " " + o.BlockType.ToString() + " " + o.sBlock);
+            }
+            catch(Exception ex)
+            {
+                Debug.Print(ex.Message);
+            }
         }
 
         // Parse Subsection. Typically () pairs
