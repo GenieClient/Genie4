@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GenieClient.Services;
+using System;
 using System.IO;
 using System.Windows.Forms;
 
@@ -53,7 +54,7 @@ namespace GenieClient
             {
                 using (StreamWriter sw = new StreamWriter(SettingsPath, new FileStreamOptions()))
                 {
-                    sw.Write(Models.AppSettings.CreateDefault());
+                    sw.Write(GenieSettingsService.GenerateDefaultAppSettings());
                 }
             }
             catch (Exception ex)
@@ -62,7 +63,7 @@ namespace GenieClient
                 IsLocal = false;
                 using (StreamWriter sw = new StreamWriter(SettingsPath, new FileStreamOptions()))
                 {
-                    sw.Write(Models.AppSettings.CreateDefault());
+                    sw.Write(GenieSettingsService.GenerateDefaultAppSettings());
                 }
             }
         }

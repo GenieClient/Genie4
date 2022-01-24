@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace GenieClient.Models
 {
-    [Serializable]
-    public class Profile
+    public class Profile :BaseSettings
     {
         public string ProfileName { get; set; } = "Default";
         public string GameInstanceCode { get; set; } = "DR";
@@ -28,41 +28,51 @@ namespace GenieClient.Models
         public LichSettings LichSettings { get; set; } = new LichSettings();
         public LogSettings LogSettings { get; set; } = new LogSettings();
 
-        public static implicit operator Profile(string json)
-        {
-            return JsonConvert.DeserializeObject<Profile>(json);
-        }
+        //public static implicit operator Profile(string json)
+        //{
+        //    return JsonConvert.DeserializeObject<Profile>(json);
+        //}
 
-        public override string ToString()
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
+        //public override string ToString()
+        //{
+        //    return JsonConvert.SerializeObject(this, Formatting.Indented);
+        //}
 
-        public string ListValues()
+        //public string ListValues()
+        //{
+        //    string list = $"\nProfile Settings\n";
+        //    list += $"----------------------------------------------------\n";
+        //    list += $"ProfileName:\t\t {ProfileName}\n";
+        //    list += $"GameInstanceCode:\t {GameInstanceCode}\n";
+        //    list += $"ActivityCommand:\t {ActivityCommand}\n";
+        //    list += $"ActivityTimeout:\t {ActivityTimeout}\n";
+        //    list += $"AutoMapper:\t\t {AutoMapper}\n";
+        //    list += $"IgnoreMonsterList:\t {IgnoreMonsterList}\n";
+        //    list += $"KeepInput:\t\t {KeepInput}\n";
+        //    list += $"ParseGameOnly:\t {ParseGameOnly}\n";
+        //    list += $"PlaySounds:\t\t {PlaySounds}\n";
+        //    list += $"Reconnect:\t\t {Reconnect}\n";
+        //    list += $"ReconnectWhenDead:\t {ReconnectWhenDead}\n";
+        //    list += $"ShowCastBar:\t\t {ShowCastBar}\n";
+        //    list += $"ShowLinks:\t\t {ShowLinks}\n";
+        //    list += $"ShowSpellTimer:\t {ShowSpellTimer}\n";
+        //    list += $"TypeAhead:\t\t {TypeAhead}\n";
+        //    list += $"TriggerOnInput:\t {TriggerOnInput}\n";
+        //    list += $"UseLich:\t\t {UseLich}\n";
+        //    list += ResourcePaths.ListValues();
+        //    list += LichSettings.ListValues();
+        //    list += LogSettings.ListValues();
+        //    return list;
+        //}
+
+        public static IEnumerable<Profile> DefaultValues()
         {
-            string list = $"\nProfile Settings\n";
-            list += $"----------------------------------------------------\n";
-            list += $"ProfileName:\t\t {ProfileName}\n";
-            list += $"GameInstanceCode:\t {GameInstanceCode}\n";
-            list += $"ActivityCommand:\t {ActivityCommand}\n";
-            list += $"ActivityTimeout:\t {ActivityTimeout}\n";
-            list += $"AutoMapper:\t\t {AutoMapper}\n";
-            list += $"IgnoreMonsterList:\t {IgnoreMonsterList}\n";
-            list += $"KeepInput:\t\t {KeepInput}\n";
-            list += $"ParseGameOnly:\t {ParseGameOnly}\n";
-            list += $"PlaySounds:\t\t {PlaySounds}\n";
-            list += $"Reconnect:\t\t {Reconnect}\n";
-            list += $"ReconnectWhenDead:\t {ReconnectWhenDead}\n";
-            list += $"ShowCastBar:\t\t {ShowCastBar}\n";
-            list += $"ShowLinks:\t\t {ShowLinks}\n";
-            list += $"ShowSpellTimer:\t {ShowSpellTimer}\n";
-            list += $"TypeAhead:\t\t {TypeAhead}\n";
-            list += $"TriggerOnInput:\t {TriggerOnInput}\n";
-            list += $"UseLich:\t\t {UseLich}\n";
-            list += ResourcePaths.ListValues();
-            list += LichSettings.ListValues();
-            list += LogSettings.ListValues();
-            return list;
+            List<Profile> profiles = new List<Profile>
+            {
+                new Profile () { ResourcePaths = new ResourcePaths() { Profile = @"\Config\Profiles\Default" } }
+            };
+
+            return profiles;
         }
 
     }

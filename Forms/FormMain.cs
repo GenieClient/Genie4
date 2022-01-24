@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -11,6 +12,9 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using AutoMapper;
+using GenieClient.Models;
+using GenieClient.Repositories;
+using GenieClient.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -22,13 +26,15 @@ namespace GenieClient
     public partial class FormMain
     {
         private readonly IConfiguration config;
+        private IGenieSettingsService genieSettingsService;
         private readonly IMapper mapper;
-        public FormMain(IConfiguration config, IMapper mapper)
+
+        public FormMain(IConfiguration config, IGenieSettingsService genieSettingsService, IMapper mapper)
         {
-            LocalDirectory.ConfigureUserDirectory();
             this.config = config;
             this.mapper = mapper;
-            m_oGlobals = new Genie.Globals(ref config);
+            this.genieSettingsService = genieSettingsService;
+            m_oGlobals = new Genie.Globals(genieSettingsService);
             m_oGame = new Genie.Game(ref _m_oGlobals);
             m_oCommand = new Genie.Command(ref _m_oGlobals, config, mapper);
             m_oAutoMapper = new Mapper.AutoMapper(ref _m_oGlobals);

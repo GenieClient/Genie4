@@ -511,7 +511,7 @@ namespace GenieClient.Genie
                                                             {
                                                                 EchoText("Settings Saved" + System.Environment.NewLine);
                                                                 oGlobals.Config.Save(oGlobals.CurrentProfile.ResourcePaths.Config + @"\settings.cfg", oGlobals.CurrentProfile.ResourcePaths.Config);
-                                                                oGlobals.Configuration.SaveProfiles();
+                                                                //oGlobals.Configuration.SaveProfiles();
                                                                 break;
                                                             }
 

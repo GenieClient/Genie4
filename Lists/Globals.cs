@@ -12,6 +12,8 @@ using GenieClient.Models;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.Extensions.Configuration;
+using GenieClient.Repositories;
+using GenieClient.Services;
 
 namespace GenieClient.Genie
 {
@@ -1830,17 +1832,12 @@ namespace GenieClient.Genie
             }
         }
 
-        public IConfiguration Configuration { get; }  
-        public Globals(ref IConfiguration configuration)
+
+        //TODO We should just inject configuration and register Globals as a singleton for now.
+        public Globals(IGenieSettingsService genieSettingsService)
         {
             VariableList.SetDefaultGlobalVars();
-            Configuration = configuration;
-            LoadAppSettings();
-        }
-
-        private void LoadAppSettings()
-        {
-            AppSettings = AppSettings.Load(LocalDirectory.SettingsPath);
+            AppSettings = genieSettingsService.LoadSettings();
             this.SetCurrentProfile("default");
         }
 

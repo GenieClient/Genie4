@@ -6,6 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using AutoMapper;
+using GenieClient.Repositories;
+using GenieClient.Services;
+using System.IO;
 
 namespace GenieClient
 {
@@ -17,8 +20,13 @@ namespace GenieClient
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            LocalDirectory.ConfigureUserDirectory();
 
             var host = Host.CreateDefaultBuilder()
+                .ConfigureAppConfiguration((context, config) =>
+                {
+                    config.AddJsonFile(LocalDirectory.SettingsPath);
+                })
                 .ConfigureServices((context, services) =>
                 {
                     ConfigureServices(context.Configuration, services);
@@ -31,16 +39,10 @@ namespace GenieClient
             Application.Run(formMain);
         }
 
-        private static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
+        private static IServiceCollection ConfigureServices(IConfiguration configuration, IServiceCollection services)
         {
-            services.AddSingleton<FormMain>();
-            services.AddAutoMapper(typeof(MapProfile));
-
-            //Going to inject configuration into FormMain for now... but when we revisit this code should maybe go here.
-            //List<LichSetting> lichSettings = configuration.GetSection("LichSettings").Get<List<LichSetting>>();
-
-            //Register services here. 
-            //Example... Service.AddSingleton(Interface, Service);
+            Bootstrapper.RegisterServices(services);
+            return services;
         }
     }
 }
