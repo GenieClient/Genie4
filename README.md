@@ -103,6 +103,8 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 
+### Help
+Look for help on the official Genie 3 discord server, here https://discord.com/channels/185383036563488768/492720689858740234/566398818732605465
 
 ### Prerequisites
 
@@ -113,22 +115,25 @@ The Download can be pulled directly from the Microsoft website using the links b
 Microsoft .NET Framework 6.0.1 Runtime [https://dotnet.microsoft.com/en-us/download/dotnet/6.0]
 
 ### Installation
+Note that as the project develops, there will be a smoother installation procedure. For now, you are required to download compressed files that include core game executables and optional default script and plugin settings. What follows is the current actual installation procedure.
 
-1. Download the installer from here:
-	***todo-CreateNewBuild***
-	
+1. Download the compressed files of the client from here:
+	https://github.com/GenieClient/Genie4/releases/
 
-2. Get the latest Active Testing version of the Client from here:
-	***todo-DetermineLocation***
-
-3. Copy the client into your install Location from Step 2 above. 
-	"Default install Directory"
+2. Copy the extracted client files into your desired install Location. 
+   As an example,
    ```sh
    C:\Program Files (x86)\Genie Client 4
    ```
-4. Get Maps Updates from the Team at
+3. Get Maps Updates from the Team at
 	[https://github.com/GenieClient/Maps]
 
+4. Set up some optional settings
+You can now do things like redirect your config files to your original Genie 3 location, or even set up Lich. 
+
+#### Trouble
+If you have trouble with any of this, please pop in to discord. Lots of folks are happy to help.
+Also, if you try to launch Genie4 and nothing happens, try "Right Click" > "Run as Administrator"
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
