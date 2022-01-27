@@ -206,6 +206,8 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />

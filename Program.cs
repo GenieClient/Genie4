@@ -9,6 +9,8 @@ using AutoMapper;
 using GenieClient.Repositories;
 using GenieClient.Services;
 using System.IO;
+using GenieClient.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace GenieClient
 {
@@ -33,15 +35,18 @@ namespace GenieClient
                 })
                 .Build();
 
+ 
             var services = host.Services;
+            var context = services.GetRequiredService<GenieContext>();
             var formMain = services.GetRequiredService<FormMain>();
 
+            context.Database.EnsureCreated();
             Application.Run(formMain);
         }
 
         private static IServiceCollection ConfigureServices(IConfiguration configuration, IServiceCollection services)
         {
-            Bootstrapper.RegisterServices(services);
+            Bootstrapper.RegisterServices(services, configuration);
             return services;
         }
     }
