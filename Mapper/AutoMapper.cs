@@ -238,7 +238,9 @@ namespace GenieClient.Mapper
                 var diDirectory = new DirectoryInfo(m_oGlobals.Config.MapDir);
                 foreach (FileInfo dif in diDirectory.GetFiles())
                 {
-                    if ((dif.Extension.ToLower() ?? "") == ".xml")
+                    try
+                    {
+                        if ((dif.Extension.ToLower() ?? "") == ".xml")
                     {
                         xdoc = new XmlDocument();
                         xdoc.Load(dif.FullName);
@@ -272,13 +274,16 @@ namespace GenieClient.Mapper
                             }
                         }
                     }
+                    }
+                    catch (Exception ex)
+                    {
+                        EchoText("[" + Name + "] Invalid maps in genie map directory: " + Path.GetFileName(dif.FullName) + " {" + ex.Message + "}");
+                    }
                 }
             }
-            #pragma warning disable CS0168
-            catch (Exception ex)
-            #pragma warning restore CS0168
+            catch
             {
-                EchoText("[" + Name + "] Invalid maps in genie map directory.");
+                //EchoText("[" + Name + "] Invalid maps in genie map directory:");
             }
 
             return string.Empty;
