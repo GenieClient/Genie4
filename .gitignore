@@ -348,3 +348,7 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+/Forms/Taleweaver.xcf
+/Forms/Taleweaver.png
+/Graphics/Taleweaver.xcf
+/Graphics/Taleweaver.png
