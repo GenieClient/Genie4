@@ -914,7 +914,7 @@ namespace GenieClient.Genie
                                             else
                                             {
                                                 // Add
-                                                string sName = oGlobals.ParseGlobalVars(oArgs[1].ToString()).ToLower();
+                                                string sName = oGlobals.ParseGlobalVars(oArgs[1].ToString());
                                                 string sValue = oGlobals.ParseGlobalVars(ParseAllArgs(oArgs, 2));
                                                 string sCmdRaw = "<stgupd>";
                                                 if (oGlobals.VariableList.ContainsKey(sName))
@@ -943,7 +943,7 @@ namespace GenieClient.Genie
                                         {
                                             if (oArgs.Count >= 1)
                                             {
-                                                string sName = oArgs[1].ToString().ToLower();
+                                                string sName = oArgs[1].ToString();
                                                 if (oGlobals.VariableList.ContainsKey(sName))
                                                 {
                                                     if (oGlobals.VariableList.get_GetVariable(sName).oType == Globals.Variables.VariableType.Server)
