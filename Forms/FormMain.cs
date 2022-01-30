@@ -10,8 +10,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using AutoMapper;
-using Microsoft.Extensions.Configuration;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
@@ -21,15 +19,11 @@ namespace GenieClient
 
     public partial class FormMain
     {
-        private readonly IConfiguration config;
-        private readonly IMapper mapper;
-        public FormMain(IConfiguration config, IMapper mapper)
+        public FormMain()
         {
-            this.config = config;
-            this.mapper = mapper;
             m_oGlobals = new Genie.Globals();
             m_oGame = new Genie.Game(ref _m_oGlobals);
-            m_oCommand = new Genie.Command(ref _m_oGlobals, config, mapper);
+            m_oCommand = new Genie.Command(ref _m_oGlobals);
             m_oAutoMapper = new Mapper.AutoMapper(ref _m_oGlobals);
             m_oOutputMain = new FormSkin("main", "Game", ref _m_oGlobals);
             m_oLegacyPluginHost = new LegacyPluginHost(this, ref _m_oGlobals);

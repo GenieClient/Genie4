@@ -8,7 +8,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
-using GenieClient.Models;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
@@ -1088,11 +1087,11 @@ namespace GenieClient.Genie
                                     {
                                         if (strRow.IndexOf("GAMEHOST=") > -1)
                                         {
-                                            m_sConnectHost = IsLich ? m_oGlobals.CurrentProfile.LichSettings.LichServer : strRow.Substring(9);
+                                            m_sConnectHost = IsLich ? m_oGlobals.Config.LichServer : strRow.Substring(9);
                                         }
                                         else if (strRow.IndexOf("GAMEPORT=") > -1)
                                         {
-                                            m_sConnectPort = IsLich ? m_oGlobals.CurrentProfile.LichSettings.LichPort : int.Parse(strRow.Substring(9));
+                                            m_sConnectPort = IsLich ? m_oGlobals.Config.LichPort : int.Parse(strRow.Substring(9));
                                         }
                                         else if (strRow.IndexOf("KEY=") > -1)
                                         {

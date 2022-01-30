@@ -239,28 +239,28 @@ namespace GenieClient.My
                 }
             }
 
-            //[EditorBrowsable(EditorBrowsableState.Never)]
-            //public FormMain m_FormMain;
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            public FormMain m_FormMain;
 
-            //public FormMain FormMain
-            //{
-            //    [DebuggerHidden]
-            //    get
-            //    {
-            //        m_FormMain = MyForms.Create__Instance__(m_FormMain);
-            //        return m_FormMain;
-            //    }
+            public FormMain FormMain
+            {
+                [DebuggerHidden]
+                get
+                {
+                    m_FormMain = MyForms.Create__Instance__(m_FormMain);
+                    return m_FormMain;
+                }
 
-            //    [DebuggerHidden]
-            //    set
-            //    {
-            //        if (value == m_FormMain)
-            //            return;
-            //        if (value is object)
-            //            throw new ArgumentException("Property can only be set to Nothing");
-            //        Dispose__Instance__(ref m_FormMain);
-            //    }
-            //}
+                [DebuggerHidden]
+                set
+                {
+                    if (value == m_FormMain)
+                        return;
+                    if (value is object)
+                        throw new ArgumentException("Property can only be set to Nothing");
+                    Dispose__Instance__(ref m_FormMain);
+                }
+            }
 
            
 

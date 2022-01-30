@@ -722,17 +722,17 @@ namespace GenieClient
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            //if (Information.IsNothing(My.MyProject.Forms.FormMain))
-            //{
-            //    return;
-            //}
+            if (Information.IsNothing(My.MyProject.Forms.FormMain))
+            {
+                return;
+            }
 
-            //if (((FormMain)MdiParent).bCloseAllDocument == false & m_bUnloadWindow == false)
-            //{
-            //    RichTextBoxOutput.Visible = false;
-            //    Visible = false;
-            //    e.Cancel = true;
-            //}
+            if (((FormMain)MdiParent).bCloseAllDocument == false & m_bUnloadWindow == false)
+            {
+                RichTextBoxOutput.Visible = false;
+                Visible = false;
+                e.Cancel = true;
+            }
         }
 
         private void FormSkin_Enter(object sender, EventArgs e)

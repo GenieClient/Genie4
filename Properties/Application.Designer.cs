@@ -32,7 +32,7 @@ namespace GenieClient.My
         [DebuggerStepThrough()]
         protected override void OnCreateMainForm()
         {
-            //MainForm = MyProject.Forms.FormMain;
+            MainForm = MyProject.Forms.FormMain;
         }
     }
 }

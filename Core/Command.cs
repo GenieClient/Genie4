@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Collections;
-
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using GenieClient.Models;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
-
 // Imports Jint
 
 namespace GenieClient.Genie
@@ -202,22 +195,11 @@ namespace GenieClient.Genie
         private Script.Eval m_oEval = new Script.Eval();
         private Script.MathEval m_oMathEval = new Script.MathEval();
         private Globals oGlobals;
-        private readonly IConfiguration config;
-        private readonly IMapper mapper;
-        private IEnumerable<GenieProfile> profiles;
-        private IEnumerable<GameInstance> instances;
 
-
-        public Command(ref Globals cl, IConfiguration config, IMapper mapper)
+        public Command(ref Globals cl)
         {
-            this.config = config;
-            this.mapper = mapper;
-            this.profiles = config.LoadProfiles();
-            this.instances = config.LoadGameInstances();
             oGlobals = cl;
         }
-
-
 
         public string ParseCommand(string sText, bool bSendToGame = false, bool bUserInput = false, string sOrigin = "", bool bParseQuickSend = true)
         {
@@ -397,29 +379,16 @@ namespace GenieClient.Genie
                                     case "lconnect":
                                     case "lichconnect":
                                         {
-                                            string profileArg = oArgs.Count == 5 ? oArgs[3].ToString().ToLower() : 
-                                                oArgs.Count == 2 ? oArgs[1].ToString().ToLower() : 
-                                                string.Empty;
-
-                                            if (!string.IsNullOrEmpty(profileArg))
-                                            {
-                                                this.SetCurrentProfile(profileArg);
-                                                this.MapInstances();
-                                            }
-
-                                            LichSettings lichSettings = oGlobals.CurrentProfile.LichSettings;
-
                                             EchoText("Starting Lich Server\n");
-                                            string lichLaunch = $"/C {lichSettings.RubyPath} {lichSettings.LichPath} {lichSettings.LichArguments}";
+                                            string lichLaunch = $"/C {oGlobals.Config.RubyPath} {oGlobals.Config.LichPath} {oGlobals.Config.LichArguments}";
 
-                                            Utility.ExecuteProcess(lichSettings.CmdPath, lichLaunch, false);
+                                            Utility.ExecuteProcess(oGlobals.Config.CmdPath, lichLaunch, false);
                                             int count = 0;
-                                            while (count < lichSettings.LichStartPause)
+                                            while (count < oGlobals.Config.LichStartPause)
                                             {
                                                 Thread.Sleep(1000);
                                                 count++;
                                             }
-
                                             Connect(oArgs, true);
                                             break;
                                         }
@@ -429,13 +398,13 @@ namespace GenieClient.Genie
                                         {
                                             EchoText($"\nLich Settings\n");
                                             EchoText($"----------------------------------------------------\n");
-                                            EchoText($"Cmd Path:\t\t {oGlobals.CurrentProfile.LichSettings.CmdPath}\n");
-                                            EchoText($"Ruby Path:\t\t {oGlobals.CurrentProfile.LichSettings.RubyPath}\n");
-                                            EchoText($"Lich Path:\t\t {oGlobals.CurrentProfile.LichSettings.LichPath}\n");
-                                            EchoText($"Lich Arguments:\t {oGlobals.CurrentProfile.LichSettings.LichArguments}\n");
-                                            EchoText($"Lich Start Pause:\t {oGlobals.CurrentProfile.LichSettings.LichStartPause}\n");
-                                            EchoText($"Lich Server:\t\t {oGlobals.CurrentProfile.LichSettings.LichServer}\n");
-                                            EchoText($"Lich Port:\t\t {oGlobals.CurrentProfile.LichSettings.LichPort}\n\n");
+                                            EchoText($"Cmd Path:\t\t {oGlobals.Config.CmdPath}\n");
+                                            EchoText($"Ruby Path:\t\t {oGlobals.Config.RubyPath}\n");
+                                            EchoText($"Lich Path:\t\t {oGlobals.Config.LichPath}\n");
+                                            EchoText($"Lich Arguments:\t {oGlobals.Config.LichArguments}\n");
+                                            EchoText($"Lich Start Pause:\t {oGlobals.Config.LichStartPause}\n");
+                                            EchoText($"Lich Server:\t\t {oGlobals.Config.LichServer}\n");
+                                            EchoText($"Lich Port:\t\t {oGlobals.Config.LichPort}\n\n");
                                             break;
                                         }
 
@@ -2460,41 +2429,7 @@ namespace GenieClient.Genie
             /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
             return sResult;
         }
-
-        private void MapInstances()
-        {
-            foreach (var instance in this.instances)
-            {
-                if (oGlobals.CurrentProfile.ProfileArg.EndsWith(instance.Code.ToLower()))
-                {
-                    oGlobals.CurrentProfile.LichSettings =  this.mapper.Map<GameInstance, LichSettings>(instance, oGlobals.CurrentProfile.LichSettings);
-                    break;
-                }
-            }
-        }
-
-        private void SetCurrentProfile(string profileArg)
-        {
-            oGlobals.CurrentProfile = profiles
-                .Where(p => p.ProfileName.ToLower() == profileArg)
-                .FirstOrDefault();
-            
-            if(oGlobals.CurrentProfile == null)
-            {
-                oGlobals.CurrentProfile = profiles
-                    .Where(p => p.ProfileName.ToLower() == "default")
-                    .FirstOrDefault();
-            }
-
-            if (oGlobals.CurrentProfile == null)
-            {
-                oGlobals.CurrentProfile = new GenieProfile();
-            }
-
-            oGlobals.CurrentProfile.ProfileArg = profileArg.ToLower();
-
-        }
-
+     
         private void Do(ArrayList oArgs)
         {
             if (oArgs.Count > 1)

@@ -7,7 +7,6 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using GenieClient.Models;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
@@ -69,7 +68,6 @@ namespace GenieClient.Genie
         public Hashtable PluginVerifiedKeyList = new Hashtable();
         public Hashtable PluginPremiumKeyList = new Hashtable();
         private Log _Log = new Log();
-        public GenieProfile CurrentProfile { get; set; }
 
         public Log Log
         {            
