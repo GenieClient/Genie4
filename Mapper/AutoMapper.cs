@@ -1213,6 +1213,7 @@ namespace GenieClient.Mapper
                                     if (!Information.IsNothing(n))
                                     {
                                         EchoText("#goto " + sArg, true);
+                                        set_GlobalVariable("destination", iNodeID.ToString());
                                         SendText("#parse DESTINATION FOUND");
                                         WalkToNode(n);
                                     }
@@ -1951,6 +1952,7 @@ namespace GenieClient.Mapper
 
         private void GrapForm_ClickNode(string zoneid, int nodeid)
         {
+            set_GlobalVariable("destination", nodeid.ToString());
             SendText(string.Format("#parse MAPCLICK {0} {1}", zoneid, nodeid));
         }
 
