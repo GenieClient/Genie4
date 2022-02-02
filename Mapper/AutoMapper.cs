@@ -1220,18 +1220,21 @@ namespace GenieClient.Mapper
                                     else
                                     {
                                         EchoText("[" + Name + "] Destination ID #" + iNodeID.ToString() + " not found - your current location is unknown.", true);
+                                        set_GlobalVariable("destination", "0");
                                         SendText("#parse DESTINATION NOT FOUND");
                                     }
                                 }
                                 else
                                 {
                                     EchoText("[" + Name + "] Destination ID \"" + sArg + "\" not found.", true);
+                                    set_GlobalVariable("destination", "0");
                                     SendText("#parse DESTINATION NOT FOUND");
                                 }
                             }
                             else
                             {
                                 EchoText("[" + Name + "] Goto - please specify a room id to travel to.", true);
+                                set_GlobalVariable("destination", "0");
                             }
 
                             break;
