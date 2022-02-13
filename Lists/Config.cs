@@ -52,8 +52,8 @@ namespace GenieClient.Genie
         public int[] iPickerColors = new int[17];
         public string RubyPath { get; set; } = @"C:\ruby4lich\bin\ruby.exe";
         public string CmdPath { get; set; } = @"C:\Windows\System32\cmd.exe";
-        public string LichPath { get; set; } = @"C:\ruby4lich\lich.rbw";
-        public string LichArguments { get; set; } = @"--genie --dragonrealms";
+        public string LichPath { get; set; } = @"c:\ruby4lich\lich\lich.rbw";
+        public string LichArguments { get; set; } = @"--genie4 --dragonrealms";
         public string LichServer { get; set; } = "localhost";
         public int LichPort { get; set; } = 11024;
         public int LichStartPause { get; set; } = 5;
