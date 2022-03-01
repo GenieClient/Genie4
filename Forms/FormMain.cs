@@ -2661,10 +2661,6 @@ namespace GenieClient
                         }
                     }
                 }
-                catch
-                {
-                    //let it go
-                }
                 finally
                 {
                     for (var i = removeList.Count-1; i > -1; i--)
@@ -2855,10 +2851,6 @@ namespace GenieClient
                             }
                         }
                     }
-                    catch
-                    {
-                        //let it go
-                    }
                     finally
                     {
                         m_oScriptList.ReleaseReaderLock();
@@ -2910,10 +2902,8 @@ namespace GenieClient
                         }
                     }
                 }
-                catch
-                {
-                    //let it go
-                }
+                // Catch ex As Exception
+                // Throw (ex)
                 finally
                 {
                     Monitor.Exit(ToolStripButtons.Items);
@@ -2958,10 +2948,8 @@ namespace GenieClient
                         }
                     }
                 }
-                catch
-                {
-                    //let it go
-                }
+                // Catch ex As Exception
+                // Throw (ex)
                 finally
                 {
                     Monitor.Exit(ToolStripButtons.Items);
@@ -3290,10 +3278,6 @@ namespace GenieClient
                         {
                             HandleGenieException("AddScripts", "Unable to aquire writer lock.");
                         }
-                    }
-                    catch
-                    {
-                        //let it go
                     }
                     finally
                     {
@@ -3927,10 +3911,6 @@ namespace GenieClient
                     TriggerVariableChanged("scriptlist");
                     m_bScriptListUpdated = false;
                 }
-                catch(Exception ex)
-                {
-                    //let it go
-                }
                 finally
                 {
                     m_oScriptList.ReleaseReaderLock();
@@ -3978,10 +3958,6 @@ namespace GenieClient
                             Genie.Game.WindowTarget argoTargetWindow2 = Genie.Game.WindowTarget.Main;
                             AddText(argsText2, oTargetWindow: argoTargetWindow2);
                         }
-                    }
-                    catch
-                    {
-                        //let it go
                     }
                     finally
                     {
@@ -4091,10 +4067,6 @@ namespace GenieClient
                         {
                             m_oScriptListNew.Add(oScript);
                         }
-                    }
-                    catch
-                    {
-                        //let it go
                     }
                     finally
                     {
@@ -4831,10 +4803,6 @@ namespace GenieClient
                         foreach (Script oScript in m_oScriptList)
                             oScript.SetBufferEnd();
                     }
-                    catch
-                    {
-                        //let it go
-                    }
                     finally
                     {
                         m_oScriptList.ReleaseReaderLock();
@@ -4910,10 +4878,6 @@ namespace GenieClient
                             }
                         }
                     }
-                    catch
-                    {
-                        //let it go
-                    }
                     finally
                     {
                         m_oScriptList.ReleaseReaderLock();
@@ -4963,10 +4927,6 @@ namespace GenieClient
                                 }
                             }
                         }
-                    }
-                    catch
-                    {
-                        //let it go
                     }
                     finally
                     {
@@ -5030,10 +4990,6 @@ namespace GenieClient
                             }
                         }
                     }
-                    catch
-                    {
-                        //let it go
-                    }
                     finally
                     {
                         m_oScriptList.ReleaseReaderLock();
@@ -5094,10 +5050,6 @@ namespace GenieClient
                                 }
                             }
                         }
-                    }
-                    catch
-                    {
-                        //let it go
                     }
                     finally
                     {
@@ -5167,10 +5119,6 @@ namespace GenieClient
                             }
                         }
                     }
-                    catch
-                    {
-                        //let it go
-                    }
                     finally
                     {
                         m_oScriptList.ReleaseReaderLock();
@@ -5232,10 +5180,6 @@ namespace GenieClient
                             }
                         }
                     }
-                    catch
-                    {
-                        //let it go
-                    }
                     finally
                     {
                         m_oScriptList.ReleaseReaderLock();
@@ -5280,10 +5224,6 @@ namespace GenieClient
                                 }
                             }
                         }
-                    }
-                    catch
-                    {
-                        //let it go
                     }
                     finally
                     {
@@ -5990,10 +5930,6 @@ namespace GenieClient
                         foreach (Script oScript in m_oScriptList)
                             oScript.TriggerMove();
                     }
-                    catch
-                    {
-                        //let it go
-                    }
                     finally
                     {
                         m_oScriptList.ReleaseReaderLock();
@@ -6036,10 +5972,6 @@ namespace GenieClient
                 {
                     foreach (Script oScript in m_oScriptList)
                         oScript.SetRoundTime(iTime);
-                }
-                catch
-                {
-                    //let it go
                 }
                 finally
                 {
@@ -6132,10 +6064,6 @@ namespace GenieClient
                 {
                     foreach (Script oScript in m_oScriptList)
                         oScript.AbortScript();
-                }
-                catch
-                {
-                    //let it go
                 }
                 finally
                 {
