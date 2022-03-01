@@ -2648,7 +2648,7 @@ namespace GenieClient
 
         private void RemoveExitedScripts()
         {
-            if (m_oScriptList.AcquireReaderLock())
+            if (m_oScriptList.AcquireWriterLock())
             {
                 var removeList = new List<int>();
                 try
@@ -2668,12 +2668,12 @@ namespace GenieClient
                         m_oScriptList.RemoveAt(removeList[i]);
                     }
 
-                    m_oScriptList.ReleaseReaderLock();
+                    m_oScriptList.ReleaseWriterLock();
                 }
             }
             else
             {
-                Debug.Print("ScriptList Reader Lock failed in RemoveExitedScripts");
+                Debug.Print("ScriptList Writer Lock failed in RemoveExitedScripts");
             }
 
             // If ToolStripButtons.Visible = False Then Exit Sub
