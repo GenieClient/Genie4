@@ -145,7 +145,7 @@ namespace GenieClient
             PanelRT.BackColor = (Color)Interaction.IIf(m_IsConnected, m_BackgroundColorRT, Genie.ColorCode.ColorToGrayscale(m_BackgroundColorRT));
             RT = RoundTime;
             StartRT = RoundTime;
-            LabelRT.Text = RT.ToString();
+            LabelRT.Text = RT > 0 ? RT.ToString() : "";
             Invalidate();
             TimerRT.Stop();
             TimerRT.Start();
