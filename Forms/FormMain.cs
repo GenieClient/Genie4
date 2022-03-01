@@ -2648,7 +2648,7 @@ namespace GenieClient
 
         private void RemoveExitedScripts()
         {
-            if (m_oScriptList.AcquireWriterLock())
+            if (m_oScriptList.AcquireReaderLock())
             {
                 var removeList = new List<int>();
                 try
@@ -2663,42 +2663,23 @@ namespace GenieClient
                 }
                 finally
                 {
-                    for (var i = removeList.Count-1; i > -1; i--)
+                    if (m_oScriptList.AcquireWriterLock())
                     {
-                        m_oScriptList.RemoveAt(removeList[i]);
+                        try
+                        {
+                            for (var i = removeList.Count - 1; i > -1; i--)
+                            {
+                                m_oScriptList.RemoveAt(removeList[i]);
+                            }
+                        }
+                        finally
+                        {
+                            m_oScriptList.ReleaseWriterLock();
+                        }
                     }
-
-                    m_oScriptList.ReleaseWriterLock();
+                    m_oScriptList.ReleaseReaderLock();
                 }
             }
-            else
-            {
-                Debug.Print("ScriptList Writer Lock failed in RemoveExitedScripts");
-            }
-
-            // If ToolStripButtons.Visible = False Then Exit Sub
-
-            // If Monitor.TryEnter(ToolStripButtons.Items) Then
-            // Try
-            // Dim I As Integer = 0
-            // While I <= ToolStripButtons.Items.Count - 1
-            // Dim oItem As Object = ToolStripButtons.Items(I)
-            // If TypeOf oItem Is ToolStripSplitButton AndAlso IsNothing(oItem.Tag) Then
-            // ToolStripButtons.Items.Remove(oItem)
-            // ElseIf TypeOf oItem Is ToolStripSplitButton AndAlso TypeOf oItem.Tag Is Script AndAlso DirectCast(oItem.Tag, Script).ScriptDone = True Then
-            // ToolStripButtons.Items.Remove(oItem)
-            // Else
-            // I += 1
-            // End If
-            // End While
-            // 'Catch ex As Exception
-            // '    Throw (ex)
-            // Finally
-            // Monitor.Exit(ToolStripButtons.Items)
-            // End Try
-            // Else
-            // Throw New Exception("Unable to lock toolstrip for removeexitedscripts()")
-            // End If
         }
 
         private void SetScriptDebugLevel(ToolStripSplitButton oButton, int DebugLevel)
@@ -7127,7 +7108,7 @@ namespace GenieClient
             }
 
             SafeAddScripts();
-            RemoveExitedScripts();
+            SafeRemoveExitedScripts();
 
             if (m_bScriptListUpdated)
             {
