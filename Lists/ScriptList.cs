@@ -1,8 +1,74 @@
-﻿
+﻿using System.Threading;
+
 namespace GenieClient.Genie
 {
     public class ScriptList : Collections.CollectionList
     {
+
+        #region Threading
+        private ReaderWriterLockSlim m_oRWLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+
+        public new bool AcquireWriterLock()
+        {
+            try
+            {
+                if (m_oRWLock.IsWriteLockHeld | m_oRWLock.IsReadLockHeld)
+                {
+                    return false;
+                }
+                m_oRWLock.EnterWriteLock();
+                return true;
+            }
+            catch 
+            {
+                return false;
+            }
+        }
+
+        public new bool AcquireReaderLock()
+        {
+            try
+            {
+                if (m_oRWLock.IsWriteLockHeld)
+                {
+                    return false;
+                }
+                m_oRWLock.EnterReadLock();
+                return true;
+            }
+            catch 
+            {
+                return false;
+            }
+        }
+
+        public new bool ReleaseWriterLock()
+        {
+            try
+            {
+                m_oRWLock.ExitWriteLock();
+                return true;
+            }
+            catch 
+            {
+                return false;
+            }
+        }
+
+        public new bool ReleaseReaderLock()
+        {
+            try
+            {
+                m_oRWLock.ExitReadLock();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+#endregion
+
         public GenieClient.Script this[int Index]
         {
             get
