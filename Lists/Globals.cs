@@ -823,7 +823,7 @@ namespace GenieClient.Genie
                 Add("charactername", "", VariableType.Reserved);
                 Add("gamename", "", VariableType.Reserved);
                 Add("gamehost", "eaccess.play.net", VariableType.Reserved);
-                Add("gameport", "7910", VariableType.Reserved);
+                Add("gameport", "7900", VariableType.Reserved);
 
 
                 Add("kneeling", "0", VariableType.Reserved);

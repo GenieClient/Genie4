@@ -5369,9 +5369,8 @@ namespace GenieClient
             }
         }
 
-        private void ReconnectToGame(bool isLich = false)
+        private void ReconnectToGame()
         {
-            m_oGame.IsLich = isLich;
             try
             {
                 if (m_oGame.AccountName.Length > 0)

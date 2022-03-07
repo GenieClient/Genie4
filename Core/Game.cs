@@ -382,8 +382,12 @@ namespace GenieClient.Genie
 
             m_oGlobals.VariableList["charactername"] = sCharacter;
             m_oGlobals.VariableList["game"] = sGame;
-            string argsHostName = "eaccess.play.net";
-            int argiPort = 7900;
+            //because many users will not have these predefined and defaults aren't created
+            //new for old profiles, if these are null then default them
+            if (!m_oGlobals.VariableList.Contains("gamehost")) m_oGlobals.VariableList.Add("gamehost", "eaccess.play.net", Globals.Variables.VariableType.Reserved);
+            if (!m_oGlobals.VariableList.Contains("gameport")) m_oGlobals.VariableList.Add("gameport", "7900", Globals.Variables.VariableType.Reserved);
+            string argsHostName = m_oGlobals.VariableList["gamehost"].ToString();
+            int.TryParse(m_oGlobals.VariableList["gameport"].ToString(), out int argiPort);
             DoConnect(argsHostName, argiPort);
         }
 
@@ -1088,6 +1092,7 @@ namespace GenieClient.Genie
                                         if (strRow.IndexOf("GAMEHOST=") > -1)
                                         {
                                             m_sConnectHost = IsLich ? m_oGlobals.Config.LichServer : strRow.Substring(9);
+
                                         }
                                         else if (strRow.IndexOf("GAMEPORT=") > -1)
                                         {

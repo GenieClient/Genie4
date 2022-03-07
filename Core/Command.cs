@@ -15,7 +15,7 @@ namespace GenieClient.Genie
     {
         public event EventReconnectEventHandler EventReconnect;
 
-        public delegate void EventReconnectEventHandler(bool isLich);
+        public delegate void EventReconnectEventHandler();
 
         public event EventConnectEventHandler EventConnect;
 
@@ -2513,7 +2513,7 @@ namespace GenieClient.Genie
             if (args.Count == 1)
             {
                 // EchoText("Reconnect Command Received" & vbNewLine)
-                EventReconnect?.Invoke(isLich);
+                EventReconnect?.Invoke();
             }
             else if (args.Count == 5)
             {
