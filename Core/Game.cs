@@ -930,6 +930,7 @@ namespace GenieClient.Genie
         {
             if (sText.Length == 32 & m_sEncryptionKey.Length == 0 & !IsLich)
             {
+                
                 m_sEncryptionKey = sText;
                 m_oSocket.Send("A" + Constants.vbTab + m_sAccountName.ToUpper() + Constants.vbTab);
                 m_oSocket.Send(Utility.EncryptText(m_sEncryptionKey, m_sAccountPassword));
@@ -3039,10 +3040,9 @@ namespace GenieClient.Genie
             {
                 case ConnectStates.ConnectingKeyServer:
                     {
-                        //m_oSocket.Send("K" + System.Environment.NewLine);
-                        m_oSocket.Authenticate(AccountName, AccountPassword);
-                        m_oSocket.Get_login_key(AccountGame, AccountGame);
                         m_oConnectState = ConnectStates.ConnectedKey;
+                        m_oSocket.Authenticate(AccountName, AccountPassword);
+                        ParseKeyRow(m_oSocket.Get_login_key(AccountGame, AccountCharacter));
                         break;
                     }
 
@@ -3052,7 +3052,7 @@ namespace GenieClient.Genie
                         m_iConnectAttempts = 0;
                         m_bManualDisconnect = false;
                         m_oReconnectTime = default;
-                        m_oSocket.Send("<c>" + m_sConnectKey + Constants.vbLf + "<c>/FE:WIZARD /VERSION:1.0.1.22 /P:WIN_UNKNOWN /XML" + Constants.vbLf);    // TEMP
+                        m_oSocket.Send("<c>" + m_sConnectKey + Constants.vbLf + "<c>/FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " /P:WIN_XP /XML" + Constants.vbLf);    // TEMP
                                                                                                                                                             // m_oSocket.Send("<c>" & m_sConnectKey & vbLf & "<c>" & m_oGlobals.Config.sConnectString & vbLf)
                         string argkey = "connected";
                         string argvalue = "1";

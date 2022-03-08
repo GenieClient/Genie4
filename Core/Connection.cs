@@ -193,8 +193,32 @@ namespace GenieClient.Genie
                 
                 var hostEntryList = Dns.GetHostEntry(sHostname);
                 m_IPEndPoint = new IPEndPoint(hostEntryList.AddressList.Where(i => i.AddressFamily == AddressFamily.InterNetwork).FirstOrDefault(), iPort);
-                _client.BeginConnect(sHostname, iPort, new AsyncCallback(ConnectTLSCallback), _client);
-                
+                //_client.BeginConnect(sHostname, iPort, new AsyncCallback(ConnectTLSCallback), _client);
+                _client.Connect(sHostname, iPort);
+                m_oLastServerActivity = DateTime.Now;
+                try
+                {
+                    sslStream = new SslStream(_client.GetStream(), true, new RemoteCertificateValidationCallback(Utility.ValidateServerCertificate), null);
+                    try
+                    {
+                        sslStream.AuthenticateAsClient(m_sHostname);
+                    }
+                    catch (AuthenticationException e)
+                    {
+                        PrintError("Unable to Authenticate: " + e.Message);
+                        _client.Close();
+                    }
+                    // Complete the connection
+                    
+                    PrintText(Utility.GetTimeStamp() + " Connected to " + m_sHostname + ".");
+                    
+                    EventConnected?.Invoke();
+                }
+                catch (SocketException ex)
+                {
+                    PrintSocketError("Connect failed", ex.ErrorCode);
+                    EventConnectionLost?.Invoke();
+                }
             }
             catch (SocketException ex)
             {
@@ -202,55 +226,74 @@ namespace GenieClient.Genie
                 EventConnectionLost?.Invoke();
             }
         }
-
-        public int Authenticate(string account, string password)
+        public enum AuthState
+        {
+            Disconnected,
+            Unauthenticated,
+            ListeningForKey,
+            KeyAuthenticated,
+            Authenticated,
+            AuthenticationFailed,
+            InvalidResponse
+        }
+        private AuthState CurrentAuthState = AuthState.Unauthenticated;
+        public AuthState Authenticate(string account, string password)
         {
             if (!_client.Connected || sslStream == null)
             {
-                return -10; //not connected
+                CurrentAuthState = AuthState.Disconnected;
+                return CurrentAuthState; //not connected
             }
-            if (account == null || password == null)
+            else if (account == null || password == null)
             {
-                return -20; //No credentials provided.
-            }
-
-            // Send K - Key Request
-            byte[] message = Encoding.Default.GetBytes("K" + Environment.NewLine);
-            sslStream.Write(message);
-            sslStream.Flush();
-
-            // Read Key response: should be 32 bytes
-            byte[] buffer = new byte[MAX_PACKET_SIZE];
-            int bytes = sslStream.Read(buffer, 0, buffer.Length);
-            if (bytes != 32)
-            {
-                sslStream.Close();
-                return -30; //Invalid response received from server.
-            }
-
-            // SslStreams require a byte array to write
-            // BlockCopy is used to allow concacatantion, and avoid encoding issues from cyte array -> string -> byte array.
-            message = new byte[account.Length + password.Length + 3];
-            Buffer.BlockCopy(Encoding.Default.GetBytes("A\t" + account.ToUpper() + "\t"), 0, message, 0, account.Length + 3);
-            Buffer.BlockCopy(Utility.EncryptText(buffer, password), 0, message, account.Length + 3, password.Length);
-            sslStream.Write(message);
-            sslStream.Flush();
-
-            // null out password to not keep it in memory longer than necessary
-            password = null;
-
-            buffer = new byte[MAX_PACKET_SIZE];
-            _ = sslStream.Read(buffer, 0, buffer.Length);
-
-            if (Encoding.Default.GetString(buffer).Contains("\tKEY\t"))
-            {
-                return 0;
+                CurrentAuthState = AuthState.Unauthenticated;
+                return CurrentAuthState; //No credentials provided.
             }
             else
             {
-                sslStream.Close();
-                return -25; //Could not authenticate.
+                // Send K - Key Request
+                byte[] message = Encoding.Default.GetBytes("K" + Environment.NewLine);
+                sslStream.Write(message);
+                sslStream.Flush();
+
+                CurrentAuthState = AuthState.ListeningForKey;
+                // Read Key response: should be 32 bytes
+                byte[] buffer = new byte[MAX_PACKET_SIZE];
+                int bytes = sslStream.Read(buffer, 0, buffer.Length);
+                if (bytes != 32)
+                {
+                    sslStream.Close();
+                    CurrentAuthState = AuthState.InvalidResponse;
+                }
+
+                // SslStreams require a byte array to write
+                // BlockCopy is used to allow concacatantion, and avoid encoding issues from cyte array -> string -> byte array.
+                message = new byte[account.Length + password.Length + 3];
+                Buffer.BlockCopy(Encoding.Default.GetBytes("A\t" + account.ToUpper() + "\t"), 0, message, 0, account.Length + 3);
+                Buffer.BlockCopy(Utility.EncryptText(buffer, password), 0, message, account.Length + 3, password.Length);
+                sslStream.Write(message);
+                sslStream.Flush();
+
+                // null out password to not keep it in memory longer than necessary
+                password = null;
+
+                buffer = new byte[MAX_PACKET_SIZE];
+                _ = sslStream.Read(buffer, 0, buffer.Length);
+
+                if (Encoding.Default.GetString(buffer).Contains("\tKEY\t"))
+                {
+                    CurrentAuthState = AuthState.KeyAuthenticated;
+                }
+                else
+                {
+                    sslStream.Close();
+                    CurrentAuthState = AuthState.AuthenticationFailed;
+                }
             }
+            return CurrentAuthState;
+            
+
+            
         }
 
         public string Get_login_key(string instance, string character)
@@ -286,6 +329,7 @@ namespace GenieClient.Genie
             if (!Regex.IsMatch(Encoding.Default.GetString(buffer), "(PREMIUM|FREE_TO_PLAY|PAYING)"))
             {
                 sslStream.Close();
+                CurrentAuthState = AuthState.Disconnected;
                 return null;
             }
 
@@ -306,6 +350,7 @@ namespace GenieClient.Genie
                 character_list = character_list[character_list.IndexOf("W_")..];
                 Console.WriteLine(character_list);
                 sslStream.Close();
+                CurrentAuthState = AuthState.Disconnected;
                 return character_list;
             }
 
@@ -315,6 +360,7 @@ namespace GenieClient.Genie
             {
                 Console.WriteLine("Could not find character named " + character + ".");
                 sslStream.Close();
+                CurrentAuthState = AuthState.Disconnected;
                 return null;
             }
 
@@ -325,10 +371,10 @@ namespace GenieClient.Genie
 
             //Read response: 
             buffer = new byte[MAX_PACKET_SIZE];
+            CurrentAuthState = AuthState.Authenticated;
             _ = sslStream.Read(buffer, 0, buffer.Length);
-            string character_key = Regex.Match(Encoding.Default.GetString(buffer), "KEY=([a-f0-9]+)").Groups[1].Value;
             sslStream.Close();
-
+            string character_key = Encoding.Default.GetString(buffer);
             return character_key;
         }
 
@@ -374,7 +420,7 @@ namespace GenieClient.Genie
             {
                 // Retrieve the socket from the state object
                 TcpClient s = (TcpClient)ar.AsyncState;
-                sslStream = new SslStream(_client.GetStream(), false, new RemoteCertificateValidationCallback(Utility.ValidateServerCertificate), null);
+                sslStream = new SslStream(_client.GetStream(), true, new RemoteCertificateValidationCallback(Utility.ValidateServerCertificate), null);
                 try
                 {
                     sslStream.AuthenticateAsClient(m_sHostname);
@@ -540,6 +586,10 @@ namespace GenieClient.Genie
                     int bytes = s.Client.EndReceive(ar);
                     if (bytes > 0)
                     {
+                        if(CurrentAuthState == AuthState.ListeningForKey || CurrentAuthState == AuthState.KeyAuthenticated)
+                        {
+                            return;
+                        }
                         // Append data
                         ParseData(Encoding.Default.GetString(oState.oBuffer, 0, bytes));
                         // Event to update Output
