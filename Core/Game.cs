@@ -385,7 +385,7 @@ namespace GenieClient.Genie
             //because many users will not have these predefined and defaults aren't created
             //new for old profiles, if these are null then default them
             if (!m_oGlobals.VariableList.Contains("gamehost")) m_oGlobals.VariableList.Add("gamehost", "eaccess.play.net", Globals.Variables.VariableType.Reserved);
-            if (!m_oGlobals.VariableList.Contains("gameport")) m_oGlobals.VariableList.Add("gameport", "7900", Globals.Variables.VariableType.Reserved);
+            if (!m_oGlobals.VariableList.Contains("gameport")) m_oGlobals.VariableList.Add("gameport", "7910", Globals.Variables.VariableType.Reserved);
             string argsHostName = m_oGlobals.VariableList["gamehost"].ToString();
             int.TryParse(m_oGlobals.VariableList["gameport"].ToString(), out int argiPort);
             DoConnect(argsHostName, argiPort);
