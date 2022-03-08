@@ -193,7 +193,7 @@ namespace GenieClient.Genie
                 
                 var hostEntryList = Dns.GetHostEntry(sHostname);
                 m_IPEndPoint = new IPEndPoint(hostEntryList.AddressList.Where(i => i.AddressFamily == AddressFamily.InterNetwork).FirstOrDefault(), iPort);
-                _client.BeginConnect(sHostname, iPort, new AsyncCallback(ConnectCallback), _client);
+                _client.BeginConnect(sHostname, iPort, new AsyncCallback(ConnectTLSCallback), _client);
                 
             }
             catch (SocketException ex)
@@ -203,17 +203,8 @@ namespace GenieClient.Genie
             }
         }
 
-        
-
         public int Authenticate(string account, string password)
         {
-            // allow override of account and password
-            if (!string.IsNullOrWhiteSpace(account))
-                account = account;
-            if (!string.IsNullOrWhiteSpace(password))
-                password = password;
-
-            // Sanity checks
             if (!_client.Connected || sslStream == null)
             {
                 return -10; //not connected
@@ -224,7 +215,7 @@ namespace GenieClient.Genie
             }
 
             // Send K - Key Request
-            byte[] message = Encoding.Default.GetBytes("K");
+            byte[] message = Encoding.Default.GetBytes("K" + Environment.NewLine);
             sslStream.Write(message);
             sslStream.Flush();
 
@@ -261,6 +252,86 @@ namespace GenieClient.Genie
                 return -25; //Could not authenticate.
             }
         }
+
+        public string Get_login_key(string instance, string character)
+        {
+                        // Sanity checks
+            if (!IsConnected || sslStream == null)
+            {
+                return null;
+            }
+            
+            if (string.IsNullOrWhiteSpace(instance))
+            {
+                return null;
+            }
+
+            // Send G - Game Details Request
+            byte[] message = Encoding.Default.GetBytes("G\t" + instance);
+            sslStream.Write(message);
+            sslStream.Flush();
+
+            // Read response: 
+            byte[] buffer = new byte[MAX_PACKET_SIZE];
+            _ = sslStream.Read(buffer, 0, buffer.Length);
+
+            //Validate Access - list of status responses:
+            // Known good status:
+            //  "FREE_TO_PLAY" "PAYING" "PREMIUM"
+            // Known bad status:
+            //  "NEW_TO_GAME" "EXPIRED"
+            // Unknown status:
+            //  "BETA" "FREE" "INTERNAL" "NEED_BILL" "NO_ACCESS" "SHAREWARE" "TRIAL" "UNKNOWN"
+            //Check for  match of known good status, and if no match, no access to requested instance
+            if (!Regex.IsMatch(Encoding.Default.GetString(buffer), "(PREMIUM|FREE_TO_PLAY|PAYING)"))
+            {
+                sslStream.Close();
+                return null;
+            }
+
+            // send C - Character Slot Request
+            message = Encoding.Default.GetBytes("C");
+            sslStream.Write(message);
+            sslStream.Flush();
+
+            // Read response: 
+            buffer = new byte[MAX_PACKET_SIZE];
+            _ = sslStream.Read(buffer, 0, buffer.Length);
+
+            string character_list = Encoding.Default.GetString(buffer).TrimEnd('\0');
+            // Requesting character list with no character name given
+            if (string.IsNullOrWhiteSpace(character))
+            {
+                // Get just a list of characters
+                character_list = character_list[character_list.IndexOf("W_")..];
+                Console.WriteLine(character_list);
+                sslStream.Close();
+                return character_list;
+            }
+
+            // Looking for specific character to get login key for
+            Match character_match = Regex.Match(character_list, "\t([A-Za-z0-9_]+)\t" + character + "(?:\t|$)");
+            if (!character_match.Success)
+            {
+                Console.WriteLine("Could not find character named " + character + ".");
+                sslStream.Close();
+                return null;
+            }
+
+            //send L - Login Key Request
+            message = Encoding.Default.GetBytes("L\t" + character_match.Groups[1].Value + "\tSTORM");
+            sslStream.Write(message);
+            sslStream.Flush();
+
+            //Read response: 
+            buffer = new byte[MAX_PACKET_SIZE];
+            _ = sslStream.Read(buffer, 0, buffer.Length);
+            string character_key = Regex.Match(Encoding.Default.GetString(buffer), "KEY=([a-f0-9]+)").Groups[1].Value;
+            sslStream.Close();
+
+            return character_key;
+        }
+
         public void Disconnect(bool ExitOnDisconnect = false)
         {
             Disconnect(m_SocketClient, ExitOnDisconnect);
