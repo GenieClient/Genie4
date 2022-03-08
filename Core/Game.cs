@@ -1101,7 +1101,7 @@ namespace GenieClient.Genie
                                         }
                                         else if (strRow.IndexOf("KEY=") > -1)
                                         {
-                                            m_sConnectKey = strRow.Substring(4);
+                                            m_sConnectKey = strRow.Substring(4).TrimEnd('\0');
                                         }
                                     }
 
