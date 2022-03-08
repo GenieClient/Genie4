@@ -160,7 +160,10 @@ namespace GenieClient.Genie
                 m_SocketClient = _client.Client;
                 var hostEntryList = Dns.GetHostEntry(sHostname);
                 m_IPEndPoint = new IPEndPoint(hostEntryList.AddressList.Where(i => i.AddressFamily == AddressFamily.InterNetwork).FirstOrDefault(), iPort);
-                m_SocketClient.BeginConnect(m_IPEndPoint, new AsyncCallback(ConnectCallback), _client);
+                _client.Connect(sHostname, iPort);
+                PrintText(Utility.GetTimeStamp() + " Connected to " + m_sHostname + ".");
+                Recieve(_client);
+                EventConnected?.Invoke();
             }
             catch (SocketException ex)
             {
@@ -373,6 +376,7 @@ namespace GenieClient.Genie
             buffer = new byte[MAX_PACKET_SIZE];
             CurrentAuthState = AuthState.Authenticated;
             _ = sslStream.Read(buffer, 0, buffer.Length);
+            
             sslStream.Close();
             string character_key = Encoding.Default.GetString(buffer);
             return character_key;
