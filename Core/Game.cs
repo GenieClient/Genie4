@@ -928,7 +928,7 @@ namespace GenieClient.Genie
 
         private void ParseKeyRow(string sText)
         {
-            if (sText.Length == 32 & m_sEncryptionKey.Length == 0)
+            if (sText.Length == 32 & m_sEncryptionKey.Length == 0 & !IsLich)
             {
                 m_sEncryptionKey = sText;
                 m_oSocket.Send("A" + Constants.vbTab + m_sAccountName.ToUpper() + Constants.vbTab);
@@ -2524,7 +2524,15 @@ namespace GenieClient.Genie
 
             m_sEncryptionKey = string.Empty;
             m_oConnectState = ConnectStates.ConnectingKeyServer;
-            m_oSocket.Connect(sHostName, iPort);
+            if (IsLich)
+            {
+                m_oSocket.Connect(sHostName, iPort);
+            }
+            else
+            {
+                if (sHostName == "eaccess.play.net" && iPort == 7900) iPort = 7910;
+                m_oSocket.ConnectTLS(sHostName, iPort);
+            }
         }
 
         private MatchCollection m_oMatchCollection;
@@ -3031,7 +3039,9 @@ namespace GenieClient.Genie
             {
                 case ConnectStates.ConnectingKeyServer:
                     {
-                        m_oSocket.Send("K" + System.Environment.NewLine);
+                        //m_oSocket.Send("K" + System.Environment.NewLine);
+                        m_oSocket.Authenticate(AccountName, AccountPassword);
+                        m_oSocket.Get_login_key(AccountGame, AccountGame);
                         m_oConnectState = ConnectStates.ConnectedKey;
                         break;
                     }
