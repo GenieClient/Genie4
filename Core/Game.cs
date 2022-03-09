@@ -3052,7 +3052,7 @@ namespace GenieClient.Genie
                         m_iConnectAttempts = 0;
                         m_bManualDisconnect = false;
                         m_oReconnectTime = default;
-                        m_oSocket.Send("<c>" + m_sConnectKey + Constants.vbLf + "<c>/FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " /P:WIN_XP /XML" + Constants.vbLf);    // TEMP
+                        m_oSocket.Send("<c>" + m_sConnectKey + Constants.vbLf + "<c>/FE:WIZARD /VERSION:1.0.1.22 /P:WIN_UNKNOWN /XML" + Constants.vbLf);    // TEMP
                                                                                                                                                             // m_oSocket.Send("<c>" & m_sConnectKey & vbLf & "<c>" & m_oGlobals.Config.sConnectString & vbLf)
                         string argkey = "connected";
                         string argvalue = "1";
