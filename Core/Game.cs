@@ -1085,7 +1085,14 @@ namespace GenieClient.Genie
 
                                 break;
                             }
-
+                        case "U": //these two will be the start of error messages from
+                        case "T": //the GetLoginKey function, just show them.
+                            {
+                                PrintError(sText);
+                                m_oSocket.Disconnect();
+                                break;
+                            }
+                            
                         case "L":
                             {
                                 if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(oData[1], "OK", false)))
@@ -3044,7 +3051,7 @@ namespace GenieClient.Genie
                     {
                         m_oConnectState = ConnectStates.ConnectedKey;
                         m_oSocket.Authenticate(AccountName, AccountPassword);
-                        ParseKeyRow(m_oSocket.Get_login_key(AccountGame, AccountCharacter));
+                        ParseKeyRow(m_oSocket.GetLoginKey(AccountGame, AccountCharacter));
                         break;
                     }
 
