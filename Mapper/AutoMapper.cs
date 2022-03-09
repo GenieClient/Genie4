@@ -1213,24 +1213,28 @@ namespace GenieClient.Mapper
                                     if (!Information.IsNothing(n))
                                     {
                                         EchoText("#goto " + sArg, true);
+                                        set_GlobalVariable("destination", iNodeID.ToString());
                                         SendText("#parse DESTINATION FOUND");
                                         WalkToNode(n);
                                     }
                                     else
                                     {
                                         EchoText("[" + Name + "] Destination ID #" + iNodeID.ToString() + " not found - your current location is unknown.", true);
+                                        set_GlobalVariable("destination", "0");
                                         SendText("#parse DESTINATION NOT FOUND");
                                     }
                                 }
                                 else
                                 {
                                     EchoText("[" + Name + "] Destination ID \"" + sArg + "\" not found.", true);
+                                    set_GlobalVariable("destination", "0");
                                     SendText("#parse DESTINATION NOT FOUND");
                                 }
                             }
                             else
                             {
                                 EchoText("[" + Name + "] Goto - please specify a room id to travel to.", true);
+                                set_GlobalVariable("destination", "0");
                             }
 
                             break;
@@ -1951,6 +1955,7 @@ namespace GenieClient.Mapper
 
         private void GrapForm_ClickNode(string zoneid, int nodeid)
         {
+            set_GlobalVariable("destination", nodeid.ToString());
             SendText(string.Format("#parse MAPCLICK {0} {1}", zoneid, nodeid));
         }
 
