@@ -294,7 +294,7 @@ namespace GenieClient.Genie
             
         }
 
-        public string Get_login_key(string instance, string character)
+        public string GetLoginKey(string instance, string character)
         {
                         // Sanity checks
             if (!IsConnected || sslStream == null)
@@ -328,7 +328,7 @@ namespace GenieClient.Genie
             {
                 sslStream.Close();
                 CurrentAuthState = AuthState.Disconnected;
-                return null;
+                return "There is a problem with your account. Please log in to the play.net website for more information.";
             }
 
             // send C - Character Slot Request
@@ -344,9 +344,6 @@ namespace GenieClient.Genie
             // Requesting character list with no character name given
             if (string.IsNullOrWhiteSpace(character))
             {
-                // Get just a list of characters
-                character_list = character_list[character_list.IndexOf("W_")..];
-                Console.WriteLine(character_list);
                 sslStream.Close();
                 CurrentAuthState = AuthState.Disconnected;
                 return character_list;
@@ -356,10 +353,9 @@ namespace GenieClient.Genie
             Match character_match = Regex.Match(character_list, "\t([A-Za-z0-9_]+)\t" + character + "(?:\t|$)");
             if (!character_match.Success)
             {
-                Console.WriteLine("Could not find character named " + character + ".");
                 sslStream.Close();
                 CurrentAuthState = AuthState.Disconnected;
-                return null;
+                return "Unable to find character " + character + ".";
             }
 
             //send L - Login Key Request
