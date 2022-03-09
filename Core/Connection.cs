@@ -299,12 +299,12 @@ namespace GenieClient.Genie
                         // Sanity checks
             if (!IsConnected || sslStream == null)
             {
-                return null;
+                return "The connection was lost.";
             }
             
             if (string.IsNullOrWhiteSpace(instance))
             {
-                return null;
+                return "The game instance was not specified.";
             }
 
             // Send G - Game Details Request
@@ -355,7 +355,7 @@ namespace GenieClient.Genie
             {
                 sslStream.Close();
                 CurrentAuthState = AuthState.Disconnected;
-                return "Unable to find character " + character + ".";
+                return "The specified character was not found: " + character + ".";
             }
 
             //send L - Login Key Request
