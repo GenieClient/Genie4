@@ -896,12 +896,14 @@ namespace GenieClient.Genie
             {
                 case ConnectStates.ConnectedKey:
                     {
+                        if (string.IsNullOrWhiteSpace(sText)) break;
                         ParseKeyRow(sText);
                         break;
                     }
 
                 case ConnectStates.ConnectedGame:
                     {
+                        if (string.IsNullOrWhiteSpace(sText)) break;
                         ParseGameRow(sText);
                         break;
                     }
