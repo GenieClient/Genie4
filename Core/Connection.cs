@@ -318,13 +318,13 @@ namespace GenieClient.Genie
 
             //Validate Access - list of status responses:
             // Known good status:
-            //  "FREE_TO_PLAY" "PAYING" "PREMIUM"
+            //  "FREE_TO_PLAY" "PAYING" "PREMIUM" "NORMAL"
             // Known bad status:
             //  "NEW_TO_GAME" "EXPIRED"
             // Unknown status:
             //  "BETA" "FREE" "INTERNAL" "NEED_BILL" "NO_ACCESS" "SHAREWARE" "TRIAL" "UNKNOWN"
             //Check for  match of known good status, and if no match, no access to requested instance
-            if (!Regex.IsMatch(Encoding.Default.GetString(buffer), "(PREMIUM|FREE_TO_PLAY|PAYING)"))
+            if (!Regex.IsMatch(Encoding.Default.GetString(buffer), "(PREMIUM|FREE_TO_PLAY|PAYING|NORMAL)"))
             {
                 sslStream.Close();
                 CurrentAuthState = AuthState.Disconnected;
