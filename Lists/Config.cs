@@ -47,7 +47,6 @@ namespace GenieClient.Genie
         public bool bShowLinks = false;
         public string sLogDir = "Logs";
 
-        // Public sConnectString As String = "/FE:GENIE /VERSION:GENIE3 /XML"
         public string sConnectString = "FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " /P:WIN_XP /XML";
         public int[] iPickerColors = new int[17];
         public string RubyPath { get; set; } = @"C:\ruby4lich\bin\ruby.exe";

@@ -385,7 +385,7 @@ namespace GenieClient.Genie
             //because many users will not have these predefined and defaults aren't created
             //new for old profiles, if these are null then default them
             if (!m_oGlobals.VariableList.Contains("gamehost")) m_oGlobals.VariableList.Add("gamehost", "eaccess.play.net", Globals.Variables.VariableType.Reserved);
-            if (!m_oGlobals.VariableList.Contains("gameport")) m_oGlobals.VariableList.Add("gameport", "7900", Globals.Variables.VariableType.Reserved);
+            if (!m_oGlobals.VariableList.Contains("gameport")) m_oGlobals.VariableList.Add("gameport", "7910", Globals.Variables.VariableType.Reserved);
             string argsHostName = m_oGlobals.VariableList["gamehost"].ToString();
             int.TryParse(m_oGlobals.VariableList["gameport"].ToString(), out int argiPort);
             DoConnect(argsHostName, argiPort);
@@ -928,8 +928,9 @@ namespace GenieClient.Genie
 
         private void ParseKeyRow(string sText)
         {
-            if (sText.Length == 32 & m_sEncryptionKey.Length == 0)
+            if (sText.Length == 32 & m_sEncryptionKey.Length == 0 & !IsLich)
             {
+                
                 m_sEncryptionKey = sText;
                 m_oSocket.Send("A" + Constants.vbTab + m_sAccountName.ToUpper() + Constants.vbTab);
                 m_oSocket.Send(Utility.EncryptText(m_sEncryptionKey, m_sAccountPassword));
@@ -1100,7 +1101,7 @@ namespace GenieClient.Genie
                                         }
                                         else if (strRow.IndexOf("KEY=") > -1)
                                         {
-                                            m_sConnectKey = strRow.Substring(4);
+                                            m_sConnectKey = strRow.Substring(4).TrimEnd('\0');
                                         }
                                     }
 
@@ -2524,7 +2525,15 @@ namespace GenieClient.Genie
 
             m_sEncryptionKey = string.Empty;
             m_oConnectState = ConnectStates.ConnectingKeyServer;
-            m_oSocket.Connect(sHostName, iPort);
+            if (IsLich)
+            {
+                m_oSocket.Connect(sHostName, iPort);
+            }
+            else
+            {
+                if (sHostName == "eaccess.play.net" && iPort == 7900) iPort = 7910;
+                m_oSocket.ConnectAndAuthenticate(sHostName, iPort);
+            }
         }
 
         private MatchCollection m_oMatchCollection;
@@ -3031,8 +3040,9 @@ namespace GenieClient.Genie
             {
                 case ConnectStates.ConnectingKeyServer:
                     {
-                        m_oSocket.Send("K" + System.Environment.NewLine);
                         m_oConnectState = ConnectStates.ConnectedKey;
+                        m_oSocket.Authenticate(AccountName, AccountPassword);
+                        ParseKeyRow(m_oSocket.Get_login_key(AccountGame, AccountCharacter));
                         break;
                     }
 

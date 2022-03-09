@@ -6,10 +6,18 @@ using System.Text;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
+using System.Net.Security;
+using System.Net.Sockets;
+using System.Security.Authentication;
+using System.Text;
+
+using System.Text.RegularExpressions;
+
 namespace GenieClient.Genie
 {
     public class Connection
     {
+
         public event EventConnectedEventHandler EventConnected;
 
         public delegate void EventConnectedEventHandler();
@@ -93,6 +101,10 @@ namespace GenieClient.Genie
             NoDataOfRequestedType = 11004
         }
 
+        private TcpClient _client;
+        private const int MAX_PACKET_SIZE = 2048;
+        private SslStream sslStream;
+
         private Socket m_SocketClient;
         private IPEndPoint m_IPEndPoint;
         private StringBuilder m_ParseBuffer = new StringBuilder();
@@ -117,6 +129,7 @@ namespace GenieClient.Genie
                 }
                 else
                 {
+                    if(_client != null) return _client.Connected;
                     return m_SocketClient.Connected;
                 }
             }
@@ -128,8 +141,6 @@ namespace GenieClient.Genie
         {
             try
             {
-                // PrintText("Connecting to: " & sHostname & ":" & iPort.ToString())
-
                 m_RowBuffer.Clear(); // Reset row buffer
                 m_ParseBuffer.Clear(); // Reset parse buffer
                 if (!Information.IsNothing(m_SocketClient))
@@ -143,16 +154,227 @@ namespace GenieClient.Genie
                 }
 
                 m_sHostname = sHostname;
-                m_SocketClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                _client = new TcpClient();
+                m_SocketClient = _client.Client;
                 var hostEntryList = Dns.GetHostEntry(sHostname);
                 m_IPEndPoint = new IPEndPoint(hostEntryList.AddressList.Where(i => i.AddressFamily == AddressFamily.InterNetwork).FirstOrDefault(), iPort);
-                m_SocketClient.BeginConnect(m_IPEndPoint, new AsyncCallback(ConnectCallback), m_SocketClient);
+                _client.Connect(sHostname, iPort);
+                PrintText(Utility.GetTimeStamp() + " Connected to " + m_sHostname + ".");
+                Recieve(_client);
+                EventConnected?.Invoke();
             }
             catch (SocketException ex)
             {
                 PrintSocketError("Connect failed", ex.ErrorCode);
                 EventConnectionLost?.Invoke();
             }
+        }
+
+        public void ConnectAndAuthenticate(string sHostname, int iPort)
+        {
+            try
+            {
+                m_RowBuffer.Clear(); // Reset row buffer
+                m_ParseBuffer.Clear(); // Reset parse buffer
+                if (!Information.IsNothing(m_SocketClient))
+                {
+                    if (m_SocketClient.Connected == true)
+                    {
+                        m_SocketClient.Disconnect(false);
+                    }
+
+                    m_SocketClient = null;
+                }
+
+                m_sHostname = sHostname;
+                _client = new TcpClient();
+                m_SocketClient = _client.Client;
+                
+                var hostEntryList = Dns.GetHostEntry(sHostname);
+                m_IPEndPoint = new IPEndPoint(hostEntryList.AddressList.Where(i => i.AddressFamily == AddressFamily.InterNetwork).FirstOrDefault(), iPort);
+                _client.Connect(sHostname, iPort);
+                m_oLastServerActivity = DateTime.Now;
+                try
+                {
+                    sslStream = new SslStream(_client.GetStream(), true, new RemoteCertificateValidationCallback(Utility.ValidateServerCertificate), null);
+                    try
+                    {
+                        sslStream.AuthenticateAsClient(m_sHostname);
+                    }
+                    catch (AuthenticationException e)
+                    {
+                        PrintError("Unable to Authenticate: " + e.Message);
+                        _client.Close();
+                    }
+                    // Complete the connection
+                    
+                    PrintText(Utility.GetTimeStamp() + " Connected to " + m_sHostname + ".");
+                    
+                    EventConnected?.Invoke();
+                }
+                catch (SocketException ex)
+                {
+                    PrintSocketError("Connect failed", ex.ErrorCode);
+                    EventConnectionLost?.Invoke();
+                }
+            }
+            catch (SocketException ex)
+            {
+                PrintSocketError("Connect failed", ex.ErrorCode);
+                EventConnectionLost?.Invoke();
+            }
+        }
+        public enum AuthState
+        {
+            Disconnected,
+            Unauthenticated,
+            ListeningForKey,
+            KeyAuthenticated,
+            Authenticated,
+            AuthenticationFailed,
+            InvalidResponse
+        }
+        private AuthState CurrentAuthState = AuthState.Unauthenticated;
+        public AuthState Authenticate(string account, string password)
+        {
+            if (!_client.Connected || sslStream == null)
+            {
+                CurrentAuthState = AuthState.Disconnected;
+                return CurrentAuthState; //not connected
+            }
+            else if (account == null || password == null)
+            {
+                CurrentAuthState = AuthState.Unauthenticated;
+                return CurrentAuthState; //No credentials provided.
+            }
+            else
+            {
+                // Send K - Key Request
+                byte[] message = Encoding.Default.GetBytes("K" + Environment.NewLine);
+                sslStream.Write(message);
+                sslStream.Flush();
+
+                CurrentAuthState = AuthState.ListeningForKey;
+                // Read Key response: should be 32 bytes
+                byte[] buffer = new byte[MAX_PACKET_SIZE];
+                int bytes = sslStream.Read(buffer, 0, buffer.Length);
+                if (bytes != 32)
+                {
+                    sslStream.Close();
+                    CurrentAuthState = AuthState.InvalidResponse;
+                }
+
+                // SslStreams require a byte array to write
+                // BlockCopy is used to allow concacatantion, and avoid encoding issues from cyte array -> string -> byte array.
+                message = new byte[account.Length + password.Length + 3];
+                Buffer.BlockCopy(Encoding.Default.GetBytes("A\t" + account.ToUpper() + "\t"), 0, message, 0, account.Length + 3);
+                Buffer.BlockCopy(Utility.EncryptText(buffer, password), 0, message, account.Length + 3, password.Length);
+                sslStream.Write(message);
+                sslStream.Flush();
+
+                // null out password to not keep it in memory longer than necessary
+                password = null;
+
+                buffer = new byte[MAX_PACKET_SIZE];
+                _ = sslStream.Read(buffer, 0, buffer.Length);
+
+                if (Encoding.Default.GetString(buffer).Contains("\tKEY\t"))
+                {
+                    CurrentAuthState = AuthState.KeyAuthenticated;
+                }
+                else
+                {
+                    sslStream.Close();
+                    CurrentAuthState = AuthState.AuthenticationFailed;
+                }
+            }
+            return CurrentAuthState;
+            
+
+            
+        }
+
+        public string Get_login_key(string instance, string character)
+        {
+                        // Sanity checks
+            if (!IsConnected || sslStream == null)
+            {
+                return null;
+            }
+            
+            if (string.IsNullOrWhiteSpace(instance))
+            {
+                return null;
+            }
+
+            // Send G - Game Details Request
+            byte[] message = Encoding.Default.GetBytes("G\t" + instance);
+            sslStream.Write(message);
+            sslStream.Flush();
+
+            // Read response: 
+            byte[] buffer = new byte[MAX_PACKET_SIZE];
+            _ = sslStream.Read(buffer, 0, buffer.Length);
+
+            //Validate Access - list of status responses:
+            // Known good status:
+            //  "FREE_TO_PLAY" "PAYING" "PREMIUM"
+            // Known bad status:
+            //  "NEW_TO_GAME" "EXPIRED"
+            // Unknown status:
+            //  "BETA" "FREE" "INTERNAL" "NEED_BILL" "NO_ACCESS" "SHAREWARE" "TRIAL" "UNKNOWN"
+            //Check for  match of known good status, and if no match, no access to requested instance
+            if (!Regex.IsMatch(Encoding.Default.GetString(buffer), "(PREMIUM|FREE_TO_PLAY|PAYING)"))
+            {
+                sslStream.Close();
+                CurrentAuthState = AuthState.Disconnected;
+                return null;
+            }
+
+            // send C - Character Slot Request
+            message = Encoding.Default.GetBytes("C");
+            sslStream.Write(message);
+            sslStream.Flush();
+
+            // Read response: 
+            buffer = new byte[MAX_PACKET_SIZE];
+            _ = sslStream.Read(buffer, 0, buffer.Length);
+
+            string character_list = Encoding.Default.GetString(buffer).TrimEnd('\0');
+            // Requesting character list with no character name given
+            if (string.IsNullOrWhiteSpace(character))
+            {
+                // Get just a list of characters
+                character_list = character_list[character_list.IndexOf("W_")..];
+                Console.WriteLine(character_list);
+                sslStream.Close();
+                CurrentAuthState = AuthState.Disconnected;
+                return character_list;
+            }
+
+            // Looking for specific character to get login key for
+            Match character_match = Regex.Match(character_list, "\t([A-Za-z0-9_]+)\t" + character + "(?:\t|$)");
+            if (!character_match.Success)
+            {
+                Console.WriteLine("Could not find character named " + character + ".");
+                sslStream.Close();
+                CurrentAuthState = AuthState.Disconnected;
+                return null;
+            }
+
+            //send L - Login Key Request
+            message = Encoding.Default.GetBytes("L\t" + character_match.Groups[1].Value + "\tSTORM");
+            sslStream.Write(message);
+            sslStream.Flush();
+
+            //Read response: 
+            buffer = new byte[MAX_PACKET_SIZE];
+            CurrentAuthState = AuthState.Authenticated;
+            _ = sslStream.Read(buffer, 0, buffer.Length);
+            
+            sslStream.Close();
+            string character_key = Encoding.Default.GetString(buffer);
+            return character_key;
         }
 
         public void Disconnect(bool ExitOnDisconnect = false)
@@ -168,27 +390,6 @@ namespace GenieClient.Genie
         public void Send(byte[] bytes)
         {
             Send(m_SocketClient, bytes);
-        }
-
-        private void ConnectCallback(IAsyncResult ar)
-        {
-            m_oLastServerActivity = DateTime.Now;
-            try
-            {
-                // Retrieve the socket from the state object
-                Socket s = (Socket)ar.AsyncState;
-
-                // Complete the connection
-                s.EndConnect(ar);
-                PrintText(Utility.GetTimeStamp() + " Connected to " + m_sHostname + ".");
-                Recieve(s);
-                EventConnected?.Invoke();
-            }
-            catch (SocketException ex)
-            {
-                PrintSocketError("Connect failed", ex.ErrorCode);
-                EventConnectionLost?.Invoke();
-            }
         }
 
         private void Disconnect(Socket ConnectedSocket, bool ExitOnDisconnect = false)
@@ -300,20 +501,20 @@ namespace GenieClient.Genie
         private class StateObject
         {
             // Client socket
-            public Socket oSocketRef;
+            public TcpClient oSocketRef;
             // Size of recieve Buffer
             public const int iBufferSize = 10240;
             // Recieve Buffer
             public byte[] oBuffer = new byte[10241];
         }
 
-        private void Recieve(Socket s)
+        private void Recieve(TcpClient s)
         {
             try
             {
                 var oState = new StateObject();
                 oState.oSocketRef = s;
-                s.BeginReceive(oState.oBuffer, 0, StateObject.iBufferSize, SocketFlags.None, new AsyncCallback(ReceiveCallback), oState);
+                s.Client.BeginReceive(oState.oBuffer, 0, StateObject.iBufferSize, SocketFlags.None, new AsyncCallback(ReceiveCallback), oState);
             }
             catch (SocketException ex)
             {
@@ -328,24 +529,28 @@ namespace GenieClient.Genie
             try
             {
                 StateObject oState = (StateObject)ar.AsyncState;
-                var s = oState.oSocketRef;
+                TcpClient s = oState.oSocketRef;
                 if (s.Connected == true)
                 {
-                    int bytes = s.EndReceive(ar);
+                    int bytes = s.Client.EndReceive(ar);
                     if (bytes > 0)
                     {
+                        if(CurrentAuthState == AuthState.ListeningForKey || CurrentAuthState == AuthState.KeyAuthenticated)
+                        {
+                            return;
+                        }
                         // Append data
                         ParseData(Encoding.Default.GetString(oState.oBuffer, 0, bytes));
                         // Event to update Output
                         DataRecieveEnd();
 
                         // Get the rest of the data.
-                        s.BeginReceive(oState.oBuffer, 0, StateObject.iBufferSize, SocketFlags.None, new AsyncCallback(ReceiveCallback), oState);
+                        s.Client.BeginReceive(oState.oBuffer, 0, StateObject.iBufferSize, SocketFlags.None, new AsyncCallback(ReceiveCallback), oState);
                     }
                     else
                     {
                         // Disconnect
-                        Disconnect(s);
+                        Disconnect();
                         EventConnectionLost?.Invoke();
                     }
                 }
