@@ -141,8 +141,6 @@ namespace GenieClient.Genie
         {
             try
             {
-                // PrintText("Connecting to: " & sHostname & ":" & iPort.ToString())
-
                 m_RowBuffer.Clear(); // Reset row buffer
                 m_ParseBuffer.Clear(); // Reset parse buffer
                 if (!Information.IsNothing(m_SocketClient))
@@ -172,12 +170,10 @@ namespace GenieClient.Genie
             }
         }
 
-        public void ConnectTLS(string sHostname, int iPort)
+        public void ConnectAndAuthenticate(string sHostname, int iPort)
         {
             try
             {
-                // PrintText("Connecting to: " & sHostname & ":" & iPort.ToString())
-
                 m_RowBuffer.Clear(); // Reset row buffer
                 m_ParseBuffer.Clear(); // Reset parse buffer
                 if (!Information.IsNothing(m_SocketClient))
@@ -196,7 +192,6 @@ namespace GenieClient.Genie
                 
                 var hostEntryList = Dns.GetHostEntry(sHostname);
                 m_IPEndPoint = new IPEndPoint(hostEntryList.AddressList.Where(i => i.AddressFamily == AddressFamily.InterNetwork).FirstOrDefault(), iPort);
-                //_client.BeginConnect(sHostname, iPort, new AsyncCallback(ConnectTLSCallback), _client);
                 _client.Connect(sHostname, iPort);
                 m_oLastServerActivity = DateTime.Now;
                 try
@@ -395,56 +390,6 @@ namespace GenieClient.Genie
         public void Send(byte[] bytes)
         {
             Send(m_SocketClient, bytes);
-        }
-
-        private void ConnectCallback(IAsyncResult ar)
-        {
-            m_oLastServerActivity = DateTime.Now;
-            try
-            {
-                // Retrieve the socket from the state object
-                TcpClient s = (TcpClient)ar.AsyncState;
-                // Complete the connection
-                s.EndConnect(ar);
-                PrintText(Utility.GetTimeStamp() + " Connected to " + m_sHostname + ".");
-                Recieve(s);
-                EventConnected?.Invoke();
-            }
-            catch (SocketException ex)
-            {
-                PrintSocketError("Connect failed", ex.ErrorCode);
-                EventConnectionLost?.Invoke();
-            }
-        }
-
-        private void ConnectTLSCallback(IAsyncResult ar)
-        {
-            m_oLastServerActivity = DateTime.Now;
-            try
-            {
-                // Retrieve the socket from the state object
-                TcpClient s = (TcpClient)ar.AsyncState;
-                sslStream = new SslStream(_client.GetStream(), true, new RemoteCertificateValidationCallback(Utility.ValidateServerCertificate), null);
-                try
-                {
-                    sslStream.AuthenticateAsClient(m_sHostname);
-                }
-                catch (AuthenticationException e)
-                {
-                    PrintError("Unable to Authenticate: " + e.Message);
-                    _client.Close();
-                }
-                // Complete the connection
-                s.EndConnect(ar);
-                PrintText(Utility.GetTimeStamp() + " Connected to " + m_sHostname + ".");
-                Recieve(s);
-                EventConnected?.Invoke();
-            }
-            catch (SocketException ex)
-            {
-                PrintSocketError("Connect failed", ex.ErrorCode);
-                EventConnectionLost?.Invoke();
-            }
         }
 
         private void Disconnect(Socket ConnectedSocket, bool ExitOnDisconnect = false)

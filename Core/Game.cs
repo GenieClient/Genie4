@@ -2532,7 +2532,7 @@ namespace GenieClient.Genie
             else
             {
                 if (sHostName == "eaccess.play.net" && iPort == 7900) iPort = 7910;
-                m_oSocket.ConnectTLS(sHostName, iPort);
+                m_oSocket.ConnectAndAuthenticate(sHostName, iPort);
             }
         }
 
