@@ -21,6 +21,7 @@ namespace GenieClient
     {
         public FormMain()
         {
+
             m_oGlobals = new Genie.Globals();
             m_oGame = new Genie.Game(ref _m_oGlobals);
             m_oCommand = new Genie.Command(ref _m_oGlobals);
@@ -125,6 +126,49 @@ namespace GenieClient
             }
 
             UpdateMainWindowTitle();
+        }
+
+        public void DirectConnect(string[] ConnectionParameters)
+        {
+            if(ConnectionParameters.Length > 0)
+            {
+                string character = "";
+                string game = "";
+                string host = "";
+                int port = 0;
+                string[] parameters = ConnectionParameters[0].Split(@"/",StringSplitOptions.RemoveEmptyEntries);
+                foreach (string parameter in parameters)
+                {
+                    switch (parameter[0])
+                    {
+                        case 'K': //character name
+                            character = parameter.Substring(1);
+                            break;
+                        case 'H': //host
+                            host = parameter.Substring(1);
+                            break;
+                        case 'P': //port
+                            int.TryParse(parameter.Substring(1), out port);
+                            break;
+                        case 'G': //instance code
+                            game = parameter.Substring(1); 
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if(string.IsNullOrWhiteSpace(game) ||
+                    string.IsNullOrWhiteSpace(host) ||
+                    string.IsNullOrWhiteSpace(character) ||
+                    port <= 0)
+                {
+                    PrintError("Invalid Startup Parameters detected.");
+                    return;
+                }
+                m_sCurrentProfileFile = string.Empty;
+                SafeLoadProfile(character + game + ".xml", true);
+                m_oGame.DirectConnect(character, game, host, port);
+            }
         }
 
         private Genie.Globals _m_oGlobals;

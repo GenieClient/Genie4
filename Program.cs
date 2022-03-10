@@ -9,7 +9,7 @@ namespace GenieClient
     static class Program
     {
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
@@ -24,7 +24,7 @@ namespace GenieClient
 
             var services = host.Services;
             var formMain = services.GetRequiredService<FormMain>();
-
+            formMain.DirectConnect(args);
             Application.Run(formMain);
         }
 

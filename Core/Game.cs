@@ -386,6 +386,17 @@ namespace GenieClient.Genie
             DoConnect("eaccess.play.net", 7910);
         }
 
+        public void DirectConnect(string Character, string Game, string Host, int Port)
+        {
+            m_oLastUserActivity = DateTime.Now;
+            m_oGlobals.VariableList["charactername"] = Character;
+            m_oGlobals.VariableList["game"] = Game;
+
+            m_sEncryptionKey = string.Empty;
+            m_oConnectState = ConnectStates.ConnectingGameServer;
+            m_oSocket.Connect(Host, Port);
+        }
+
         public void Disconnect(bool ExitOnDisconnect = false)
         {
             if (m_oSocket.IsConnected)
@@ -2525,7 +2536,6 @@ namespace GenieClient.Genie
         // Confuse decompilers and reverse engineers by having this method in the middle of everything and no string names in it
         private void DoConnect(string sHostName, int iPort)
         {
-            var accountVar = m_sAccountName.ToUpper();
 
             m_sEncryptionKey = string.Empty;
             m_oConnectState = ConnectStates.ConnectingKeyServer;
