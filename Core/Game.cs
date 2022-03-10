@@ -382,13 +382,8 @@ namespace GenieClient.Genie
 
             m_oGlobals.VariableList["charactername"] = sCharacter;
             m_oGlobals.VariableList["game"] = sGame;
-            //because many users will not have these predefined and defaults aren't created
-            //new for old profiles, if these are null then default them
-            if (!m_oGlobals.VariableList.Contains("gamehost")) m_oGlobals.VariableList.Add("gamehost", "eaccess.play.net", Globals.Variables.VariableType.Reserved);
-            if (!m_oGlobals.VariableList.Contains("gameport")) m_oGlobals.VariableList.Add("gameport", "7910", Globals.Variables.VariableType.Reserved);
-            string argsHostName = m_oGlobals.VariableList["gamehost"].ToString();
-            int.TryParse(m_oGlobals.VariableList["gameport"].ToString(), out int argiPort);
-            DoConnect(argsHostName, argiPort);
+
+            DoConnect("eaccess.play.net", 7910);
         }
 
         public void Disconnect(bool ExitOnDisconnect = false)
@@ -930,9 +925,9 @@ namespace GenieClient.Genie
 
         private void ParseKeyRow(string sText)
         {
-            if (sText.Length == 32 & m_sEncryptionKey.Length == 0 & !IsLich)
+            if (sText.Length == 32 & m_sEncryptionKey.Length == 0)
             {
-                
+
                 m_sEncryptionKey = sText;
                 m_oSocket.Send("A" + Constants.vbTab + m_sAccountName.ToUpper() + Constants.vbTab);
                 m_oSocket.Send(Utility.EncryptText(m_sEncryptionKey, m_sAccountPassword));
@@ -941,198 +936,198 @@ namespace GenieClient.Genie
             else
             {
                 var oData = new ArrayList();
-                foreach (string strLine in sText.Split(Conversions.ToChar(Constants.vbTab)))
-                    oData.Add(strLine);
-                if (oData.Count > 0)
+            foreach (string strLine in sText.Split(Conversions.ToChar(Constants.vbTab)))
+                oData.Add(strLine);
+            if (oData.Count > 0)
+            {
+                var switchExpr = oData[0];
+                switch (switchExpr)
                 {
-                    var switchExpr = oData[0];
-                    switch (switchExpr)
-                    {
-                        case "?":
+                    case "?":
+                        {
+                            string argtext = "Unable to get login key.";
+                            PrintError(argtext);
+                            m_oSocket.Disconnect();
+                            break;
+                        }
+
+                    case "A":
+                        {
+                            var switchExpr1 = oData[2];
+                            switch (switchExpr1)
                             {
-                                string argtext = "Unable to get login key.";
-                                PrintError(argtext);
-                                m_oSocket.Disconnect();
-                                break;
-                            }
-
-                        case "A":
-                            {
-                                var switchExpr1 = oData[2];
-                                switch (switchExpr1)
-                                {
-                                    case "KEY":
-                                        {
-                                            m_sLoginKey = Conversions.ToString(oData[3]);
-                                            m_sAccountOwner = Conversions.ToString(oData[4]);
-                                            m_oSocket.Send("G" + Constants.vbTab + m_sAccountGame.ToUpper() + System.Environment.NewLine);
-                                            break;
-                                        }
-
-                                    case "NORECORD":
-                                        {
-                                            string argtext1 = "Account does not exist.";
-                                            PrintError(argtext1);
-                                            m_oSocket.Disconnect();
-                                            break;
-                                        }
-
-                                    case "PASSWORD":
-                                        {
-                                            string argtext2 = "Invalid password.";
-                                            PrintError(argtext2);
-                                            m_oSocket.Disconnect();
-                                            break;
-                                        }
-
-                                    case "REJECT":
-                                        {
-                                            string argtext3 = "Access rejected.";
-                                            PrintError(argtext3);
-                                            m_oSocket.Disconnect();
-                                            break;
-                                        }
-                                }
-
-                                break;
-                            }
-
-                        case "G":
-                            {
-                                m_oSocket.Send("C" + System.Environment.NewLine);
-                                break;
-                            }
-
-                        case "C":
-                            {
-                                if (m_sAccountCharacter.Trim().Length == 0)
-                                {
-                                    string argtext4 = "Listing characters:";
-                                    PrintError(argtext4);
-                                    string strUserKey = string.Empty;
-                                    // bool blnFoundMatch = false;
-                                    for (int i = 5, loopTo = oData.Count - 1; i <= loopTo; i++)
+                                case "KEY":
                                     {
-                                        if (i % 2 == 0)
-                                        {
-                                            _CharacterList.Clear();
-                                            _CharacterList.Add(oData[i].ToString());
-                                            var temp = oData[i].ToString();
-                                            PrintError(temp);
-                                        }
-                                        else
-                                        {
-                                            strUserKey = Conversions.ToString(oData[i]);
-                                        }
+                                        m_sLoginKey = Conversions.ToString(oData[3]);
+                                        m_sAccountOwner = Conversions.ToString(oData[4]);
+                                        m_oSocket.Send("G" + Constants.vbTab + m_sAccountGame.ToUpper() + System.Environment.NewLine);
+                                        break;
                                     }
 
-                                    m_oSocket.Disconnect();
-                                }
-                                else
-                                {
-                                    string strUserKey = string.Empty;
-                                    string strUserKeyTemp = string.Empty;
-                                    bool blnFoundMatch = false;
-                                    bool bFoundBanned = false;
-                                    for (int i = 5, loopTo1 = oData.Count - 1; i <= loopTo1; i++)
+                                case "NORECORD":
                                     {
-                                        if (i % 2 == 0)
+                                        string argtext1 = "Account does not exist.";
+                                        PrintError(argtext1);
+                                        m_oSocket.Disconnect();
+                                        break;
+                                    }
+
+                                case "PASSWORD":
+                                    {
+                                        string argtext2 = "Invalid password.";
+                                        PrintError(argtext2);
+                                        m_oSocket.Disconnect();
+                                        break;
+                                    }
+
+                                case "REJECT":
+                                    {
+                                        string argtext3 = "Access rejected.";
+                                        PrintError(argtext3);
+                                        m_oSocket.Disconnect();
+                                        break;
+                                    }
+                            }
+
+                            break;
+                        }
+
+                    case "G":
+                        {
+                            m_oSocket.Send("C" + System.Environment.NewLine);
+                            break;
+                        }
+
+                    case "C":
+                        {
+                            if (m_sAccountCharacter.Trim().Length == 0)
+                            {
+                                string argtext4 = "Listing characters:";
+                                PrintError(argtext4);
+                                string strUserKey = string.Empty;
+                                // bool blnFoundMatch = false;
+                                for (int i = 5, loopTo = oData.Count - 1; i <= loopTo; i++)
+                                {
+                                    if (i % 2 == 0)
+                                    {
+                                        _CharacterList.Clear();
+                                        _CharacterList.Add(oData[i].ToString());
+                                        var temp = oData[i].ToString();
+                                        PrintError(temp);
+                                    }
+                                    else
+                                    {
+                                        strUserKey = Conversions.ToString(oData[i]);
+                                    }
+                                }
+
+                                m_oSocket.Disconnect();
+                            }
+                            else
+                            {
+                                string strUserKey = string.Empty;
+                                string strUserKeyTemp = string.Empty;
+                                bool blnFoundMatch = false;
+                                bool bFoundBanned = false;
+                                for (int i = 5, loopTo1 = oData.Count - 1; i <= loopTo1; i++)
+                                {
+                                    if (i % 2 == 0)
+                                    {
+                                        string sChar = oData[i].ToString();
+                                        if (sChar.Contains(" "))
+                                            sChar = sChar.Substring(0, sChar.IndexOf(' '));
+                                        if (m_oBanned.ContainsKey(Utility.GenerateHashSHA256(sChar)))
+                                            bFoundBanned = true;
+                                        if (sChar.ToUpper().Equals(m_sAccountCharacter.ToUpper()))
                                         {
-                                            string sChar = oData[i].ToString();
-                                            if (sChar.Contains(" "))
-                                                sChar = sChar.Substring(0, sChar.IndexOf(' '));
-                                            if (m_oBanned.ContainsKey(Utility.GenerateHashSHA256(sChar)))
-                                                bFoundBanned = true;
-                                            if (sChar.ToUpper().Equals(m_sAccountCharacter.ToUpper()))
+                                            blnFoundMatch = true;
+                                            strUserKey = strUserKeyTemp;
+                                        }
+
+                                        if (blnFoundMatch == false)
+                                        {
+                                            if (sChar.ToUpper().StartsWith(m_sAccountCharacter.ToUpper()))
                                             {
                                                 blnFoundMatch = true;
                                                 strUserKey = strUserKeyTemp;
                                             }
-
-                                            if (blnFoundMatch == false)
-                                            {
-                                                if (sChar.ToUpper().StartsWith(m_sAccountCharacter.ToUpper()))
-                                                {
-                                                    blnFoundMatch = true;
-                                                    strUserKey = strUserKeyTemp;
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            strUserKeyTemp = Conversions.ToString(oData[i]);
                                         }
                                     }
-
-                                    if (bFoundBanned)
+                                    else
                                     {
-                                        m_oSocket.Disconnect();
-                                        return;
-                                    }
-
-                                    if (blnFoundMatch)
-                                    {
-                                        m_oSocket.Send("L" + Constants.vbTab + strUserKey + Constants.vbTab + "STORM" + Constants.vbLf);
-                                    }
-
-                                    if (blnFoundMatch == false)
-                                    {
-                                        string argtext5 = "Character not found.";
-                                        PrintError(argtext5);
-                                        m_oSocket.Disconnect();
+                                        strUserKeyTemp = Conversions.ToString(oData[i]);
                                     }
                                 }
 
-                                break;
-                            }
-                        case "U": //these two will be the start of error messages from
-                        case "T": //the GetLoginKey function, just show them.
-                            {
-                                PrintError(sText);
-                                m_oSocket.Disconnect();
-                                break;
-                            }
-                            
-                        case "L":
-                            {
-                                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(oData[1], "OK", false)))
+                                if (bFoundBanned)
                                 {
-                                    foreach (string strRow in oData)
+                                    m_oSocket.Disconnect();
+                                    return;
+                                }
+
+                                if (blnFoundMatch)
+                                {
+                                    m_oSocket.Send("L" + Constants.vbTab + strUserKey + Constants.vbTab + "STORM" + Constants.vbLf);
+                                }
+
+                                if (blnFoundMatch == false)
+                                {
+                                    string argtext5 = "Character not found.";
+                                    PrintError(argtext5);
+                                    m_oSocket.Disconnect();
+                                }
+                            }
+
+                            break;
+                        }
+                    case "U": //these two will be the start of error messages from
+                    case "T": //the GetLoginKey function, just show them.
+                        {
+                            PrintError(sText);
+                            m_oSocket.Disconnect();
+                            break;
+                        }
+
+                    case "L":
+                        {
+                            if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(oData[1], "OK", false)))
+                            {
+                                foreach (string strRow in oData)
+                                {
+                                    if (strRow.IndexOf("GAMEHOST=") > -1)
                                     {
-                                        if (strRow.IndexOf("GAMEHOST=") > -1)
-                                        {
                                             m_sConnectHost = IsLich ? m_oGlobals.Config.LichServer : strRow.Substring(9);
 
                                         }
-                                        else if (strRow.IndexOf("GAMEPORT=") > -1)
-                                        {
+                                    else if (strRow.IndexOf("GAMEPORT=") > -1)
+                                    {
                                             m_sConnectPort = IsLich ? m_oGlobals.Config.LichPort : int.Parse(strRow.Substring(9));
                                         }
-                                        else if (strRow.IndexOf("KEY=") > -1)
-                                        {
-                                            m_sConnectKey = strRow.Substring(4).TrimEnd('\0');
-                                        }
-                                    }
-
-                                    if (m_sConnectKey.Length > 0)
+                                    else if (strRow.IndexOf("KEY=") > -1)
                                     {
-                                        m_oSocket.Disconnect();
-                                        m_oConnectState = ConnectStates.ConnectingGameServer;
-                                        m_oSocket.Connect(m_sConnectHost, m_sConnectPort);
+                                        m_sConnectKey = strRow.Substring(4).TrimEnd('\0');
                                     }
                                 }
-                                else if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(oData[1], "PROBLEM", false)))
-                                {
-                                    string argtext6 = "There is a problem with your account. Log in to play.net website for more information.";
-                                    PrintError(argtext6);
-                                    m_oSocket.Disconnect();
-                                }
 
-                                break;
+                                if (m_sConnectKey.Length > 0)
+                                {
+                                    m_oSocket.Disconnect();
+                                    m_oConnectState = ConnectStates.ConnectingGameServer;
+                                    m_oSocket.Connect(m_sConnectHost, m_sConnectPort);
+                                }
                             }
-                    }
+                            else if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(oData[1], "PROBLEM", false)))
+                            {
+                                string argtext6 = "There is a problem with your account. Log in to play.net website for more information.";
+                                PrintError(argtext6);
+                                m_oSocket.Disconnect();
+                            }
+
+                            break;
+                        }
                 }
             }
+        }
         }
 
         private bool m_bMonoOutput = false;
@@ -2534,15 +2529,8 @@ namespace GenieClient.Genie
 
             m_sEncryptionKey = string.Empty;
             m_oConnectState = ConnectStates.ConnectingKeyServer;
-            if (IsLich)
-            {
-                m_oSocket.Connect(sHostName, iPort);
-            }
-            else
-            {
-                if (sHostName == "eaccess.play.net" && iPort == 7900) iPort = 7910;
-                m_oSocket.ConnectAndAuthenticate(sHostName, iPort);
-            }
+            m_oSocket.ConnectAndAuthenticate(sHostName, iPort);
+            
         }
 
         private MatchCollection m_oMatchCollection;
