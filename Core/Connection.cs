@@ -156,9 +156,8 @@ namespace GenieClient.Genie
                 m_sHostname = sHostname;
                 _client = new TcpClient();
                 m_SocketClient = _client.Client;
-                var hostEntryList = Dns.GetHostEntry(sHostname);
-                m_IPEndPoint = new IPEndPoint(hostEntryList.AddressList.Where(i => i.AddressFamily == AddressFamily.InterNetwork).FirstOrDefault(), iPort);
                 _client.Connect(sHostname, iPort);
+                m_oLastServerActivity = DateTime.Now;
                 PrintText(Utility.GetTimeStamp() + " Connected to " + m_sHostname + ".");
                 Recieve(_client);
                 EventConnected?.Invoke();
