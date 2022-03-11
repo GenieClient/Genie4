@@ -205,7 +205,7 @@ namespace GenieClient.Genie
         {
             /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
             string sResult = string.Empty;
-            if (sText.ToLower().StartsWith("bug ") | sText.ToLower().StartsWith("sing "))
+            if (sText.ToLower().StartsWith("bug ") | sText.ToLower().StartsWith("sing ") | sText.ToLower().StartsWith(";"))
             {
                 if (bSendToGame == true)
                 {
