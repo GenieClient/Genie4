@@ -35,16 +35,6 @@
 
   <p align="center">
     Genie is an alternative front-end for use with the Simutronics Corporation’s game DragonRealms.
-    <br />
-	<h3>
-	Genie 4 is an upgrade of Genie 3 to the .NET 6.0 unified Core Framework which adds cross-platform support. With the addition of TLS, Genie 4 is the future of Genie.
-	</h3>
-	
-	<br />
-    <a href="https://github.com/GenieClient/Genie4"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/GenieClient/Genie4/issues">Report Bug or Request Feature</a>
   </p>
 </div>
 
