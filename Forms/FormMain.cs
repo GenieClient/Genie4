@@ -166,7 +166,7 @@ namespace GenieClient
                     return;
                 }
                 m_sCurrentProfileFile = string.Empty;
-                SafeLoadProfile(character + game + ".xml", true);
+                SafeLoadProfile(character + game + ".xml", false);
                 m_oGame.DirectConnect(character, game, host, port);
             }
         }
@@ -4237,21 +4237,18 @@ namespace GenieClient
                         oRTControl.IsConnected = bConnected;
                         Castbar.IsConnected = bConnected;
                         SafeUpdateMainWindowTitle();
-                        if (bConnected == true)
-                        {
-                            m_CommandSent = false;
-                            m_oGlobals.VariableList["charactername"] = m_oGame.AccountCharacter;
-                            m_oGlobals.VariableList["game"] = m_oGame.AccountGame;
-                            m_oGame.ResetIndicators();
-                            IconBar.UpdateStatusBox();
-                            IconBar.UpdateStunned();
-                            IconBar.UpdateBleeding();
-                            IconBar.UpdateInvisible();
-                            IconBar.UpdateHidden();
-                            IconBar.UpdateJoined();
-                            IconBar.UpdateWebbed();
-                        }
-
+                        m_CommandSent = false;
+                        m_oGlobals.VariableList["charactername"] = m_oGame.AccountCharacter;
+                        m_oGlobals.VariableList["game"] = m_oGame.AccountGame;
+                        m_oGame.ResetIndicators();
+                        IconBar.UpdateStatusBox();
+                        IconBar.UpdateStunned();
+                        IconBar.UpdateBleeding();
+                        IconBar.UpdateInvisible();
+                        IconBar.UpdateHidden();
+                        IconBar.UpdateJoined();
+                        IconBar.UpdateWebbed();
+                        
                         break;
                     }
 
