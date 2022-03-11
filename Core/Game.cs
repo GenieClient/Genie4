@@ -484,7 +484,7 @@ namespace GenieClient.Genie
             if (!sText.StartsWith(Conversions.ToString(m_oGlobals.Config.cMyCommandChar))) // Skip user commands
             {
                 m_oLastUserActivity = DateTime.Now;
-                m_oSocket.Send("<c>" + sText + Constants.vbCrLf);
+                m_oSocket.Send(sText + Constants.vbCrLf);
                 m_oGlobals.VariableList["lastcommand"] = sText;
                 var lastCommandVar = "lastcommand";
                 EventVariableChanged?.Invoke(lastCommandVar);
