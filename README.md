@@ -31,16 +31,15 @@
 <div align="center">
 
 
-<h1 align="center">Genie 4 "Cross Platform Client"</h1>
+<h1 align="center">Genie 4</h1>
 
   <p align="center">
-    Genie is an alternative front-end for use with the Simutronics Corporation’s library of games, including Dragonrealms and Gemstone.
+    Genie is an alternative front-end for use with the Simutronics Corporation’s game DragonRealms.
     <br />
 	<h3>
-	Genie 4 is an upgrade of Genie 3 to the .NET 6.0 unified Core Framework which adds cross-platform support.
+	Genie 4 is an upgrade of Genie 3 to the .NET 6.0 unified Core Framework which adds cross-platform support. With the addition of TLS, Genie 4 is the future of Genie.
 	</h3>
-	<br />
-	There will be bugs. Probably lots of them. If you're looking for a stable version, this is not it.
+	
 	<br />
     <a href="https://github.com/GenieClient/Genie4"><strong>Explore the docs »</strong></a>
     <br />
@@ -78,18 +77,6 @@
 </details>
 
 
-
-<!-- ABOUT THE PROJECT -->
-## About The Project
-
-
-**To-Do (Capture Image)
-
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
 ### Built With
 
 * [C#](https://docs.microsoft.com/en-us/dotnet/csharp/)
@@ -102,46 +89,15 @@
 
 <!-- GETTING STARTED -->
 ## Getting Started
+1. Download the Latest Release at
+	[https://github.com/GenieClient/Genie4/releases/latest] 	
 
+2. Upgrade and First Time Installation Instructions can be found at
+ 	[https://github.com/GenieClient/Genie4/wiki]
 
-### Prerequisites
-
-
-Genie Client utilizes Microsoft .NET 6 Framework and you may need to install it.  
-The Download can be pulled directly from the Microsoft website using the links below. 
-
-Microsoft .NET Framework 6.0.1 Runtime [https://dotnet.microsoft.com/en-us/download/dotnet/6.0]
-
-### Installation
-
-1. Download the installer from here:
-	***todo-CreateNewBuild***
-	
-
-2. Get the latest Active Testing version of the Client from here:
-	***todo-DetermineLocation***
-
-3. Copy the client into your install Location from Step 2 above. 
-	"Default install Directory"
-   ```sh
-   C:\Program Files (x86)\Genie Client 4
-   ```
-4. Get Maps Updates from the Team at
+3. Get Maps Updates from the Team at
 	[https://github.com/GenieClient/Maps]
 
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- Feature EXAMPLES -->
-## Features
-
-### AutoMapper
-Never get lost again!  Auto Mapper lets you create, edit, and share maps of the world.  With one click, you can breeze from place to place, and see the worlds of Elanthia in a whole new way.
-A Helpful Video can be found here: [https://player.vimeo.com/video/44971762]
-
-_For more discussion, join the discord group [DiscordGroup](https://discord.gg/MtmzE2w)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -150,7 +106,6 @@ _For more discussion, join the discord group [DiscordGroup](https://discord.gg/M
 ## Roadmap
 
 - [x] .NET 6 Upgrade
-- [x] Fix Regex Highlight Bug
 - [ ] Refactor Core Logic away from GUI
 - [ ] Convert GUI to Cross-Platform
 - [ ] Upgrade Plugin Interface
