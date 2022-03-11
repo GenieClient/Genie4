@@ -3060,7 +3060,7 @@ namespace GenieClient.Genie
                         m_oSocket.Send("<c>" + m_sConnectKey + Constants.vbLf + "<c>/FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " / P:WIN_UNKNOWN /XML" + Constants.vbLf);    // TEMP
                                                                                                                                                             // m_oSocket.Send("<c>" & m_sConnectKey & vbLf & "<c>" & m_oGlobals.Config.sConnectString & vbLf)
                         string argkey = "connected";
-                        string argvalue = "1";
+                        string argvalue = m_oSocket.IsConnected ? "1" : "0";
                         m_oGlobals.VariableList.Add(argkey, argvalue, Globals.Variables.VariableType.Reserved);
                         string argsVariable = "$connected";
                         VariableChanged(argsVariable);
@@ -3075,7 +3075,7 @@ namespace GenieClient.Genie
             if (m_oConnectState == ConnectStates.ConnectedGame)
             {
                 string argkey = "connected";
-                string argvalue = "0";
+                string argvalue = m_oSocket.IsConnected ? "1" : "0";
                 m_oGlobals.VariableList.Add(argkey, argvalue, Globals.Variables.VariableType.Reserved);
                 string argsVariable = "$connected";
                 VariableChanged(argsVariable);
