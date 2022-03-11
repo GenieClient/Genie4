@@ -1,17 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Net.Security;
+using System.Security.Authentication;
+using System.Text.RegularExpressions;
 using System.Text;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
-
-using System.Net.Security;
-using System.Net.Sockets;
-using System.Security.Authentication;
-using System.Text;
-
-using System.Text.RegularExpressions;
 
 namespace GenieClient.Genie
 {
@@ -198,7 +195,7 @@ namespace GenieClient.Genie
                     sslStream = new SslStream(_client.GetStream(), true, new RemoteCertificateValidationCallback(Utility.ValidateServerCertificate), null);
                     try
                     {
-                        sslStream.AuthenticateAsClient(m_sHostname);
+                        sslStream.AuthenticateAsClient(m_sHostname, null, SslProtocols.Tls12, false);
                     }
                     catch (AuthenticationException e)
                     {
@@ -307,7 +304,7 @@ namespace GenieClient.Genie
             }
 
             // Send G - Game Details Request
-            byte[] message = Encoding.Default.GetBytes("G\t" + instance);
+            byte[] message = Encoding.Default.GetBytes("G\t" + instance.ToUpper());
             sslStream.Write(message);
             sslStream.Flush();
 
@@ -339,18 +336,33 @@ namespace GenieClient.Genie
             buffer = new byte[MAX_PACKET_SIZE];
             _ = sslStream.Read(buffer, 0, buffer.Length);
 
-            string character_list = Encoding.Default.GetString(buffer).TrimEnd('\0');
+            string characterResponse = Encoding.Default.GetString(buffer).TrimEnd('\0').ToUpper();
             // Requesting character list with no character name given
             if (string.IsNullOrWhiteSpace(character))
             {
                 sslStream.Close();
                 CurrentAuthState = AuthState.Disconnected;
-                return character_list;
+                return characterResponse;
             }
-
+            
             // Looking for specific character to get login key for
-            Match character_match = Regex.Match(character_list, "\t([A-Za-z0-9_]+)\t" + character + "(?:\t|$)");
-            if (!character_match.Success)
+            List<string> characterKeys = characterResponse.Split('\t').ToList<string>();
+            string characterKey = string.Empty;
+            string lastKey = string.Empty;
+            foreach(string key in characterKeys)
+            {
+                if (key.ToUpper().Equals(character.ToUpper()))
+                {
+                    characterKey = lastKey;
+                    break;
+                }
+                else
+                {
+                    lastKey = key;
+                }
+            }
+            
+            if (string.IsNullOrWhiteSpace(characterKey))
             {
                 sslStream.Close();
                 CurrentAuthState = AuthState.Disconnected;
@@ -358,7 +370,7 @@ namespace GenieClient.Genie
             }
 
             //send L - Login Key Request
-            message = Encoding.Default.GetBytes("L\t" + character_match.Groups[1].Value + "\tSTORM");
+            message = Encoding.Default.GetBytes("L\t" + characterKey + "\tSTORM");
             sslStream.Write(message);
             sslStream.Flush();
 
@@ -368,8 +380,8 @@ namespace GenieClient.Genie
             _ = sslStream.Read(buffer, 0, buffer.Length);
             
             sslStream.Close();
-            string character_key = Encoding.Default.GetString(buffer);
-            return character_key;
+            string loginKey = Encoding.Default.GetString(buffer);
+            return loginKey;
         }
 
         public void Disconnect(bool ExitOnDisconnect = false)
