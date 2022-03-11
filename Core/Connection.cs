@@ -349,7 +349,7 @@ namespace GenieClient.Genie
             }
 
             // Looking for specific character to get login key for
-            Match character_match = Regex.Match(character_list, "\t([A-Za-z0-9_]+)\t" + character.ToUpper() + "(?:\t|$)");
+            Match character_match = Regex.Match(character_list, "\t([A-Za-z0-9_-]+)\t" + character.ToUpper() + "(?:\t|$)");
             if (!character_match.Success)
             {
                 sslStream.Close();
