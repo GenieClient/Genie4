@@ -336,17 +336,17 @@ namespace GenieClient.Genie
             buffer = new byte[MAX_PACKET_SIZE];
             _ = sslStream.Read(buffer, 0, buffer.Length);
 
-            string character_list = Encoding.Default.GetString(buffer).TrimEnd('\0').ToUpper();
+            string characterResponse = Encoding.Default.GetString(buffer).TrimEnd('\0').ToUpper();
             // Requesting character list with no character name given
             if (string.IsNullOrWhiteSpace(character))
             {
                 sslStream.Close();
                 CurrentAuthState = AuthState.Disconnected;
-                return character_list;
+                return characterResponse;
             }
             
             // Looking for specific character to get login key for
-            List<string> characterKeys = character_list.Split('\t').ToList<string>();
+            List<string> characterKeys = characterResponse.Split('\t').ToList<string>();
             string characterKey = string.Empty;
             string lastKey = string.Empty;
             foreach(string key in characterKeys)
@@ -380,8 +380,8 @@ namespace GenieClient.Genie
             _ = sslStream.Read(buffer, 0, buffer.Length);
             
             sslStream.Close();
-            string character_key = Encoding.Default.GetString(buffer);
-            return character_key;
+            string loginKey = Encoding.Default.GetString(buffer);
+            return loginKey;
         }
 
         public void Disconnect(bool ExitOnDisconnect = false)
