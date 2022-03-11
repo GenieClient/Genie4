@@ -166,7 +166,7 @@ namespace GenieClient
                     return;
                 }
                 m_sCurrentProfileFile = string.Empty;
-                SafeLoadProfile(character + game + ".xml", true);
+                SafeLoadProfile(character + game + ".xml", false);
                 m_oGame.DirectConnect(character, game, host, port);
             }
         }
