@@ -1,17 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Net.Security;
+using System.Security.Authentication;
+using System.Text.RegularExpressions;
 using System.Text;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
-
-using System.Net.Security;
-using System.Net.Sockets;
-using System.Security.Authentication;
-using System.Text;
-
-using System.Text.RegularExpressions;
 
 namespace GenieClient.Genie
 {
@@ -347,10 +344,25 @@ namespace GenieClient.Genie
                 CurrentAuthState = AuthState.Disconnected;
                 return character_list;
             }
-
+            
             // Looking for specific character to get login key for
-            Match character_match = Regex.Match(character_list, "\t([A-Za-z0-9_-]+)\t" + character.ToUpper() + "(?:\t|$)");
-            if (!character_match.Success)
+            List<string> characterKeys = character_list.Split('\t').ToList<string>();
+            string characterKey = string.Empty;
+            string lastKey = string.Empty;
+            foreach(string key in characterKeys)
+            {
+                if (key.ToUpper().Equals(character.ToUpper()))
+                {
+                    characterKey = lastKey;
+                    break;
+                }
+                else
+                {
+                    lastKey = key;
+                }
+            }
+            
+            if (string.IsNullOrWhiteSpace(characterKey))
             {
                 sslStream.Close();
                 CurrentAuthState = AuthState.Disconnected;
@@ -358,7 +370,7 @@ namespace GenieClient.Genie
             }
 
             //send L - Login Key Request
-            message = Encoding.Default.GetBytes("L\t" + character_match.Groups[1].Value + "\tSTORM");
+            message = Encoding.Default.GetBytes("L\t" + characterKey + "\tSTORM");
             sslStream.Write(message);
             sslStream.Flush();
 
