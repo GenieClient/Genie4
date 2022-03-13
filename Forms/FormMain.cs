@@ -6438,6 +6438,12 @@ namespace GenieClient
                         AutoMapperEnabledToolStripMenuItem.Checked = m_oGlobals.Config.bAutoMapper;
                         break;
                     }
+
+                case Genie.Config.ConfigFieldUpdated.LogDir:
+                    {
+                        m_oGlobals.Log.LogDirectory = m_oGlobals.Config.sLogDir;
+                        break;
+                    }
             }
         }
 
