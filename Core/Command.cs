@@ -2788,8 +2788,8 @@ namespace GenieClient.Genie
             EchoText("showlinks=" + oGlobals.Config.bShowLinks.ToString() + System.Environment.NewLine);
             EchoText("logdir=" + oGlobals.Config.sLogDir + System.Environment.NewLine);
             EchoText("configdir=" + oGlobals.Config.sConfigDir + System.Environment.NewLine);
-            EchoText("plugindir=" + oGlobals.Config.PluginDir.ToString() + System.Environment.NewLine);
-            EchoText("mapdir=" + oGlobals.Config.MapDir.ToString() + System.Environment.NewLine);
+            EchoText("plugindir=" + oGlobals.Config.PluginDir + System.Environment.NewLine);
+            EchoText("mapdir=" + oGlobals.Config.MapDir + System.Environment.NewLine);
             EchoText("scriptdir=" + oGlobals.Config.sScriptDir + System.Environment.NewLine);
             EchoText("scriptchar=" + oGlobals.Config.ScriptChar.ToString() + System.Environment.NewLine);
             EchoText("scripttimeout=" + oGlobals.Config.iScriptTimeout.ToString() + System.Environment.NewLine);
