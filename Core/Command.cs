@@ -241,7 +241,7 @@ namespace GenieClient.Genie
                     if (sRow.Trim().StartsWith(Conversions.ToString(oGlobals.Config.cCommandChar)))
                     {
                         // Get result from function then send result to game
-                        var oArgs = new ArrayList();
+                        var oArgs = new Genie.Collections.ArrayList();
                         oArgs = Utility.ParseArgs(sRow);
                         if (oArgs.Count > 0)
                         {
@@ -2430,7 +2430,7 @@ namespace GenieClient.Genie
             return sResult;
         }
      
-        private void Do(ArrayList oArgs)
+        private void Do(Genie.Collections.ArrayList oArgs)
         {
             if (oArgs.Count > 1)
             {
@@ -2469,7 +2469,7 @@ namespace GenieClient.Genie
                 }
             }
         }
-        private void Send(ArrayList oArgs)
+        private void Send(Genie.Collections.ArrayList oArgs)
         {
             if (oArgs.Count > 1)
             {
@@ -2508,7 +2508,7 @@ namespace GenieClient.Genie
                 }
             }
         }
-        private void Connect(ArrayList args, bool isLich = false)
+        private void Connect(Genie.Collections.ArrayList args, bool isLich = false)
         {
             if (args.Count == 1)
             {
@@ -2613,7 +2613,7 @@ namespace GenieClient.Genie
         private string ParseAlias(string sText)
         {
             string sResult = "";
-            var oArgs = new ArrayList();
+            var oArgs = new Genie.Collections.ArrayList();
             oArgs = Utility.ParseArgs(sText);
             string sKey = GetKeywordString(sText);
             if (oGlobals.AliasList.ContainsKey(sKey) == true)
@@ -2721,7 +2721,7 @@ namespace GenieClient.Genie
         // Return sResult
         // End Function
 
-        private string ParseAllArgs(ArrayList oList, int iStartIndex = 1, bool bParseQuickSend = true)
+        private string ParseAllArgs(Genie.Collections.ArrayList oList, int iStartIndex = 1, bool bParseQuickSend = true)
         {
             string sResult = string.Empty;
             string sCommand = string.Empty;

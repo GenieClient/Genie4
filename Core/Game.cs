@@ -3096,6 +3096,7 @@ namespace GenieClient.Genie
         {
             if (m_oGlobals.PluginsEnabled == false)
                 return sText;
+            
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
                 if(oPlugin is GeniePlugin.Interfaces.IPlugin)

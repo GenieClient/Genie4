@@ -36,7 +36,7 @@ namespace GenieClient
             // Add any initialization after the InitializeComponent() call.
             LocalDirectory.CheckUserDirectory();
             bool bCustomConfigFile = false;
-            var al = new ArrayList();
+            var al = new Genie.Collections.ArrayList();
             al = Utility.ParseArgs(Interaction.Command());
             foreach (string cmd in al)
             {
@@ -478,7 +478,7 @@ namespace GenieClient
         private FormSkin m_oOutputRoom;
         private FormSkin m_oOutputLog;
         private FormSkin m_oOutputDebug;
-        private ArrayList m_oFormList = new ArrayList();
+        private Genie.Collections.ArrayList m_oFormList = new Genie.Collections.ArrayList();
         private string m_sConfigFile = string.Empty;
         // private string m_sUpdateVersion = string.Empty;
         // private bool m_bIsUpdateMajor = false;
@@ -488,7 +488,7 @@ namespace GenieClient
         // Private WithEvents m_oWorker As New System.ComponentModel.BackgroundWorker
         // Private m_bRunWorker As Boolean = True
 
-        public ArrayList FormList
+        public Genie.Collections.ArrayList FormList
         {
             get
             {
@@ -2859,7 +2859,7 @@ namespace GenieClient
             }
         }
 
-        private Script LoadScript(string sScriptName, ArrayList oArgList)
+        private Script LoadScript(string sScriptName, Genie.Collections.ArrayList oArgList)
         {
             if (m_oGlobals.Config.bAbortDupeScript == true)
             {
@@ -4074,7 +4074,7 @@ namespace GenieClient
         {
             try
             {
-                var al = new ArrayList();
+                var al = new Genie.Collections.ArrayList();
                 al = Utility.ParseArgs(sText, true);
                 string ScriptName = Conversions.ToString(al[0].ToString().ToLower().Trim().Substring(1));
                 if (ScriptName.EndsWith(".cmd") == false)
@@ -6443,7 +6443,7 @@ namespace GenieClient
 
         private void Command_EventClassChange()
         {
-            var al = new ArrayList();
+            var al = new Genie.Collections.ArrayList();
             if (m_oGlobals.ClassList.AcquireReaderLock())
             {
                 try

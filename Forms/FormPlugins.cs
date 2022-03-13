@@ -13,7 +13,7 @@ namespace GenieClient
             InitializeComponent();
         }
 
-        public FormPlugins(ref ArrayList pluginList)
+        public FormPlugins(ref Genie.Collections.ArrayList pluginList)
         {
             // This call is required by the designer.
             InitializeComponent();
@@ -54,7 +54,7 @@ namespace GenieClient
             }
         }
 
-        private ArrayList m_PluginList;
+        private Genie.Collections.ArrayList m_PluginList;
 
         private void PopulatePluginList()
         {

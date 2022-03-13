@@ -35,12 +35,12 @@ namespace GenieClient
                 public int iIndex = 0;
                 public bool bSkipBlock = false;
                 public int iBlockDepth = 0;
-                public ArrayList oBlockList = new ArrayList();
-                public ArrayList oArgList = new ArrayList();
+                public Genie.Collections.ArrayList oBlockList = new Genie.Collections.ArrayList();
+                public Genie.Collections.ArrayList oArgList = new Genie.Collections.ArrayList();
                 public bool bLastRowWasEvaluation = false;
             }
 
-            private ArrayList oLineList = new ArrayList();
+            private Genie.Collections.ArrayList oLineList = new Genie.Collections.ArrayList();
 
             public enum BlockState
             {
@@ -79,7 +79,7 @@ namespace GenieClient
                 }
             }
 
-            public ArrayList ArgList
+            public Genie.Collections.ArrayList ArgList
             {
                 get
                 {
@@ -481,7 +481,7 @@ namespace GenieClient
             }
         }
 
-        public class ClassMatchList : ArrayList
+        public class ClassMatchList : Genie.Collections.ArrayList
         {
             public class Match
             {
@@ -641,8 +641,8 @@ namespace GenieClient
 
         private Genie.Script.Eval m_oEval = new Genie.Script.Eval();
         private Genie.Script.MathEval m_oEvalMath = new Genie.Script.MathEval();
-        private ArrayList m_oScript = new ArrayList();
-        private ArrayList m_oScriptFiles = new ArrayList();
+        private Genie.Collections.ArrayList m_oScript = new Genie.Collections.ArrayList();
+        private Genie.Collections.ArrayList m_oScriptFiles = new Genie.Collections.ArrayList();
         private Hashtable m_oScriptLabels = new Hashtable();
         private Dictionary<string, Func<bool>> ScriptInternalLabels;
         private CurrentLine m_oCurrentLine = new CurrentLine();
@@ -1287,7 +1287,7 @@ namespace GenieClient
                                     m_oRegMatch = ((ClassActionList.Action)de.Value).oRegExp.Match(text);
                                     if (m_oRegMatch.Success)
                                     {
-                                        var ActionRegExpArg = new ArrayList();
+                                        var ActionRegExpArg = new Genie.Collections.ArrayList();
                                         if (m_oRegMatch.Groups.Count > 0)
                                         {
                                             int J;
@@ -1385,7 +1385,7 @@ namespace GenieClient
 
                                     if (s.Length > 0 & (s ?? "") != "0")
                                     {
-                                        ParseAction(de.Key.ToString(), new ArrayList(), sVariableName);
+                                        ParseAction(de.Key.ToString(), new Genie.Collections.ArrayList(), sVariableName);
                                         if (m_oActions.Count == 0) // Script Aborted
                                         {
                                             return;
@@ -1951,7 +1951,7 @@ namespace GenieClient
             return default;
         }
 
-        public bool LoadFile(string strFile, ArrayList al)
+        public bool LoadFile(string strFile, Genie.Collections.ArrayList al)
         {
             if (Monitor.TryEnter(m_oThreadLock, m_iDefaultTimeout))
             {
@@ -2006,7 +2006,7 @@ namespace GenieClient
             return string.Empty;
         }
 
-        private void ParseAction(string sKey, ArrayList oArgs, string sTriggerText)
+        private void ParseAction(string sKey, Genie.Collections.ArrayList oArgs, string sTriggerText)
         {
             if (m_oActions.ContainsKey(sKey) == false)
             {

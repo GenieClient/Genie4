@@ -26,7 +26,7 @@ namespace GenieClient
 
         public static AvailablePlugin[] FindPlugins(string strPath)
         {
-            var Plugins = new ArrayList();
+            var Plugins = new Genie.Collections.ArrayList();
             string[] strDLLs;
             int intIndex;
             Assembly objDLL;
@@ -77,7 +77,7 @@ namespace GenieClient
             object strKey = Utility.GenerateKeyHash(argsText);
             var readAllBytes = File.ReadAllBytes(strFile);
             objDLL = Assembly.Load(readAllBytes);
-            var Plugins = new ArrayList();
+            var Plugins = new Genie.Collections.ArrayList();
             ExamineAssembly(objDLL, strFile, Conversions.ToString(strKey), Plugins);
             if (Plugins.Count != 0)
             {
@@ -101,7 +101,7 @@ namespace GenieClient
             return sb.ToString();
         }
 
-        private static void ExamineAssembly(Assembly objDLL, string AssemblyPath, string strKey, ArrayList Plugins)
+        private static void ExamineAssembly(Assembly objDLL, string AssemblyPath, string strKey, Genie.Collections.ArrayList Plugins)
         {
             Type objInterface;
             AvailablePlugin Plugin;

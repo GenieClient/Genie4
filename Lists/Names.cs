@@ -90,7 +90,7 @@ namespace GenieClient.Genie
 
         public void RebuildIndex()
         {
-            var al = new ArrayList();
+            var al = new Genie.Collections.ArrayList();
             foreach (string s in base.Keys)
                 al.Add(s);
             al.Sort();
