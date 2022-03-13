@@ -56,6 +56,7 @@ namespace GenieClient.Genie
         public string LichServer { get; set; } = "localhost";
         public int LichPort { get; set; } = 11024;
         public int LichStartPause { get; set; } = 5;
+        public string ConnectScript { get; set; } = string.Empty;
 
         public string ScriptDir
         {
@@ -329,7 +330,7 @@ namespace GenieClient.Genie
                     sFileName = ConfigDir + @"\" + sFileName;
                 }
 
-                if (File.Exists(sFileName) == true)
+                if (File.Exists(sFileName))
                 {
                     Utility.DeleteFile(sFileName);
                 }
@@ -374,6 +375,7 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine($"#config {{lichserver}} {{{LichServer}}}");
                 oStreamWriter.WriteLine($"#config {{lichport}} {{{LichPort}}}");
                 oStreamWriter.WriteLine($"#config {{lichstartpause}} {{{LichStartPause}}}");
+                oStreamWriter.WriteLine($"#config {{connectscript}} {{{ConnectScript}}}");
                 oStreamWriter.Close();
                 return true;
             }
@@ -963,6 +965,11 @@ namespace GenieClient.Genie
                             break;
                         }
 
+                    case "connectscript":
+                        {
+                            ConnectScript = sValue.ToString();
+                            break;
+                        }
                     case "automapper":
                         {
                             var switchExpr12 = sValue.ToLower();

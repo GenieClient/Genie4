@@ -288,6 +288,13 @@ namespace GenieClient.Genie
             }
         }
 
+        public bool IsConnectedToGame
+        {
+            get
+            {
+                return m_oConnectState == ConnectStates.ConnectedGame;
+            }
+        }
         public bool LastRowWasPrompt
         {
             get
@@ -3063,7 +3070,7 @@ namespace GenieClient.Genie
                         m_oGlobals.VariableList.Add(argkey, argvalue, Globals.Variables.VariableType.Reserved);
                         string argsVariable = "$connected";
                         VariableChanged(argsVariable);
-                        m_bStatusPromptEnabled = false;
+                        m_bStatusPromptEnabled = false;                        
                         break;
                     }
             }

@@ -4248,7 +4248,10 @@ namespace GenieClient
                         IconBar.UpdateHidden();
                         IconBar.UpdateJoined();
                         IconBar.UpdateWebbed();
-                        
+                        if (m_oGame.IsConnectedToGame && !string.IsNullOrWhiteSpace(m_oGlobals.Config.ConnectScript))
+                        {
+                            ClassCommand_SendText(m_oGlobals.Config.ScriptChar + m_oGlobals.Config.ConnectScript, false, "Connected");
+                        }
                         break;
                     }
 
@@ -7306,7 +7309,7 @@ namespace GenieClient
 
                 m_sCurrentProfileFile = FileName;
             }
-            else if (DoConnect == true)
+            else if (DoConnect)
             {
                 // Connect to non existing profile?
                 string argsText1 = "Profile \"" + FileName + "\" not found." + System.Environment.NewLine;
