@@ -484,7 +484,7 @@ namespace GenieClient.Genie
             if (!sText.StartsWith(Conversions.ToString(m_oGlobals.Config.cMyCommandChar))) // Skip user commands
             {
                 m_oLastUserActivity = DateTime.Now;
-                m_oSocket.Send("<c>" + sText + Constants.vbCrLf);
+                m_oSocket.Send(sText + Constants.vbCrLf);
                 m_oGlobals.VariableList["lastcommand"] = sText;
                 var lastCommandVar = "lastcommand";
                 EventVariableChanged?.Invoke(lastCommandVar);
@@ -3057,8 +3057,7 @@ namespace GenieClient.Genie
                         m_iConnectAttempts = 0;
                         m_bManualDisconnect = false;
                         m_oReconnectTime = default;
-                        m_oSocket.Send("<c>" + m_sConnectKey + Constants.vbLf + "<c>/FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " / P:WIN_UNKNOWN /XML" + Constants.vbLf);    // TEMP
-                                                                                                                                                            // m_oSocket.Send("<c>" & m_sConnectKey & vbLf & "<c>" & m_oGlobals.Config.sConnectString & vbLf)
+                        m_oSocket.Send(m_sConnectKey + Constants.vbLf + "/FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " / P:WIN_UNKNOWN /XML" + Constants.vbLf);    // TEMP
                         string argkey = "connected";
                         string argvalue = m_oSocket.IsConnected ? "1" : "0";
                         m_oGlobals.VariableList.Add(argkey, argvalue, Globals.Variables.VariableType.Reserved);
@@ -3097,6 +3096,7 @@ namespace GenieClient.Genie
         {
             if (m_oGlobals.PluginsEnabled == false)
                 return sText;
+            
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
                 if(oPlugin is GeniePlugin.Interfaces.IPlugin)

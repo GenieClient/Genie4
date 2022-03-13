@@ -63,7 +63,7 @@ namespace GenieClient.Genie
         public GagRegExp GagList = new GagRegExp();
         public string GenieKey = string.Empty;
         public string GenieAccount = string.Empty;
-        public ArrayList PluginList = new ArrayList();
+        public Collections.ArrayList PluginList = new Collections.ArrayList();
         public bool PluginsEnabled = true;
         public Hashtable PluginVerifiedKeyList = new Hashtable();
         public Hashtable PluginPremiumKeyList = new Hashtable();
@@ -604,7 +604,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new ArrayList();
+                    var al = new Genie.Collections.ArrayList();
                     try
                     {
                         foreach (string s in base.Keys)
@@ -927,7 +927,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new ArrayList();
+                    var al = new Genie.Collections.ArrayList();
                     try
                     {
                         foreach (string s in base.Keys)
@@ -1170,7 +1170,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new ArrayList();
+                    var al = new Genie.Collections.ArrayList();
                     try
                     {
                         foreach (string s in base.Keys)
@@ -1288,7 +1288,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new ArrayList();
+                    var al = new Genie.Collections.ArrayList();
                     try
                     {
                         foreach (string s in base.Keys)
@@ -1436,7 +1436,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new ArrayList();
+                    var al = new Genie.Collections.ArrayList();
                     try
                     {
                         for (int I = 0, loopTo = base.Count - 1; I <= loopTo; I++)
@@ -1664,7 +1664,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new ArrayList();
+                    var al = new Genie.Collections.ArrayList();
                     try
                     {
                         for (int I = 0, loopTo = base.Count - 1; I <= loopTo; I++)
@@ -1975,7 +1975,7 @@ namespace GenieClient.Genie
 
         private void AddHighlight(string sLine)
         {
-            var oArgs = new ArrayList();
+            var oArgs = new Genie.Collections.ArrayList();
             oArgs = Utility.ParseArgs(sLine);
             if (oArgs.Count > 0)
             {

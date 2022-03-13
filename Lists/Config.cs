@@ -97,33 +97,35 @@ namespace GenieClient.Genie
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(sMapDir))
+                string sLocation = string.Empty;
+                if (sMapDir.Contains(":"))
                 {
-                    sMapDir = LocalDirectory.Path + @"\Maps";
+                    sLocation = sMapDir;
+                }
+                else
+                {
+                    sLocation = LocalDirectory.Path;
+                    if (sMapDir.StartsWith(@"\"))
+                    {
+                        sLocation += sMapDir;
+                    }
+                    else
+                    {
+                        sLocation += @"\" + sMapDir;
+                    }
+                }
 
-                }
-                if (!System.IO.Directory.Exists(sMapDir))
-                {
-                    System.IO.Directory.CreateDirectory(sMapDir);
-                }
-                if (sMapDir.EndsWith("\\"))
-                {
-                    sMapDir = sMapDir.Substring(0, sMapDir.Length - 1);
-                }
-                
-                return sMapDir;
+                return sLocation;
             }
 
             set
             {
-                if (value.EndsWith("\\"))
+                if (value.EndsWith(@"\"))
                 {
-                    value = value.Substring(0, value.Length - 1); ;
+                    value = value.Substring(0, value.Length - 1);
                 }
-                if (Directory.Exists(value))
-                {
-                    sMapDir = value;
-                }
+
+                sMapDir = value;
             }
         }
 
@@ -131,35 +133,35 @@ namespace GenieClient.Genie
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(sPluginDir))
+                string sLocation = string.Empty;
+                if (sPluginDir.Contains(":"))
                 {
-                    sPluginDir = LocalDirectory.Path + @"\Plugins";
+                    sLocation = sPluginDir;
                 }
-                
-                if (!System.IO.Directory.Exists(sPluginDir))
+                else
                 {
-                    System.IO.Directory.CreateDirectory(sPluginDir);
+                    sLocation = LocalDirectory.Path;
+                    if (sPluginDir.StartsWith(@"\"))
+                    {
+                        sLocation += sPluginDir;
+                    }
+                    else
+                    {
+                        sLocation += @"\" + sPluginDir;
+                    }
                 }
 
-                if (sPluginDir.EndsWith("\\"))
-                {
-                    sPluginDir = sPluginDir.Substring(0,sPluginDir.Length - 1);
-                }
-                
-                return sPluginDir;
-                
+                return sLocation;
             }
 
             set
             {
-                if (value.EndsWith("\\"))
+                if (value.EndsWith(@"\"))
                 {
-                    value = value.Substring(0, value.Length - 1); ;
+                    value = value.Substring(0, value.Length - 1);
                 }
-                if (Directory.Exists(value))
-                {
-                    sPluginDir = value;
-                }
+
+                sPluginDir = value;
             }
         }
 

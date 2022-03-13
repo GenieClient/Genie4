@@ -40,7 +40,7 @@ namespace GenieClient.Genie
         {
             if (AcquireReaderLock())
             {
-                var al = new ArrayList();
+                var al = new Genie.Collections.ArrayList();
                 try
                 {
                     foreach (string s in base.Keys)
@@ -145,7 +145,7 @@ namespace GenieClient.Genie
             {
                 try
                 {
-                    var al = new ArrayList();
+                    var al = new Genie.Collections.ArrayList();
                     foreach (string s in base.Keys)
                     {
                         if (((Highlight)base[s]).IsActive == true)
@@ -193,7 +193,7 @@ namespace GenieClient.Genie
             {
                 try
                 {
-                    var al = new ArrayList();
+                    var al = new Genie.Collections.ArrayList();
                     foreach (string s in base.Keys)
                     {
                         if (((Highlight)base[s]).IsActive == true)

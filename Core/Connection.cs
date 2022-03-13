@@ -571,9 +571,10 @@ namespace GenieClient.Genie
 
         private void ParseData(string sText)
         {
+            char lastchar = 'x';
             foreach (char c in sText)
             {
-                if (Conversions.ToString(c) == Constants.vbCr)
+                if (c == '\r' || (c == '\n' && lastchar != '\r'))
                 {
                     m_RowBuffer.Append(m_ParseBuffer);
                     m_RowBuffer.Append(System.Environment.NewLine);
@@ -585,6 +586,7 @@ namespace GenieClient.Genie
                 {
                     m_ParseBuffer.Append(c);
                 }
+                lastchar = c;
             }
 
             // Broken Line (Print and save result to RowBuffer)

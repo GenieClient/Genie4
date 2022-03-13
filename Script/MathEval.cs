@@ -63,13 +63,13 @@ namespace GenieClient.Genie.Script
         private string[] m_funcs = new[] { "sin", "cos", "tan", "arcsin", "arccos", "arctan", "sqrt", "max", "min", "floor", "ceiling", "log", "log10", "ln", "round", "abs", "neg", "pos" };
 
 
-        private ArrayList m_operators;
+        private Genie.Collections.ArrayList m_operators;
         private Stack m_stack = new Stack();
 
         private void init_operators()
         {
             ClassSymbol op;
-            m_operators = new ArrayList();
+            m_operators = new Genie.Collections.ArrayList();
             op = new ClassSymbol();
             op.Token = "-";
             op.Cls = TOKENCLASS.OPERATORTOKEN;
