@@ -4248,9 +4248,10 @@ namespace GenieClient
                         IconBar.UpdateHidden();
                         IconBar.UpdateJoined();
                         IconBar.UpdateWebbed();
-                        if (m_oGame.IsConnectedToGame && !string.IsNullOrWhiteSpace(m_oGlobals.Config.ConnectScript))
+                        if (m_oGame.IsConnectedToGame )
                         {
-                            ClassCommand_SendText(m_oGlobals.Config.ScriptChar + m_oGlobals.Config.ConnectScript, false, "Connected");
+                            if(!string.IsNullOrWhiteSpace(m_oGlobals.Config.ConnectScript)) ClassCommand_SendText(m_oGlobals.Config.ScriptChar + m_oGlobals.Config.ConnectScript, false, "Connected");
+                            if (m_oGlobals.VariableList.ContainsKey("connectscript")) ClassCommand_SendText(m_oGlobals.Config.ScriptChar + m_oGlobals.Config.ConnectScript, false, "Connected");
                         }
                         break;
                     }
