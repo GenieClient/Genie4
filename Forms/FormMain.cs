@@ -2707,6 +2707,7 @@ namespace GenieClient
                 }
                 finally
                 {
+                    m_oScriptList.ReleaseReaderLock();
                     if (m_oScriptList.AcquireWriterLock())
                     {
                         try
