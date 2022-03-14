@@ -1089,10 +1089,13 @@ namespace GenieClient.Genie
 
                             break;
                         }
-                    case "U": //these two will be the start of error messages from
-                    case "T": //the GetLoginKey function, just show them.
+                    case "E": //Indicates an Error Message
                         {
-                            PrintError(sText);
+                            string[] errorStrings = sText.Split("\t");
+                            for(int i = 1;i < errorStrings.Length;i++)
+                            {
+                                PrintError(errorStrings[i]);
+                            }
                             m_oSocket.Disconnect();
                             break;
                         }

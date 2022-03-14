@@ -295,12 +295,12 @@ namespace GenieClient.Genie
                         // Sanity checks
             if (!IsConnected || sslStream == null)
             {
-                return "The connection was lost.";
+                return "E\tThe connection was lost.";
             }
             
             if (string.IsNullOrWhiteSpace(instance))
             {
-                return "The game instance was not specified.";
+                return "E\tThe game instance was not specified.";
             }
 
             // Send G - Game Details Request
@@ -324,7 +324,7 @@ namespace GenieClient.Genie
             {
                 sslStream.Close();
                 CurrentAuthState = AuthState.Disconnected;
-                return "There is a problem with your account. Please log in to the play.net website for more information.";
+                return "E\tThere is a problem with your account. Please log in to the play.net website for more information.";
             }
 
             // send C - Character Slot Request
@@ -366,7 +366,7 @@ namespace GenieClient.Genie
             {
                 sslStream.Close();
                 CurrentAuthState = AuthState.Disconnected;
-                return "The specified character was not found: " + character + ".";
+                return "E\tThe specified character was not found: " + character + ".";
             }
 
             //send L - Login Key Request
