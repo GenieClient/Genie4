@@ -478,6 +478,8 @@ namespace GenieClient
         private FormSkin m_oOutputRoom;
         private FormSkin m_oOutputLog;
         private FormSkin m_oOutputDebug;
+        private FormSkin m_oOutputActiveSpells;
+        private FormSkin m_oOutputCombat;
         private Genie.Collections.ArrayList m_oFormList = new Genie.Collections.ArrayList();
         private string m_sConfigFile = string.Empty;
         // private string m_sUpdateVersion = string.Empty;
@@ -2580,6 +2582,11 @@ namespace GenieClient
             {
                 SafeCreateOutputForm("raw", "Raw", "", 300, 200, 10, 10, false);
             }
+
+            if (Information.IsNothing(m_oOutputActiveSpells))
+            {
+                SafeCreateOutputForm("percWindow", "Active Spells", null, 300, 200, 10, 10, false);
+            }
         }
 
         public new object ClientSize
@@ -3477,7 +3484,7 @@ namespace GenieClient
 
             oForm.Name = "FormSkin" + sID;
             oForm.Text = sName;
-            oForm.Title = sName;
+            oForm.Title = sName == "percWindow" ? "Active Spells" : sName;
             oForm.ID = sID;
             oForm.IfClosed = sIfClosed;
             if (!Information.IsNothing(oFont))
@@ -3559,7 +3566,28 @@ namespace GenieClient
                         oForm.UserForm = false;
                         break;
                     }
-            }
+
+                case "debug":
+                    {
+                        m_oOutputDebug = oForm;
+                        oForm.UserForm = false;
+                        break;
+                    }
+
+                case "percwindow":
+                    {
+                        m_oOutputActiveSpells = oForm;
+                        oForm.UserForm = false;
+                        break;
+                    }
+
+                case "combat":
+                    {
+                        m_oOutputCombat = oForm;
+                        oForm.UserForm = false;
+                        break;
+                    }
+                }
 
             if (UpdateFormList)
                 UpdateWindowMenuList();
@@ -4551,7 +4579,17 @@ namespace GenieClient
                         }
                     case Genie.Game.WindowTarget.Combat:
                         {
-                            oFormTarget = FindSkinFormByName("Combat");
+                            oFormTarget = m_oOutputCombat;
+                            break;
+                        }
+                    case Genie.Game.WindowTarget.ActiveSpells:
+                        {
+                            oFormTarget = m_oOutputActiveSpells;
+                            break;
+                        }
+                    case Genie.Game.WindowTarget.Debug:
+                        {
+                            oFormTarget = m_oOutputDebug;
                             break;
                         }
                     case Genie.Game.WindowTarget.Other:

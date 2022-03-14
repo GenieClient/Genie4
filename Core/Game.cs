@@ -214,6 +214,7 @@ namespace GenieClient.Genie
             Log,
             Raw,
             Debug,
+            ActiveSpells,
             Other
         }
 
@@ -1398,6 +1399,12 @@ namespace GenieClient.Genie
                                 case "debug":
                                     {
                                         m_oTargetWindow = WindowTarget.Debug;
+                                        break;
+                                    }
+
+                                case "percwindow":
+                                    {
+                                        m_oTargetWindow = WindowTarget.ActiveSpells;
                                         break;
                                     }
 
@@ -2789,6 +2796,12 @@ namespace GenieClient.Genie
                 case WindowTarget.Debug:
                     {
                         sTargetWindowString = "debug";
+                        break;
+                    }
+
+                case WindowTarget.ActiveSpells:
+                    {
+                        sTargetWindowString = "percwindow";
                         break;
                     }
 
