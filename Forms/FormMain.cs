@@ -2722,7 +2722,6 @@ namespace GenieClient
                             m_oScriptList.ReleaseWriterLock();
                         }
                     }
-                    m_oScriptList.ReleaseReaderLock();
                 }
             }
         }
