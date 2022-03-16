@@ -6721,12 +6721,13 @@ namespace GenieClient
 
                         case "concentration":
                             {
+                                ComponentBarsConc.ForegroundColor = m_oGlobals.PresetList["concentration"].FgColor;
+                                ComponentBarsConc.BackgroundColor = m_oGlobals.PresetList["concentration"].BgColor;
+                                ComponentBarsConc.BorderColor = m_oGlobals.PresetList["concentration"].BgColor;
+                                ComponentBarsConc.Refresh();
                                 break;
                             }
-                        // ComponentBarsConcentration.ForegroundColor = oGlobals.PresetList.Item("concentration").FgColor
-                        // ComponentBarsConcentration.BackgroundColor = oGlobals.PresetList.Item("concentration").BgColor
-                        // ComponentBarsConcentration.BorderColor = oGlobals.PresetList.Item("concentration").BgColor
-                        // ComponentBarsConcentration.Refresh()
+
                         case "all":
                             {
                                 oRTControl.ForegroundColor = m_oGlobals.PresetList["roundtime"].FgColor;
@@ -6751,12 +6752,12 @@ namespace GenieClient
                                 ComponentBarsSpirit.BackgroundColor = m_oGlobals.PresetList["spirit"].BgColor;
                                 ComponentBarsSpirit.BorderColor = m_oGlobals.PresetList["spirit"].BgColor;
                                 ComponentBarsSpirit.Refresh();
+                                ComponentBarsConc.ForegroundColor = m_oGlobals.PresetList["concentration"].FgColor;
+                                ComponentBarsConc.BackgroundColor = m_oGlobals.PresetList["concentration"].BgColor;
+                                ComponentBarsConc.BorderColor = m_oGlobals.PresetList["concentration"].BgColor;
+                                ComponentBarsConc.Refresh();
                                 break;
                             }
-                            // ComponentBarsConcentration.ForegroundColor = oGlobals.PresetList.Item("concentration").FgColor
-                            // ComponentBarsConcentration.BackgroundColor = oGlobals.PresetList.Item("concentration").BgColor
-                            // ComponentBarsConcentration.BorderColor = oGlobals.PresetList.Item("concentration").BgColor
-                            // ComponentBarsConcentration.Refresh()
                     }
                 }
             }
