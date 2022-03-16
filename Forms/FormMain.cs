@@ -4160,7 +4160,27 @@ namespace GenieClient
                         SetBarValue(argiValue4, argoBar4);
                         break;
                     }
-
+                case "$guild":
+                    {
+                        if (m_oGlobals.VariableList.ContainsKey("guild"))
+                        {
+                            string guild = m_oGlobals.VariableList["guild"].ToString();
+                            switch (guild.ToLower())
+                            {
+                                case "thief":
+                                    ComponentBarsMana.BarText = "";
+                                    break;
+                                case "barbarian":
+                                    ComponentBarsMana.BarText = "Inner Fire";
+                                    break;
+                                default:
+                                    ComponentBarsMana.BarText = "Mana";
+                                    break;
+                            }
+                            ComponentBarsMana.Value = ComponentBarsMana.Value; //call this because the Value accessor is what actively updates the BarText
+                        }
+                        break;
+                    }
                 case "compass":
                 case "$north":
                 case "$northeast":
