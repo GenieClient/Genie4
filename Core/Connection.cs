@@ -303,6 +303,11 @@ namespace GenieClient.Genie
                 return "E\tThe game instance was not specified.";
             }
 
+            if (CurrentAuthState == AuthState.AuthenticationFailed)
+            {
+                return "E\tAuthentication Failed.";
+            }
+
             // Send G - Game Details Request
             byte[] message = Encoding.Default.GetBytes("G\t" + instance.ToUpper());
             sslStream.Write(message);
