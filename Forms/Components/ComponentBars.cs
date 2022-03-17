@@ -125,7 +125,7 @@ namespace GenieClient
                 if (value > 100)
                     value = 100;
                 m_CurrentValue = value;
-                LabelValue.Text = m_Text + " " + m_CurrentValue.ToString() + "%";
+                LabelValue.Text = m_Text;
                 Invalidate();
             }
         }

@@ -1624,65 +1624,56 @@ namespace GenieClient.Genie
 
                     case "progressBar":
                         {
-                            string argstrAttributeName18 = "value";
-                            int intValue = int.Parse(GetAttributeData(oXmlNode, argstrAttributeName18));
-                            string argstrAttributeName19 = "id";
-                            var switchExpr7 = GetAttributeData(oXmlNode, argstrAttributeName19);
-                            switch (switchExpr7)
+                            int barValue = int.Parse(GetAttributeData(oXmlNode, "value"));
+                            string barName = GetAttributeData(oXmlNode, "id");
+                            string barTextBase = GetAttributeData(oXmlNode, "text");
+                            string barText = string.Empty;
+                            char previousCharacter = ' ';
+                            for (int i = 0; i < barTextBase.Length; i++)
+                            {
+                                barText += previousCharacter == ' ' ? barTextBase[i].ToString().ToUpper() : barTextBase[i];
+                                previousCharacter = barTextBase[i];
+                            }
+                            switch (barName)
                             {
                                 case "health":
                                     {
-                                        m_iHealth = intValue;
-                                        string argkey9 = "health";
-                                        var healthVar = m_iHealth.ToString();
-                                        m_oGlobals.VariableList.Add(argkey9, healthVar, Globals.Variables.VariableType.Reserved);
-                                        string argsVariable7 = "$health";
-                                        VariableChanged(argsVariable7);
+                                        m_oGlobals.VariableList.Add("health", barValue.ToString(), Globals.Variables.VariableType.Reserved);
+                                        m_oGlobals.VariableList.Add("healthBarText", barText, Globals.Variables.VariableType.Reserved);
+                                        VariableChanged("$health");
                                         break;
                                     }
 
                                 case "mana":
                                     {
-                                        m_iMana = intValue;
-                                        string argkey10 = "mana";
-                                        var manaVar = m_iMana.ToString();
-                                        m_oGlobals.VariableList.Add(argkey10, manaVar, Globals.Variables.VariableType.Reserved);
-                                        string argsVariable8 = "$mana";
-                                        VariableChanged(argsVariable8);
+                                        m_oGlobals.VariableList.Add("mana", barValue.ToString(), Globals.Variables.VariableType.Reserved);
+                                        m_oGlobals.VariableList.Add("manaBarText", barText, Globals.Variables.VariableType.Reserved);
+                                        VariableChanged("$mana");
                                         break;
                                     }
 
                                 case "spirit":
                                     {
-                                        m_iSpirit = intValue;
-                                        string argkey11 = "spirit";
-                                        var spiritVar = m_iSpirit.ToString();
-                                        m_oGlobals.VariableList.Add(argkey11, spiritVar, Globals.Variables.VariableType.Reserved);
-                                        string argsVariable9 = "$spirit";
-                                        VariableChanged(argsVariable9);
+                                        m_oGlobals.VariableList.Add("spirit", barValue.ToString(), Globals.Variables.VariableType.Reserved);
+                                        m_oGlobals.VariableList.Add("spiritBarText", barText, Globals.Variables.VariableType.Reserved);
+                                        VariableChanged("$spirit");
                                         break;
                                     }
 
                                 case "stamina":
                                     {
-                                        m_iStamina = intValue;
-                                        string argkey12 = "stamina";
-                                        var staminaVar = m_iStamina.ToString();
-                                        m_oGlobals.VariableList.Add(argkey12, staminaVar, Globals.Variables.VariableType.Reserved);
-                                        string argsVariable10 = "$stamina";
-                                        VariableChanged(argsVariable10);
+                                        m_oGlobals.VariableList.Add("stamina", barValue.ToString(), Globals.Variables.VariableType.Reserved);
+                                        m_oGlobals.VariableList.Add("staminaBarText", barText, Globals.Variables.VariableType.Reserved);
+                                        VariableChanged("$stamina");
                                         break;
                                     }
 
                                 case "conclevel":
                                 case "concentration":
                                     {
-                                        m_iConcentration = intValue;
-                                        string argkey13 = "concentration";
-                                        var concentrationVar = m_iConcentration.ToString();
-                                        m_oGlobals.VariableList.Add(argkey13, concentrationVar, Globals.Variables.VariableType.Reserved);
-                                        string argsVariable11 = "$concentration";
-                                        VariableChanged(argsVariable11);
+                                        m_oGlobals.VariableList.Add("concentration", barValue.ToString(), Globals.Variables.VariableType.Reserved);
+                                        m_oGlobals.VariableList.Add("concentrationBarText", barText, Globals.Variables.VariableType.Reserved);
+                                        VariableChanged("$concentration");
                                         break;
                                     }
 
@@ -1690,7 +1681,7 @@ namespace GenieClient.Genie
                                 case "encumblevel":
                                 case "encumbrance":
                                     {
-                                        m_iEncumbrance = intValue;
+                                        m_iEncumbrance = barValue;
                                         string argkey14 = "encumbrance";
                                         var encumbVar = m_iEncumbrance.ToString();
                                         m_oGlobals.VariableList.Add(argkey14, encumbVar, Globals.Variables.VariableType.Reserved);

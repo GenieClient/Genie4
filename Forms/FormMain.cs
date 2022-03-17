@@ -4151,64 +4151,54 @@ namespace GenieClient
             {
                 case "$health":
                     {
-                        int argiValue = Conversions.ToInteger(m_oGlobals.VariableList["health"]);
-                        var argoBar = ComponentBarsHealth;
-                        SetBarValue(argiValue, argoBar);
+                        int barValue = Conversions.ToInteger(m_oGlobals.VariableList["health"]);
+                        string barText = m_oGlobals.VariableList["healthBarText"].ToString();
+                        var bar = ComponentBarsHealth;
+                        bar.BarText = barText;
+                        SetBarValue(barValue, bar);
                         break;
                     }
 
                 case "$mana":
                     {
-                        int argiValue1 = Conversions.ToInteger(m_oGlobals.VariableList["mana"]);
-                        var argoBar1 = ComponentBarsMana;
-                        SetBarValue(argiValue1, argoBar1);
+                        int barValue = Conversions.ToInteger(m_oGlobals.VariableList["mana"]);
+                        string barText = m_oGlobals.VariableList["manaBarText"].ToString();
+                        var bar = ComponentBarsMana;
+                        bar.BarText = barText;
+                        SetBarValue(barValue, bar);
                         break;
                     }
 
                 case "$stamina":
                     {
-                        int argiValue2 = Conversions.ToInteger(m_oGlobals.VariableList["stamina"]);
-                        var argoBar2 = ComponentBarsFatigue;
-                        SetBarValue(argiValue2, argoBar2);
+                        int barValue = Conversions.ToInteger(m_oGlobals.VariableList["stamina"]);
+                        string barText = m_oGlobals.VariableList["staminaBarText"].ToString();
+                        var bar = ComponentBarsFatigue;
+                        bar.BarText = barText;
+                        SetBarValue(barValue, bar);
                         break;
                     }
 
                 case "$spirit":
                     {
-                        int argiValue3 = Conversions.ToInteger(m_oGlobals.VariableList["spirit"]);
-                        var argoBar3 = ComponentBarsSpirit;
-                        SetBarValue(argiValue3, argoBar3);
+                        int barValue = Conversions.ToInteger(m_oGlobals.VariableList["spirit"]);
+                        string barText = m_oGlobals.VariableList["spiritBarText"].ToString();
+                        var bar = ComponentBarsSpirit;
+                        bar.BarText = barText;
+                        SetBarValue(barValue, bar);
                         break;
                     }
 
                 case "$concentration":
                     {
-                        int argiValue4 = Conversions.ToInteger(m_oGlobals.VariableList["concentration"]);
-                        var argoBar4 = ComponentBarsConc;
-                        SetBarValue(argiValue4, argoBar4);
+                        int barValue = Conversions.ToInteger(m_oGlobals.VariableList["concentration"]);
+                        string barText = m_oGlobals.VariableList["concentrationBarText"].ToString();
+                        var bar = ComponentBarsConc;
+                        bar.BarText = barText;
+                        SetBarValue(barValue, bar);
                         break;
                     }
-                case "$guild":
-                    {
-                        if (m_oGlobals.VariableList.ContainsKey("guild"))
-                        {
-                            string guild = m_oGlobals.VariableList["guild"].ToString();
-                            switch (guild.ToLower())
-                            {
-                                case "thief":
-                                    ComponentBarsMana.BarText = "";
-                                    break;
-                                case "barbarian":
-                                    ComponentBarsMana.BarText = "Inner Fire";
-                                    break;
-                                default:
-                                    ComponentBarsMana.BarText = "Mana";
-                                    break;
-                            }
-                            ComponentBarsMana.Value = ComponentBarsMana.Value; //call this because the Value accessor is what actively updates the BarText
-                        }
-                        break;
-                    }
+                
                 case "compass":
                 case "$north":
                 case "$northeast":
