@@ -17,12 +17,9 @@ public bool AcquireWriterLock()
                 {
                     return false;
                 }
-                m_oRWLock.EnterWriteLock();
-                return true;
+                return m_oRWLock.TryEnterWriteLock(500);
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch 
             {
                 return false;
             }
@@ -32,12 +29,10 @@ public bool AcquireWriterLock()
         {
             try
             {
-                m_oRWLock.EnterReadLock();
-                return true;
+                if (m_oRWLock.IsWriteLockHeld) return false;
+                return m_oRWLock.TryEnterReadLock(500);
             }
-#pragma warning disable CS0168
-            catch (Exception ex)
-#pragma warning restore CS0168
+            catch 
             {
                 return false;
             }
@@ -49,9 +44,7 @@ public bool AcquireWriterLock()
                 m_oRWLock.ExitWriteLock();
                 return true;
             }
-            #pragma warning disable CS0168
-            catch (Exception ex)
-            #pragma warning restore CS0168
+            catch 
             {
                 return false;
             }
@@ -64,9 +57,7 @@ public bool AcquireWriterLock()
                 m_oRWLock.ExitReadLock();
                 return true;
             }
-            #pragma warning disable CS0168
-            catch (Exception ex)
-            #pragma warning restore CS0168
+            catch 
             {
                 return false;
             }

@@ -32,8 +32,7 @@ namespace GenieClient.Genie
                 {
                     return false;
                 }
-                m_oRWLock.EnterReadLock();
-                return true;
+                return m_oRWLock.TryEnterReadLock(500);
             }
             catch 
             {
