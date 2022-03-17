@@ -449,8 +449,19 @@ namespace GenieClient.Genie.Script
         {
             try
             {
-                foreach (Sections o in oSections)
-                    Debug.Print("-" + o.bParsed + " " + o.BlockType.ToString() + " " + o.sBlock);
+                if (oSections.AcquireReaderLock())
+                {
+                    try
+                    {
+                        foreach (Sections o in oSections)
+                            Debug.Print("-" + o.bParsed + " " + o.BlockType.ToString() + " " + o.sBlock);
+                    }
+                    finally
+                    {
+                        oSections.ReleaseReaderLock();
+                    }
+                }
+                
             }
             catch(Exception ex)
             {

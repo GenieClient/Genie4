@@ -4188,7 +4188,27 @@ namespace GenieClient
                         SetBarValue(argiValue4, argoBar4);
                         break;
                     }
-
+                case "$guild":
+                    {
+                        if (m_oGlobals.VariableList.ContainsKey("guild"))
+                        {
+                            string guild = m_oGlobals.VariableList["guild"].ToString();
+                            switch (guild.ToLower())
+                            {
+                                case "thief":
+                                    ComponentBarsMana.BarText = "";
+                                    break;
+                                case "barbarian":
+                                    ComponentBarsMana.BarText = "Inner Fire";
+                                    break;
+                                default:
+                                    ComponentBarsMana.BarText = "Mana";
+                                    break;
+                            }
+                            ComponentBarsMana.Value = ComponentBarsMana.Value; //call this because the Value accessor is what actively updates the BarText
+                        }
+                        break;
+                    }
                 case "compass":
                 case "$north":
                 case "$northeast":
@@ -4276,7 +4296,11 @@ namespace GenieClient
                         IconBar.UpdateHidden();
                         IconBar.UpdateJoined();
                         IconBar.UpdateWebbed();
-                        
+                        if (m_oGame.IsConnectedToGame )
+                        {
+                            if(!string.IsNullOrWhiteSpace(m_oGlobals.Config.ConnectScript)) ClassCommand_SendText(m_oGlobals.Config.ScriptChar + m_oGlobals.Config.ConnectScript, false, "Connected");
+                            if (m_oGlobals.VariableList.ContainsKey("connectscript")) ClassCommand_SendText(m_oGlobals.Config.ScriptChar + m_oGlobals.Config.ConnectScript, false, "Connected");
+                        }
                         break;
                     }
 
@@ -6476,6 +6500,12 @@ namespace GenieClient
                         AutoMapperEnabledToolStripMenuItem.Checked = m_oGlobals.Config.bAutoMapper;
                         break;
                     }
+
+                case Genie.Config.ConfigFieldUpdated.LogDir:
+                    {
+                        m_oGlobals.Log.LogDirectory = m_oGlobals.Config.sLogDir;
+                        break;
+                    }
             }
         }
 
@@ -7339,7 +7369,7 @@ namespace GenieClient
 
                 m_sCurrentProfileFile = FileName;
             }
-            else if (DoConnect == true)
+            else if (DoConnect)
             {
                 // Connect to non existing profile?
                 string argsText1 = "Profile \"" + FileName + "\" not found." + System.Environment.NewLine;
