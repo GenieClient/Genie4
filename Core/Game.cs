@@ -1409,7 +1409,7 @@ namespace GenieClient.Genie
                                         break;
                                     }
 
-                                case "percwindow":
+                                case "percWindow":
                                     {
                                         m_oTargetWindow = WindowTarget.ActiveSpells;
                                         break;
