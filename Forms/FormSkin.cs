@@ -793,9 +793,9 @@ namespace GenieClient
         {
             string srcText = ((System.Windows.Forms.RichTextBox)sender).Text;
             string LText = e.LinkText;
-            string Llink = srcText.Substring(e.LinkStart + e.LinkLength + 1, e.LinkLength);
             if (!LText.StartsWith("http"))
             {
+                string Llink = srcText.Substring(e.LinkStart + e.LinkLength + 1, e.LinkLength);
                 if (Llink != LText)
                 {
                     int endOfString = srcText.IndexOf("!#", e.LinkStart);
