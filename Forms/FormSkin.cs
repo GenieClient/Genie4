@@ -31,7 +31,7 @@ namespace GenieClient
 
         public event EventLinkClickedEventHandler EventLinkClicked;
 
-        public delegate void EventLinkClickedEventHandler(string link);
+        public delegate void EventLinkClickedEventHandler(string link, System.Windows.Forms.LinkClickedEventArgs e);
 
         public int TriggerDistance = 5;
         public int SnapDistance = 15;
@@ -791,7 +791,22 @@ namespace GenieClient
 
         private void RichTextBoxOutput_LinkClicked(object sender, LinkClickedEventArgs e)
         {
-            EventLinkClicked?.Invoke(e.LinkText);
+            string srcText = ((System.Windows.Forms.RichTextBox)sender).Text;
+            string LText = e.LinkText;
+            string Llink = srcText.Substring(e.LinkStart + e.LinkLength + 1, e.LinkLength);
+            if (!LText.StartsWith("http"))
+            {
+                if (Llink != LText)
+                {
+                    int endOfString = srcText.IndexOf("!#", e.LinkStart);
+                    LText = srcText.Substring(e.LinkStart + e.LinkLength, endOfString - e.LinkStart - e.LinkLength);
+                }
+                else if (!LText.StartsWith("http"))
+                {
+                    LText = "#" + e.LinkText;
+                }
+            }
+            EventLinkClicked?.Invoke(LText,e);
         }
 
         private void _RichTextBoxOutput_KeyDown(object sender, KeyEventArgs e)

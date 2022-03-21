@@ -585,8 +585,8 @@ namespace GenieClient
                 
                 return 0;
             }
-                // Get list of plugins
-                var oAvailablePlugins = PluginServices.FindPlugins(sPluginPath);
+            // Get list of plugins
+            var oAvailablePlugins = PluginServices.FindPlugins(sPluginPath);
             m_oPlugins.Clear();
             if (!Information.IsNothing(oAvailablePlugins))
             {
@@ -7582,7 +7582,7 @@ namespace GenieClient
             }
         }
 
-        private void FormSkin_LinkClicked(string link)
+        private void FormSkin_LinkClicked(string link, LinkClickedEventArgs e)
         {
             if (link.IndexOf("#") > -1)
             {
