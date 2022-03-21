@@ -859,7 +859,7 @@ namespace GenieClient
             }
 
             SelectionStart = position;
-            SelectedRtf = @"{\rtf1\ansi " + text + @"\v #" + hyperlink + @"\v0}";
+            SelectedRtf = @"{\rtf1\ansi " + text + @"\v #" + hyperlink + @"!#\v0}";
             Select(position, text.Length + hyperlink.Length + 1);
             SetSelectionLink(Handle, true);
             Select(position + text.Length + hyperlink.Length + 1, 0);

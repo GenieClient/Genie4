@@ -7582,7 +7582,7 @@ namespace GenieClient
             }
         }
 
-        private void FormSkin_LinkClicked(string link)
+        private void FormSkin_LinkClicked(string link, LinkClickedEventArgs e)
         {
             if (link.IndexOf("#") > -1)
             {
