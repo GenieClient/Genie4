@@ -150,7 +150,7 @@ namespace GenieClient.Genie.Script
             }
             catch
             {
-                throw new Exception("Invalid expression: " + expression);
+                throw new InvalidCastException("Invalid expression: " + expression);
             }
         }
 

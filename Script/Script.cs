@@ -3025,16 +3025,24 @@ namespace GenieClient
             {
                 return;
             }
-
-            double d = m_oEvalMath.Evaluate(Utility.GetArgumentString(sText));
-            int argiLevel = 4;
-            string argsText = "evalmath: " + sText;
-            PrintDebug(argiLevel, argsText, iFileId, iFileRow);
-            int argiLevel1 = 4;
-            string argsText1 = "evalmath result: " + sVar + "=" + d.ToString();
-            PrintDebug(argiLevel1, argsText1, iFileId, iFileRow);
-            m_oLocalVarList.Add(sVar, d.ToString());
-            TriggerVariableChanged("%" + sVar);
+            try
+            {
+                double d = m_oEvalMath.Evaluate(Utility.GetArgumentString(sText));
+                int argiLevel = 4;
+                string argsText = "evalmath: " + sText;
+                PrintDebug(argiLevel, argsText, iFileId, iFileRow);
+                int argiLevel1 = 4;
+                string argsText1 = "evalmath result: " + sVar + "=" + d.ToString();
+                PrintDebug(argiLevel1, argsText1, iFileId, iFileRow);
+                m_oLocalVarList.Add(sVar, d.ToString());
+                TriggerVariableChanged("%" + sVar);
+            }
+            catch(System.InvalidCastException ex)
+            {
+                PrintError(ex.Message + ". Local Variable " + sVar + " has been set to 0.");
+                m_oLocalVarList.Add(sVar, "0");
+                TriggerVariableChanged("%" + sVar);
+            }
         }
 
         private void EvalEval(string sText, int iFileId, int iFileRow)
