@@ -128,6 +128,27 @@ namespace GenieClient
             UpdateMainWindowTitle();
         }
 
+        public void UpdateOnStartup()
+        {
+            if (m_oGlobals.Config.CheckForUpdates || m_oGlobals.Config.AutoUpdate)
+            {
+                if (Updater.ClientIsCurrent)
+                {
+                    AddText("You are running the latest version of Genie.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                }
+                else
+                {
+                    AddText("An Update is Available.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    if (m_oGlobals.Config.AutoUpdate)
+                    {
+                        AddText("AutoUpdate is Enabled. Exiting and launching Updater.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                        Updater.RunUpdate();
+                        System.Windows.Forms.Application.Exit();
+                    }
+                }
+            }
+        }
+
         public void DirectConnect(string[] ConnectionParameters)
         {
             if(ConnectionParameters.Length > 0)
@@ -1867,8 +1888,9 @@ namespace GenieClient
             m_oGlobals.ClassList.Load(m_oGlobals.Config.ConfigDir + @"\classes.cfg");
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
-
             int I = LoadPlugins();
+            Application.DoEvents();
+            UpdateOnStartup();
             Application.DoEvents();
 
             m_oOutputMain.RichTextBoxOutput.EndTextUpdate();
@@ -6173,7 +6195,7 @@ namespace GenieClient
 
         private void ChangelogToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            My.MyProject.Forms.DialogChangelog.ShowDialog(this);
+            Utility.OpenBrowser("https://github.com/GenieClient/Genie4/releases/latest");
         }
 
         private void BasicToolStripMenuItem_Click(object sender, EventArgs e)
@@ -6494,6 +6516,18 @@ namespace GenieClient
                 case Genie.Config.ConfigFieldUpdated.LogDir:
                     {
                         m_oGlobals.Log.LogDirectory = m_oGlobals.Config.sLogDir;
+                        break;
+                    }
+
+                case Genie.Config.ConfigFieldUpdated.CheckForUpdates:
+                    {
+                        checkUpdatesOnStartupToolStripMenuItem.Checked = m_oGlobals.Config.CheckForUpdates;
+                        break;
+                    }
+
+                case Genie.Config.ConfigFieldUpdated.AutoUpdate:
+                    {
+                        autoUpdateToolStripMenuItem.Checked = m_oGlobals.Config.AutoUpdate;
                         break;
                     }
             }
@@ -7757,6 +7791,72 @@ namespace GenieClient
         private void isharonsGenieSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Utility.OpenBrowser("http://www.elanthia.org/GenieSettings/");
+        }
+
+        private void autoUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m_oGlobals.Config.AutoUpdate = !m_oGlobals.Config.AutoUpdate;
+            autoUpdateToolStripMenuItem.Checked = m_oGlobals.Config.AutoUpdate;
+        }
+
+        private void checkUpdatesOnStartupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m_oGlobals.Config.CheckForUpdates = !m_oGlobals.Config.CheckForUpdates;
+            checkUpdatesOnStartupToolStripMenuItem.Checked = m_oGlobals.Config.CheckForUpdates;
+        }
+
+        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Updater.ClientIsCurrent)
+            {
+                AddText("You have the latest version of Genie.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor);
+            }
+            else
+            {
+                AddText("An Update is Available.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                DialogResult response = MessageBox.Show("An Update is Available. Would you like to update?", "Rub the Bottle?", MessageBoxButtons.YesNoCancel);
+                if (response == DialogResult.Yes)
+                {
+                    if (m_oGame.IsConnectedToGame)
+                    {
+                        response = MessageBox.Show("Genie will close and this will disconnect you from the game.", "Close Genie?", MessageBoxButtons.YesNoCancel);
+                        if(response == DialogResult.Yes)
+                        {
+                            AddText("Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                            Updater.RunUpdate();
+                            m_oGame.Disconnect(true);
+                            System.Windows.Forms.Application.Exit();
+                        }
+                    }
+                    else
+                    {
+                        AddText("Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                        Updater.RunUpdate();
+                        System.Windows.Forms.Application.Exit();
+                    }
+                }
+            }
+        }
+
+        private void forceUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (m_oGame.IsConnectedToGame)
+            {
+                DialogResult response = MessageBox.Show("Genie will close and this will disconnect you from the game. Are you sure?", "Close Genie?", MessageBoxButtons.YesNoCancel);
+                if (response == DialogResult.Yes)
+                {
+                    AddText("Exiting Genie to Update.");
+                    Updater.ForceUpdate();
+                    m_oGame.Disconnect(true);
+                    System.Windows.Forms.Application.Exit();
+                }
+            }
+            else
+            {
+                AddText("Exiting Genie to Update.");
+                Updater.ForceUpdate();
+                System.Windows.Forms.Application.Exit();
+            }
         }
     }
 }

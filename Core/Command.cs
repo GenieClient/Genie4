@@ -2801,6 +2801,8 @@ namespace GenieClient.Genie
             EchoText("usertimeout=" + oGlobals.Config.iUserActivityTimeout.ToString() + System.Environment.NewLine);
             EchoText("usertimeoutcommand=" + oGlobals.Config.sUserActivityCommand.ToString() + System.Environment.NewLine);
             EchoText("connectscript=" + oGlobals.Config.ConnectScript.ToString() + System.Environment.NewLine);
+            EchoText("checkforupdates=" + oGlobals.Config.CheckForUpdates.ToString() + System.Environment.NewLine);
+            EchoText("autoupdate=" + oGlobals.Config.AutoUpdate.ToString() + System.Environment.NewLine);
         }
 
         private void ListColors()
