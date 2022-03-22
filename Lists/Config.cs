@@ -47,6 +47,9 @@ namespace GenieClient.Genie
         public bool bShowLinks = false;
         public string sLogDir = "Logs";
 
+        public bool CheckForUpdates { get; set; } = true;
+        public bool AutoUpdate { get; set; } = false;
+
         public string sConnectString = "FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " /P:WIN_XP /XML";
         public int[] iPickerColors = new int[17];
         public string RubyPath { get; set; } = @"C:\ruby4lich\bin\ruby.exe";
@@ -290,7 +293,9 @@ namespace GenieClient.Genie
             KeepInput,
             Muted,
             AutoMapper,
-            LogDir
+            LogDir,
+            CheckForUpdates,
+            AutoUpdate
         }
 
         public Font MonoFont
@@ -376,6 +381,8 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine($"#config {{lichport}} {{{LichPort}}}");
                 oStreamWriter.WriteLine($"#config {{lichstartpause}} {{{LichStartPause}}}");
                 oStreamWriter.WriteLine($"#config {{connectscript}} {{{ConnectScript}}}");
+                oStreamWriter.WriteLine($"#config {{autoupdate}} {{{AutoUpdate}}}");
+                oStreamWriter.WriteLine($"#config {{checkforupdates}} {{{CheckForUpdates}}}");
                 oStreamWriter.Close();
                 return true;
             }
@@ -910,6 +917,52 @@ namespace GenieClient.Genie
                                     }
                             }
 
+                            break;
+                        }
+
+                    case "autoupdate":
+                        {
+                            var expression = sValue.ToLower();
+                            switch (expression)
+                            {
+                                case "on":
+                                case "true":
+                                case "1":
+                                    {
+                                        AutoUpdate = true;
+                                        break;
+                                    }
+
+                                default:
+                                    {
+                                        AutoUpdate = false;
+                                        break;
+                                    }
+                            }
+                            ConfigChanged?.Invoke(ConfigFieldUpdated.AutoUpdate);
+                            break;
+                        }
+
+                    case "checkforupdates":
+                        {
+                            var expression = sValue.ToLower();
+                            switch (expression)
+                            {
+                                case "on":
+                                case "true":
+                                case "1":
+                                    {
+                                        CheckForUpdates = true;
+                                        break;
+                                    }
+
+                                default:
+                                    {
+                                        CheckForUpdates = false;
+                                        break;
+                                    }
+                            }
+                            ConfigChanged?.Invoke(ConfigFieldUpdated.CheckForUpdates);
                             break;
                         }
 
