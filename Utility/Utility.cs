@@ -62,6 +62,11 @@ namespace GenieClient
             myProcessStartInfo.RedirectStandardOutput = true;
             myProcessStartInfo.Arguments = sArguments;
             myProcess.StartInfo = myProcessStartInfo;
+            FileInfo monitor = new FileInfo(sFileName);
+            do
+            {
+                Thread.Sleep(10);
+            } while (FileIsLocked(monitor));
             myProcess.Start();
             var myStreamReader = myProcess.StandardOutput;
             // Read the standard output of the spawned process.
@@ -72,6 +77,28 @@ namespace GenieClient
                 myProcess.Close();
             }
             return default;
+        }
+
+        private static bool FileIsLocked(FileInfo file)
+        {
+            try
+            {
+                using (FileStream stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None))
+                {
+                    stream.Close();
+                }
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+
+            //file is not locked
+            return false;
         }
 
         public static bool ValidateRegExp(string sRegExp)
