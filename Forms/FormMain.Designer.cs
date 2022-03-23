@@ -914,6 +914,7 @@ namespace GenieClient
             this.checkUpdatesOnStartupToolStripMenuItem.Name = "checkUpdatesOnStartupToolStripMenuItem";
             this.checkUpdatesOnStartupToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
             this.checkUpdatesOnStartupToolStripMenuItem.Text = "&Check Updates on Startup";
+            this.checkUpdatesOnStartupToolStripMenuItem.Checked = true;
             this.checkUpdatesOnStartupToolStripMenuItem.Click += new System.EventHandler(this.checkUpdatesOnStartupToolStripMenuItem_Click);
             // 
             // _ChangelogToolStripMenuItem
