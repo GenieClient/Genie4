@@ -13,9 +13,9 @@ namespace GenieClient
 {
     public static class Updater
     {
-        private static string GitHubUpdaterReleaseURL = @"https://api.github.com/repos/GenieClient/Bottle/releases/latest";
+        private static string GitHubUpdaterReleaseURL = @"https://api.github.com/repos/GenieClient/Lamp/releases/latest";
         private static string GitHubClientReleaseURL = @"https://api.github.com/repos/GenieClient/Genie4/releases/latest";
-        private static string UpdaterFilename = @"Bottle.exe";
+        private static string UpdaterFilename = @"Lamp.exe";
         private static string LocalUpdater = @$"{Environment.CurrentDirectory}\{UpdaterFilename}";
         private static HttpClient client = new HttpClient();
 
