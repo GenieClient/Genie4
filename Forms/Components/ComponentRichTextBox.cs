@@ -513,7 +513,7 @@ namespace GenieClient
                 m_oRichTextBuffer.SelectionLength = oMatch.Length;
                 string sOldText = m_oRichTextBuffer.SelectedText;
                 string sNewText = oMatch.Groups[1].Value;
-                string sCommand = oMatch.Groups[2].Value;
+                string sCommand = oMatch.Groups[2].Value + "!#";
                 int iDiff = sOldText.Length - sNewText.Length;
                 var link = new Link();
                 link.Index = m_oRichTextBuffer.SelectionStart;
@@ -859,7 +859,7 @@ namespace GenieClient
             }
 
             SelectionStart = position;
-            SelectedRtf = @"{\rtf1\ansi " + text + @"\v #" + hyperlink + @"\v0}";
+            SelectedRtf = @"{\rtf1\ansi " + text + @"\v #" + hyperlink + @"!#\v0}";
             Select(position, text.Length + hyperlink.Length + 1);
             SetSelectionLink(Handle, true);
             Select(position + text.Length + hyperlink.Length + 1, 0);
@@ -880,6 +880,7 @@ namespace GenieClient
                 SelectedRtf = @"{\rtf1\ansi " + SelectedText + @"\v #" + hyperlink + @"\v0}";
                 Select(position, length + hyperlink.Length + 1);
                 SetSelectionLink(Handle, true);
+                Select(Text.Length, 0); 
             }
         }
 
