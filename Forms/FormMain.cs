@@ -3299,52 +3299,50 @@ namespace GenieClient
         {
             if (m_oScriptListNew.Count > 0)
             {
-                if (m_oScriptList.AcquireWriterLock())
+                try
                 {
+                    m_oScriptList.AcquireWriterLock();
+
                     try
                     {
-                        if (m_oScriptListNew.AcquireWriterLock())
-                        {
-                            try
-                            {
-                                foreach (Script oScript in m_oScriptListNew)
-                                {
-                                    if (!Information.IsNothing(oScript)) // Add it before running so put #parse and such works.
-                                    {
-                                        m_oScriptList.Add(oScript);
-                                        if (!oScript.ScriptDone) // Don't add to bar if script is done.
-                                        {
-                                            AddScriptToToolStrip(oScript);
-                                        }
+                        m_oScriptListNew.AcquireWriterLock();
 
-                                        m_bScriptListUpdated = true;
-                                    }
+                        foreach (Script oScript in m_oScriptListNew)
+                        {
+                            if (!Information.IsNothing(oScript)) // Add it before running so put #parse and such works.
+                            {
+                                m_oScriptList.Add(oScript);
+
+                                if (!oScript.ScriptDone) // Don't add to bar if script is done.
+                                {
+                                    AddScriptToToolStrip(oScript);
                                 }
 
-                                m_oScriptListNew.Clear();
-                            }
-                            finally
-                            {
-                                m_oScriptListNew.ReleaseWriterLock();
+                                m_bScriptListUpdated = true;
                             }
                         }
-                        else
-                        {
-                            HandleGenieException("AddScripts", "Unable to aquire writer lock.");
-                        }
+
+                        m_oScriptListNew.Clear();
+                    }
+                    catch
+                    {
+                        HandleGenieException("AddScriptsInner", "Unable to aquire writer lock.");
                     }
                     finally
                     {
-                        m_oScriptList.ReleaseWriterLock();
+                        m_oScriptListNew.ReleaseWriterLock();
                     }
                 }
-                else
+                catch
                 {
-                    HandleGenieException("AddScripts", "Unable to aquire writer lock.");
+                    HandleGenieException("AddScriptsOuter", "Unable to aquire writer lock.");
+                }
+                finally
+                {
+                    m_oScriptList.ReleaseWriterLock();
                 }
             }
         }
-
         private void RunQueueCommand(string sAction, string sOrigin)
         {
             if (sAction.Length > 0)
