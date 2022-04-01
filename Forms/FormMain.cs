@@ -4296,10 +4296,12 @@ namespace GenieClient
                         IconBar.IsConnected = bConnected;
                         oRTControl.IsConnected = bConnected;
                         Castbar.IsConnected = bConnected;
-                        SafeUpdateMainWindowTitle();
                         m_CommandSent = false;
                         m_oGlobals.VariableList["charactername"] = m_oGame.AccountCharacter;
                         m_oGlobals.VariableList["game"] = m_oGame.AccountGame;
+                        m_oGlobals.VariableList["gamename"] = m_oGame.AccountGame;
+                        m_oAutoMapper.CharacterName = m_oGame.AccountCharacter;
+                        m_sCurrentProfileName = m_oGame.AccountCharacter + m_oGame.AccountGame + ".xml";
                         m_oGame.ResetIndicators();
                         IconBar.UpdateStatusBox();
                         IconBar.UpdateStunned();
@@ -4313,6 +4315,7 @@ namespace GenieClient
                             if(!string.IsNullOrWhiteSpace(m_oGlobals.Config.ConnectScript)) ClassCommand_SendText(m_oGlobals.Config.ScriptChar + m_oGlobals.Config.ConnectScript, false, "Connected");
                             if (m_oGlobals.VariableList.ContainsKey("connectscript")) ClassCommand_SendText(m_oGlobals.Config.ScriptChar + m_oGlobals.Config.ConnectScript, false, "Connected");
                         }
+                        SafeUpdateMainWindowTitle();
                         break;
                     }
 
