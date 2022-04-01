@@ -58,8 +58,8 @@ namespace GenieClient
             var myProcessStartInfo = new ProcessStartInfo(sFileName);
             myProcessStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             myProcessStartInfo.CreateNoWindow = true;
-            myProcessStartInfo.UseShellExecute = false;
-            myProcessStartInfo.RedirectStandardOutput = true;
+            myProcessStartInfo.UseShellExecute = true;
+            myProcessStartInfo.RedirectStandardOutput = false;
             myProcessStartInfo.Arguments = sArguments;
             myProcess.StartInfo = myProcessStartInfo;
             FileInfo monitor = new FileInfo(sFileName);
@@ -68,7 +68,7 @@ namespace GenieClient
                 Thread.Sleep(10);
             } while (FileIsLocked(monitor));
             myProcess.Start();
-            var myStreamReader = myProcess.StandardOutput;
+            // var myStreamReader = myProcess.StandardOutput;
             // Read the standard output of the spawned process.
             if (closeProcess)
             {

@@ -12,6 +12,7 @@ namespace GenieClient.Genie
             public bool WaitForRoundtime = false;
             public bool WaitForStunned = false;
             public bool WaitForWebbed = false;
+            public CommandRestrictions() { }
         }
 
         public Queue EventList = new Queue();
