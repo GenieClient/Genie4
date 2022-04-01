@@ -7055,12 +7055,12 @@ namespace GenieClient
             }
         }
 
-        private void Command_EventAddWindow(string sName)
+        private void Command_EventAddWindow(string sName, int sWidth = 300, int sHeight = 200, int sTop = 10, int sLeft = 10)
         {
-            AddWindow(sName);
+            AddWindow(sName, sWidth, sHeight, sTop, sLeft);
         }
 
-        private void AddWindow(string sName)
+        private void AddWindow(string sName, int sWidth = 300, int sHeight = 200, int sTop = 10, int sLeft = 10)
         {
             var oEnumerator = m_oFormList.GetEnumerator();
             while (oEnumerator.MoveNext())
@@ -7072,7 +7072,7 @@ namespace GenieClient
                 }
             }
 
-            var fo = SafeCreateOutputForm(Conversions.ToString(sName.ToLower()), Conversions.ToString(sName), null, 300, 200, 10, 10, true, null, "", true);
+            var fo = SafeCreateOutputForm(Conversions.ToString(sName.ToLower()), Conversions.ToString(sName), null, sWidth, sHeight, sTop, sLeft, true, null, "", true);
             if (!Information.IsNothing(fo))
             {
                 fo.Visible = true;

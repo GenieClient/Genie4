@@ -139,7 +139,7 @@ namespace GenieClient.Genie
 
         public event EventAddWindowEventHandler EventAddWindow;
 
-        public delegate void EventAddWindowEventHandler(string sWindow);
+        public delegate void EventAddWindowEventHandler(string sWindow, int sWidth, int sHeight, int sTop, int sLeft);
 
         public event EventRemoveWindowEventHandler EventRemoveWindow;
 
@@ -2242,7 +2242,37 @@ namespace GenieClient.Genie
                                                     case "add":
                                                     case "show":
                                                         {
-                                                            EventAddWindow?.Invoke(oGlobals.ParseGlobalVars(ParseAllArgs(oArgs, 2)));
+                                                            int sWidth = 300;
+                                                            int sHeight = 200;
+                                                            int sTop = 10;
+                                                            int sLeft = 10;
+                                                            EventAddWindow?.Invoke(oGlobals.ParseGlobalVars(ParseAllArgs(oArgs, 2)), sWidth, sHeight, sTop, sLeft);
+                                                            break;
+                                                        }
+                                                    case "position":
+                                                        {
+                                                            int sWidth = 300;
+                                                            int sHeight = 200;
+                                                            int sTop = 10;
+                                                            int sLeft = 10;
+                                                            if (oArgs.Count > 3)
+                                                            {
+                                                                if (int.TryParse(oArgs[3].ToString(), out sWidth)) ;
+                                                                if (oArgs.Count > 4)
+                                                                {
+                                                                    if (int.TryParse(oArgs[4].ToString(), out sHeight)) ;
+                                                                    if (oArgs.Count > 5)
+                                                                    {
+                                                                        if (int.TryParse(oArgs[5].ToString(), out sTop)) ;
+                                                                        if (oArgs.Count > 6)
+                                                                        {
+                                                                            if (int.TryParse(oArgs[6].ToString(), out sLeft)) ;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            EventRemoveWindow?.Invoke(oGlobals.ParseGlobalVars(oArgs[2].ToString()));
+                                                            EventAddWindow?.Invoke(oGlobals.ParseGlobalVars(oArgs[2].ToString()), sWidth, sHeight, sTop, sLeft);
                                                             break;
                                                         }
 
