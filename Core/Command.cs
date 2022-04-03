@@ -141,6 +141,10 @@ namespace GenieClient.Genie
 
         public delegate void EventAddWindowEventHandler(string sWindow, int sWidth, int sHeight, int sTop, int sLeft);
 
+        public event EventAddWindowEventHandler EventPositionWindow;
+
+        public delegate void EventPositionWindowEventHandler(string sWindow, int sWidth, int sHeight, int sTop, int sLeft);
+
         public event EventRemoveWindowEventHandler EventRemoveWindow;
 
         public delegate void EventRemoveWindowEventHandler(string sWindow);
@@ -2251,10 +2255,10 @@ namespace GenieClient.Genie
                                                         }
                                                     case "position":
                                                         {
-                                                            int sWidth = 300;
-                                                            int sHeight = 200;
-                                                            int sTop = 10;
-                                                            int sLeft = 10;
+                                                            int sWidth = 0;
+                                                            int sHeight = 0;
+                                                            int sTop = 0;
+                                                            int sLeft = 0;
                                                             if (oArgs.Count > 3)
                                                             {
                                                                 if (int.TryParse(oArgs[3].ToString(), out sWidth)) ;
@@ -2271,8 +2275,7 @@ namespace GenieClient.Genie
                                                                     }
                                                                 }
                                                             }
-                                                            EventRemoveWindow?.Invoke(oGlobals.ParseGlobalVars(oArgs[2].ToString()));
-                                                            EventAddWindow?.Invoke(oGlobals.ParseGlobalVars(oArgs[2].ToString()), sWidth, sHeight, sTop, sLeft);
+                                                            EventPositionWindow?.Invoke(oGlobals.ParseGlobalVars(oArgs[2].ToString()), sWidth, sHeight, sTop, sLeft);
                                                             break;
                                                         }
 
