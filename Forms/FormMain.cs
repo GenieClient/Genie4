@@ -7949,5 +7949,30 @@ namespace GenieClient
                 System.Windows.Forms.Application.Exit();
             }
         }
+
+        private void loadTestClientToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult response = MessageBox.Show("This will force your client to the Test Release Version. Test is not considered stable and may introduce bugs. If Autoupdate is enabled it will be disabled. Checking for Updates will restore you to the Latest build. Are you sure?", "Load Test Client?", MessageBoxButtons.YesNoCancel);
+            if (response == DialogResult.Yes)
+            {
+                if (m_oGame.IsConnectedToGame)
+                {
+                    DialogResult response = MessageBox.Show("Genie will close and this will disconnect you from the game. Are you sure?", "Close Genie?", MessageBoxButtons.YesNoCancel);
+                    if (response == DialogResult.Yes)
+                    {
+                        AddText("Exiting Genie to Update.");
+                        Updater.UpdateToTest();
+                        m_oGame.Disconnect(true);
+                        System.Windows.Forms.Application.Exit();
+                    }
+                }
+                else
+                {
+                    AddText("Exiting Genie to Update.");
+                    Updater.UpdateToTest();
+                    System.Windows.Forms.Application.Exit();
+                }
+            }
+        }
     }
 }
