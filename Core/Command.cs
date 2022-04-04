@@ -2255,29 +2255,34 @@ namespace GenieClient.Genie
                                                         }
                                                     case "position":
                                                         {
-                                                            int sWidth = 0;
-                                                            int sHeight = 0;
-                                                            int sTop = 0;
-                                                            int sLeft = 0;
-                                                            if (oArgs.Count > 3)
+                                                            if (oArgs.Count > 2)
                                                             {
-                                                                if (int.TryParse(oArgs[3].ToString(), out sWidth)) ;
-                                                                if (oArgs.Count > 4)
+
+                                                                int sWidth = 0;
+                                                                int sHeight = 0;
+                                                                int sTop = 0;
+                                                                int sLeft = 0;
+                                                                if (oArgs.Count > 3)
                                                                 {
-                                                                    if (int.TryParse(oArgs[4].ToString(), out sHeight)) ;
-                                                                    if (oArgs.Count > 5)
+                                                                    if (int.TryParse(oArgs[3].ToString(), out sWidth)) ;
+                                                                    if (oArgs.Count > 4)
                                                                     {
-                                                                        if (int.TryParse(oArgs[5].ToString(), out sTop)) ;
-                                                                        if (oArgs.Count > 6)
+                                                                        if (int.TryParse(oArgs[4].ToString(), out sHeight)) ;
+                                                                        if (oArgs.Count > 5)
                                                                         {
-                                                                            if (int.TryParse(oArgs[6].ToString(), out sLeft)) ;
+                                                                            if (int.TryParse(oArgs[5].ToString(), out sTop)) ;
+                                                                            if (oArgs.Count > 6)
+                                                                            {
+                                                                                if (int.TryParse(oArgs[6].ToString(), out sLeft)) ;
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
+                                                                EventPositionWindow?.Invoke(oGlobals.ParseGlobalVars(oArgs[2].ToString()), sWidth, sHeight, sTop, sLeft);
                                                             }
-                                                            EventPositionWindow?.Invoke(oGlobals.ParseGlobalVars(oArgs[2].ToString()), sWidth, sHeight, sTop, sLeft);
                                                             break;
                                                         }
+
 
                                                     case "remove":
                                                         {
