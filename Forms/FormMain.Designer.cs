@@ -158,6 +158,7 @@ namespace GenieClient
             this._PanelInput = new System.Windows.Forms.Panel();
             this._TextBoxInput = new GenieClient.ComponentTextBox();
             this._OpenFileDialogProfile = new System.Windows.Forms.OpenFileDialog();
+            this.loadTestClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._StatusStripMain.SuspendLayout();
             this._MenuStripMain.SuspendLayout();
             this._PanelBars.SuspendLayout();
@@ -861,7 +862,7 @@ namespace GenieClient
             // _NoPluginsLoadedToolStripMenuItem
             // 
             this._NoPluginsLoadedToolStripMenuItem.Name = "_NoPluginsLoadedToolStripMenuItem";
-            this._NoPluginsLoadedToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this._NoPluginsLoadedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this._NoPluginsLoadedToolStripMenuItem.Text = "No plugins loaded";
             // 
             // _HelpToolStripMenuItem
@@ -869,6 +870,7 @@ namespace GenieClient
             this._HelpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.checkForUpdatesToolStripMenuItem,
             this.forceUpdateToolStripMenuItem,
+            this.loadTestClientToolStripMenuItem,
             this._ToolStripSeparator3,
             this.autoUpdateToolStripMenuItem,
             this.checkUpdatesOnStartupToolStripMenuItem,
@@ -911,10 +913,11 @@ namespace GenieClient
             // 
             // checkUpdatesOnStartupToolStripMenuItem
             // 
+            this.checkUpdatesOnStartupToolStripMenuItem.Checked = true;
+            this.checkUpdatesOnStartupToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkUpdatesOnStartupToolStripMenuItem.Name = "checkUpdatesOnStartupToolStripMenuItem";
             this.checkUpdatesOnStartupToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
             this.checkUpdatesOnStartupToolStripMenuItem.Text = "&Check Updates on Startup";
-            this.checkUpdatesOnStartupToolStripMenuItem.Checked = true;
             this.checkUpdatesOnStartupToolStripMenuItem.Click += new System.EventHandler(this.checkUpdatesOnStartupToolStripMenuItem_Click);
             // 
             // _ChangelogToolStripMenuItem
@@ -1364,6 +1367,13 @@ namespace GenieClient
             this._OpenFileDialogProfile.Filter = "Genie Profile|*.xml|All files|*.*";
             this._OpenFileDialogProfile.RestoreDirectory = true;
             this._OpenFileDialogProfile.Title = "Open Profile";
+            // 
+            // loadTestClientToolStripMenuItem
+            // 
+            this.loadTestClientToolStripMenuItem.Name = "loadTestClientToolStripMenuItem";
+            this.loadTestClientToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.loadTestClientToolStripMenuItem.Text = "Load Test Client";
+            this.loadTestClientToolStripMenuItem.Click += new System.EventHandler(this.loadTestClientToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -4163,6 +4173,7 @@ namespace GenieClient
         private ToolStripMenuItem forceUpdateToolStripMenuItem;
         private ToolStripMenuItem autoUpdateToolStripMenuItem;
         private ToolStripMenuItem checkUpdatesOnStartupToolStripMenuItem;
+        private ToolStripMenuItem loadTestClientToolStripMenuItem;
 
         internal ToolStripMenuItem SaveSizedDefaultLayoutToolStripMenuItem
         {

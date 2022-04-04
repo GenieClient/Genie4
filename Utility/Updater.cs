@@ -31,7 +31,7 @@ namespace GenieClient
         {
             get
             {
-                return FileVersionInfo.GetVersionInfo($@"{Environment.CurrentDirectory}\genie.exe").FileVersion;
+                return FileVersionInfo.GetVersionInfo(AppDomain.CurrentDomain.BaseDirectory + "\\Genie.exe").FileVersion;
             }
         }
         public static string ServerUpdaterVersion
@@ -108,13 +108,22 @@ namespace GenieClient
             Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a", false);
         }
 
+        public static void UpdateToTest()
+        {
+            if(!UpdaterIsCurrent)
+            {
+                UpdateUpdater();
+            }
+            Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a --t", false);
+        }
+
         public static void ForceUpdate()
         {
             if (!UpdaterIsCurrent)
             {
                 UpdateUpdater();
             }
-            Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--f", false);
+            Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a --f", false);
         }
         public class Release
         {
