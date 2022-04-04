@@ -2255,31 +2255,39 @@ namespace GenieClient.Genie
                                                         }
                                                     case "position":
                                                         {
-                                                            if (oArgs.Count > 2)
+                                                            int sWidth = 0;
+                                                            int sHeight = 0;
+                                                            int sTop = 0;
+                                                            int sLeft = 0;
+                                                            if ((oArgs.Count > 2) && (oArgs.Count < 8))
                                                             {
-
-                                                                int sWidth = 0;
-                                                                int sHeight = 0;
-                                                                int sTop = 0;
-                                                                int sLeft = 0;
+                                                                string alphaCheck = "0";
                                                                 if (oArgs.Count > 3)
                                                                 {
-                                                                    if (int.TryParse(oArgs[3].ToString(), out sWidth)) ;
-                                                                    if (oArgs.Count > 4)
-                                                                    {
-                                                                        if (int.TryParse(oArgs[4].ToString(), out sHeight)) ;
-                                                                        if (oArgs.Count > 5)
-                                                                        {
-                                                                            if (int.TryParse(oArgs[5].ToString(), out sTop)) ;
-                                                                            if (oArgs.Count > 6)
-                                                                            {
-                                                                                if (int.TryParse(oArgs[6].ToString(), out sLeft)) ;
-                                                                            }
-                                                                        }
-                                                                    }
+                                                                    if (!int.TryParse(oArgs[3].ToString(), out sWidth)) { alphaCheck = "1st"; }
                                                                 }
-                                                                EventPositionWindow?.Invoke(oGlobals.ParseGlobalVars(oArgs[2].ToString()), sWidth, sHeight, sTop, sLeft);
+                                                                if (oArgs.Count > 4)
+                                                                {
+                                                                    if (!int.TryParse(oArgs[4].ToString(), out sHeight)) { alphaCheck = "2nd"; }
+                                                                }
+                                                                if (oArgs.Count > 5)
+                                                                {
+                                                                    if (!int.TryParse(oArgs[5].ToString(), out sTop)) { alphaCheck = "3rd"; }
+                                                                }
+                                                                if (oArgs.Count > 6)
+                                                                {
+                                                                    if (!int.TryParse(oArgs[6].ToString(), out sLeft)) { alphaCheck = "4th"; }
+                                                                }
+                                                                if (alphaCheck == "0")
+                                                                {
+                                                                    EventPositionWindow?.Invoke(oGlobals.ParseGlobalVars(oArgs[2].ToString()), sWidth, sHeight, sTop, sLeft);
+                                                                }
+                                                                else
+                                                                {
+                                                                    EchoColorText("Error in command: " + sRow + ": at the " + alphaCheck + " Position Arg." + Interaction.IIf((!int.TryParse(oArgs[3].ToString(), out sWidth)), " Window names with spaces need to be \"enclosed\" in double quotes", "") + System.Environment.NewLine, oGlobals.PresetList["scriptecho"].FgColor, oGlobals.PresetList["scriptecho"].BgColor, "");
+                                                                }
                                                             }
+                                                            if (oArgs.Count > 7) EchoColorText("Error in command: " + sRow + ": " + (oArgs.Count - 7) + " too many Args in Position command." + Interaction.IIf((!int.TryParse(oArgs[3].ToString(), out sWidth)), " Window names with spaces need to be \"enclosed\" in double quotes", "") + System.Environment.NewLine, oGlobals.PresetList["scriptecho"].FgColor, oGlobals.PresetList["scriptecho"].BgColor, "");
                                                             break;
                                                         }
 
