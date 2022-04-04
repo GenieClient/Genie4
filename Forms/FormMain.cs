@@ -3301,52 +3301,50 @@ namespace GenieClient
         {
             if (m_oScriptListNew.Count > 0)
             {
-                if (m_oScriptList.AcquireWriterLock())
+                try
                 {
+                    m_oScriptList.AcquireWriterLock();
+
                     try
                     {
-                        if (m_oScriptListNew.AcquireWriterLock())
-                        {
-                            try
-                            {
-                                foreach (Script oScript in m_oScriptListNew)
-                                {
-                                    if (!Information.IsNothing(oScript)) // Add it before running so put #parse and such works.
-                                    {
-                                        m_oScriptList.Add(oScript);
-                                        if (!oScript.ScriptDone) // Don't add to bar if script is done.
-                                        {
-                                            AddScriptToToolStrip(oScript);
-                                        }
+                        m_oScriptListNew.AcquireWriterLock();
 
-                                        m_bScriptListUpdated = true;
-                                    }
+                        foreach (Script oScript in m_oScriptListNew)
+                        {
+                            if (!Information.IsNothing(oScript)) // Add it before running so put #parse and such works.
+                            {
+                                m_oScriptList.Add(oScript);
+
+                                if (!oScript.ScriptDone) // Don't add to bar if script is done.
+                                {
+                                    AddScriptToToolStrip(oScript);
                                 }
 
-                                m_oScriptListNew.Clear();
-                            }
-                            finally
-                            {
-                                m_oScriptListNew.ReleaseWriterLock();
+                                m_bScriptListUpdated = true;
                             }
                         }
-                        else
-                        {
-                            HandleGenieException("AddScripts", "Unable to aquire writer lock.");
-                        }
+
+                        m_oScriptListNew.Clear();
+                    }
+                    catch
+                    {
+                        HandleGenieException("AddScriptsInner", "Unable to aquire writer lock.");
                     }
                     finally
                     {
-                        m_oScriptList.ReleaseWriterLock();
+                        m_oScriptListNew.ReleaseWriterLock();
                     }
                 }
-                else
+                catch
                 {
-                    HandleGenieException("AddScripts", "Unable to aquire writer lock.");
+                    HandleGenieException("AddScriptsOuter", "Unable to aquire writer lock.");
+                }
+                finally
+                {
+                    m_oScriptList.ReleaseWriterLock();
                 }
             }
         }
-
         private void RunQueueCommand(string sAction, string sOrigin)
         {
             if (sAction.Length > 0)
@@ -4298,10 +4296,12 @@ namespace GenieClient
                         IconBar.IsConnected = bConnected;
                         oRTControl.IsConnected = bConnected;
                         Castbar.IsConnected = bConnected;
-                        SafeUpdateMainWindowTitle();
                         m_CommandSent = false;
                         m_oGlobals.VariableList["charactername"] = m_oGame.AccountCharacter;
                         m_oGlobals.VariableList["game"] = m_oGame.AccountGame;
+                        m_oGlobals.VariableList["gamename"] = m_oGame.AccountGame;
+                        m_oAutoMapper.CharacterName = m_oGame.AccountCharacter;
+                        m_sCurrentProfileName = m_oGame.AccountCharacter + m_oGame.AccountGame + ".xml";
                         m_oGame.ResetIndicators();
                         IconBar.UpdateStatusBox();
                         IconBar.UpdateStunned();
@@ -4315,6 +4315,7 @@ namespace GenieClient
                             if(!string.IsNullOrWhiteSpace(m_oGlobals.Config.ConnectScript)) ClassCommand_SendText(m_oGlobals.Config.ScriptChar + m_oGlobals.Config.ConnectScript, false, "Connected");
                             if (m_oGlobals.VariableList.ContainsKey("connectscript")) ClassCommand_SendText(m_oGlobals.Config.ScriptChar + m_oGlobals.Config.ConnectScript, false, "Connected");
                         }
+                        SafeUpdateMainWindowTitle();
                         break;
                     }
 

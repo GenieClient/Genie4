@@ -5,12 +5,12 @@ namespace GenieClient
 {
     static class LocalDirectory
     {
-        public static string Path = Application.StartupPath;
+        public static string Path = AppDomain.CurrentDomain.BaseDirectory;
         public static bool IsLocal = true;
 
         public static void CheckUserDirectory()
         {
-            string dir = System.IO.Path.Combine(Application.StartupPath, "Config");
+            string dir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config");
             if (!System.IO.Directory.Exists(dir))
             {
                 // No local settings, change to user data directory
