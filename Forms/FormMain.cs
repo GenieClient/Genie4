@@ -7058,12 +7058,12 @@ namespace GenieClient
             }
         }
 
-        private void Command_EventAddWindow(string sName, int sWidth = 300, int sHeight = 200, int sTop = 10, int sLeft = 10)
+        private void Command_EventAddWindow(string sName, int sWidth = 300, int sHeight = 200, int? sTop = 10, int? sLeft = 10)
         {
             AddWindow(sName, sWidth, sHeight, sTop, sLeft);
         }
 
-        private void AddWindow(string sName, int sWidth = 300, int sHeight = 200, int sTop = 10, int sLeft = 10)
+        private void AddWindow(string sName, int sWidth = 300, int sHeight = 200, int? sTop = 10, int? sLeft = 10)
         {
             var oEnumerator = m_oFormList.GetEnumerator();
             while (oEnumerator.MoveNext())
@@ -7075,19 +7075,19 @@ namespace GenieClient
                 }
             }
 
-            var fo = SafeCreateOutputForm(Conversions.ToString(sName.ToLower()), Conversions.ToString(sName), null, sWidth, sHeight, sTop, sLeft, true, null, "", true);
+            var fo = SafeCreateOutputForm(Conversions.ToString(sName.ToLower()), Conversions.ToString(sName), null, sWidth, sHeight, sTop.Value, sLeft.Value, true, null, "", true);
             if (!Information.IsNothing(fo))
             {
                 fo.Visible = true;
             }
         }
 
-        private void Command_EventPositionWindow(string sName, int sWidth = 300, int sHeight = 200, int sTop = 10, int sLeft = 10)
+        private void Command_EventPositionWindow(string sName, int sWidth = 300, int sHeight = 200, int? sTop = 10, int? sLeft = 10)
         {
             PositionWindow(sName, sWidth, sHeight, sTop, sLeft);
         }
 
-        private void PositionWindow(string sName, int sWidth = 300, int sHeight = 200, int sTop = 10, int sLeft = 10)
+        private void PositionWindow(string sName, int sWidth = 300, int sHeight = 200, int? sTop = 10, int? sLeft = 10)
         {
             m_IsChangingLayout = true;
 
@@ -7100,14 +7100,14 @@ namespace GenieClient
                     {
                         if (sWidth == 0) { sWidth = ((FormSkin)oEnumerator.Current).Width; }
                         if (sHeight == 0) { sHeight = ((FormSkin)oEnumerator.Current).Height; }
-                        if (sTop == 0) { sTop = ((FormSkin)oEnumerator.Current).Top; }
-                        if (sLeft == 0) { sLeft = ((FormSkin)oEnumerator.Current).Left; }
+                        if (!sTop.HasValue) { sTop = ((FormSkin)oEnumerator.Current).Top; }
+                        if (!sLeft.HasValue) { sLeft = ((FormSkin)oEnumerator.Current).Left; }
 
                         ((FormSkin)oEnumerator.Current).Hide();
                     }
                 }
 
-                var fo = SafeCreateOutputForm(Conversions.ToString(sName.ToLower()), Conversions.ToString(sName), null, sWidth, sHeight, sTop, sLeft, true, null, "", true);
+                var fo = SafeCreateOutputForm(Conversions.ToString(sName.ToLower()), Conversions.ToString(sName), null, sWidth, sHeight, sTop.Value, sLeft.Value, true, null, "", true);
                 if (!Information.IsNothing(fo))
                 {
                     fo.Visible = true;
@@ -7131,11 +7131,11 @@ namespace GenieClient
                 Height = I;
 
                 if (sTop == 0) { sTop = Top; }
-                I = sTop;
+                I = sTop.Value;
                 Top = I;
 
                 if (sLeft == 0) { sLeft = Left; }
-                I = sLeft;
+                I = sLeft.Value;
                 Left = I;
                 m_IsChangingLayout = false;
                 return;
@@ -7154,12 +7154,12 @@ namespace GenieClient
                 m_oOutputMain.Height = I;
 
                 if (sTop == 0) { sTop = m_oOutputMain.Top; }
-                I = sTop;
+                I = sTop.Value;
                 if (I < 0) { I = 0; }
                 m_oOutputMain.Top = I;
 
                 if (sLeft == 0) { sLeft = m_oOutputMain.Left; }
-                I = sLeft;
+                I = sLeft.Value;
                 if (I < 0) { I = 0; }
                 m_oOutputMain.Left = I;
 
@@ -7957,7 +7957,7 @@ namespace GenieClient
             {
                 if (m_oGame.IsConnectedToGame)
                 {
-                    DialogResult response = MessageBox.Show("Genie will close and this will disconnect you from the game. Are you sure?", "Close Genie?", MessageBoxButtons.YesNoCancel);
+                    response = MessageBox.Show("Genie will close and this will disconnect you from the game. Are you sure?", "Close Genie?", MessageBoxButtons.YesNoCancel);
                     if (response == DialogResult.Yes)
                     {
                         AddText("Exiting Genie to Update.");

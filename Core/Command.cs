@@ -139,7 +139,7 @@ namespace GenieClient.Genie
 
         public event EventAddWindowEventHandler EventAddWindow;
 
-        public delegate void EventAddWindowEventHandler(string sWindow, int sWidth, int sHeight, int sTop, int sLeft);
+        public delegate void EventAddWindowEventHandler(string sWindow, int sWidth, int sHeight, int? sTop, int? sLeft);
 
         public event EventAddWindowEventHandler EventPositionWindow;
 
@@ -2255,39 +2255,26 @@ namespace GenieClient.Genie
                                                         }
                                                     case "position":
                                                         {
-                                                            int sWidth = 0;
-                                                            int sHeight = 0;
-                                                            int sTop = 0;
-                                                            int sLeft = 0;
-                                                            if ((oArgs.Count > 2) && (oArgs.Count < 8))
+                                                            try
                                                             {
-                                                                string alphaCheck = "0";
-                                                                if (oArgs.Count > 3)
+                                                                if (oArgs.Count < 5) throw new Exception("Syntax Error: Window Name, Width, and Height are required.");
+                                                                if (oArgs.Count > 7) throw new Exception("Error in command: " + sRow + ": " + (oArgs.Count - 7) + " too many Args in Position command." + Interaction.IIf((!int.TryParse(oArgs[3].ToString(), out _)), " Window names with spaces need to be \"enclosed\" in double quotes", ""));
+                                                                int sWidth, sHeight;
+                                                                if(!int.TryParse(oArgs[3].ToString(), out sWidth) || !int.TryParse(oArgs[4].ToString(), out sHeight)) 
                                                                 {
-                                                                    if (!int.TryParse(oArgs[3].ToString(), out sWidth)) { alphaCheck = "1st"; }
+                                                                    throw new Exception($"Syntax Error: Width ({oArgs[3].ToString()} and/or Height ({oArgs[4].ToString()}) are not formatted correctly.");
                                                                 }
-                                                                if (oArgs.Count > 4)
-                                                                {
-                                                                    if (!int.TryParse(oArgs[4].ToString(), out sHeight)) { alphaCheck = "2nd"; }
-                                                                }
-                                                                if (oArgs.Count > 5)
-                                                                {
-                                                                    if (!int.TryParse(oArgs[5].ToString(), out sTop)) { alphaCheck = "3rd"; }
-                                                                }
-                                                                if (oArgs.Count > 6)
-                                                                {
-                                                                    if (!int.TryParse(oArgs[6].ToString(), out sLeft)) { alphaCheck = "4th"; }
-                                                                }
-                                                                if (alphaCheck == "0")
-                                                                {
-                                                                    EventPositionWindow?.Invoke(oGlobals.ParseGlobalVars(oArgs[2].ToString()), sWidth, sHeight, sTop, sLeft);
-                                                                }
-                                                                else
-                                                                {
-                                                                    EchoColorText("Error in command: " + sRow + ": at the " + alphaCheck + " Position Arg." + Interaction.IIf((!int.TryParse(oArgs[3].ToString(), out sWidth)), " Window names with spaces need to be \"enclosed\" in double quotes", "") + System.Environment.NewLine, oGlobals.PresetList["scriptecho"].FgColor, oGlobals.PresetList["scriptecho"].BgColor, "");
-                                                                }
+                                                                int? sTop = null;
+                                                                int? sLeft = null;
+                                                                if (oArgs.Count > 5 && int.TryParse(oArgs[5].ToString(), out int top)) sTop = top;
+                                                                if (oArgs.Count > 6 && int.TryParse(oArgs[6].ToString(), out int left)) sLeft = left;
+
+                                                                EventPositionWindow?.Invoke(oGlobals.ParseGlobalVars(oArgs[2].ToString()), sWidth, sHeight, sTop, sLeft);
                                                             }
-                                                            if (oArgs.Count > 7) EchoColorText("Error in command: " + sRow + ": " + (oArgs.Count - 7) + " too many Args in Position command." + Interaction.IIf((!int.TryParse(oArgs[3].ToString(), out sWidth)), " Window names with spaces need to be \"enclosed\" in double quotes", "") + System.Environment.NewLine, oGlobals.PresetList["scriptecho"].FgColor, oGlobals.PresetList["scriptecho"].BgColor, "");
+                                                            catch(Exception ex)
+                                                            {
+                                                                EchoColorText(ex.Message + System.Environment.NewLine, oGlobals.PresetList["scriptecho"].FgColor, oGlobals.PresetList["scriptecho"].BgColor, "");
+                                                            }
                                                             break;
                                                         }
 
