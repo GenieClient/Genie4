@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -1440,7 +1441,19 @@ namespace GenieClient.Genie
 
                                                     default:
                                                         {
-                                                            oGlobals.Config.SetSetting(oArgs[1].ToString());
+                                                            try
+                                                            {
+                                                                List<string> response = oGlobals.Config.SetSetting(oArgs[1].ToString());
+                                                                foreach (string message in response)
+                                                                {
+                                                                    EchoText(message + System.Environment.NewLine);
+                                                                }
+                                                            }
+                                                            catch(Exception ex)
+                                                            {
+                                                                EchoText("Invalid syntax: " + sRow + System.Environment.NewLine);
+                                                                EchoText(ex.Message + System.Environment.NewLine);
+                                                            }
                                                             break;
                                                         }
                                                 }
@@ -1449,7 +1462,11 @@ namespace GenieClient.Genie
                                             {
                                                 try
                                                 {
-                                                    oGlobals.Config.SetSetting(oArgs[1].ToString(), Utility.ArrayToString(oArgs, 2));
+                                                    List<string> response = oGlobals.Config.SetSetting(oArgs[1].ToString(), Utility.ArrayToString(oArgs, 2));
+                                                    foreach(string message in response)
+                                                    {
+                                                        EchoText(message + System.Environment.NewLine);
+                                                    }
                                                 }
                                                 catch (Exception ex)
                                                 {
@@ -2821,8 +2838,8 @@ namespace GenieClient.Genie
             EchoText("showlinks=" + oGlobals.Config.bShowLinks.ToString() + System.Environment.NewLine);
             EchoText("logdir=" + oGlobals.Config.sLogDir + System.Environment.NewLine);
             EchoText("configdir=" + oGlobals.Config.sConfigDir + System.Environment.NewLine);
-            EchoText("plugindir=" + oGlobals.Config.PluginDir + System.Environment.NewLine);
-            EchoText("mapdir=" + oGlobals.Config.MapDir + System.Environment.NewLine);
+            EchoText("plugindir=" + oGlobals.Config.sPluginDir + System.Environment.NewLine);
+            EchoText("mapdir=" + oGlobals.Config.sMapDir + System.Environment.NewLine);
             EchoText("scriptdir=" + oGlobals.Config.sScriptDir + System.Environment.NewLine);
             EchoText("scriptchar=" + oGlobals.Config.ScriptChar.ToString() + System.Environment.NewLine);
             EchoText("scripttimeout=" + oGlobals.Config.iScriptTimeout.ToString() + System.Environment.NewLine);

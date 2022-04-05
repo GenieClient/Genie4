@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.IO;
 
 namespace GenieClient
 {
@@ -29,6 +30,24 @@ namespace GenieClient
 
             Path = dir;
             IsLocal = false;
+        }
+
+        public static string ValidateDirectory(string path)
+        {
+            try
+            {
+                DirectoryInfo directory = new DirectoryInfo(path);
+                if (!directory.Exists)
+                {
+                    directory.Create();
+                    return $"Directory Created: {directory.FullName}";
+                }
+                return $"Diretory Found: {directory.FullName}";
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error Setting Directory: {ex.Message}");
+            }
         }
     }
 }

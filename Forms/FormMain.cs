@@ -7960,6 +7960,9 @@ namespace GenieClient
                     response = MessageBox.Show("Genie will close and this will disconnect you from the game. Are you sure?", "Close Genie?", MessageBoxButtons.YesNoCancel);
                     if (response == DialogResult.Yes)
                     {
+                        AddText("Disabling Autoupdate.");
+                        m_oGlobals.Config.AutoUpdate = false;
+                        m_oGlobals.Config.Save(m_oGlobals.Config.ConfigDir + @"\settings.cfg");
                         AddText("Exiting Genie to Update.");
                         Updater.UpdateToTest();
                         m_oGame.Disconnect(true);
