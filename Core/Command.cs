@@ -2279,7 +2279,7 @@ namespace GenieClient.Genie
                                                                 int sWidth, sHeight;
                                                                 if(!int.TryParse(oArgs[3].ToString(), out sWidth) || !int.TryParse(oArgs[4].ToString(), out sHeight)) 
                                                                 {
-                                                                    throw new Exception($"Syntax Error: Width ({oArgs[3].ToString()} and/or Height ({oArgs[4].ToString()}) are not formatted correctly.");
+                                                                    throw new Exception($"Syntax Error: Width ({oArgs[3].ToString()}) and/or Height ({oArgs[4].ToString()}) are not formatted correctly.");
                                                                 }
                                                                 int? sTop = null;
                                                                 int? sLeft = null;
