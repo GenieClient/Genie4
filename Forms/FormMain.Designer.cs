@@ -110,11 +110,14 @@ namespace GenieClient
             this._AbortAllScriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._AutoMapperToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._ShowWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.updateMapsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._PluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._NoPluginsLoadedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.updatePluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._HelpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.forceUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadTestClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._ToolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.autoUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkUpdatesOnStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -158,7 +161,6 @@ namespace GenieClient
             this._PanelInput = new System.Windows.Forms.Panel();
             this._TextBoxInput = new GenieClient.ComponentTextBox();
             this._OpenFileDialogProfile = new System.Windows.Forms.OpenFileDialog();
-            this.loadTestClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._StatusStripMain.SuspendLayout();
             this._MenuStripMain.SuspendLayout();
             this._PanelBars.SuspendLayout();
@@ -839,7 +841,8 @@ namespace GenieClient
             // _AutoMapperToolStripMenuItem
             // 
             this._AutoMapperToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._ShowWindowToolStripMenuItem});
+            this._ShowWindowToolStripMenuItem,
+            this.updateMapsToolStripMenuItem});
             this._AutoMapperToolStripMenuItem.Name = "_AutoMapperToolStripMenuItem";
             this._AutoMapperToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
             this._AutoMapperToolStripMenuItem.Text = "&AutoMapper";
@@ -851,10 +854,18 @@ namespace GenieClient
             this._ShowWindowToolStripMenuItem.Text = "&Show Window";
             this._ShowWindowToolStripMenuItem.Click += new System.EventHandler(this.ShowWindowToolStripMenuItem_Click);
             // 
+            // updateMapsToolStripMenuItem
+            // 
+            this.updateMapsToolStripMenuItem.Name = "updateMapsToolStripMenuItem";
+            this.updateMapsToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.updateMapsToolStripMenuItem.Text = "&Update Maps";
+            this.updateMapsToolStripMenuItem.Click += new System.EventHandler(this.updateMapsToolStripMenuItem_Click);
+            // 
             // _PluginsToolStripMenuItem
             // 
             this._PluginsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._NoPluginsLoadedToolStripMenuItem});
+            this._NoPluginsLoadedToolStripMenuItem,
+            this.updatePluginsToolStripMenuItem});
             this._PluginsToolStripMenuItem.Name = "_PluginsToolStripMenuItem";
             this._PluginsToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
             this._PluginsToolStripMenuItem.Text = "Pl&ugins";
@@ -862,8 +873,15 @@ namespace GenieClient
             // _NoPluginsLoadedToolStripMenuItem
             // 
             this._NoPluginsLoadedToolStripMenuItem.Name = "_NoPluginsLoadedToolStripMenuItem";
-            this._NoPluginsLoadedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this._NoPluginsLoadedToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this._NoPluginsLoadedToolStripMenuItem.Text = "No plugins loaded";
+            // 
+            // updatePluginsToolStripMenuItem
+            // 
+            this.updatePluginsToolStripMenuItem.Name = "updatePluginsToolStripMenuItem";
+            this.updatePluginsToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.updatePluginsToolStripMenuItem.Text = "&Update Plugins";
+            this.updatePluginsToolStripMenuItem.Click += new System.EventHandler(this.updatePluginsToolStripMenuItem_Click);
             // 
             // _HelpToolStripMenuItem
             // 
@@ -898,6 +916,13 @@ namespace GenieClient
             this.forceUpdateToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
             this.forceUpdateToolStripMenuItem.Text = "&Force Update";
             this.forceUpdateToolStripMenuItem.Click += new System.EventHandler(this.forceUpdateToolStripMenuItem_Click);
+            // 
+            // loadTestClientToolStripMenuItem
+            // 
+            this.loadTestClientToolStripMenuItem.Name = "loadTestClientToolStripMenuItem";
+            this.loadTestClientToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.loadTestClientToolStripMenuItem.Text = "Load Test Client";
+            this.loadTestClientToolStripMenuItem.Click += new System.EventHandler(this.loadTestClientToolStripMenuItem_Click);
             // 
             // _ToolStripSeparator3
             // 
@@ -1367,13 +1392,6 @@ namespace GenieClient
             this._OpenFileDialogProfile.Filter = "Genie Profile|*.xml|All files|*.*";
             this._OpenFileDialogProfile.RestoreDirectory = true;
             this._OpenFileDialogProfile.Title = "Open Profile";
-            // 
-            // loadTestClientToolStripMenuItem
-            // 
-            this.loadTestClientToolStripMenuItem.Name = "loadTestClientToolStripMenuItem";
-            this.loadTestClientToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
-            this.loadTestClientToolStripMenuItem.Text = "Load Test Client";
-            this.loadTestClientToolStripMenuItem.Click += new System.EventHandler(this.loadTestClientToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -4174,6 +4192,8 @@ namespace GenieClient
         private ToolStripMenuItem autoUpdateToolStripMenuItem;
         private ToolStripMenuItem checkUpdatesOnStartupToolStripMenuItem;
         private ToolStripMenuItem loadTestClientToolStripMenuItem;
+        private ToolStripMenuItem updateMapsToolStripMenuItem;
+        private ToolStripMenuItem updatePluginsToolStripMenuItem;
 
         internal ToolStripMenuItem SaveSizedDefaultLayoutToolStripMenuItem
         {

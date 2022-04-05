@@ -76,7 +76,7 @@ namespace GenieClient
                     Thread.Sleep(10);
                 myProcess.Close();
             }
-            return default;
+            return true;
         }
 
         private static bool FileIsLocked(FileInfo file)
