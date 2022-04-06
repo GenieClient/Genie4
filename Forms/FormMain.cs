@@ -3512,7 +3512,7 @@ namespace GenieClient
 
             oForm.Name = "FormSkin" + sID;
             oForm.Text = sName;
-            oForm.Title = sName == "percWindow" ? "Active Spells" : sName;
+            oForm.Title = sName.ToLower() == "percwindow" ? "Active Spells" : sName;
             oForm.ID = sID;
             oForm.IfClosed = sIfClosed;
             if (!Information.IsNothing(oFont))
@@ -3601,7 +3601,7 @@ namespace GenieClient
                         oForm.UserForm = false;
                         break;
                     }
-
+                case "percWindow":
                 case "percwindow":
                     {
                         m_oOutputActiveSpells = oForm;
