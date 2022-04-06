@@ -372,6 +372,7 @@ namespace GenieClient
                     _m_oCommand.EventLoadLayout -= Command_LoadLayout;
                     _m_oCommand.EventSaveLayout -= Command_SaveLayout;
                     _m_oCommand.EventAddWindow -= Command_EventAddWindow;
+                    _m_oCommand.EventPositionWindow -= Command_EventPositionWindow;
                     _m_oCommand.EventRemoveWindow -= Command_EventRemoveWindow;
                     _m_oCommand.EventCloseWindow -= Command_EventCloseWindow;
                     _m_oCommand.EventFlashWindow -= Command_FlashWindow;
@@ -421,6 +422,7 @@ namespace GenieClient
                     _m_oCommand.EventLoadLayout += Command_LoadLayout;
                     _m_oCommand.EventSaveLayout += Command_SaveLayout;
                     _m_oCommand.EventAddWindow += Command_EventAddWindow;
+                    _m_oCommand.EventPositionWindow += Command_EventPositionWindow;
                     _m_oCommand.EventRemoveWindow += Command_EventRemoveWindow;
                     _m_oCommand.EventCloseWindow += Command_EventCloseWindow;
                     _m_oCommand.EventFlashWindow += Command_FlashWindow;
@@ -7064,12 +7066,12 @@ namespace GenieClient
             }
         }
 
-        private void Command_EventAddWindow(string sName)
+        private void Command_EventAddWindow(string sName, int sWidth = 300, int sHeight = 200, int? sTop = 10, int? sLeft = 10)
         {
-            AddWindow(sName);
+            AddWindow(sName, sWidth, sHeight, sTop, sLeft);
         }
 
-        private void AddWindow(string sName)
+        private void AddWindow(string sName, int sWidth = 300, int sHeight = 200, int? sTop = 10, int? sLeft = 10)
         {
             var oEnumerator = m_oFormList.GetEnumerator();
             while (oEnumerator.MoveNext())
@@ -7081,12 +7083,100 @@ namespace GenieClient
                 }
             }
 
-            var fo = SafeCreateOutputForm(Conversions.ToString(sName.ToLower()), Conversions.ToString(sName), null, 300, 200, 10, 10, true, null, "", true);
+            var fo = SafeCreateOutputForm(Conversions.ToString(sName.ToLower()), Conversions.ToString(sName), null, sWidth, sHeight, sTop.Value, sLeft.Value, true, null, "", true);
             if (!Information.IsNothing(fo))
             {
                 fo.Visible = true;
             }
         }
+
+        private void Command_EventPositionWindow(string sName, int sWidth = 300, int sHeight = 200, int? sTop = 10, int? sLeft = 10)
+        {
+            PositionWindow(sName, sWidth, sHeight, sTop, sLeft);
+        }
+
+        private void PositionWindow(string sName, int sWidth = 300, int sHeight = 200, int? sTop = 10, int? sLeft = 10)
+        {
+            m_IsChangingLayout = true;
+
+            if (sName != "Game" && sName != "Main")
+            {
+                var oEnumerator = m_oFormList.GetEnumerator();
+                while (oEnumerator.MoveNext())
+                {
+                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(((FormSkin)oEnumerator.Current).ID, sName.ToLower(), false)))
+                    {
+                        if (sWidth == 0) { sWidth = ((FormSkin)oEnumerator.Current).Width; }
+                        if (sHeight == 0) { sHeight = ((FormSkin)oEnumerator.Current).Height; }
+                        if (!sTop.HasValue) { sTop = ((FormSkin)oEnumerator.Current).Top; }
+                        if (!sLeft.HasValue) { sLeft = ((FormSkin)oEnumerator.Current).Left; }
+
+                        ((FormSkin)oEnumerator.Current).Hide();
+                    }
+                }
+
+                var fo = SafeCreateOutputForm(Conversions.ToString(sName.ToLower()), Conversions.ToString(sName), null, sWidth, sHeight, sTop.Value, sLeft.Value, true, null, "", true);
+                if (!Information.IsNothing(fo))
+                {
+                    fo.Visible = true;
+                }
+                m_IsChangingLayout = false;
+                return;
+            }
+
+            int I = 0;
+
+            if (sName == "Main") // This is the Genie client window
+            {
+                if (sWidth == 0) { sWidth = Width; }
+                I = sWidth;
+                if (I < MinimumSize.Width) { I = MinimumSize.Width; }
+                Width = I;
+
+                if (sHeight == 0) { sHeight = Height; }
+                I = sHeight;
+                if (I < MinimumSize.Height) { I = MinimumSize.Height; }
+                Height = I;
+
+                if (sTop == 0) { sTop = Top; }
+                I = sTop.Value;
+                Top = I;
+
+                if (sLeft == 0) { sLeft = Left; }
+                I = sLeft.Value;
+                Left = I;
+                m_IsChangingLayout = false;
+                return;
+            }
+            if (sName == "Game") // This is the Main text output window
+            {
+                m_oOutputMain.Hide();
+                if (sWidth == 0) { sWidth = m_oOutputMain.Width; }
+                I = sWidth;
+                if (I < m_oOutputMain.MinimumSize.Width) { I = m_oOutputMain.MinimumSize.Width; }
+                m_oOutputMain.Width = I;
+
+                if (sHeight == 0) { sHeight = m_oOutputMain.Height; }
+                I = sHeight;
+                if (I < m_oOutputMain.MinimumSize.Height) { I = m_oOutputMain.MinimumSize.Height; }
+                m_oOutputMain.Height = I;
+
+                if (sTop == 0) { sTop = m_oOutputMain.Top; }
+                I = sTop.Value;
+                if (I < 0) { I = 0; }
+                m_oOutputMain.Top = I;
+
+                if (sLeft == 0) { sLeft = m_oOutputMain.Left; }
+                I = sLeft.Value;
+                if (I < 0) { I = 0; }
+                m_oOutputMain.Left = I;
+
+                m_oOutputMain.Show();
+                m_IsChangingLayout = false;
+                return;
+            }
+        }
+
 
         private void Command_EventRemoveWindow(string sName)
         {

@@ -140,7 +140,11 @@ namespace GenieClient.Genie
 
         public event EventAddWindowEventHandler EventAddWindow;
 
-        public delegate void EventAddWindowEventHandler(string sWindow);
+        public delegate void EventAddWindowEventHandler(string sWindow, int sWidth, int sHeight, int? sTop, int? sLeft);
+
+        public event EventAddWindowEventHandler EventPositionWindow;
+
+        public delegate void EventPositionWindowEventHandler(string sWindow, int sWidth, int sHeight, int sTop, int sLeft);
 
         public event EventRemoveWindowEventHandler EventRemoveWindow;
 
@@ -2259,9 +2263,38 @@ namespace GenieClient.Genie
                                                     case "add":
                                                     case "show":
                                                         {
-                                                            EventAddWindow?.Invoke(oGlobals.ParseGlobalVars(ParseAllArgs(oArgs, 2)));
+                                                            int sWidth = 300;
+                                                            int sHeight = 200;
+                                                            int sTop = 10;
+                                                            int sLeft = 10;
+                                                            EventAddWindow?.Invoke(oGlobals.ParseGlobalVars(ParseAllArgs(oArgs, 2)), sWidth, sHeight, sTop, sLeft);
                                                             break;
                                                         }
+                                                    case "position":
+                                                        {
+                                                            try
+                                                            {
+                                                                if (oArgs.Count < 5) throw new Exception("Syntax Error: Window Name, Width, and Height are required.");
+                                                                if (oArgs.Count > 7) throw new Exception("Error in command: " + sRow + ": " + (oArgs.Count - 7) + " too many Args in Position command." + Interaction.IIf((!int.TryParse(oArgs[3].ToString(), out _)), " Window names with spaces need to be \"enclosed\" in double quotes", ""));
+                                                                int sWidth, sHeight;
+                                                                if(!int.TryParse(oArgs[3].ToString(), out sWidth) || !int.TryParse(oArgs[4].ToString(), out sHeight)) 
+                                                                {
+                                                                    throw new Exception($"Syntax Error: Width ({oArgs[3].ToString()}) and/or Height ({oArgs[4].ToString()}) are not formatted correctly.");
+                                                                }
+                                                                int? sTop = null;
+                                                                int? sLeft = null;
+                                                                if (oArgs.Count > 5 && int.TryParse(oArgs[5].ToString(), out int top)) sTop = top;
+                                                                if (oArgs.Count > 6 && int.TryParse(oArgs[6].ToString(), out int left)) sLeft = left;
+
+                                                                EventPositionWindow?.Invoke(oGlobals.ParseGlobalVars(oArgs[2].ToString()), sWidth, sHeight, sTop, sLeft);
+                                                            }
+                                                            catch(Exception ex)
+                                                            {
+                                                                EchoColorText(ex.Message + System.Environment.NewLine, oGlobals.PresetList["scriptecho"].FgColor, oGlobals.PresetList["scriptecho"].BgColor, "");
+                                                            }
+                                                            break;
+                                                        }
+
 
                                                     case "remove":
                                                         {
