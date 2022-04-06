@@ -367,10 +367,18 @@ namespace GenieClient
             {
                 m_oRichTextBuffer.SelectionColor = oColor;
             }
+            else
+            {
+                m_oRichTextBuffer.SelectionColor = m_oRichTextBuffer.ForeColor;
+            }
 
             if (oBgColor != Color.Transparent & oBgColor != m_oEmptyColor)
             {
                 m_oRichTextBuffer.SelectionBackColor = oBgColor;
+            }
+            else
+            {
+                m_oRichTextBuffer.SelectionBackColor = m_oRichTextBuffer.BackColor;
             }
 
             if (!Information.IsNothing(oFont))
