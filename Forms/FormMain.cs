@@ -7090,12 +7090,12 @@ namespace GenieClient
             }
         }
 
-        private void Command_EventPositionWindow(string sName, int sWidth = 300, int sHeight = 200, int? sTop = 10, int? sLeft = 10)
+        private void Command_EventPositionWindow(string sName, int? sWidth = 300, int? sHeight = 200, int? sTop = 10, int? sLeft = 10)
         {
             PositionWindow(sName, sWidth, sHeight, sTop, sLeft);
         }
 
-        private void PositionWindow(string sName, int sWidth = 300, int sHeight = 200, int? sTop = 10, int? sLeft = 10)
+        private void PositionWindow(string sName, int? sWidth = 300, int? sHeight = 200, int? sTop = 10, int? sLeft = 10)
         {
             m_IsChangingLayout = true;
 
@@ -7106,16 +7106,20 @@ namespace GenieClient
                 {
                     if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(((FormSkin)oEnumerator.Current).ID, sName.ToLower(), false)))
                     {
-                        if (sWidth == 0) { sWidth = ((FormSkin)oEnumerator.Current).Width; }
-                        if (sHeight == 0) { sHeight = ((FormSkin)oEnumerator.Current).Height; }
+                        if (!sWidth.HasValue) { sWidth = ((FormSkin)oEnumerator.Current).Width; }
+                        if (!sHeight.HasValue) { sHeight = ((FormSkin)oEnumerator.Current).Height; }
                         if (!sTop.HasValue) { sTop = ((FormSkin)oEnumerator.Current).Top; }
                         if (!sLeft.HasValue) { sLeft = ((FormSkin)oEnumerator.Current).Left; }
 
                         ((FormSkin)oEnumerator.Current).Hide();
                     }
                 }
+                if (!sWidth.HasValue) { sWidth = 0; }
+                if (!sHeight.HasValue) { sHeight = 0; }
+                if (!sTop.HasValue) { sTop = 0; }
+                if (!sLeft.HasValue) { sLeft = 0; }
 
-                var fo = SafeCreateOutputForm(Conversions.ToString(sName.ToLower()), Conversions.ToString(sName), null, sWidth, sHeight, sTop.Value, sLeft.Value, true, null, "", true);
+                var fo = SafeCreateOutputForm(Conversions.ToString(sName.ToLower()), Conversions.ToString(sName), null, sWidth.Value, sHeight.Value, sTop.Value, sLeft.Value, true, null, "", true);
                 if (!Information.IsNothing(fo))
                 {
                     fo.Visible = true;
@@ -7128,21 +7132,21 @@ namespace GenieClient
 
             if (sName == "Main") // This is the Genie client window
             {
-                if (sWidth == 0) { sWidth = Width; }
-                I = sWidth;
+                if (!sWidth.HasValue) { sWidth = Width; }
+                I = sWidth.Value;
                 if (I < MinimumSize.Width) { I = MinimumSize.Width; }
                 Width = I;
 
-                if (sHeight == 0) { sHeight = Height; }
-                I = sHeight;
+                if (!sHeight.HasValue) { sHeight = Height; }
+                I = sHeight.Value;
                 if (I < MinimumSize.Height) { I = MinimumSize.Height; }
                 Height = I;
 
-                if (sTop == 0) { sTop = Top; }
+                if (!sTop.HasValue) { sTop = Top; }
                 I = sTop.Value;
                 Top = I;
 
-                if (sLeft == 0) { sLeft = Left; }
+                if (!sLeft.HasValue) { sLeft = Left; }
                 I = sLeft.Value;
                 Left = I;
                 m_IsChangingLayout = false;
@@ -7151,22 +7155,22 @@ namespace GenieClient
             if (sName == "Game") // This is the Main text output window
             {
                 m_oOutputMain.Hide();
-                if (sWidth == 0) { sWidth = m_oOutputMain.Width; }
-                I = sWidth;
+                if (!sWidth.HasValue) { sWidth = m_oOutputMain.Width; }
+                I = sWidth.Value;
                 if (I < m_oOutputMain.MinimumSize.Width) { I = m_oOutputMain.MinimumSize.Width; }
                 m_oOutputMain.Width = I;
 
-                if (sHeight == 0) { sHeight = m_oOutputMain.Height; }
-                I = sHeight;
+                if (!sHeight.HasValue) { sHeight = m_oOutputMain.Height; }
+                I = sHeight.Value;
                 if (I < m_oOutputMain.MinimumSize.Height) { I = m_oOutputMain.MinimumSize.Height; }
                 m_oOutputMain.Height = I;
 
-                if (sTop == 0) { sTop = m_oOutputMain.Top; }
+                if (!sTop.HasValue) { sTop = m_oOutputMain.Top; }
                 I = sTop.Value;
                 if (I < 0) { I = 0; }
                 m_oOutputMain.Top = I;
 
-                if (sLeft == 0) { sLeft = m_oOutputMain.Left; }
+                if (!sLeft.HasValue) { sLeft = m_oOutputMain.Left; }
                 I = sLeft.Value;
                 if (I < 0) { I = 0; }
                 m_oOutputMain.Left = I;

@@ -142,9 +142,9 @@ namespace GenieClient.Genie
 
         public delegate void EventAddWindowEventHandler(string sWindow, int sWidth, int sHeight, int? sTop, int? sLeft);
 
-        public event EventAddWindowEventHandler EventPositionWindow;
+        public event EventPositionWindowEventHandler EventPositionWindow;
 
-        public delegate void EventPositionWindowEventHandler(string sWindow, int sWidth, int sHeight, int sTop, int sLeft);
+        public delegate void EventPositionWindowEventHandler(string sWindow, int? sWidth, int? sHeight, int? sTop, int? sLeft);
 
         public event EventRemoveWindowEventHandler EventRemoveWindow;
 
@@ -2274,17 +2274,20 @@ namespace GenieClient.Genie
                                                         {
                                                             try
                                                             {
-                                                                if (oArgs.Count < 5) throw new Exception("Syntax Error: Window Name, Width, and Height are required.");
+                                                                if (oArgs.Count < 4) throw new Exception("Syntax Error: Window Name, and one of (Width, Height, Top, or Left are required.");
                                                                 if (oArgs.Count > 7) throw new Exception("Error in command: " + sRow + ": " + (oArgs.Count - 7) + " too many Args in Position command." + Interaction.IIf((!int.TryParse(oArgs[3].ToString(), out _)), " Window names with spaces need to be \"enclosed\" in double quotes", ""));
-                                                                int sWidth, sHeight;
-                                                                if(!int.TryParse(oArgs[3].ToString(), out sWidth) || !int.TryParse(oArgs[4].ToString(), out sHeight)) 
+                                                                int? sWidth = null;
+                                                                int? sHeight = null;
+                                                                if ((!int.TryParse(oArgs[3].ToString(), out int width)) && (oArgs[3].ToString() != "") || (!int.TryParse(oArgs[4].ToString(), out int height)) && (oArgs[4].ToString() != ""))
                                                                 {
                                                                     throw new Exception($"Syntax Error: Width ({oArgs[3].ToString()}) and/or Height ({oArgs[4].ToString()}) are not formatted correctly.");
                                                                 }
+                                                                if (width != 0) sWidth = width;
+                                                                if (height != 0) sHeight = height;
                                                                 int? sTop = null;
                                                                 int? sLeft = null;
-                                                                if (oArgs.Count > 5 && int.TryParse(oArgs[5].ToString(), out int top)) sTop = top;
-                                                                if (oArgs.Count > 6 && int.TryParse(oArgs[6].ToString(), out int left)) sLeft = left;
+                                                                if (oArgs.Count > 6 && int.TryParse(oArgs[5].ToString(), out int top)) sTop = top;
+                                                                if (oArgs.Count > 5 && int.TryParse(oArgs[6].ToString(), out int left)) sLeft = left;
 
                                                                 EventPositionWindow?.Invoke(oGlobals.ParseGlobalVars(oArgs[2].ToString()), sWidth, sHeight, sTop, sLeft);
                                                             }
