@@ -133,7 +133,7 @@ namespace GenieClient
             // ComboBoxGame
             // 
             _ComboBoxGame.FormattingEnabled = true;
-            _ComboBoxGame.Items.AddRange(new object[] { "DR", "DRX", "DRF", "GS3", "GSX", "MO", "HX" });
+            _ComboBoxGame.Items.AddRange(new object[] { "DR", "DRX", "DRF", "DRT", "GS3", "GSX", "GST", "GSF" });
             _ComboBoxGame.Location = new Point(183, 71);
             _ComboBoxGame.Name = "ComboBoxGame";
             _ComboBoxGame.Size = new Size(165, 21);
