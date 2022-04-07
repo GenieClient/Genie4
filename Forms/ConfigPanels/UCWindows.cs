@@ -332,7 +332,7 @@ namespace GenieClient
                     fo.NameListOnly = CheckBoxNameListOnly.Checked;
                     var li = ListViewBase.Items.Add(TextBoxTitle.Text);
                     li.SubItems.Add(GetFontName(fo.RichTextBoxOutput.Font));
-                    li.SubItems.Add(GetFontName(fo.RichTextBoxOutput.Font));
+                    li.SubItems.Add(Genie.ColorCode.ColorToString(fo.RichTextBoxOutput.ForeColor, fo.RichTextBoxOutput.BackColor));
                     li.SubItems.Add(fo.TimeStamp.ToString());
                     li.SubItems.Add(fo.NameListOnly.ToString());
                     li.Tag = fo;
