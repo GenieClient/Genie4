@@ -3086,11 +3086,10 @@ namespace GenieClient.Genie
             {
                 if (text.Trim().Length == 0)
                 {
-                    if (m_bLastRowWasBlank == true || m_bLastRowWasPrompt == true)
+                    if (m_bLastRowWasBlank == true)
                     {
                         return;
                     }
-
                     m_bLastRowWasBlank = true;
                 }
                 else if (Regex.IsMatch(text, @"^.*\" + m_oGlobals.Config.sPrompt + "?$") && !m_oGlobals.Config.PromptForce)
@@ -3100,7 +3099,6 @@ namespace GenieClient.Genie
                     {
                         return;
                     }
-                    m_bLastRowWasPrompt = true;
                 }
                 else
                 {
