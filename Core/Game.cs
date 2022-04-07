@@ -569,15 +569,22 @@ namespace GenieClient.Genie
                                 if (buffer == @"<pushBold/>" || buffer == @"<popBold/>") //print before processing these ones
                                 {
                                     bCombatRow = (sTextBuffer.StartsWith("< ") | sTextBuffer.StartsWith("> ") | sTextBuffer.StartsWith("* "));
-                                    bool argbIsPrompt = false;
-                                    WindowTarget argoWindowTarget = 0;
-                                    PrintTextWithParse(sTextBuffer, bIsPrompt: argbIsPrompt, oWindowTarget: argoWindowTarget);
+
+                                    PrintTextWithParse(sTextBuffer, bIsPrompt: false, oWindowTarget: WindowTarget.Unknown);
                                     sTextBuffer = string.Empty;
                                     m_bBold = !m_bBold;
                                 }
+                                
                                 string sTmp = ProcessXML(buffer);
-
                                 sTextBuffer += sTmp;
+
+                                if (buffer.EndsWith("</preset>") && m_bPresetRoomOutput)
+                                {
+                                    m_bPresetRoomOutput = false;
+                                    PrintTextWithParse(sTextBuffer, bIsPrompt: false, oWindowTarget: WindowTarget.Unknown);
+                                    sTextBuffer = string.Empty;
+                                }
+
                                 m_oXMLBuffer.Clear();
                                 oXMLBuffer.Clear();
                             }
@@ -590,6 +597,8 @@ namespace GenieClient.Genie
                             if (Conversions.ToString(cPreviousChar) == "<")	// End tag found
                             {
                                 bEndTagFound = true;
+                                PrintTextWithParse(sTextBuffer, bIsPrompt: false, oWindowTarget: WindowTarget.Unknown);
+                                sTextBuffer = string.Empty;
                             }
 
                             if (iInsideXML > 0)
@@ -1149,6 +1158,7 @@ namespace GenieClient.Genie
         private bool m_bPresetSpeechOutput = false;
         private bool m_bPresetWhisperOutput = false;
         private bool m_bPresetThoughtOutput = false;
+        private bool m_bPresetRoomOutput = false;
         private bool m_bStatusPromptEnabled = false;
 
         private string ProcessXMLNodeElement(XmlNode oXmlNode)
@@ -1506,6 +1516,7 @@ namespace GenieClient.Genie
                                 case "speech":
                                     {
                                         m_bPresetSpeechOutput = true;
+                                        m_sStyle = GetAttributeData(oXmlNode, "id");
                                         sReturn += GetTextFromXML(oXmlNode);
                                         break;
                                     }
@@ -1513,6 +1524,7 @@ namespace GenieClient.Genie
                                 case "whisper":
                                     {
                                         m_bPresetWhisperOutput = true;
+                                        m_sStyle = GetAttributeData(oXmlNode, "id");
                                         sReturn += GetTextFromXML(oXmlNode);
                                         break;
                                     }
@@ -1520,14 +1532,21 @@ namespace GenieClient.Genie
                                 case "thought":
                                     {
                                         m_bPresetThoughtOutput = true;
+                                        m_sStyle = GetAttributeData(oXmlNode, "id");
                                         sReturn += GetTextFromXML(oXmlNode);
                                         break;
                                     }
 
+                                case "roomDesc":
+                                    {
+                                        m_bPresetRoomOutput = true;
+                                        m_sStyle = GetAttributeData(oXmlNode, "id");
+                                        sReturn += GetTextFromXML(oXmlNode);
+                                        break;
+                                    }
                                 default:
                                     {
-                                        string argstrAttributeName15 = "id";
-                                        m_sStyle = GetAttributeData(oXmlNode, argstrAttributeName15);
+                                        m_sStyle = GetAttributeData(oXmlNode, "id");
                                         sReturn += GetTextFromXML(oXmlNode);
                                         break;
                                     }
@@ -2557,17 +2576,10 @@ namespace GenieClient.Genie
 
             if (sText.Trim().Length > 0)
             {
-                if (sText.Contains("You also see"))
+                if (sText.StartsWith("  You also see "))
                 {
-                    int I = sText.IndexOf("You also see");
-                    if (I > 0)
-                    {
-                        string argsText = sText.Substring(0, I).Trim() + System.Environment.NewLine;
-                        bool argbIsPrompt = false;
-                        WindowTarget argoWindowTarget = 0;
-                        PrintTextWithParse(argsText, bIsPrompt: argbIsPrompt, oWindowTarget: argoWindowTarget);
-                        sText = sText.Substring(I);
-                    }
+                    PrintTextWithParse(Environment.NewLine, bIsPrompt: false, oWindowTarget: WindowTarget.Unknown);
+                    sText = sText.TrimStart();
                 }
 
                 if (m_sStyle.Length > 0)
