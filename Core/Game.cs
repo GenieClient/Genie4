@@ -578,9 +578,8 @@ namespace GenieClient.Genie
                                 string sTmp = ProcessXML(buffer);
                                 sTextBuffer += sTmp;
 
-                                if (buffer.EndsWith("</preset>") && m_bPresetRoomOutput)
+                                if (buffer.EndsWith("</preset>"))
                                 {
-                                    m_bPresetRoomOutput = false;
                                     PrintTextWithParse(sTextBuffer, bIsPrompt: false, oWindowTarget: WindowTarget.Unknown);
                                     sTextBuffer = string.Empty;
                                 }
@@ -1158,7 +1157,6 @@ namespace GenieClient.Genie
         private bool m_bPresetSpeechOutput = false;
         private bool m_bPresetWhisperOutput = false;
         private bool m_bPresetThoughtOutput = false;
-        private bool m_bPresetRoomOutput = false;
         private bool m_bStatusPromptEnabled = false;
 
         private string ProcessXMLNodeElement(XmlNode oXmlNode)
@@ -1539,7 +1537,6 @@ namespace GenieClient.Genie
 
                                 case "roomDesc":
                                     {
-                                        m_bPresetRoomOutput = true;
                                         m_sStyle = GetAttributeData(oXmlNode, "id");
                                         sReturn += GetTextFromXML(oXmlNode);
                                         break;
@@ -2615,32 +2612,17 @@ namespace GenieClient.Genie
 
                 if (m_bPresetSpeechOutput == true)
                 {
-                    if (sText.Contains(", \""))
-                    {
-                        color = m_oGlobals.PresetList["speech"].FgColor;
-                        bgcolor = m_oGlobals.PresetList["speech"].BgColor;
-
-                        // Log Window
-                        // If m_oTargetWindow = WindowTarget.Other Then
-                        // PrintTextToWindow(sText, color, bgcolor, WindowTarget.Log)
-                        // End If
-                    }
+                    color = m_oGlobals.PresetList["speech"].FgColor;
+                    bgcolor = m_oGlobals.PresetList["speech"].BgColor;
 
                     m_bPresetSpeechOutput = false;
                 }
 
                 if (m_bPresetWhisperOutput == true)
                 {
-                    if (sText.Contains(", \""))
-                    {
-                        color = m_oGlobals.PresetList["whispers"].FgColor;
-                        bgcolor = m_oGlobals.PresetList["whispers"].BgColor;
-
-                        // Log Window
-                        // If m_oTargetWindow = WindowTarget.Other Then
-                        // PrintTextToWindow(sText, color, bgcolor, WindowTarget.Log)
-                        // End If
-                    }
+                    
+                    color = m_oGlobals.PresetList["whispers"].FgColor;
+                    bgcolor = m_oGlobals.PresetList["whispers"].BgColor;
 
                     m_bPresetWhisperOutput = false;
                 }

@@ -190,7 +190,7 @@ namespace GenieClient
 
         private string GetTimeString(string sText)
         {
-            if (m_bTimeStamp == true)
+            if (m_bTimeStamp && !m_bPendingNewLine)
             {
                 if (sText.Trim().Length > 0)
                 {
@@ -424,6 +424,7 @@ namespace GenieClient
                                         for (int I = 1, loopTo = oMatch.Groups.Count - 1; I <= loopTo; I++)
                                         {
                                             int iDiff = sLine.Length - sLine.TrimStart(Conversions.ToChar(Constants.vbCr)).Length; // RichText does not add both cr+lf
+                                            
                                             m_oRichTextBuffer.SelectionStart = iStart + oMatch.Groups[I].Index + iDiff;
                                             m_oRichTextBuffer.SelectionLength = oMatch.Groups[I].Length;
                                             if (oHighlight.FgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
