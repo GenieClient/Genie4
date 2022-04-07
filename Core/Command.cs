@@ -2274,7 +2274,7 @@ namespace GenieClient.Genie
                                                         {
                                                             try
                                                             {
-                                                                if (oArgs.Count < 4) throw new Exception("Syntax Error: Window Name, and one of (Width, Height, Top, or Left are required.");
+                                                                if (oArgs.Count < 4) throw new Exception("Syntax Error: Window Name, and one of (Width, Height, Top, or Left) are required.");
                                                                 if (oArgs.Count > 7) throw new Exception("Error in command: " + sRow + ": " + (oArgs.Count - 7) + " too many Args in Position command." + Interaction.IIf((!int.TryParse(oArgs[3].ToString(), out _)), " Window names with spaces need to be \"enclosed\" in double quotes", ""));
                                                                 int? sWidth = null;
                                                                 int? sHeight = null;
@@ -2286,8 +2286,8 @@ namespace GenieClient.Genie
                                                                 if (height != 0) sHeight = height;
                                                                 int? sTop = null;
                                                                 int? sLeft = null;
-                                                                if (oArgs.Count > 6 && int.TryParse(oArgs[5].ToString(), out int top)) sTop = top;
-                                                                if (oArgs.Count > 5 && int.TryParse(oArgs[6].ToString(), out int left)) sLeft = left;
+                                                                if (oArgs.Count > 5 && int.TryParse(oArgs[5].ToString(), out int top)) sTop = top;
+                                                                if (oArgs.Count > 6 && int.TryParse(oArgs[6].ToString(), out int left)) sLeft = left;
 
                                                                 EventPositionWindow?.Invoke(oGlobals.ParseGlobalVars(oArgs[2].ToString()), sWidth, sHeight, sTop, sLeft);
                                                             }
