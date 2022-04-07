@@ -134,14 +134,14 @@ namespace GenieClient
             {
                 if (Updater.ClientIsCurrent)
                 {
-                    AddText("You are running the latest version of Genie.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    AddText("You are running the latest version of Genie.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                 }
                 else
                 {
-                    AddText("An Update is Available.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    AddText("An Update is Available.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                     if (m_oGlobals.Config.AutoUpdate)
                     {
-                        AddText("AutoUpdate is Enabled. Exiting and launching Updater.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                        AddText("AutoUpdate is Enabled. Exiting and launching Updater.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                         Updater.RunUpdate();
                         System.Windows.Forms.Application.Exit();
                     }
