@@ -589,7 +589,7 @@ namespace GenieClient
                 }
             }
 
-            if (m_oRichTextBuffer.Text.Trim().StartsWith("You also see"))
+            if (m_oRichTextBuffer.Text.Contains("\nYou also see"))
             {
                 if (!Information.IsNothing(m_oParentForm.Globals.MonsterListRegEx))
                 {
