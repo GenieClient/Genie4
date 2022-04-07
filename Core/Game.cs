@@ -2040,7 +2040,7 @@ namespace GenieClient.Genie
                     case "prompt":
                         {
                             string strBuffer = GetTextFromXML(oXmlNode);
-                            if (m_bStatusPromptEnabled == false)
+                            if (m_bStatusPromptEnabled)
                             {
                                 if ((strBuffer ?? "") != ">")
                                 {
@@ -2178,18 +2178,17 @@ namespace GenieClient.Genie
                                     string argvalue18 = "0";
                                     m_oGlobals.VariableList.Add(argkey43, argvalue18, Globals.Variables.VariableType.Reserved);
                                 }
-
                                 string argsVariable40 = "$roundtime";
                                 VariableChanged(argsVariable40);
-                                if (m_oGlobals.Config.sPrompt.Length > 0)
+
+                                if (m_oGlobals.Config.sPrompt.Length > 0 && !m_bLastRowWasPrompt)
                                 {
-                                    strBuffer = strBuffer.Replace(">", "");
+                                    strBuffer = strBuffer.Replace(m_oGlobals.Config.sPrompt.Trim(), "");
                                     strBuffer += m_oGlobals.Config.sPrompt;
                                     bool argbIsPrompt = true;
                                     WindowTarget argoWindowTarget = 0;
 
                                     PrintTextWithParse(strBuffer, argbIsPrompt, oWindowTarget: argoWindowTarget);
-
                                 }
 
                                 string argkey44 = "prompt";
@@ -2892,20 +2891,19 @@ namespace GenieClient.Genie
             {
                 if (text.Trim().Length == 0)
                 {
-                    if (m_bLastRowWasBlank == true || m_bLastRowWasPrompt == true)
+                    if (m_bLastRowWasBlank == true)
                     {
                         return;
                     }
-
                     m_bLastRowWasBlank = true;
                 }
                 else if (Regex.IsMatch(text, @"^.*\" + m_oGlobals.Config.sPrompt + "?$"))
                 {
+                    m_bLastRowWasPrompt = true;
                     if (m_bLastRowWasBlank)
                     {
                         return;
                     }
-                    m_bLastRowWasPrompt = true;
                 }
                 else
                 {
