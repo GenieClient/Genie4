@@ -430,10 +430,18 @@ namespace GenieClient
                                             {
                                                 m_oRichTextBuffer.SelectionColor = oHighlight.FgColor;
                                             }
+                                            else
+                                            {
+                                                m_oRichTextBuffer.SelectionColor = m_oRichTextBuffer.ForeColor;
+                                            }
 
                                             if (oHighlight.BgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
                                             {
                                                 m_oRichTextBuffer.SelectionBackColor = oHighlight.BgColor;
+                                            }
+                                            else
+                                            {
+                                                m_oRichTextBuffer.SelectionBackColor = m_oRichTextBuffer.BackColor;
                                             }
                                         }
                                     }
@@ -445,10 +453,18 @@ namespace GenieClient
                                         {
                                             m_oRichTextBuffer.SelectionColor = oHighlight.FgColor;
                                         }
+                                        else
+                                        {
+                                            m_oRichTextBuffer.SelectionColor = m_oRichTextBuffer.ForeColor;
+                                        }
 
                                         if (oHighlight.BgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
                                         {
                                             m_oRichTextBuffer.SelectionBackColor = oHighlight.BgColor;
+                                        }
+                                        else
+                                        {
+                                            m_oRichTextBuffer.SelectionBackColor = m_oRichTextBuffer.BackColor;
                                         }
                                     }
                                 }
@@ -500,10 +516,18 @@ namespace GenieClient
                         {
                             m_oRichTextBuffer.SelectionColor = oHighlightString.FgColor;
                         }
+                        else
+                        {
+                            m_oRichTextBuffer.SelectionColor = m_oRichTextBuffer.ForeColor;
+                        }
 
                         if (oHighlightString.BgColor != Color.Transparent & oHighlightString.FgColor != m_oEmptyColor)
                         {
                             m_oRichTextBuffer.SelectionBackColor = oHighlightString.BgColor;
+                        }
+                        else
+                        {
+                            m_oRichTextBuffer.SelectionBackColor = m_oRichTextBuffer.BackColor;
                         }
 
                         if (Conversions.ToBoolean(oHighlightString.SoundFile.Length > 0 && m_oParentForm.Globals.Config.bPlaySounds))
@@ -548,16 +572,24 @@ namespace GenieClient
                         {
                             m_oRichTextBuffer.SelectionColor = oName.FgColor;
                         }
+                        else
+                        {
+                            m_oRichTextBuffer.SelectionColor = m_oRichTextBuffer.ForeColor;
+                        }
 
                         if (oName.BgColor != Color.Transparent & oName.FgColor != m_oEmptyColor)
                         {
                             m_oRichTextBuffer.SelectionBackColor = oName.BgColor;
                         }
+                        else
+                        {
+                            m_oRichTextBuffer.SelectionBackColor = m_oRichTextBuffer.BackColor;
+                        }
                     }
                 }
             }
 
-            if (m_oRichTextBuffer.Text.Contains("You also see"))
+            if (m_oRichTextBuffer.Text.Trim().StartsWith("You also see"))
             {
                 if (!Information.IsNothing(m_oParentForm.Globals.MonsterListRegEx))
                 {
@@ -570,10 +602,18 @@ namespace GenieClient
                         {
                             m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList["creatures"].FgColor;
                         }
+                        else
+                        {
+                            m_oRichTextBuffer.SelectionColor = m_oRichTextBuffer.ForeColor;
+                        }
 
                         if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList["creatures"].BgColor, Color.Transparent, false))
                         {
                             m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList["creatures"].BgColor;
+                        }
+                        else
+                        {
+                            m_oRichTextBuffer.SelectionBackColor = m_oRichTextBuffer.BackColor;
                         }
                     }
                 }
