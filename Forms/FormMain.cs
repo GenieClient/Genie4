@@ -4519,7 +4519,6 @@ namespace GenieClient
         private void AddText(string sText, Color oColor, Color oBgColor, FormSkin oTargetWindow, bool bNoCache = true, bool bMono = false, bool bPrompt = false, bool bInput = false)
         {
             if (sText == "\r\n" && m_oGlobals.Config.Condensed) return;
-            bPrompt = false;
 
             if (IsDisposed)
             {
@@ -4535,17 +4534,13 @@ namespace GenieClient
             {
                 if (bPrompt == true)
                 {
-                    if (m_oGame.LastRowWasPrompt)
-                    {
-                        return;
-                    }
-
                     m_oGame.LastRowWasPrompt = true;
                 }
                 else if (sText.Trim().Length > 0)
                 {
                     if (m_oGame.LastRowWasPrompt == true)
                     {
+                        m_oGame.LastRowWasPrompt = false;
                         if (!bInput)
                         {
                             if (sText.StartsWith(System.Environment.NewLine) == false && m_oGlobals.Config.PromptBreak)
@@ -4553,7 +4548,6 @@ namespace GenieClient
                                 sText = System.Environment.NewLine + sText;
                             }
                         }
-                        
                     }
                 }
             }
