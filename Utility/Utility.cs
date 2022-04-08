@@ -562,21 +562,7 @@ namespace GenieClient
                 double d = double.Parse(sValue, new System.Globalization.CultureInfo("en-US"));
                 return d;
             }
-            #pragma warning disable CS0168
-            catch (FormatException ex)
-            #pragma warning restore CS0168
-            {
-                return -1;
-            }
-            #pragma warning disable CS0168
-            catch (OverflowException ex)
-            #pragma warning restore CS0168
-            {
-                return -1;
-            }
-            #pragma warning disable CS0168
-            catch (InvalidCastException ex)
-            #pragma warning restore CS0168
+            catch 
             {
                 return -1;
             }
@@ -601,21 +587,7 @@ namespace GenieClient
                     return -1;
                 }
             }
-            #pragma warning disable CS0168
-            catch (FormatException ex)
-            #pragma warning restore CS0168
-            {
-                return -1;
-            }
-            #pragma warning disable CS0168
-            catch (OverflowException ex)
-            #pragma warning restore CS0168
-            {
-                return -1;
-            }
-            #pragma warning disable CS0168
-            catch (InvalidCastException ex)
-            #pragma warning restore CS0168
+            catch 
             {
                 return -1;
             }
