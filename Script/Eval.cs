@@ -620,224 +620,230 @@ namespace GenieClient.Genie.Script
         // Compare two sections using comparer
         private bool ParseCompare(int iArgLeft, int iArgRight, int iComparer, bool bSkipAndOr)
         {
-            double dLeftValue = -1;
-            double dRightValue = -1;
-            string sLeftValue = string.Empty;
-            string sRightValue = string.Empty;
-            bool bNumberCompare = false;
-            if (((Sections)oSections[iArgLeft]).BlockType == ParseType.NumberType & ((Sections)oSections[iArgRight]).BlockType == ParseType.NumberType)
+            try
             {
-                bNumberCompare = true;
-                dLeftValue = Utility.StringToDouble(((Sections)oSections[iArgLeft]).sBlock);
-                dRightValue = Utility.StringToDouble(((Sections)oSections[iArgRight]).sBlock);
-            }
-            else
-            {
-                sLeftValue = ((Sections)oSections[iArgLeft]).sBlock;
-                sRightValue = ((Sections)oSections[iArgRight]).sBlock;
-                Debug.Print("Compare Left: " + sLeftValue + ", Compare Right: " + sRightValue);
-            }
-
-            if (bSkipAndOr == true)
-            {
-                var switchExpr = ((Sections)oSections[iComparer]).sBlock;
-                switch (switchExpr)
+                double dLeftValue = -1;
+                double dRightValue = -1;
+                string sLeftValue = string.Empty;
+                string sRightValue = string.Empty;
+                bool bNumberCompare = false;
+                if (((Sections)oSections[iArgLeft]).BlockType == ParseType.NumberType & ((Sections)oSections[iArgRight]).BlockType == ParseType.NumberType)
                 {
-                    case "=":
-                    case "==":
-                        {
-                            // ' LINUS: Använd WITH och IIF!!
-                            // ' Koden nedan är samma som koden under, bara förenklad
-                            // With CType(oSections.Item(iArgLeft), Sections)
-                            // .sBlock = IIf(bNumberCompare, IIf(dLeftValue = dRightValue, "1", "0"), IIf(String.Equals(sLeftValue, sRightValue), "1", "0"))
-                            // .BlockType = ParseType.NumberType
-                            // .bParsed = False ' Unparse
-                            // End With
-
-                            if (bNumberCompare == true)
-                            {
-                                if (dLeftValue == dRightValue)
-                                {
-                                    ((Sections)oSections[iArgLeft]).sBlock = "1";
-                                }
-                                else
-                                {
-                                    ((Sections)oSections[iArgLeft]).sBlock = "0";
-                                }
-                            }
-                            else if (string.Equals(sLeftValue, sRightValue) == true)
-                            {
-                                ((Sections)oSections[iArgLeft]).sBlock = "1";
-                            }
-                            else
-                            {
-                                ((Sections)oSections[iArgLeft]).sBlock = "0";
-                            } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
-                            ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
-                            return true;
-                        }
-
-                    case "!=":
-                    case "<>":
-                        {
-                            if (bNumberCompare == true)
-                            {
-                                if (dLeftValue != dRightValue)
-                                {
-                                    ((Sections)oSections[iArgLeft]).sBlock = "1";
-                                }
-                                else
-                                {
-                                    ((Sections)oSections[iArgLeft]).sBlock = "0";
-                                }
-                            }
-                            else if (string.Equals(sLeftValue, sRightValue) == true)
-                            {
-                                ((Sections)oSections[iArgLeft]).sBlock = "0";
-                            }
-                            else
-                            {
-                                ((Sections)oSections[iArgLeft]).sBlock = "1";
-                            } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
-                            ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
-                            return true;
-                        }
-
-                    case ">":
-                        {
-                            if (bNumberCompare == true)
-                            {
-                                if (dLeftValue > dRightValue)
-                                {
-                                    ((Sections)oSections[iArgLeft]).sBlock = "1";
-                                }
-                                else
-                                {
-                                    ((Sections)oSections[iArgLeft]).sBlock = "0";
-                                }
-                            }
-                            else
-                            {
-                                ((Sections)oSections[iArgLeft]).sBlock = "0";
-                            } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
-                            ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
-                            return true;
-                        }
-
-                    case ">=":
-                        {
-                            if (bNumberCompare == true)
-                            {
-                                if (dLeftValue >= dRightValue)
-                                {
-                                    ((Sections)oSections[iArgLeft]).sBlock = "1";
-                                }
-                                else
-                                {
-                                    ((Sections)oSections[iArgLeft]).sBlock = "0";
-                                }
-                            }
-                            else
-                            {
-                                ((Sections)oSections[iArgLeft]).sBlock = "0";
-                            } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
-                            ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
-                            return true;
-                        }
-
-                    case "<":
-                        {
-                            if (bNumberCompare == true)
-                            {
-                                if (dLeftValue < dRightValue)
-                                {
-                                    ((Sections)oSections[iArgLeft]).sBlock = "1";
-                                }
-                                else
-                                {
-                                    ((Sections)oSections[iArgLeft]).sBlock = "0";
-                                }
-                            }
-                            else
-                            {
-                                ((Sections)oSections[iArgLeft]).sBlock = "0";
-                            } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
-                            ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
-                            return true;
-                        }
-
-                    case "<=":
-                        {
-                            if (bNumberCompare == true)
-                            {
-                                if (dLeftValue <= dRightValue)
-                                {
-                                    ((Sections)oSections[iArgLeft]).sBlock = "1";
-                                }
-                                else
-                                {
-                                    ((Sections)oSections[iArgLeft]).sBlock = "0";
-                                }
-                            }
-                            else
-                            {
-                                ((Sections)oSections[iArgLeft]).sBlock = "0";
-                            } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
-                            ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
-                            return true;
-                        }
+                    bNumberCompare = true;
+                    dLeftValue = Utility.StringToDouble(((Sections)oSections[iArgLeft]).sBlock);
+                    dRightValue = Utility.StringToDouble(((Sections)oSections[iArgRight]).sBlock);
                 }
-            }
-            else
-            {
-                var switchExpr1 = ((Sections)oSections[iComparer]).sBlock;
-                switch (switchExpr1)
+                else
                 {
-                    case "||":
-                        {
-                            if (bNumberCompare == true)
-                            {
-                                if (dLeftValue > 0 | dRightValue > 0)
-                                {
-                                    ((Sections)oSections[iArgLeft]).sBlock = "1";
-                                }
-                                else
-                                {
-                                    ((Sections)oSections[iArgLeft]).sBlock = "0";
-                                }
-                            }
-                            else
-                            {
-                                ((Sections)oSections[iArgLeft]).sBlock = "0";
-                            } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
-                            ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
-                            return true;
-                        }
-
-                    case "&&":
-                        {
-                            if (bNumberCompare == true)
-                            {
-                                if (dLeftValue > 0 & dRightValue > 0)
-                                {
-                                    ((Sections)oSections[iArgLeft]).sBlock = "1";
-                                }
-                                else
-                                {
-                                    ((Sections)oSections[iArgLeft]).sBlock = "0";
-                                }
-                            }
-                            else
-                            {
-                                ((Sections)oSections[iArgLeft]).sBlock = "0";
-                            } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
-                            ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
-                            return true;
-                        }
+                    sLeftValue = ((Sections)oSections[iArgLeft]).sBlock;
+                    sRightValue = ((Sections)oSections[iArgRight]).sBlock;
+                    Debug.Print("Compare Left: " + sLeftValue + ", Compare Right: " + sRightValue);
                 }
-            }
 
-            return false;
+                if (bSkipAndOr == true)
+                {
+                    var switchExpr = ((Sections)oSections[iComparer]).sBlock;
+                    switch (switchExpr)
+                    {
+                        case "=":
+                        case "==":
+                            {
+                                // ' LINUS: Använd WITH och IIF!!
+                                // ' Koden nedan är samma som koden under, bara förenklad
+                                // With CType(oSections.Item(iArgLeft), Sections)
+                                // .sBlock = IIf(bNumberCompare, IIf(dLeftValue = dRightValue, "1", "0"), IIf(String.Equals(sLeftValue, sRightValue), "1", "0"))
+                                // .BlockType = ParseType.NumberType
+                                // .bParsed = False ' Unparse
+                                // End With
+
+                                if (bNumberCompare == true)
+                                {
+                                    if (dLeftValue == dRightValue)
+                                    {
+                                        ((Sections)oSections[iArgLeft]).sBlock = "1";
+                                    }
+                                    else
+                                    {
+                                        ((Sections)oSections[iArgLeft]).sBlock = "0";
+                                    }
+                                }
+                                else if (string.Equals(sLeftValue, sRightValue) == true)
+                                {
+                                    ((Sections)oSections[iArgLeft]).sBlock = "1";
+                                }
+                                else
+                                {
+                                    ((Sections)oSections[iArgLeft]).sBlock = "0";
+                                } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
+                                ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
+                                return true;
+                            }
+
+                        case "!=":
+                        case "<>":
+                            {
+                                if (bNumberCompare == true)
+                                {
+                                    if (dLeftValue != dRightValue)
+                                    {
+                                        ((Sections)oSections[iArgLeft]).sBlock = "1";
+                                    }
+                                    else
+                                    {
+                                        ((Sections)oSections[iArgLeft]).sBlock = "0";
+                                    }
+                                }
+                                else if (string.Equals(sLeftValue, sRightValue) == true)
+                                {
+                                    ((Sections)oSections[iArgLeft]).sBlock = "0";
+                                }
+                                else
+                                {
+                                    ((Sections)oSections[iArgLeft]).sBlock = "1";
+                                } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
+                                ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
+                                return true;
+                            }
+
+                        case ">":
+                            {
+                                if (bNumberCompare == true)
+                                {
+                                    if (dLeftValue > dRightValue)
+                                    {
+                                        ((Sections)oSections[iArgLeft]).sBlock = "1";
+                                    }
+                                    else
+                                    {
+                                        ((Sections)oSections[iArgLeft]).sBlock = "0";
+                                    }
+                                }
+                                else
+                                {
+                                    ((Sections)oSections[iArgLeft]).sBlock = "0";
+                                } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
+                                ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
+                                return true;
+                            }
+
+                        case ">=":
+                            {
+                                if (bNumberCompare == true)
+                                {
+                                    if (dLeftValue >= dRightValue)
+                                    {
+                                        ((Sections)oSections[iArgLeft]).sBlock = "1";
+                                    }
+                                    else
+                                    {
+                                        ((Sections)oSections[iArgLeft]).sBlock = "0";
+                                    }
+                                }
+                                else
+                                {
+                                    ((Sections)oSections[iArgLeft]).sBlock = "0";
+                                } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
+                                ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
+                                return true;
+                            }
+
+                        case "<":
+                            {
+                                if (bNumberCompare == true)
+                                {
+                                    if (dLeftValue < dRightValue)
+                                    {
+                                        ((Sections)oSections[iArgLeft]).sBlock = "1";
+                                    }
+                                    else
+                                    {
+                                        ((Sections)oSections[iArgLeft]).sBlock = "0";
+                                    }
+                                }
+                                else
+                                {
+                                    ((Sections)oSections[iArgLeft]).sBlock = "0";
+                                } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
+                                ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
+                                return true;
+                            }
+
+                        case "<=":
+                            {
+                                if (bNumberCompare == true)
+                                {
+                                    if (dLeftValue <= dRightValue)
+                                    {
+                                        ((Sections)oSections[iArgLeft]).sBlock = "1";
+                                    }
+                                    else
+                                    {
+                                        ((Sections)oSections[iArgLeft]).sBlock = "0";
+                                    }
+                                }
+                                else
+                                {
+                                    ((Sections)oSections[iArgLeft]).sBlock = "0";
+                                } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
+                                ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
+                                return true;
+                            }
+                    }
+                }
+                else
+                {
+                    var switchExpr1 = ((Sections)oSections[iComparer]).sBlock;
+                    switch (switchExpr1)
+                    {
+                        case "||":
+                            {
+                                if (bNumberCompare == true)
+                                {
+                                    if (dLeftValue > 0 | dRightValue > 0)
+                                    {
+                                        ((Sections)oSections[iArgLeft]).sBlock = "1";
+                                    }
+                                    else
+                                    {
+                                        ((Sections)oSections[iArgLeft]).sBlock = "0";
+                                    }
+                                }
+                                else
+                                {
+                                    ((Sections)oSections[iArgLeft]).sBlock = "0";
+                                } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
+                                ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
+                                return true;
+                            }
+
+                        case "&&":
+                            {
+                                if (bNumberCompare == true)
+                                {
+                                    if (dLeftValue > 0 & dRightValue > 0)
+                                    {
+                                        ((Sections)oSections[iArgLeft]).sBlock = "1";
+                                    }
+                                    else
+                                    {
+                                        ((Sections)oSections[iArgLeft]).sBlock = "0";
+                                    }
+                                }
+                                else
+                                {
+                                    ((Sections)oSections[iArgLeft]).sBlock = "0";
+                                } ((Sections)oSections[iArgLeft]).BlockType = ParseType.NumberType;
+                                ((Sections)oSections[iArgLeft]).bParsed = false; // Unparse
+                                return true;
+                            }
+                    }
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private Genie.Collections.ArrayList m_RegExpResultList = new Genie.Collections.ArrayList();
