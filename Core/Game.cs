@@ -780,6 +780,11 @@ namespace GenieClient.Genie
                 {
                     m_bBold = false;
                 }
+
+                if (m_oGlobals.Config.PromptForce && m_oTargetWindow == WindowTarget.Main)
+                {
+                    PrintTextWithParse(m_oGlobals.Config.sPrompt, true, 0);
+                }
             }
         }
 

@@ -2837,6 +2837,7 @@ namespace GenieClient.Genie
             EchoText("parsegameonly=" + oGlobals.Config.bParseGameOnly.ToString() + System.Environment.NewLine);
             EchoText("prompt=" + oGlobals.Config.sPrompt + System.Environment.NewLine);
             EchoText("promptbreak=" + oGlobals.Config.PromptBreak + System.Environment.NewLine);
+            EchoText("promptforce=" + oGlobals.Config.PromptForce + System.Environment.NewLine);
             EchoText("condensed=" + oGlobals.Config.Condensed + System.Environment.NewLine);
             EchoText("reconnect=" + oGlobals.Config.bReconnect.ToString() + System.Environment.NewLine);
             EchoText("roundtimeoffset=" + oGlobals.Config.dRTOffset + System.Environment.NewLine);
