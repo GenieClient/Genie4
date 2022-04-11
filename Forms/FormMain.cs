@@ -4937,6 +4937,7 @@ namespace GenieClient
                 oFormSkin = (FormSkin)oEnumerator.Current;
                 oFormSkin.RichTextBoxOutput.EndTextUpdate();
             }
+            m_oGlobals.VolatileHighlights.Clear();                                   
         }
 
         private void Script_EventPrintError(string sText)

@@ -114,6 +114,7 @@ namespace GenieClient.Genie
         }
 
         public List<string> MonsterList = new List<string>();
+        public List<KeyValuePair<string, string>> VolatileHighlights = new List<KeyValuePair<string, string>>();
         public Regex MonsterListRegEx;
 
         public void UpdateMonsterListRegEx()

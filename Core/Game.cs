@@ -519,6 +519,7 @@ namespace GenieClient.Genie
             bool bInsideHTMLTag = false;
             string sHTMLBuffer = string.Empty;
             string sTextBuffer = string.Empty;
+            string sBoldBuffer = string.Empty;
             char cPreviousChar = Conversions.ToChar("");
             bool bCombatRow = false;
 
@@ -567,19 +568,31 @@ namespace GenieClient.Genie
                                 m_oXMLBuffer.Append(oXMLBuffer);
                                 string buffer = m_oXMLBuffer.ToString();
                                 string sTmp = ProcessXML(buffer);
-                                if (m_bBold)
+                                if (buffer.EndsWith("</preset>"))
                                 {
-                                    if (sTextBuffer.StartsWith("< ") | sTextBuffer.StartsWith("> ") | sTextBuffer.StartsWith("* "))
+                                    XmlDocument presetXML = new XmlDocument();
+                                    presetXML.LoadXml(buffer);
+
+                                    string presetLabel = GetAttributeData(presetXML.FirstChild, "id").ToLower();
+                                    switch(presetLabel)
                                     {
-                                        m_bBold = false;
-                                        string argsText = sTextBuffer + System.Environment.NewLine;
-                                        bool argbIsPrompt = false;
-                                        WindowTarget argoWindowTarget = 0;
-                                        PrintTextWithParse(argsText, bIsPrompt: argbIsPrompt, oWindowTarget: argoWindowTarget);
-                                        m_bBold = true;
-                                        sTextBuffer = string.Empty;
-                                        bCombatRow = true;
+                                        case "whisper":
+                                            presetLabel = "whispers";
+                                            break;
+
+                                        case "thought":
+                                            presetLabel = "thoughts";
+                                            break;
+
+                                        default:
+                                            break;
                                     }
+                                    m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>(presetLabel, sTmp));
+                                }
+                                if (buffer.EndsWith(@"<popBold/>"))
+                                {
+                                    m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer));
+                                    sBoldBuffer = string.Empty;
                                 }
 
                                 sTextBuffer += sTmp;
@@ -604,6 +617,10 @@ namespace GenieClient.Genie
                             else
                             {
                                 sTextBuffer += Conversions.ToString(c);
+                                if (m_bBold)
+                                {
+                                    sBoldBuffer += c;
+                                }
                             }
 
                             break;
@@ -627,6 +644,10 @@ namespace GenieClient.Genie
                                 }
                                 else
                                 {
+                                    if (m_bBold)
+                                    {
+                                        sBoldBuffer += c;
+                                    }
                                     sTextBuffer += Utility.TranslateHTMLChar(sHTMLBuffer);
                                 }
 
@@ -655,6 +676,10 @@ namespace GenieClient.Genie
                                     }
                                     else
                                     {
+                                        if (m_bBold)
+                                        {
+                                            sBoldBuffer += sHTMLBuffer;
+                                        }
                                         sTextBuffer += sHTMLBuffer;
                                     }
 
@@ -668,6 +693,10 @@ namespace GenieClient.Genie
                             }
                             else
                             {
+                                if (m_bBold)
+                                {
+                                    sBoldBuffer += c;
+                                }
                                 sTextBuffer += Conversions.ToString(c);
                             }
 
@@ -723,6 +752,7 @@ namespace GenieClient.Genie
                 bool argbIsPrompt1 = false;
                 WindowTarget argoWindowTarget1 = 0;
                 PrintTextWithParse(sTextBuffer, bIsPrompt: argbIsPrompt1, oWindowTarget: argoWindowTarget1);
+                
                 if (bCombatRow == true)
                 {
                     m_bBold = false;
@@ -2608,54 +2638,21 @@ namespace GenieClient.Genie
 
                 if (m_bPresetSpeechOutput == true)
                 {
-                    if (sText.Contains(", \""))
-                    {
-                        color = m_oGlobals.PresetList["speech"].FgColor;
-                        bgcolor = m_oGlobals.PresetList["speech"].BgColor;
-
-                        // Log Window
-                        // If m_oTargetWindow = WindowTarget.Other Then
-                        // PrintTextToWindow(sText, color, bgcolor, WindowTarget.Log)
-                        // End If
-                    }
-
                     m_bPresetSpeechOutput = false;
                 }
 
                 if (m_bPresetWhisperOutput == true)
                 {
-                    if (sText.Contains(", \""))
-                    {
-                        color = m_oGlobals.PresetList["whispers"].FgColor;
-                        bgcolor = m_oGlobals.PresetList["whispers"].BgColor;
-
-                        // Log Window
-                        // If m_oTargetWindow = WindowTarget.Other Then
-                        // PrintTextToWindow(sText, color, bgcolor, WindowTarget.Log)
-                        // End If
-                    }
-
                     m_bPresetWhisperOutput = false;
                 }
 
                 if (m_bPresetThoughtOutput == true)
                 {
-                    color = m_oGlobals.PresetList["thoughts"].FgColor;
-                    bgcolor = m_oGlobals.PresetList["thoughts"].BgColor;
-
-                    // If m_oTargetWindow = WindowTarget.Main Then
-                    // If sText.Contains(", """) Then
-                    // Exit Sub
-                    // End If
-                    // End If
-
                     m_bPresetThoughtOutput = false;
                 }
 
                 if (m_bBold == true)
                 {
-                    color = m_oGlobals.PresetList["creatures"].FgColor;
-                    bgcolor = m_oGlobals.PresetList["creatures"].BgColor;
                 }
 
                 // Line begins with
@@ -2714,6 +2711,7 @@ namespace GenieClient.Genie
                 oWindowTarget = m_oTargetWindow;
             }
             PrintTextToWindow(sText, color, bgcolor, oWindowTarget, bIsPrompt, bIsRoomOutput);
+            
         }
 
         private Color m_oLastFgColor = default;
