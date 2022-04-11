@@ -36,6 +36,7 @@ namespace GenieClient
         {
             try
             {
+                if (!System.IO.Path.IsPathRooted(path)) path = Path + "\\" + path;
                 DirectoryInfo directory = new DirectoryInfo(path);
                 if (!directory.Exists)
                 {
