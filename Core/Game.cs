@@ -594,6 +594,20 @@ namespace GenieClient.Genie
                                     m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer));
                                     sBoldBuffer = string.Empty;
                                 }
+                                if (m_bBold)
+                                {
+                                    if (sTextBuffer.StartsWith("< ") | sTextBuffer.StartsWith("> ") | sTextBuffer.StartsWith("* "))
+                                    {
+                                        m_bBold = false;
+                                        string argsText = sTextBuffer + System.Environment.NewLine;
+                                        bool argbIsPrompt = false;
+                                        WindowTarget argoWindowTarget = 0;
+                                        PrintTextWithParse(argsText, bIsPrompt: argbIsPrompt, oWindowTarget: argoWindowTarget);
+                                        m_bBold = true;
+                                        sTextBuffer = string.Empty;
+                                        bCombatRow = true;
+                                    }
+                                }
 
                                 sTextBuffer += sTmp;
                                 m_oXMLBuffer.Clear();
