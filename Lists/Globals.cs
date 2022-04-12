@@ -223,7 +223,7 @@ namespace GenieClient.Genie
             sText = sText.Replace("@time@", DateTime.Now.ToString("hh:mm:ss tt").Trim());
             sText = sText.Replace("@date@", DateTime.Now.ToString("M/d/yyyy").Trim());
             sText = sText.Replace("@datetime@", DateTime.Now.ToString("M/d/yyyy hh:mm:ss tt").Trim());
-            sText = sText.Replace("@utc@", DateTimeOffset.Now.ToUnixTimeSeconds().ToString());
+            sText = sText.Replace("@unixtime@", DateTimeOffset.Now.ToUnixTimeSeconds().ToString());
             return sText;
         }
 
