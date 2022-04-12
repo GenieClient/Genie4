@@ -350,6 +350,7 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine("#config {maxrowbuffer} {" + iBufferLineSize + "}");
                 oStreamWriter.WriteLine("#config {spelltimer} {" + bShowSpellTimer + "}");
                 oStreamWriter.WriteLine("#config {autolog} {" + bAutoLog + "}");
+                oStreamWriter.WriteLine("#config {automapper} {" + bAutoMapper + "}");
                 oStreamWriter.WriteLine("#config {editor} {" + sEditor + "}");
                 oStreamWriter.WriteLine("#config {prompt} {" + sPrompt + "}");
                 oStreamWriter.WriteLine("#config {monstercountignorelist} {" + sIgnoreMonsterList + "}");
