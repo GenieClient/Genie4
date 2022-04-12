@@ -525,6 +525,7 @@ namespace GenieClient
                         {
                             m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList[highlight.Key].BgColor;
                         }
+                        volatilePosition += highlight.Value.Length;
                     }
                 }
             }
