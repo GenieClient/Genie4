@@ -588,6 +588,11 @@ namespace GenieClient.Genie
                                             break;
                                     }
                                     m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>(presetLabel, sTmp));
+                                    if(presetLabel == "roomdesc")
+                                    {
+                                        PrintTextWithParse(sTmp + Environment.NewLine, bIsPrompt: false, oWindowTarget: 0);
+                                        sTmp = string.Empty;
+                                    }
                                 }
                                 if (buffer.EndsWith(@"<pushBold/>"))
                                 {
@@ -2615,17 +2620,9 @@ namespace GenieClient.Genie
             
             if (sText.Trim().Length > 0)
             {
-                if (sText.Contains("You also see"))
+                if (sText.StartsWith("  You also see"))
                 {
-                    int I = sText.IndexOf("You also see");
-                    if (I > 0)
-                    {
-                        string argsText = sText.Substring(0, I).Trim() + System.Environment.NewLine;
-                        bool argbIsPrompt = false;
-                        WindowTarget argoWindowTarget = 0;
-                        PrintTextWithParse(argsText, bIsPrompt: argbIsPrompt, oWindowTarget: argoWindowTarget);
-                        sText = sText.Substring(I);
-                    }
+                    sText = sText.TrimStart();
                 }
 
                 if (m_sStyle.Length > 0)
@@ -2659,24 +2656,13 @@ namespace GenieClient.Genie
                     m_sStyle = string.Empty;
                 }
 
-                if (m_bPresetSpeechOutput == true)
-                {
-                    m_bPresetSpeechOutput = false;
-                }
+                if (m_bPresetSpeechOutput) m_bPresetSpeechOutput = false;
+                if (m_bPresetWhisperOutput) m_bPresetWhisperOutput = false;
+                if (m_bPresetThoughtOutput) m_bPresetThoughtOutput = false;
 
-                if (m_bPresetWhisperOutput == true)
-                {
-                    m_bPresetWhisperOutput = false;
-                }
-
-                if (m_bPresetThoughtOutput == true)
-                {
-                    m_bPresetThoughtOutput = false;
-                }
-
-                if (m_bBold == true)
-                {
-                }
+                //if (m_bBold == true)
+                //{
+                //}
 
                 // Line begins with
                 if (m_oGlobals.HighlightBeginsWithList.AcquireReaderLock())
