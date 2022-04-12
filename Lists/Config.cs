@@ -415,9 +415,9 @@ namespace GenieClient.Genie
                         {
                             SetSetting(oArgs[1].ToString(), oArgs[2].ToString(), false);
                         }
-                        catch (Exception ex)
+                        catch
                         {
-                            throw new Exception("Failed to load setting: " + strLine + System.Environment.NewLine + ex.Message + System.Environment.NewLine);
+                           //Settings! We got bad settings here! See? No one cares.
                         }
                     }
 
