@@ -589,10 +589,13 @@ namespace GenieClient.Genie
                                     }
                                     m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>(presetLabel, sTmp));
                                 }
+                                if (buffer.EndsWith(@"<pushBold/>"))
+                                {
+                                    sBoldBuffer = string.Empty;
+                                }
                                 if (buffer.EndsWith(@"<popBold/>"))
                                 {
                                     m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer));
-                                    sBoldBuffer = string.Empty;
                                 }
                                 if (m_bBold)
                                 {
@@ -739,9 +742,15 @@ namespace GenieClient.Genie
 
             if (sTextBuffer.Length > 0)
             {
+                
                 if (bCombatRow == true)
                 {
                     m_bBold = true;
+                }
+                else
+                {
+                    m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer.Trim())); //trim because excessive whitespace seems to be breaking this
+                    sBoldBuffer = string.Empty;
                 }
 
                 // Fix for broke familiar XML
