@@ -310,19 +310,21 @@ namespace GenieClient.Genie
                 public Color FgColor;
                 public Color BgColor;
                 public string sColorName;
+                public bool bHighlightLine = false;
                 public bool bSaveToFile = true;
 
-                public Preset(string sKey, Color oColor, Color oBgColor, string sColorName, string _bSaveToFile)
+                public Preset(string sKey, Color oColor, Color oBgColor, string sColorName, string _bSaveToFile, bool highlightLine)
                 {
                     this.sKey = sKey;
                     FgColor = oColor;
                     BgColor = oBgColor;
                     this.sColorName = sColorName;
                     bSaveToFile = Conversions.ToBoolean(_bSaveToFile);
+                    bHighlightLine = highlightLine;
                 }
             }
 
-            public void Add(string sKey, string sColorName, bool bSaveToFile = true)
+            public void Add(string sKey, string sColorName, bool bSaveToFile = true, bool highlightLine = false)
             {
                 Color oColor;
                 Color oBgcolor;
@@ -340,7 +342,7 @@ namespace GenieClient.Genie
                 }
 
                 string arg_bSaveToFile = Conversions.ToString(bSaveToFile);
-                var oVar = new Preset(sKey, oColor, oBgcolor, sColorName, arg_bSaveToFile);
+                var oVar = new Preset(sKey, oColor, oBgcolor, sColorName, arg_bSaveToFile, highlightLine);
                 if (base.ContainsKey(sKey.ToLower()) == true)
                 {
                     base[sKey.ToLower()] = oVar;
@@ -430,9 +432,11 @@ namespace GenieClient.Genie
                 var oArgs = Utility.ParseArgs(sText);
                 if (oArgs.Count == 3)
                 {
-                    var arg1 = oArgs[1].ToString();
-                    var arg2 = oArgs[2].ToString();
-                    Add(arg1, arg2);
+                    Add(oArgs[1].ToString(), oArgs[2].ToString());
+                }
+                else if (oArgs.Count == 4)
+                {
+                    Add(oArgs[1].ToString(), oArgs[2].ToString(), default, oArgs[3].ToString().ToLower() == "true");
                 }
             }
 
@@ -445,11 +449,6 @@ namespace GenieClient.Genie
                         sFileName = LocalDirectory.Path + @"\Config\" + sFileName;
                     }
 
-                    if (File.Exists(sFileName) == true)
-                    {
-                        Utility.DeleteFile(sFileName);
-                    }
-
                     if (AcquireReaderLock())
                     {
                         try
@@ -459,7 +458,7 @@ namespace GenieClient.Genie
                             {
                                 if (ov.bSaveToFile == true)
                                 {
-                                    oStreamWriter.WriteLine("#preset {" + ov.sKey + "} {" + ov.sColorName + "}");
+                                    oStreamWriter.WriteLine("#preset {" + ov.sKey + "} {" + ov.sColorName + "} {" + ov.bHighlightLine + "}");
                                 }
                             }
 

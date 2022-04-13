@@ -514,8 +514,21 @@ namespace GenieClient
                 {
                     if (m_oRichTextBuffer.Text.Substring(volatilePosition).Contains(highlight.Value))
                     {
-                        m_oRichTextBuffer.SelectionStart = m_oRichTextBuffer.Text.IndexOf(highlight.Value, volatilePosition);
-                        m_oRichTextBuffer.SelectionLength = highlight.Value.Length;
+                        if(m_oParentForm.Globals.PresetList[highlight.Key].bHighlightLine)
+                        {
+                            int indexOfHighlight = m_oRichTextBuffer.Text.IndexOf(highlight.Value, volatilePosition);
+                            int lastNewLineIndex = m_oRichTextBuffer.Text.LastIndexOf("\n", indexOfHighlight);
+                            int nextNewLineIndex = m_oRichTextBuffer.Text.IndexOf("\n", indexOfHighlight);
+                            if (lastNewLineIndex == -1) lastNewLineIndex = 0;
+                            if (nextNewLineIndex == -1) nextNewLineIndex = m_oRichTextBuffer.Text.Length;
+                            m_oRichTextBuffer.SelectionStart = lastNewLineIndex >= 0 ? lastNewLineIndex : 0;
+                            m_oRichTextBuffer.SelectionLength = nextNewLineIndex - lastNewLineIndex;
+                        }
+                        else
+                        {
+                            m_oRichTextBuffer.SelectionStart = m_oRichTextBuffer.Text.IndexOf(highlight.Value, volatilePosition);
+                            m_oRichTextBuffer.SelectionLength = highlight.Value.Length;
+                        }
                         if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList[highlight.Key].FgColor, Color.Transparent, false))
                         {
                             m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList[highlight.Key].FgColor;

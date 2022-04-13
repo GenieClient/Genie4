@@ -752,7 +752,7 @@ namespace GenieClient.Genie
                 {
                     m_bBold = true;
                 }
-                else
+                else if (!string.IsNullOrWhiteSpace(sBoldBuffer))
                 {
                     m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer.Trim())); //trim because excessive whitespace seems to be breaking this
                     sBoldBuffer = string.Empty;
