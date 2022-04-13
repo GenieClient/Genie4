@@ -161,6 +161,7 @@ namespace GenieClient
                     li.Tag = de.Key.ToString();
                     Genie.Globals.Presets.Preset oPreset = (Genie.Globals.Presets.Preset)de.Value;
                     li.SubItems.Add(oPreset.sColorName);
+                    li.SubItems.Add(oPreset.bHighlightLine.ToString());
                     li.ForeColor = oPreset.FgColor;
                     // MsgBox(li.BackColor.ToString)
                     if (oPreset.BgColor != Color.Transparent)
@@ -238,8 +239,10 @@ namespace GenieClient
                 TextBoxPreset.Enabled = true;
                 TextBoxPreset.Text = ListViewBase.SelectedItems[0].Text;
                 TextBoxColor.Enabled = true;
+                chkHighlightLine.Enabled = true;
                 TextBoxColor.Text = ListViewBase.SelectedItems[0].SubItems[1].Text;
                 TextBoxColor.Tag = ListViewBase.SelectedItems[0].SubItems[1].Text;
+                chkHighlightLine.Checked = ListViewBase.SelectedItems[0].SubItems[2].Text.ToLower() == "true";
                 GroupBoxBase.Enabled = true;
                 GroupBoxBase.Tag = new ArrayList(ListViewBase.SelectedItems);
                 LabelExampleColor.ForeColor = ListViewBase.SelectedItems[0].ForeColor;
@@ -252,6 +255,7 @@ namespace GenieClient
                 TextBoxColor.Enabled = true;
                 GroupBoxBase.Enabled = true;
                 GroupBoxBase.Tag = new ArrayList(ListViewBase.SelectedItems);
+                chkHighlightLine.Enabled = true;
             }
             else
             {
@@ -320,11 +324,12 @@ namespace GenieClient
                         li.SubItems[1].Text = TextBoxColor.Text;
                         li.ForeColor = LabelExampleColor.ForeColor;
                         li.BackColor = LabelExampleColor.BackColor;
+                        li.SubItems[2].Text = chkHighlightLine.Checked.ToString();
                     }
 
                     string argsKey = li.Text;
                     string argsColorName = TextBoxColor.Text;
-                    m_PresetList.Add(argsKey, argsColorName);
+                    m_PresetList.Add(argsKey, argsColorName, true, li.SubItems[2].Text.ToLower() == "true");
                     m_FormMain.SafePresetChanged(li.Text.ToLower());
                     li.Tag = li.Text;
                 }
@@ -377,6 +382,11 @@ namespace GenieClient
         public bool SaveToFile()
         {
             return m_PresetList.Save();
+        }
+
+        private void chkHighlightLine_CheckedChanged(object sender, EventArgs e)
+        {
+            m_ItemChanged = true;
         }
     }
 }
