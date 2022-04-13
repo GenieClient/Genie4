@@ -590,7 +590,7 @@ namespace GenieClient.Genie
                                     m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>(presetLabel, sTmp));
                                     if(presetLabel == "roomdesc")
                                     {
-                                        PrintTextWithParse(sTmp + Environment.NewLine, bIsPrompt: false, oWindowTarget: 0);
+                                        PrintTextWithParse(sTmp, bIsPrompt: false, oWindowTarget: 0);
                                         sTmp = string.Empty;
                                     }
                                 }
@@ -2622,6 +2622,7 @@ namespace GenieClient.Genie
             {
                 if (sText.StartsWith("  You also see"))
                 {
+                    PrintTextWithParse("\r\n", color, bgcolor);
                     sText = sText.TrimStart();
                 }
 
