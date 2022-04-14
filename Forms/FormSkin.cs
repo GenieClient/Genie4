@@ -722,7 +722,7 @@ namespace GenieClient
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (Information.IsNothing(My.MyProject.Forms.FormMain))
+            if (this.MdiParent == null)
             {
                 return;
             }
