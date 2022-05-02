@@ -2747,18 +2747,21 @@ namespace GenieClient
                 finally
                 {
                     m_oScriptList.ReleaseReaderLock();
-                    if (m_oScriptList.AcquireWriterLock())
+                    if (removeList.Count > 0)
                     {
-                        try
+                        if (m_oScriptList.AcquireWriterLock())
                         {
-                            for (var i = removeList.Count - 1; i > -1; i--)
+                            try
                             {
-                                m_oScriptList.RemoveAt(removeList[i]);
+                                for (var i = removeList.Count - 1; i > -1; i--)
+                                {
+                                    m_oScriptList.RemoveAt(removeList[i]);
+                                }
                             }
-                        }
-                        finally
-                        {
-                            m_oScriptList.ReleaseWriterLock();
+                            finally
+                            {
+                                m_oScriptList.ReleaseWriterLock();
+                            }
                         }
                     }
                 }
