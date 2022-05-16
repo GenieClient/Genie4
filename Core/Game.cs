@@ -591,7 +591,7 @@ namespace GenieClient.Genie
                                     m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>(presetLabel, sTmp));
                                     if(presetLabel == "roomdesc")
                                     {
-                                        PrintTextWithParse(sTmp + Environment.NewLine, bIsPrompt: false, oWindowTarget: 0);
+                                        PrintTextWithParse(sTmp, bIsPrompt: false, oWindowTarget: 0);
                                         sTmp = string.Empty;
                                     }
                                 }
@@ -601,7 +601,10 @@ namespace GenieClient.Genie
                                 }
                                 if (buffer.EndsWith(@"<popBold/>"))
                                 {
-                                    m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer));
+                                    if (sBoldBuffer != "")
+                                    {
+                                        m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer));
+                                    }
                                 }
                                 if (m_bBold)
                                 {
@@ -619,7 +622,7 @@ namespace GenieClient.Genie
                                 }
 
                                 sTextBuffer += sTmp;
-                                if (buffer.EndsWith("</prompt>"))
+                                if (buffer.EndsWith("<&/prompt>"))
                                 {
                                     XmlDocument doc = new XmlDocument();
                                     doc.LoadXml(buffer);
@@ -760,7 +763,7 @@ namespace GenieClient.Genie
                 {
                     m_bBold = true;
                 }
-                else
+                else if (sBoldBuffer != "")
                 {
                     m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer.Trim())); //trim because excessive whitespace seems to be breaking this
                     sBoldBuffer = string.Empty;
@@ -794,7 +797,7 @@ namespace GenieClient.Genie
                     m_bBold = false;
                 }
 
-                if (bPromptRow && m_oGlobals.Config.PromptForce && m_oTargetWindow == WindowTarget.Main)
+                if (bPromptRow && m_oGlobals.Config.PromptForce && m_oTargetWindow == WindowTarget.Main) //prompforce
                 {
                     bPromptRow = false;
                     PrintTextWithParse(m_oGlobals.Config.sPrompt, true, 0);
@@ -1231,7 +1234,7 @@ namespace GenieClient.Genie
         private string ProcessXMLNodeElement(XmlNode oXmlNode)
         {
             string sReturn = string.Empty;
-            Debug.WriteLine(oXmlNode.Name);
+           // Debug.WriteLine(oXmlNode.Name);
             if (oXmlNode.NodeType == XmlNodeType.Element)
             {
                 var switchExpr = oXmlNode.Name;
@@ -2226,7 +2229,7 @@ namespace GenieClient.Genie
                                 if (rt > 0)
                                 {
                                     SetRoundTime(rt);
-                                    if (m_bStatusPromptEnabled == false)
+                                    if (m_bStatusPromptEnabled == true)
                                         strBuffer += "R";
                                     rt += Convert.ToInt32(m_oGlobals.Config.dRTOffset);
                                     var rtString = rt.ToString();
@@ -2248,7 +2251,7 @@ namespace GenieClient.Genie
                                     strBuffer += m_oGlobals.Config.sPrompt;
                                     bool argbIsPrompt = true;
                                     WindowTarget argoWindowTarget = 0;
-
+                                    //prompting here
                                     PrintTextWithParse(strBuffer, argbIsPrompt, oWindowTarget: argoWindowTarget);
                                 }
 
@@ -2480,7 +2483,7 @@ namespace GenieClient.Genie
         public void CreatePrompt(XmlNode oXmlNode)
         {
             string strBuffer = GetTextFromXML(oXmlNode);
-            if (m_bStatusPromptEnabled)
+            if (!m_bStatusPromptEnabled)
             {
                 if ((strBuffer ?? "") != ">")
                 {
@@ -2797,7 +2800,7 @@ namespace GenieClient.Genie
             {
                 if (sText.StartsWith("  You also see"))
                 {
-                    sText = sText.TrimStart();
+                    sText = Environment.NewLine + sText.TrimStart();
                 }
 
                 if (m_sStyle.Length > 0)
@@ -2903,7 +2906,7 @@ namespace GenieClient.Genie
 
         private void PrintTextToWindow(string text, Color color, Color bgcolor, WindowTarget targetwindow = WindowTarget.Main, bool isprompt = false, bool isroomoutput = false)
         {
-            if (text.Length == 0)
+            if (text.Length == 0 || (m_oGlobals.Config.Condensed && text.Trim().Length == 0))
             {
                 return;
             }
@@ -2987,6 +2990,7 @@ namespace GenieClient.Genie
 
                 case WindowTarget.Other:
                     {
+                       // Debug.Write("Target Window is " + targetwindow.ToString());
                         sTargetWindowString = m_sTargetWindow.ToLower();
                         break;
                     }
@@ -3085,26 +3089,17 @@ namespace GenieClient.Genie
             {
                 if (text.Trim().Length == 0)
                 {
-                    if (m_bLastRowWasBlank == true)
+                    if (m_bLastRowWasBlank == true | m_bLastRowWasPrompt == true)
                     {
                         return;
                     }
+
                     m_bLastRowWasBlank = true;
-                }
-                else if (Regex.IsMatch(text, @"^.*\" + m_oGlobals.Config.sPrompt + "?$") && !m_oGlobals.Config.PromptForce)
-                {
-                    m_bLastRowWasPrompt = true;
-                    if (m_bLastRowWasBlank)
-                    {
-                        return;
-                    }
                 }
                 else
                 {
-                    m_bLastRowWasPrompt = false;
                     m_bLastRowWasBlank = false;
                 }
-                
             }
 
             if (targetwindow == WindowTarget.Main | targetwindow == WindowTarget.Thoughts | targetwindow == WindowTarget.Combat)
@@ -3182,7 +3177,8 @@ namespace GenieClient.Genie
             var trueVar = true;
             var falseVar = false;
 
-            EventPrintText?.Invoke(sText, oColor, oBgColor, windowVar, emptyVar, m_bMonoOutput, trueVar, falseVar);
+         //   EventPrintText?.Invoke(sText, oColor, oBgColor, windowVar, emptyVar, m_bMonoOutput, trueVar, falseVar);
+            EventPrintText?.Invoke(sText, oColor, oBgColor, windowVar, emptyVar, m_bMonoOutput, falseVar, trueVar);
         }
 
         private void ClearWindow(string sWindow)
@@ -3258,7 +3254,7 @@ namespace GenieClient.Genie
                         m_oGlobals.VariableList.Add(argkey, argvalue, Globals.Variables.VariableType.Reserved);
                         string argsVariable = "$connected";
                         VariableChanged(argsVariable);
-                        m_bStatusPromptEnabled = false;                        
+                        m_bStatusPromptEnabled = true;                        
                         break;
                     }
             }

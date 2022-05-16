@@ -2966,6 +2966,10 @@ namespace GenieClient
                 case "remove":
                     {
                         string argsText2 = Utility.GetArgumentString(sText);
+                        if (argsText2.ToLower().StartsWith("eval ") == false)
+                        {
+                            argsText2 = ParseVariables(argsText2);
+                        }
                         m_oActions.Remove(argsText2);
                         return;
                     }
