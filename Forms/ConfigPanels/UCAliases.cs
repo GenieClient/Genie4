@@ -182,7 +182,7 @@ namespace GenieClient
 
             if (!Information.IsNothing(GroupBoxBase.Tag))
             {
-                foreach (ListViewItem li in (Genie.Collections.ArrayList)GroupBoxBase.Tag)
+                foreach (ListViewItem li in (ArrayList)GroupBoxBase.Tag)
                 {
                     if (TextBoxAlias.Enabled == true) // Single edit
                     {
