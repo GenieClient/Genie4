@@ -797,7 +797,7 @@ namespace GenieClient.Genie
                     m_bBold = false;
                 }
 
-                if (bPromptRow && m_oGlobals.Config.PromptForce && m_oTargetWindow == WindowTarget.Main) //prompforce
+                if (bPromptRow && m_oGlobals.Config.PromptForce && m_oTargetWindow == WindowTarget.Main) //Prompforce , but bPromptRow has no way to be set to true
                 {
                     bPromptRow = false;
                     PrintTextWithParse(m_oGlobals.Config.sPrompt, true, 0);
@@ -2251,7 +2251,7 @@ namespace GenieClient.Genie
                                     strBuffer += m_oGlobals.Config.sPrompt;
                                     bool argbIsPrompt = true;
                                     WindowTarget argoWindowTarget = 0;
-                                    //prompting here
+                                    //Status prompt set from the XML printing to main/game 
                                     PrintTextWithParse(strBuffer, argbIsPrompt, oWindowTarget: argoWindowTarget);
                                 }
 
