@@ -36,7 +36,7 @@ namespace GenieClient
             // Add any initialization after the InitializeComponent() call.
             LocalDirectory.CheckUserDirectory();
             bool bCustomConfigFile = false;
-            var al = new Genie.Collections.ArrayList();
+            var al = new ArrayList();
             al = Utility.ParseArgs(Interaction.Command());
             foreach (string cmd in al)
             {
@@ -513,7 +513,7 @@ namespace GenieClient
         // Private WithEvents m_oWorker As New System.ComponentModel.BackgroundWorker
         // Private m_bRunWorker As Boolean = True
 
-        public Genie.Collections.ArrayList FormList
+        public ArrayList FormList
         {
             get
             {
@@ -2901,7 +2901,7 @@ namespace GenieClient
             }
         }
 
-        private Script LoadScript(string sScriptName, Genie.Collections.ArrayList oArgList)
+        private Script LoadScript(string sScriptName, ArrayList oArgList)
         {
             if (m_oGlobals.Config.bAbortDupeScript == true)
             {
@@ -4135,7 +4135,7 @@ namespace GenieClient
         {
             try
             {
-                var al = new Genie.Collections.ArrayList();
+                var al = new ArrayList();
                 al = Utility.ParseArgs(sText, true);
                 string ScriptName = Conversions.ToString(al[0].ToString().ToLower().Trim().Substring(1));
                 if (ScriptName.EndsWith(".cmd") == false)
@@ -6550,7 +6550,7 @@ namespace GenieClient
 
         private void Command_EventClassChange()
         {
-            var al = new Genie.Collections.ArrayList();
+            var al = new ArrayList();
             if (m_oGlobals.ClassList.AcquireReaderLock())
             {
                 try

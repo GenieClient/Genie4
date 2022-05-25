@@ -873,7 +873,7 @@ namespace GenieClient.Genie.Script
                 throw new Exception("Invalid argument to ParseFunction()");
             }
 
-            Genie.Collections.ArrayList args;
+            ArrayList args;
             args = BuildArgs(iStart, iEnd);
             var switchExpr = ((Sections)oSections[iStart]).sBlock.ToLower();
             switch (switchExpr)
