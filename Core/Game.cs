@@ -2800,7 +2800,9 @@ namespace GenieClient.Genie
             {
                 if (sText.StartsWith("  You also see"))
                 {
+                    PrintTextToWindow(Environment.NewLine, color, bgcolor);
                     sText = sText.TrimStart();
+
                 }
 
                 if (m_sStyle.Length > 0)
