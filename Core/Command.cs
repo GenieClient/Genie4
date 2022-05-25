@@ -196,7 +196,7 @@ namespace GenieClient.Genie
         public event ListPluginsEventHandler ListPlugins;
 
         public delegate void ListPluginsEventHandler();
-
+        
         private Script.Eval m_oEval = new Script.Eval();
         private Script.MathEval m_oMathEval = new Script.MathEval();
         private Globals oGlobals;

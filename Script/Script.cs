@@ -35,12 +35,12 @@ namespace GenieClient
                 public int iIndex = 0;
                 public bool bSkipBlock = false;
                 public int iBlockDepth = 0;
-                public ArrayList oBlockList = new ArrayList();
-                public ArrayList oArgList = new ArrayList();
+                public Genie.Collections.ArrayList oBlockList = new Genie.Collections.ArrayList();
+                public Genie.Collections.ArrayList oArgList = new Genie.Collections.ArrayList();
                 public bool bLastRowWasEvaluation = false;
             }
 
-            private ArrayList oLineList = new ArrayList();
+            private Genie.Collections.ArrayList oLineList = new Genie.Collections.ArrayList();
 
             public enum BlockState
             {
@@ -79,7 +79,7 @@ namespace GenieClient
                 }
             }
 
-            public ArrayList ArgList
+            public Genie.Collections.ArrayList ArgList
             {
                 get
                 {
@@ -641,8 +641,8 @@ namespace GenieClient
 
         private Genie.Script.Eval m_oEval = new Genie.Script.Eval();
         private Genie.Script.MathEval m_oEvalMath = new Genie.Script.MathEval();
-        private ArrayList m_oScript = new ArrayList();
-        private ArrayList m_oScriptFiles = new ArrayList();
+        private Genie.Collections.ArrayList m_oScript = new Genie.Collections.ArrayList();
+        private Genie.Collections.ArrayList m_oScriptFiles = new Genie.Collections.ArrayList();
         private Hashtable m_oScriptLabels = new Hashtable();
         private Dictionary<string, Func<bool>> ScriptInternalLabels;
         private CurrentLine m_oCurrentLine = new CurrentLine();

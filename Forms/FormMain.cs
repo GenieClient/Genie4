@@ -513,7 +513,7 @@ namespace GenieClient
         // Private WithEvents m_oWorker As New System.ComponentModel.BackgroundWorker
         // Private m_bRunWorker As Boolean = True
 
-        public ArrayList FormList
+        public Genie.Collections.ArrayList FormList
         {
             get
             {

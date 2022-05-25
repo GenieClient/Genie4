@@ -1005,9 +1005,9 @@ namespace GenieClient.Genie
             }
         }
 
-        private ArrayList _CharacterList = new ArrayList();
+        private Genie.Collections.ArrayList _CharacterList = new Genie.Collections.ArrayList();
 
-        public ArrayList CharacterList
+        public Genie.Collections.ArrayList CharacterList
         {
             get
             {
