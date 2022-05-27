@@ -2803,7 +2803,8 @@ namespace GenieClient.Genie
             {
                 if (sText.StartsWith("  You also see"))
                 {
-                    sText = System.Environment.NewLine + sText.TrimStart();
+                    PrintTextToWindow(Environment.NewLine, color, bgcolor);
+                    sText = sText.TrimStart();
                 }
 
                 if (m_sStyle.Length > 0)
