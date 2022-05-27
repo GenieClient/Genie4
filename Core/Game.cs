@@ -588,6 +588,7 @@ namespace GenieClient.Genie
                                         default:
                                             break;
                                     }
+                                    sTmp = ParseSubstrings(sTmp);
                                     m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>(presetLabel, sTmp));
                                     if(presetLabel == "roomdesc")
                                     {
@@ -601,8 +602,9 @@ namespace GenieClient.Genie
                                 }
                                 if (buffer.EndsWith(@"<popBold/>"))
                                 {
-                                    if (sBoldBuffer != "")
+                                    if (!string.IsNullOrWhiteSpace(sBoldBuffer))
                                     {
+                                        sBoldBuffer = ParseSubstrings(sBoldBuffer);
                                         m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer));
                                     }
                                 }
@@ -765,6 +767,7 @@ namespace GenieClient.Genie
                 }
                 else if (!string.IsNullOrWhiteSpace(sBoldBuffer))
                 {
+                    sBoldBuffer = ParseSubstrings(sBoldBuffer);
                     m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer.Trim())); //trim because excessive whitespace seems to be breaking this
                     sBoldBuffer = string.Empty;
                 }
@@ -2800,7 +2803,7 @@ namespace GenieClient.Genie
             {
                 if (sText.StartsWith("  You also see"))
                 {
-                    sText = sText.TrimStart();
+                    sText = System.Environment.NewLine + sText.TrimStart();
                 }
 
                 if (m_sStyle.Length > 0)
@@ -3045,9 +3048,10 @@ namespace GenieClient.Genie
                 }
             }
 
-            if (text.Trim().Length > 0)
+            text = ParseSubstrings(text);
+            if (0 == 1)//(text.Trim().Length > 0)
             {
-                // Substitute Lists
+                // Substitute Lists Switch this to text = ParseSubstrings(text) so theres only one place subs are processed at
                 if (m_oGlobals.SubstituteList.AcquireReaderLock())
                 {
                     try
@@ -3150,7 +3154,50 @@ namespace GenieClient.Genie
             var tempVar = false;
             EventPrintText?.Invoke(text, color, bgcolor, targetwindow, targetwindowstring, m_bMonoOutput, isprompt, tempVar);
         }
+        private String ParseSubstrings(string text)
+        {
+            if (text.Trim().Length > 0)
+            {
+                // Substitute Lists
+                if (m_oGlobals.SubstituteList.AcquireReaderLock())
+                {
+                    try
+                    {
+                        foreach (Globals.SubstituteRegExp.Substitute sl in m_oGlobals.SubstituteList)
+                        {
+                            if (sl.IsActive && !Information.IsNothing(sl.SubstituteRegex))
+                            {
+                                if (sl.SubstituteRegex.Match(Utility.Trim(text)).Success)
+                                {
+                                    bool bNewLineStart = text.StartsWith(System.Environment.NewLine);
+                                    bool bNewLineEnd = text.EndsWith(System.Environment.NewLine);
+                                    text = sl.SubstituteRegex.Replace(Utility.Trim(text), sl.sReplaceBy.ToString());
+                                    if (bNewLineStart == true)
+                                    {
+                                        text = System.Environment.NewLine + text;
+                                    }
 
+                                    if (bNewLineEnd == true)
+                                    {
+                                        text += System.Environment.NewLine;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        m_oGlobals.SubstituteList.ReleaseReaderLock();
+                    }
+                }
+                else
+                {
+                    GenieError.Error("PrintTextToWindow", "Unable to aquire reader lock.");
+                }
+            }
+
+            return text;
+        }
         private void VariableChanged(string sVariable)
         {
             EventVariableChanged?.Invoke(sVariable);
