@@ -484,9 +484,9 @@ namespace GenieClient
         {
             MatchCollection oMatchCollection;
 
-            if (m_oRichTextBuffer.Text.Contains("You also see") && m_oParentForm.Globals.RoomObjectHighlights.Count > 0)
+            if (m_oRichTextBuffer.Text.Contains("You also see") && m_oParentForm.Globals.RoomObjects.Count > 0)
             {
-                foreach (KeyValuePair<string, string> highlight in m_oParentForm.Globals.RoomObjectHighlights.ToArray())
+                foreach (KeyValuePair<string, string> highlight in m_oParentForm.Globals.RoomObjects.ToArray())
                 {
                     Regex volatileRegex = new Regex(Regex.Escape(highlight.Value));
                     oMatchCollection = volatileRegex.Matches(m_oRichTextBuffer.Text);
