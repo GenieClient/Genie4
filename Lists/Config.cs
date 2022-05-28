@@ -64,6 +64,7 @@ namespace GenieClient.Genie
         public int LichPort { get; set; } = 11024;
         public int LichStartPause { get; set; } = 5;
         public string ConnectScript { get; set; } = string.Empty;
+        public string ScriptExtension { get; set; } = "cmd";
 
         public string ScriptDir
         {
@@ -391,6 +392,7 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine($"#config {{connectscript}} {{{ConnectScript}}}");
                 oStreamWriter.WriteLine($"#config {{autoupdate}} {{{AutoUpdate}}}");
                 oStreamWriter.WriteLine($"#config {{checkforupdates}} {{{CheckForUpdates}}}");
+                oStreamWriter.WriteLine($"#config {{scriptextension}} {{{ScriptExtension}}}");
                 oStreamWriter.Close();
                 return true;
             }
@@ -457,6 +459,12 @@ namespace GenieClient.Genie
                                     ScriptChar = Conversions.ToChar(sValue.ToCharArray().GetValue(0));
                                 }
 
+                                break;
+                            }
+
+                        case "scriptextension":
+                            {
+                                ScriptExtension = sValue ?? "cmd";
                                 break;
                             }
 
