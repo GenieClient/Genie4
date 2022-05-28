@@ -484,51 +484,16 @@ namespace GenieClient
         {
             MatchCollection oMatchCollection;
 
-            if (m_oRichTextBuffer.Text.Contains("You also see"))
+            if (m_oRichTextBuffer.Text.Contains("You also see") && m_oParentForm.Globals.RoomObjectHighlights.Count > 0)
             {
-                if (!Information.IsNothing(m_oParentForm.Globals.MonsterListRegEx))
+                foreach (KeyValuePair<string, string> highlight in m_oParentForm.Globals.RoomObjectHighlights.ToArray())
                 {
-                    oMatchCollection = (MatchCollection)m_oParentForm.Globals.MonsterListRegEx.Matches(m_oRichTextBuffer.Text);
+                    Regex volatileRegex = new Regex(Regex.Escape(highlight.Value));
+                    oMatchCollection = volatileRegex.Matches(m_oRichTextBuffer.Text);
                     foreach (Match oMatch in oMatchCollection)
                     {
-                        m_oRichTextBuffer.SelectionStart = oMatch.Groups[1].Index;
-                        m_oRichTextBuffer.SelectionLength = oMatch.Groups[1].Length;
-                        if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList["creatures"].FgColor, Color.Transparent, false))
-                        {
-                            m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList["creatures"].FgColor;
-                        }
-
-                        if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList["creatures"].BgColor, Color.Transparent, false))
-                        {
-                            m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList["creatures"].BgColor;
-                        }
-                    }
-                }
-            }
-
-            // Presets and Bold
-            if (m_oParentForm.Globals.VolatileHighlights.Count > 0)
-            {
-                int volatilePosition = 0;
-                foreach (KeyValuePair<string, string> highlight in m_oParentForm.Globals.VolatileHighlights.ToArray())
-                {
-                    if (m_oRichTextBuffer.Text.Substring(volatilePosition).Contains(highlight.Value))
-                    {
-                        if(m_oParentForm.Globals.PresetList[highlight.Key].bHighlightLine)
-                        {
-                            int indexOfHighlight = m_oRichTextBuffer.Text.IndexOf(highlight.Value, volatilePosition);
-                            int lastNewLineIndex = m_oRichTextBuffer.Text.LastIndexOf("\n", indexOfHighlight);
-                            int nextNewLineIndex = m_oRichTextBuffer.Text.IndexOf("\n", indexOfHighlight);
-                            if (lastNewLineIndex == -1) lastNewLineIndex = 0;
-                            if (nextNewLineIndex == -1) nextNewLineIndex = m_oRichTextBuffer.Text.Length;
-                            m_oRichTextBuffer.SelectionStart = lastNewLineIndex >= 0 ? lastNewLineIndex : 0;
-                            m_oRichTextBuffer.SelectionLength = nextNewLineIndex - lastNewLineIndex;
-                        }
-                        else
-                        {
-                            m_oRichTextBuffer.SelectionStart = m_oRichTextBuffer.Text.IndexOf(highlight.Value, volatilePosition);
-                            m_oRichTextBuffer.SelectionLength = highlight.Value.Length;
-                        }
+                        m_oRichTextBuffer.SelectionStart = oMatch.Groups[0].Index;
+                        m_oRichTextBuffer.SelectionLength = oMatch.Groups[0].Length;
                         if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList[highlight.Key].FgColor, Color.Transparent, false))
                         {
                             m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList[highlight.Key].FgColor;
@@ -538,7 +503,30 @@ namespace GenieClient
                         {
                             m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList[highlight.Key].BgColor;
                         }
-                        volatilePosition += highlight.Value.Length;
+                    }
+                }
+            }
+
+            // Presets and Bold
+            if (m_oParentForm.Globals.VolatileHighlights.Count > 0)
+            {
+                foreach (KeyValuePair<string, string> highlight in m_oParentForm.Globals.VolatileHighlights.ToArray())
+                {
+                    Regex volatileRegex = new Regex(Regex.Escape(highlight.Value));
+                    oMatchCollection = volatileRegex.Matches(m_oRichTextBuffer.Text);
+                    foreach (Match oMatch in oMatchCollection)
+                    {
+                        m_oRichTextBuffer.SelectionStart = oMatch.Groups[0].Index;
+                        m_oRichTextBuffer.SelectionLength = oMatch.Groups[0].Length;
+                        if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList[highlight.Key].FgColor, Color.Transparent, false))
+                        {
+                            m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList[highlight.Key].FgColor;
+                        }
+
+                        if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList[highlight.Key].BgColor, Color.Transparent, false))
+                        {
+                            m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList[highlight.Key].BgColor;
+                        }
                     }
                 }
             }
@@ -615,6 +603,7 @@ namespace GenieClient
                     }
                 }
             }
+            
         }
 
         public FormSkin FormParent
