@@ -433,11 +433,12 @@ namespace GenieClient.Genie
                 var oArgs = Utility.ParseArgs(sText);
                 if (oArgs.Count == 3)
                 {
-                    Add(oArgs[1].ToString(), oArgs[2].ToString());
+                    //preserve this for loading configs which predate new parameters
+                    Add(oArgs[1].ToString(), oArgs[2].ToString(), true, false);
                 }
                 else if (oArgs.Count == 4)
                 {
-                    Add(oArgs[1].ToString(), oArgs[2].ToString(), default, oArgs[3].ToString().ToLower() == "true");
+                    Add(oArgs[1].ToString(), oArgs[2].ToString(), true, oArgs[3].ToString().ToLower() == "true");
                 }
             }
 
