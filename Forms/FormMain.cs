@@ -6876,6 +6876,7 @@ namespace GenieClient
         private void SetMagicPanels(bool bVisible)
         {
             ComponentBarsMana.Visible = bVisible;
+            Castbar.Visible = bVisible;
             LabelSpell.Visible = bVisible;
             LabelSpellC.Visible = bVisible;
             if (bVisible == true)
