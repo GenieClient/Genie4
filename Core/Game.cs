@@ -589,7 +589,7 @@ namespace GenieClient.Genie
                                         default:
                                             break;
                                     }
-                                    sTmp = ParseSubstrings(sTmp);
+                                    sTmp = ParseSubstitutions(sTmp);
                                     m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>(presetLabel, sTmp));
                                     if(presetLabel == "roomdesc")
                                     {
@@ -605,7 +605,7 @@ namespace GenieClient.Genie
                                 {
                                     if (!string.IsNullOrWhiteSpace(sBoldBuffer))
                                     {
-                                        sBoldBuffer = ParseSubstrings(sBoldBuffer);
+                                        sBoldBuffer = ParseSubstitutions(sBoldBuffer);
                                         m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer));
                                     }
                                 }
@@ -768,7 +768,7 @@ namespace GenieClient.Genie
                 }
                 else if (!string.IsNullOrWhiteSpace(sBoldBuffer))
                 {
-                    sBoldBuffer = ParseSubstrings(sBoldBuffer);
+                    sBoldBuffer = ParseSubstitutions(sBoldBuffer);
                     m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer.Trim())); //trim because excessive whitespace seems to be breaking this
                     sBoldBuffer = string.Empty;
                 }
@@ -941,7 +941,7 @@ namespace GenieClient.Genie
                             foreach (KeyValuePair<string, string> roomObjectHighlight in m_oGlobals.RoomObjectHighlights.ToArray())
                             {
                                 Regex roomObjectRegex = new Regex(Regex.Escape(roomObjectHighlight.Value));
-                                foreach(Match volatileObject in roomObjectRegex.Matches(m_sRoomObjs))
+                                foreach(Match volatileObject in roomObjectRegex.Matches(ParseSubstitutions(m_sRoomObjs)))
                                 {
                                     persistedRoomObjects.Add(roomObjectHighlight);
                                 }
@@ -3063,7 +3063,7 @@ namespace GenieClient.Genie
                 }
             }
 
-            text = ParseSubstrings(text);
+            text = ParseSubstitutions(text);
             if (0 == 1)//(text.Trim().Length > 0)
             {
                 // Substitute Lists Switch this to text = ParseSubstrings(text) so theres only one place subs are processed at
@@ -3169,7 +3169,7 @@ namespace GenieClient.Genie
             var tempVar = false;
             EventPrintText?.Invoke(text, color, bgcolor, targetwindow, targetwindowstring, m_bMonoOutput, isprompt, tempVar);
         }
-        private String ParseSubstrings(string text)
+        private String ParseSubstitutions(string text)
         {
             if (text.Trim().Length > 0)
             {
