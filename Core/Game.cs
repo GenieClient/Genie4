@@ -936,18 +936,6 @@ namespace GenieClient.Genie
 
                         if (Strings.Len(m_sRoomObjs) > 0)
                         {
-                            List<KeyValuePair<string, string>> persistedRoomObjects = new List<KeyValuePair<string, string>>();
-                            m_oGlobals.RoomObjectHighlights.AddRange(m_oGlobals.VolatileHighlights);
-                            foreach (KeyValuePair<string, string> roomObjectHighlight in m_oGlobals.RoomObjectHighlights.ToArray())
-                            {
-                                Regex roomObjectRegex = new Regex(Regex.Escape(roomObjectHighlight.Value));
-                                foreach(Match volatileObject in roomObjectRegex.Matches(ParseSubstitutions(m_sRoomObjs)))
-                                {
-                                    persistedRoomObjects.Add(roomObjectHighlight);
-                                }
-                            }
-                            m_oGlobals.RoomObjectHighlights.Clear();
-                            m_oGlobals.RoomObjectHighlights.AddRange(persistedRoomObjects);
                             string argsText3 = m_sRoomObjs + System.Environment.NewLine;
                             bool argbIsRoomOutput3 = true;
                             PrintTextWithParse(argsText3, default, default, false, targetRoom, argbIsRoomOutput3);
@@ -1665,6 +1653,7 @@ namespace GenieClient.Genie
                                 case "room objs":
                                     {
                                         m_sRoomObjs = GetTextFromXML(oXmlNode).TrimStart();
+                                        SetRoomObjects(oXmlNode);
                                         string argkey5 = "monstercount";
                                         string argvalue4 = CountMonsters(oXmlNode).ToString();
                                         m_oGlobals.VariableList.Add(argkey5, argvalue4, Globals.Variables.VariableType.Reserved); // $monstercount
@@ -2675,7 +2664,16 @@ namespace GenieClient.Genie
         }
 
         private Regex m_MonsterRegex = new Regex("<pushBold />([^<]*)<popBold />([^,.]*)", MyRegexOptions.options);
+        private Regex m_RoomObjectsRegex = new Regex("<pushBold />([^<]*)<popBold />");
 
+        private void SetRoomObjects(XmlNode oXmlNode)
+        {
+            m_oGlobals.RoomObjects.Clear();
+            foreach (Match roomObject in m_RoomObjectsRegex.Matches(oXmlNode.InnerXml.Replace(" and ", ", ").Replace(" and <pushBold />", ", <pushBold />")))
+            {
+                m_oGlobals.RoomObjects.Add(new KeyValuePair<string, string>("creatures", ParseSubstitutions(roomObject.Groups[1].Value)));
+            }
+        }
         private int CountMonsters(XmlNode oXmlNode)
         {
             int iMonsterCount = 0;
