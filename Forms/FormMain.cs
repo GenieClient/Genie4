@@ -1504,7 +1504,7 @@ namespace GenieClient
                 {
                     if (m_bLastKeyWasTab == true)
                     {
-                        ListScripts(TextBoxInput.Text.Substring(1) + "*.cmd");
+                        ListScripts(TextBoxInput.Text.Substring(1) + $"*.{m_oGlobals.Config.ScriptExtension}");
                         m_bLastKeyWasTab = false;
                     }
                     else if (TextBoxInput.Text.Length > 1)
@@ -1534,7 +1534,7 @@ namespace GenieClient
                 {
                     if (m_bLastKeyWasTab == true)
                     {
-                        ListScripts(TextBoxInput.Text.Substring(6) + "*.cmd");
+                        ListScripts(TextBoxInput.Text.Substring(6) + $"*.{m_oGlobals.Config.ScriptExtension}");
                         m_bLastKeyWasTab = false;
                     }
                     else if (TextBoxInput.Text.Length > 1)
@@ -1715,7 +1715,7 @@ namespace GenieClient
                 }
             }
 
-            sDir = FileSystem.Dir(sPattern + "*.cmd", Constants.vbArchive);
+            sDir = FileSystem.Dir(sPattern + $"*.{m_oGlobals.Config.ScriptExtension}", Constants.vbArchive);
             while (!string.IsNullOrEmpty(sDir))
             {
                 i += 1;
@@ -1726,7 +1726,7 @@ namespace GenieClient
 
             if (i == 1)
             {
-                return sFile.ToLower().Replace(".cmd", "") + " ";
+                return sFile.ToLower().Replace($".{m_oGlobals.Config.ScriptExtension}", "") + " ";
             }
             else if (Strings.Len(sMin) > 0)
             {
@@ -3144,9 +3144,9 @@ namespace GenieClient
                     if (!Information.IsNothing(oButton.Tag))
                     {
                         string sTemp = ((Script)oButton.Tag).FileName;
-                        if (sTemp.ToLower().EndsWith(".cmd") == false)
+                        if (sTemp.ToLower().EndsWith($".{m_oGlobals.Config.ScriptExtension}") == false)
                         {
-                            sTemp += ".cmd";
+                            sTemp += $".{m_oGlobals.Config.ScriptExtension}";
                         }
 
                         if (sTemp.IndexOf(@"\") == -1)
@@ -4138,9 +4138,9 @@ namespace GenieClient
                 var al = new ArrayList();
                 al = Utility.ParseArgs(sText, true);
                 string ScriptName = Conversions.ToString(al[0].ToString().ToLower().Trim().Substring(1));
-                if (ScriptName.EndsWith(".cmd") == false)
+                if (ScriptName.EndsWith($".{m_oGlobals.Config.ScriptExtension}") == false)
                 {
-                    ScriptName += ".cmd";
+                    ScriptName += $".{m_oGlobals.Config.ScriptExtension}";
                 }
 
                 Script oScript = null;

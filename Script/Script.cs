@@ -1919,7 +1919,7 @@ namespace GenieClient
                     if (AppendFile(sFile))
                     {
                         m_sFileName = sFile;
-                        if (m_sFileName.ToLower().EndsWith(".cmd"))
+                        if (m_sFileName.ToLower().EndsWith($".{m_oGlobals.Config.ScriptExtension}"))
                         {
                             m_oLocalVarList["scriptname"] = m_sFileName.Substring(0, m_sFileName.Length - 4);
                         }

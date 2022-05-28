@@ -2028,9 +2028,9 @@ namespace GenieClient.Genie
                                             if (oArgs.Count > 1)
                                             {
                                                 string sFile = oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 1));
-                                                if (sFile.ToLower().EndsWith(".cmd") == false & sFile.ToLower().EndsWith(".js") == false)
+                                                if (sFile.ToLower().EndsWith($".{oGlobals.Config.ScriptExtension}") == false & sFile.ToLower().EndsWith(".js") == false)
                                                 {
-                                                    sFile += ".cmd";
+                                                    sFile += $".{oGlobals.Config.ScriptExtension}";
                                                 }
 
                                                 if (sFile.IndexOf(@"\") == -1)
