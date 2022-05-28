@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.CompilerServices;
@@ -889,6 +890,7 @@ namespace GenieClient.Genie
                         m_bUpdatingRoom = false;
                         UpdateRoom();
                     }
+                    m_oGlobals.VolatileHighlights.Clear();
                 }
                 finally
                 {
@@ -934,6 +936,18 @@ namespace GenieClient.Genie
 
                         if (Strings.Len(m_sRoomObjs) > 0)
                         {
+                            List<KeyValuePair<string, string>> persistedRoomObjects = new List<KeyValuePair<string, string>>();
+                            m_oGlobals.RoomObjectHighlights.AddRange(m_oGlobals.VolatileHighlights);
+                            foreach (KeyValuePair<string, string> roomObjectHighlight in m_oGlobals.RoomObjectHighlights.ToArray())
+                            {
+                                Regex roomObjectRegex = new Regex(Regex.Escape(roomObjectHighlight.Value));
+                                foreach(Match volatileObject in roomObjectRegex.Matches(m_sRoomObjs))
+                                {
+                                    persistedRoomObjects.Add(roomObjectHighlight);
+                                }
+                            }
+                            m_oGlobals.RoomObjectHighlights.Clear();
+                            m_oGlobals.RoomObjectHighlights.AddRange(persistedRoomObjects);
                             string argsText3 = m_sRoomObjs + System.Environment.NewLine;
                             bool argbIsRoomOutput3 = true;
                             PrintTextWithParse(argsText3, default, default, false, targetRoom, argbIsRoomOutput3);
