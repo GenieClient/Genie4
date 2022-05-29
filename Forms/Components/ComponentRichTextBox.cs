@@ -514,18 +514,33 @@ namespace GenieClient
                 {
                     Regex volatileRegex = new Regex(Regex.Escape(highlight.Value));
                     oMatchCollection = volatileRegex.Matches(m_oRichTextBuffer.Text);
-                    foreach (Match oMatch in oMatchCollection)
                     {
-                        m_oRichTextBuffer.SelectionStart = oMatch.Groups[0].Index;
-                        m_oRichTextBuffer.SelectionLength = oMatch.Groups[0].Length;
-                        if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList[highlight.Key].FgColor, Color.Transparent, false))
+                        foreach (Match oMatch in oMatchCollection)
                         {
-                            m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList[highlight.Key].FgColor;
-                        }
+                            if (m_oParentForm.Globals.PresetList[highlight.Key].bHighlightLine)
+                            {
+                                int indexOfHighlight = m_oRichTextBuffer.Text.IndexOf(highlight.Value);
+                                int lastNewLineIndex = m_oRichTextBuffer.Text.LastIndexOf("\n", indexOfHighlight);
+                                int nextNewLineIndex = m_oRichTextBuffer.Text.IndexOf("\n", indexOfHighlight);
+                                if (lastNewLineIndex == -1) lastNewLineIndex = 0;
+                                if (nextNewLineIndex == -1) nextNewLineIndex = m_oRichTextBuffer.Text.Length;
+                                m_oRichTextBuffer.SelectionStart = lastNewLineIndex >= 0 ? lastNewLineIndex : 0;
+                                m_oRichTextBuffer.SelectionLength = nextNewLineIndex - lastNewLineIndex;
+                            }
+                            else
+                            {
+                                m_oRichTextBuffer.SelectionStart = oMatch.Groups[0].Index;
+                                m_oRichTextBuffer.SelectionLength = oMatch.Groups[0].Length;
+                            }
+                            if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList[highlight.Key].FgColor, Color.Transparent, false))
+                            {
+                                m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList[highlight.Key].FgColor;
+                            }
 
-                        if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList[highlight.Key].BgColor, Color.Transparent, false))
-                        {
-                            m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList[highlight.Key].BgColor;
+                            if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList[highlight.Key].BgColor, Color.Transparent, false))
+                            {
+                                m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList[highlight.Key].BgColor;
+                            }
                         }
                     }
                 }
