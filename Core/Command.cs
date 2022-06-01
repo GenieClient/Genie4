@@ -384,17 +384,28 @@ namespace GenieClient.Genie
                                     case "lconnect":
                                     case "lichconnect":
                                         {
-                                            EchoText("Starting Lich Server\n");
-                                            string lichLaunch = $"/C {oGlobals.Config.RubyPath} {oGlobals.Config.LichPath} {oGlobals.Config.LichArguments}";
-
-                                            Utility.ExecuteProcess(oGlobals.Config.CmdPath, lichLaunch, false);
-                                            int count = 0;
-                                            while (count < oGlobals.Config.LichStartPause)
+                                            string failure = string.Empty;
+                                            if (!File.Exists(oGlobals.Config.CmdPath)) failure += "CMD not found at Path:\t" + oGlobals.Config.CmdPath + System.Environment.NewLine;
+                                            if (!File.Exists(oGlobals.Config.RubyPath)) failure += "Ruby not found at Path:\t" + oGlobals.Config.RubyPath + System.Environment.NewLine;
+                                            if (!File.Exists(oGlobals.Config.LichPath)) failure += "Lich not found at Path:\t" + oGlobals.Config.LichPath + System.Environment.NewLine;
+                                            if (string.IsNullOrWhiteSpace(failure))
                                             {
-                                                Thread.Sleep(1000);
-                                                count++;
+                                                EchoText("Starting Lich Server\n");
+                                                string lichLaunch = $"/C {oGlobals.Config.RubyPath} {oGlobals.Config.LichPath} {oGlobals.Config.LichArguments}";
+                                                Utility.ExecuteProcess(oGlobals.Config.CmdPath, lichLaunch, false);
+                                                int count = 0;
+                                                while (count < oGlobals.Config.LichStartPause)
+                                                {
+                                                    Thread.Sleep(1000);
+                                                    count++;
+                                                }
+                                                Connect(oArgs, true);
                                             }
-                                            Connect(oArgs, true);
+                                            else
+                                            {
+                                                failure = "Fix the following file paths in your #Config" + System.Environment.NewLine + failure;
+                                                EchoColorText(failure, Color.OrangeRed, Color.Transparent);
+                                            }
                                             break;
                                         }
 
