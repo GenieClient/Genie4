@@ -239,7 +239,9 @@ namespace GenieClient
 
             if (My.MyProject.Forms.DialogScriptName.ShowDialog(Parent) == DialogResult.OK)
             {
-                var tnFile = new TreeNode(My.MyProject.Forms.DialogScriptName.ScriptName, 2, 2);
+                string scriptName = My.MyProject.Forms.DialogScriptName.ScriptName;
+                if (!Path.HasExtension(scriptName)) scriptName += $".{m_oGlobals.Config.ScriptExtension}";
+                var tnFile = new TreeNode(scriptName, 2, 2);
                 tnFile.Tag = "File";
                 // Add the new child node to the parent node
                 if (!Information.IsNothing(oParent))
@@ -251,7 +253,7 @@ namespace GenieClient
                     TreeView.Nodes.Add(tnFile);
                 }
 
-                Interaction.Shell("\"" + m_oGlobals.Config.sEditor + "\" \"" + sLocation + My.MyProject.Forms.DialogScriptName.ScriptName + "\"", AppWinStyle.NormalFocus, false);
+                Interaction.Shell("\"" + m_oGlobals.Config.sEditor + "\" \"" + sLocation + scriptName + "\"", AppWinStyle.NormalFocus, false);
             }
 
             My.MyProject.Forms.DialogScriptName.ScriptName = string.Empty;
