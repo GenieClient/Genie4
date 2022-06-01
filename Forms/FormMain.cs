@@ -186,8 +186,10 @@ namespace GenieClient
                     PrintError("Invalid Startup Parameters detected.");
                     return;
                 }
-                m_sCurrentProfileFile = string.Empty;
-                SafeLoadProfile(character + game + ".xml", false);
+                m_sCurrentProfileFile = character + game + ".xml";
+                m_oGame.AccountCharacter = character;
+                m_oGame.AccountGame = game;
+                SafeLoadProfile(m_sCurrentProfileFile, false);
                 m_oGame.DirectConnect(character, game, host, port);
             }
         }
