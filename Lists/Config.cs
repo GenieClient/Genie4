@@ -49,7 +49,7 @@ namespace GenieClient.Genie
         public string sLogDir = "Logs";
 
         public bool PromptBreak { get; set; } = true;
-        public bool PromptForce { get; set; } = false;
+        public bool PromptForce { get; set; } = true;
         public bool Condensed { get; set; } = false;
         public bool CheckForUpdates { get; set; } = true;
         public bool AutoUpdate { get; set; } = false;

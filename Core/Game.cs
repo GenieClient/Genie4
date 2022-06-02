@@ -625,12 +625,6 @@ namespace GenieClient.Genie
                                 }
 
                                 sTextBuffer += sTmp;
-                                if (buffer.EndsWith("<&/prompt>"))
-                                {
-                                    XmlDocument doc = new XmlDocument();
-                                    doc.LoadXml(buffer);
-                                    CreatePrompt(doc.DocumentElement);
-                                }
 
                                 m_oXMLBuffer.Clear();
                                 oXMLBuffer.Clear();
@@ -799,12 +793,6 @@ namespace GenieClient.Genie
                 if (bCombatRow == true)
                 {
                     m_bBold = false;
-                }
-
-                if (bPromptRow && m_oGlobals.Config.PromptForce && m_oTargetWindow == WindowTarget.Main) //Prompforce , but bPromptRow has no way to be set to true
-                {
-                    bPromptRow = false;
-                    PrintTextWithParse(m_oGlobals.Config.sPrompt, true, 0);
                 }
             }
         }
@@ -2110,7 +2098,7 @@ namespace GenieClient.Genie
                     case "prompt":
                         {
                             string strBuffer = GetTextFromXML(oXmlNode);
-                            if (m_bStatusPromptEnabled)
+                            if (m_bStatusPromptEnabled == false)
                             {
                                 if ((strBuffer ?? "") != ">")
                                 {
@@ -2145,7 +2133,7 @@ namespace GenieClient.Genie
                                 {
                                     strBuffer += "DEAD";
                                 }
-                                else
+                                else if (m_oGlobals.Config.PromptForce == true)
                                 {
                                     if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oIndicatorHash[Indicator.Kneeling], true, false)))
                                     {
@@ -2235,7 +2223,7 @@ namespace GenieClient.Genie
                                 if (rt > 0)
                                 {
                                     SetRoundTime(rt);
-                                    if (m_bStatusPromptEnabled == true)
+                                    if (m_bStatusPromptEnabled == false && (m_oGlobals.Config.PromptForce == true))
                                         strBuffer += "R";
                                     rt += Convert.ToInt32(m_oGlobals.Config.dRTOffset);
                                     var rtString = rt.ToString();
@@ -2486,169 +2474,7 @@ namespace GenieClient.Genie
             return sReturn;
         }
 
-        public void CreatePrompt(XmlNode oXmlNode)
-        {
-            string strBuffer = GetTextFromXML(oXmlNode);
-            if (!m_bStatusPromptEnabled)
-            {
-                if ((strBuffer ?? "") != ">")
-                {
-                    m_bStatusPromptEnabled = true;
-
-                    // Fix for Joined and Bleeding
-                    if (strBuffer.Contains("J") == false)
-                    {
-                        if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oGlobals.VariableList["joined"], "1", false)))
-                        {
-                            string argkey37 = "joined";
-                            string argvalue13 = "0";
-                            m_oGlobals.VariableList.Add(argkey37, argvalue13, Globals.Variables.VariableType.Reserved);
-                            string argsVariable35 = "$joined";
-                            VariableChanged(argsVariable35);
-                        }
-                    }
-
-                    if (strBuffer.Contains("!") == false)
-                    {
-                        if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oGlobals.VariableList["bleeding"], "1", false)))
-                        {
-                            string argkey38 = "bleeding";
-                            string argvalue14 = "0";
-                            m_oGlobals.VariableList.Add(argkey38, argvalue14, Globals.Variables.VariableType.Reserved);
-                            string argsVariable36 = "$bleeding";
-                            VariableChanged(argsVariable36);
-                        }
-                    }
-                }
-                else if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oIndicatorHash[Indicator.Dead], true, false)))
-                {
-                    strBuffer += "DEAD";
-                }
-                else
-                {
-                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oIndicatorHash[Indicator.Kneeling], true, false)))
-                    {
-                        strBuffer += "K";
-                    }
-
-                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oIndicatorHash[Indicator.Sitting], true, false)))
-                    {
-                        strBuffer += "s";
-                    }
-
-                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oIndicatorHash[Indicator.Prone], true, false)))
-                    {
-                        strBuffer += "P";
-                    }
-
-                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oIndicatorHash[Indicator.Stunned], true, false)))
-                    {
-                        strBuffer += "S";
-                    }
-
-                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oIndicatorHash[Indicator.Hidden], true, false)))
-                    {
-                        strBuffer += "H";
-                    }
-
-                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oIndicatorHash[Indicator.Invisible], true, false)))
-                    {
-                        strBuffer += "I";
-                    }
-
-                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oIndicatorHash[Indicator.Webbed], true, false)))
-                    {
-                        strBuffer += "W";
-                    }
-
-                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oIndicatorHash[Indicator.Bleeding], true, false)))
-                    {
-                        strBuffer += "!";
-                    }
-
-                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oIndicatorHash[Indicator.Joined], true, false)))
-                    {
-                        strBuffer += "J";
-                    }
-                }
-            }
-            else
-            {
-                // Fix for Joined and Bleeding
-                if (strBuffer.Contains("J") == false)
-                {
-                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oGlobals.VariableList["joined"], "1", false)))
-                    {
-                        string argkey39 = "joined";
-                        string argvalue15 = "0";
-                        m_oGlobals.VariableList.Add(argkey39, argvalue15, Globals.Variables.VariableType.Reserved);
-                        string argsVariable37 = "$joined";
-                        VariableChanged(argsVariable37);
-                    }
-                }
-
-                if (strBuffer.Contains("!") == false)
-                {
-                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oGlobals.VariableList["bleeding"], "1", false)))
-                    {
-                        string argkey40 = "bleeding";
-                        string argvalue16 = "0";
-                        m_oGlobals.VariableList.Add(argkey40, argvalue16, Globals.Variables.VariableType.Reserved);
-                        string argsVariable38 = "$bleeding";
-                        VariableChanged(argsVariable38);
-                    }
-                }
-            }
-
-            // Dim strBuffer As String = String.Empty
-
-            string argstrAttributeName25 = "time";
-            if (int.TryParse(GetAttributeData(oXmlNode, argstrAttributeName25), out m_iGameTime))
-            {
-                string argkey41 = "gametime";
-                string argvalue17 = m_iGameTime.ToString();
-                m_oGlobals.VariableList.Add(argkey41, argvalue17, Globals.Variables.VariableType.Reserved);
-                string argsVariable39 = "$gametime";
-                VariableChanged(argsVariable39);
-                int rt = m_iRoundTime - m_iGameTime;
-                if (rt > 0)
-                {
-                    SetRoundTime(rt);
-                    if (m_bStatusPromptEnabled == false)
-                        strBuffer += "R";
-                    rt += Convert.ToInt32(m_oGlobals.Config.dRTOffset);
-                    var rtString = rt.ToString();
-                    string argkey42 = "roundtime";
-                    m_oGlobals.VariableList.Add(argkey42, rtString, Globals.Variables.VariableType.Reserved);
-                }
-                else
-                {
-                    string argkey43 = "roundtime";
-                    string argvalue18 = "0";
-                    m_oGlobals.VariableList.Add(argkey43, argvalue18, Globals.Variables.VariableType.Reserved);
-                }
-                string argsVariable40 = "$roundtime";
-                VariableChanged(argsVariable40);
-
-                if (m_oGlobals.Config.sPrompt.Length > 0 && !m_bLastRowWasPrompt)
-                {
-                    strBuffer = strBuffer.Replace(m_oGlobals.Config.sPrompt.Trim(), "");
-                    strBuffer += m_oGlobals.Config.sPrompt;
-                    bool argbIsPrompt = true;
-                    WindowTarget argoWindowTarget = 0;
-
-                    PrintTextWithParse(strBuffer, argbIsPrompt, oWindowTarget: argoWindowTarget);
-                }
-
-                string argkey44 = "prompt";
-                m_oGlobals.VariableList.Add(argkey44, strBuffer, Globals.Variables.VariableType.Reserved);
-                string argsVariable41 = "$prompt";
-                VariableChanged(argsVariable41);
-                EventTriggerPrompt?.Invoke();
-            }
-        }
-
-        public void ResetIndicators()
+         public void ResetIndicators()
         {
             m_oIndicatorHash[Indicator.Bleeding] = false;
             m_oIndicatorHash[Indicator.Dead] = false;
@@ -3314,7 +3140,7 @@ namespace GenieClient.Genie
                         m_oGlobals.VariableList.Add(argkey, argvalue, Globals.Variables.VariableType.Reserved);
                         string argsVariable = "$connected";
                         VariableChanged(argsVariable);
-                        m_bStatusPromptEnabled = true;                        
+                        m_bStatusPromptEnabled = false;                        
                         break;
                     }
             }
