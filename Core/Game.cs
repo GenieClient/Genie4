@@ -2107,7 +2107,7 @@ namespace GenieClient.Genie
                     case "prompt":
                         {
                             string strBuffer = GetTextFromXML(oXmlNode);
-                            if (m_bStatusPromptEnabled)
+                            if (m_bStatusPromptEnabled == false)
                             {
                                 if ((strBuffer ?? "") != ">")
                                 {
@@ -2232,7 +2232,7 @@ namespace GenieClient.Genie
                                 if (rt > 0)
                                 {
                                     SetRoundTime(rt);
-                                    if (m_bStatusPromptEnabled == true)
+                                    if (m_bStatusPromptEnabled == false)
                                         strBuffer += "R";
                                     rt += Convert.ToInt32(m_oGlobals.Config.dRTOffset);
                                     var rtString = rt.ToString();
@@ -3302,7 +3302,7 @@ namespace GenieClient.Genie
                         m_oGlobals.VariableList.Add(argkey, argvalue, Globals.Variables.VariableType.Reserved);
                         string argsVariable = "$connected";
                         VariableChanged(argsVariable);
-                        m_bStatusPromptEnabled = true;                        
+                        m_bStatusPromptEnabled = false;                        
                         break;
                     }
             }
