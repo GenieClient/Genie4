@@ -799,12 +799,6 @@ namespace GenieClient.Genie
                 {
                     m_bBold = false;
                 }
-
-                if (bPromptRow && m_oGlobals.Config.PromptForce && m_oTargetWindow == WindowTarget.Main) //Prompforce , but bPromptRow has no way to be set to true
-                {
-                    bPromptRow = false;
-                    PrintTextWithParse(m_oGlobals.Config.sPrompt, true, 0);
-                }
             }
         }
 
@@ -2142,7 +2136,7 @@ namespace GenieClient.Genie
                                 {
                                     strBuffer += "DEAD";
                                 }
-                                else
+                                else if (m_oGlobals.Config.PromptForce == true)
                                 {
                                     if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oIndicatorHash[Indicator.Kneeling], true, false)))
                                     {
@@ -2232,7 +2226,7 @@ namespace GenieClient.Genie
                                 if (rt > 0)
                                 {
                                     SetRoundTime(rt);
-                                    if (m_bStatusPromptEnabled == false)
+                                    if (m_bStatusPromptEnabled == false && (m_oGlobals.Config.PromptForce == true))
                                         strBuffer += "R";
                                     rt += Convert.ToInt32(m_oGlobals.Config.dRTOffset);
                                     var rtString = rt.ToString();
