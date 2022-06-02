@@ -63,7 +63,7 @@ namespace GenieClient.Genie
         public GagRegExp GagList = new GagRegExp();
         public string GenieKey = string.Empty;
         public string GenieAccount = string.Empty;
-        public Collections.ArrayList PluginList = new Collections.ArrayList();
+        public Genie.Collections.ArrayList PluginList = new Genie.Collections.ArrayList();
         public bool PluginsEnabled = true;
         public Hashtable PluginVerifiedKeyList = new Hashtable();
         public Hashtable PluginPremiumKeyList = new Hashtable();
@@ -114,6 +114,8 @@ namespace GenieClient.Genie
         }
 
         public List<string> MonsterList = new List<string>();
+        public List<KeyValuePair<string, string>> VolatileHighlights = new List<KeyValuePair<string, string>>();
+        public List<KeyValuePair<string, string>> RoomObjects = new List<KeyValuePair<string, string>>();
         public Regex MonsterListRegEx;
 
         public void UpdateMonsterListRegEx()
@@ -309,19 +311,21 @@ namespace GenieClient.Genie
                 public Color FgColor;
                 public Color BgColor;
                 public string sColorName;
+                public bool bHighlightLine = false;
                 public bool bSaveToFile = true;
 
-                public Preset(string sKey, Color oColor, Color oBgColor, string sColorName, string _bSaveToFile)
+                public Preset(string sKey, Color oColor, Color oBgColor, string sColorName, string _bSaveToFile, bool highlightLine)
                 {
                     this.sKey = sKey;
                     FgColor = oColor;
                     BgColor = oBgColor;
                     this.sColorName = sColorName;
                     bSaveToFile = Conversions.ToBoolean(_bSaveToFile);
+                    bHighlightLine = highlightLine;
                 }
             }
 
-            public void Add(string sKey, string sColorName, bool bSaveToFile = true)
+            public void Add(string sKey, string sColorName, bool bSaveToFile = true, bool highlightLine = false)
             {
                 Color oColor;
                 Color oBgcolor;
@@ -339,7 +343,7 @@ namespace GenieClient.Genie
                 }
 
                 string arg_bSaveToFile = Conversions.ToString(bSaveToFile);
-                var oVar = new Preset(sKey, oColor, oBgcolor, sColorName, arg_bSaveToFile);
+                var oVar = new Preset(sKey, oColor, oBgcolor, sColorName, arg_bSaveToFile, highlightLine);
                 if (base.ContainsKey(sKey.ToLower()) == true)
                 {
                     base[sKey.ToLower()] = oVar;
@@ -429,9 +433,12 @@ namespace GenieClient.Genie
                 var oArgs = Utility.ParseArgs(sText);
                 if (oArgs.Count == 3)
                 {
-                    var arg1 = oArgs[1].ToString();
-                    var arg2 = oArgs[2].ToString();
-                    Add(arg1, arg2);
+                    //preserve this for loading configs which predate new parameters
+                    Add(oArgs[1].ToString(), oArgs[2].ToString(), true, false);
+                }
+                else if (oArgs.Count == 4)
+                {
+                    Add(oArgs[1].ToString(), oArgs[2].ToString(), true, oArgs[3].ToString().ToLower() == "true");
                 }
             }
 
@@ -444,11 +451,6 @@ namespace GenieClient.Genie
                         sFileName = LocalDirectory.Path + @"\Config\" + sFileName;
                     }
 
-                    if (File.Exists(sFileName) == true)
-                    {
-                        Utility.DeleteFile(sFileName);
-                    }
-
                     if (AcquireReaderLock())
                     {
                         try
@@ -458,7 +460,7 @@ namespace GenieClient.Genie
                             {
                                 if (ov.bSaveToFile == true)
                                 {
-                                    oStreamWriter.WriteLine("#preset {" + ov.sKey + "} {" + ov.sColorName + "}");
+                                    oStreamWriter.WriteLine("#preset {" + ov.sKey + "} {" + ov.sColorName + "} {" + ov.bHighlightLine + "}");
                                 }
                             }
 
@@ -605,7 +607,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new Genie.Collections.ArrayList();
+                    var al = new ArrayList();
                     try
                     {
                         foreach (string s in base.Keys)
@@ -928,7 +930,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new Genie.Collections.ArrayList();
+                    var al = new ArrayList();
                     try
                     {
                         foreach (string s in base.Keys)
@@ -1171,7 +1173,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new Genie.Collections.ArrayList();
+                    var al = new ArrayList();
                     try
                     {
                         foreach (string s in base.Keys)
@@ -1289,7 +1291,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new Genie.Collections.ArrayList();
+                    var al = new ArrayList();
                     try
                     {
                         foreach (string s in base.Keys)
@@ -1437,7 +1439,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new Genie.Collections.ArrayList();
+                    var al = new ArrayList();
                     try
                     {
                         for (int I = 0, loopTo = base.Count - 1; I <= loopTo; I++)
@@ -1665,7 +1667,7 @@ namespace GenieClient.Genie
             {
                 if (AcquireReaderLock())
                 {
-                    var al = new Genie.Collections.ArrayList();
+                    var al = new ArrayList();
                     try
                     {
                         for (int I = 0, loopTo = base.Count - 1; I <= loopTo; I++)
@@ -1976,7 +1978,7 @@ namespace GenieClient.Genie
 
         private void AddHighlight(string sLine)
         {
-            var oArgs = new Genie.Collections.ArrayList();
+            var oArgs = new ArrayList();
             oArgs = Utility.ParseArgs(sLine);
             if (oArgs.Count > 0)
             {

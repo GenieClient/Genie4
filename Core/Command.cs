@@ -196,7 +196,7 @@ namespace GenieClient.Genie
         public event ListPluginsEventHandler ListPlugins;
 
         public delegate void ListPluginsEventHandler();
-
+        
         private Script.Eval m_oEval = new Script.Eval();
         private Script.MathEval m_oMathEval = new Script.MathEval();
         private Globals oGlobals;
@@ -246,7 +246,7 @@ namespace GenieClient.Genie
                     if (sRow.Trim().StartsWith(Conversions.ToString(oGlobals.Config.cCommandChar)))
                     {
                         // Get result from function then send result to game
-                        var oArgs = new Genie.Collections.ArrayList();
+                        var oArgs = new ArrayList();
                         oArgs = Utility.ParseArgs(sRow);
                         if (oArgs.Count > 0)
                         {
@@ -384,17 +384,28 @@ namespace GenieClient.Genie
                                     case "lconnect":
                                     case "lichconnect":
                                         {
-                                            EchoText("Starting Lich Server\n");
-                                            string lichLaunch = $"/C {oGlobals.Config.RubyPath} {oGlobals.Config.LichPath} {oGlobals.Config.LichArguments}";
-
-                                            Utility.ExecuteProcess(oGlobals.Config.CmdPath, lichLaunch, false);
-                                            int count = 0;
-                                            while (count < oGlobals.Config.LichStartPause)
+                                            string failure = string.Empty;
+                                            if (!File.Exists(oGlobals.Config.CmdPath)) failure += "CMD not found at Path:\t" + oGlobals.Config.CmdPath + System.Environment.NewLine;
+                                            if (!File.Exists(oGlobals.Config.RubyPath)) failure += "Ruby not found at Path:\t" + oGlobals.Config.RubyPath + System.Environment.NewLine;
+                                            if (!File.Exists(oGlobals.Config.LichPath)) failure += "Lich not found at Path:\t" + oGlobals.Config.LichPath + System.Environment.NewLine;
+                                            if (string.IsNullOrWhiteSpace(failure))
                                             {
-                                                Thread.Sleep(1000);
-                                                count++;
+                                                EchoText("Starting Lich Server\n");
+                                                string lichLaunch = $"/C {oGlobals.Config.RubyPath} {oGlobals.Config.LichPath} {oGlobals.Config.LichArguments}";
+                                                Utility.ExecuteProcess(oGlobals.Config.CmdPath, lichLaunch, false);
+                                                int count = 0;
+                                                while (count < oGlobals.Config.LichStartPause)
+                                                {
+                                                    Thread.Sleep(1000);
+                                                    count++;
+                                                }
+                                                Connect(oArgs, true);
                                             }
-                                            Connect(oArgs, true);
+                                            else
+                                            {
+                                                failure = "Fix the following file paths in your #Config" + System.Environment.NewLine + failure;
+                                                EchoColorText(failure, Color.OrangeRed, Color.Transparent);
+                                            }
                                             break;
                                         }
 
@@ -2028,9 +2039,9 @@ namespace GenieClient.Genie
                                             if (oArgs.Count > 1)
                                             {
                                                 string sFile = oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 1));
-                                                if (sFile.ToLower().EndsWith(".cmd") == false & sFile.ToLower().EndsWith(".js") == false)
+                                                if (sFile.ToLower().EndsWith($".{oGlobals.Config.ScriptExtension}") == false & sFile.ToLower().EndsWith(".js") == false)
                                                 {
-                                                    sFile += ".cmd";
+                                                    sFile += $".{oGlobals.Config.ScriptExtension}";
                                                 }
 
                                                 if (sFile.IndexOf(@"\") == -1)
@@ -2483,7 +2494,7 @@ namespace GenieClient.Genie
             return sResult;
         }
      
-        private void Do(Genie.Collections.ArrayList oArgs)
+        private void Do(ArrayList oArgs)
         {
             if (oArgs.Count > 1)
             {
@@ -2522,7 +2533,7 @@ namespace GenieClient.Genie
                 }
             }
         }
-        private void Send(Genie.Collections.ArrayList oArgs)
+        private void Send(ArrayList oArgs)
         {
             if (oArgs.Count > 1)
             {
@@ -2561,7 +2572,7 @@ namespace GenieClient.Genie
                 }
             }
         }
-        private void Connect(Genie.Collections.ArrayList args, bool isLich = false)
+        private void Connect(ArrayList args, bool isLich = false)
         {
             if (args.Count == 1)
             {
@@ -2666,7 +2677,7 @@ namespace GenieClient.Genie
         private string ParseAlias(string sText)
         {
             string sResult = "";
-            var oArgs = new Genie.Collections.ArrayList();
+            var oArgs = new ArrayList();
             oArgs = Utility.ParseArgs(sText);
             string sKey = GetKeywordString(sText);
             if (oGlobals.AliasList.ContainsKey(sKey) == true)
@@ -2774,7 +2785,7 @@ namespace GenieClient.Genie
         // Return sResult
         // End Function
 
-        private string ParseAllArgs(Genie.Collections.ArrayList oList, int iStartIndex = 1, bool bParseQuickSend = true)
+        private string ParseAllArgs(ArrayList oList, int iStartIndex = 1, bool bParseQuickSend = true)
         {
             string sResult = string.Empty;
             string sCommand = string.Empty;
@@ -2836,6 +2847,9 @@ namespace GenieClient.Genie
             EchoText("mycommandchar=" + oGlobals.Config.cMyCommandChar.ToString() + System.Environment.NewLine);
             EchoText("parsegameonly=" + oGlobals.Config.bParseGameOnly.ToString() + System.Environment.NewLine);
             EchoText("prompt=" + oGlobals.Config.sPrompt + System.Environment.NewLine);
+            EchoText("promptbreak=" + oGlobals.Config.PromptBreak + System.Environment.NewLine);
+            EchoText("promptforce=" + oGlobals.Config.PromptForce + System.Environment.NewLine);
+            EchoText("condensed=" + oGlobals.Config.Condensed + System.Environment.NewLine);
             EchoText("reconnect=" + oGlobals.Config.bReconnect.ToString() + System.Environment.NewLine);
             EchoText("roundtimeoffset=" + oGlobals.Config.dRTOffset + System.Environment.NewLine);
             EchoText("showlinks=" + oGlobals.Config.bShowLinks.ToString() + System.Environment.NewLine);
@@ -2845,6 +2859,7 @@ namespace GenieClient.Genie
             EchoText("mapdir=" + oGlobals.Config.sMapDir + System.Environment.NewLine);
             EchoText("scriptdir=" + oGlobals.Config.sScriptDir + System.Environment.NewLine);
             EchoText("scriptchar=" + oGlobals.Config.ScriptChar.ToString() + System.Environment.NewLine);
+            EchoText("scriptextension=" + oGlobals.Config.ScriptExtension + System.Environment.NewLine);
             EchoText("scripttimeout=" + oGlobals.Config.iScriptTimeout.ToString() + System.Environment.NewLine);
             EchoText("separatorchar=" + oGlobals.Config.cSeparatorChar.ToString() + System.Environment.NewLine);
             EchoText("spelltimer=" + oGlobals.Config.bShowSpellTimer.ToString() + System.Environment.NewLine);

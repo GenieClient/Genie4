@@ -48,6 +48,9 @@ namespace GenieClient.Genie
         public bool bShowLinks = false;
         public string sLogDir = "Logs";
 
+        public bool PromptBreak { get; set; } = true;
+        public bool PromptForce { get; set; } = true;
+        public bool Condensed { get; set; } = false;
         public bool CheckForUpdates { get; set; } = true;
         public bool AutoUpdate { get; set; } = false;
 
@@ -61,6 +64,7 @@ namespace GenieClient.Genie
         public int LichPort { get; set; } = 11024;
         public int LichStartPause { get; set; } = 5;
         public string ConnectScript { get; set; } = string.Empty;
+        public string ScriptExtension { get; set; } = "cmd";
 
         public string ScriptDir
         {
@@ -353,6 +357,9 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine("#config {automapper} {" + bAutoMapper + "}");
                 oStreamWriter.WriteLine("#config {editor} {" + sEditor + "}");
                 oStreamWriter.WriteLine("#config {prompt} {" + sPrompt + "}");
+                oStreamWriter.WriteLine("#config {promptbreak} {" + PromptBreak + "}");
+                oStreamWriter.WriteLine("#config {promptforce} {" + PromptForce + "}");
+                oStreamWriter.WriteLine("#config {condensed} {" + Condensed + "}");
                 oStreamWriter.WriteLine("#config {monstercountignorelist} {" + sIgnoreMonsterList + "}");
                 oStreamWriter.WriteLine("#config {scripttimeout} {" + iScriptTimeout + "}");
                 oStreamWriter.WriteLine("#config {maxgosubdepth} {" + iMaxGoSubDepth + "}");
@@ -385,6 +392,7 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine($"#config {{connectscript}} {{{ConnectScript}}}");
                 oStreamWriter.WriteLine($"#config {{autoupdate}} {{{AutoUpdate}}}");
                 oStreamWriter.WriteLine($"#config {{checkforupdates}} {{{CheckForUpdates}}}");
+                oStreamWriter.WriteLine($"#config {{scriptextension}} {{{ScriptExtension}}}");
                 oStreamWriter.Close();
                 return true;
             }
@@ -451,6 +459,12 @@ namespace GenieClient.Genie
                                     ScriptChar = Conversions.ToChar(sValue.ToCharArray().GetValue(0));
                                 }
 
+                                break;
+                            }
+
+                        case "scriptextension":
+                            {
+                                ScriptExtension = sValue ?? "cmd";
                                 break;
                             }
 
@@ -656,6 +670,67 @@ namespace GenieClient.Genie
                                         }
                                 }
 
+                                break;
+                            }
+
+                        case "promptbreak":
+                            {
+                                switch (sValue.ToLower())
+                                {
+                                    case "on":
+                                    case "true":
+                                    case "1":
+                                        {
+                                            PromptBreak = true;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            PromptBreak = false;
+                                            break;
+                                        }
+                                }
+                                break;
+                            }
+                        case "promptforce":
+                            {
+                                switch (sValue.ToLower())
+                                {
+                                    case "on":
+                                    case "true":
+                                    case "1":
+                                        {
+                                            PromptForce = true;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            PromptForce = false;
+                                            break;
+                                        }
+                                }
+                                break;
+                            }
+                        case "condensed":
+                            {
+                                switch (sValue.ToLower())
+                                {
+                                    case "on":
+                                    case "true":
+                                    case "1":
+                                        {
+                                            Condensed = true;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            Condensed = false;
+                                            break;
+                                        }
+                                }
                                 break;
                             }
 

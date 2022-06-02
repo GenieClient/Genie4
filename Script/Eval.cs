@@ -267,7 +267,7 @@ namespace GenieClient.Genie.Script
             }
 
             // Parse the oSections object
-            ShowQueue();
+            //ShowQueue();  // ShowQueue();  //additional debug info for evals also uncomment the debug line in this method if its needed. Commented out for better clarity for debugging new issues.
             ParseQueue();
 
             // ShowQueue()
@@ -637,7 +637,7 @@ namespace GenieClient.Genie.Script
                 {
                     sLeftValue = ((Sections)oSections[iArgLeft]).sBlock;
                     sRightValue = ((Sections)oSections[iArgRight]).sBlock;
-                    Debug.Print("Compare Left: " + sLeftValue + ", Compare Right: " + sRightValue);
+                    //Debug.Print("Compare Left: " + sLeftValue + ", Compare Right: " + sRightValue); //additional debug info for evals. Commented out for better clarity for debugging new issues.
                 }
 
                 if (bSkipAndOr == true)
@@ -873,7 +873,7 @@ namespace GenieClient.Genie.Script
                 throw new Exception("Invalid argument to ParseFunction()");
             }
 
-            Genie.Collections.ArrayList args;
+            ArrayList args;
             args = BuildArgs(iStart, iEnd);
             var switchExpr = ((Sections)oSections[iStart]).sBlock.ToLower();
             switch (switchExpr)

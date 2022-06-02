@@ -481,7 +481,7 @@ namespace GenieClient
             }
         }
 
-        public class ClassMatchList : Genie.Collections.ArrayList
+        public class ClassMatchList : ArrayList
         {
             public class Match
             {
@@ -1287,7 +1287,7 @@ namespace GenieClient
                                     m_oRegMatch = ((ClassActionList.Action)de.Value).oRegExp.Match(text);
                                     if (m_oRegMatch.Success)
                                     {
-                                        var ActionRegExpArg = new Genie.Collections.ArrayList();
+                                        var ActionRegExpArg = new ArrayList();
                                         if (m_oRegMatch.Groups.Count > 0)
                                         {
                                             int J;
@@ -1385,7 +1385,7 @@ namespace GenieClient
 
                                     if (s.Length > 0 & (s ?? "") != "0")
                                     {
-                                        ParseAction(de.Key.ToString(), new Genie.Collections.ArrayList(), sVariableName);
+                                        ParseAction(de.Key.ToString(), new ArrayList(), sVariableName);
                                         if (m_oActions.Count == 0) // Script Aborted
                                         {
                                             return;
@@ -1919,7 +1919,7 @@ namespace GenieClient
                     if (AppendFile(sFile))
                     {
                         m_sFileName = sFile;
-                        if (m_sFileName.ToLower().EndsWith(".cmd"))
+                        if (m_sFileName.ToLower().EndsWith($".{m_oGlobals.Config.ScriptExtension}"))
                         {
                             m_oLocalVarList["scriptname"] = m_sFileName.Substring(0, m_sFileName.Length - 4);
                         }
@@ -1951,7 +1951,7 @@ namespace GenieClient
             return default;
         }
 
-        public bool LoadFile(string strFile, Genie.Collections.ArrayList al)
+        public bool LoadFile(string strFile, ArrayList al)
         {
             if (Monitor.TryEnter(m_oThreadLock, m_iDefaultTimeout))
             {
@@ -2006,7 +2006,7 @@ namespace GenieClient
             return string.Empty;
         }
 
-        private void ParseAction(string sKey, Genie.Collections.ArrayList oArgs, string sTriggerText)
+        private void ParseAction(string sKey, ArrayList oArgs, string sTriggerText)
         {
             if (m_oActions.ContainsKey(sKey) == false)
             {
@@ -2966,6 +2966,10 @@ namespace GenieClient
                 case "remove":
                     {
                         string argsText2 = Utility.GetArgumentString(sText);
+                        if (argsText2.ToLower().StartsWith("eval ") == false)
+                        {
+                            argsText2 = ParseVariables(argsText2);
+                        }
                         m_oActions.Remove(argsText2);
                         return;
                     }

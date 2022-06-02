@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.CompilerServices;
@@ -519,8 +520,10 @@ namespace GenieClient.Genie
             bool bInsideHTMLTag = false;
             string sHTMLBuffer = string.Empty;
             string sTextBuffer = string.Empty;
+            string sBoldBuffer = string.Empty;
             char cPreviousChar = Conversions.ToChar("");
             bool bCombatRow = false;
+            bool bPromptRow = false;
 
             // Fix for DR html encoding problems
             if (sText.StartsWith("< "))
@@ -566,18 +569,63 @@ namespace GenieClient.Genie
                             {
                                 m_oXMLBuffer.Append(oXMLBuffer);
                                 string buffer = m_oXMLBuffer.ToString();
-                                if (buffer == @"<pushBold/>" || buffer == @"<popBold/>") //print before processing these ones
-                                {
-                                    bCombatRow = (sTextBuffer.StartsWith("< ") | sTextBuffer.StartsWith("> ") | sTextBuffer.StartsWith("* "));
-                                    bool argbIsPrompt = false;
-                                    WindowTarget argoWindowTarget = 0;
-                                    PrintTextWithParse(sTextBuffer, bIsPrompt: argbIsPrompt, oWindowTarget: argoWindowTarget);
-                                    sTextBuffer = string.Empty;
-                                    m_bBold = !m_bBold;
-                                }
                                 string sTmp = ProcessXML(buffer);
+                                if (buffer.EndsWith("</preset>"))
+                                {
+                                    XmlDocument presetXML = new XmlDocument();
+                                    presetXML.LoadXml(buffer);
+
+                                    string presetLabel = GetAttributeData(presetXML.FirstChild, "id").ToLower();
+                                    switch(presetLabel)
+                                    {
+                                        case "whisper":
+                                            presetLabel = "whispers";
+                                            break;
+
+                                        case "thought":
+                                            presetLabel = "thoughts";
+                                            break;
+
+                                        default:
+                                            break;
+                                    }
+                                    sTmp = ParseSubstitutions(sTmp);
+                                    m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>(presetLabel, sTmp));
+                                    if(presetLabel == "roomdesc")
+                                    {
+                                        PrintTextWithParse(sTmp, bIsPrompt: false, oWindowTarget: 0);
+                                        sTmp = string.Empty;
+                                    }
+                                }
+                                if (buffer.EndsWith(@"<pushBold/>"))
+                                {
+                                    sBoldBuffer = string.Empty;
+                                }
+                                if (buffer.EndsWith(@"<popBold/>"))
+                                {
+                                    if (!string.IsNullOrWhiteSpace(sBoldBuffer))
+                                    {
+                                        sBoldBuffer = ParseSubstitutions(sBoldBuffer);
+                                        m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer));
+                                    }
+                                }
+                                if (m_bBold)
+                                {
+                                    if (sTextBuffer.StartsWith("< ") | sTextBuffer.StartsWith("> ") | sTextBuffer.StartsWith("* "))
+                                    {
+                                        m_bBold = false;
+                                        string argsText = sTextBuffer + System.Environment.NewLine;
+                                        bool argbIsPrompt = false;
+                                        WindowTarget argoWindowTarget = 0;
+                                        PrintTextWithParse(argsText, bIsPrompt: argbIsPrompt, oWindowTarget: argoWindowTarget);
+                                        m_bBold = true;
+                                        sTextBuffer = string.Empty;
+                                        bCombatRow = true;
+                                    }
+                                }
 
                                 sTextBuffer += sTmp;
+
                                 m_oXMLBuffer.Clear();
                                 oXMLBuffer.Clear();
                             }
@@ -599,6 +647,10 @@ namespace GenieClient.Genie
                             else
                             {
                                 sTextBuffer += Conversions.ToString(c);
+                                if (m_bBold)
+                                {
+                                    sBoldBuffer += c;
+                                }
                             }
 
                             break;
@@ -622,6 +674,10 @@ namespace GenieClient.Genie
                                 }
                                 else
                                 {
+                                    if (m_bBold)
+                                    {
+                                        sBoldBuffer += c;
+                                    }
                                     sTextBuffer += Utility.TranslateHTMLChar(sHTMLBuffer);
                                 }
 
@@ -650,6 +706,10 @@ namespace GenieClient.Genie
                                     }
                                     else
                                     {
+                                        if (m_bBold)
+                                        {
+                                            sBoldBuffer += sHTMLBuffer;
+                                        }
                                         sTextBuffer += sHTMLBuffer;
                                     }
 
@@ -663,6 +723,10 @@ namespace GenieClient.Genie
                             }
                             else
                             {
+                                if (m_bBold)
+                                {
+                                    sBoldBuffer += c;
+                                }
                                 sTextBuffer += Conversions.ToString(c);
                             }
 
@@ -691,9 +755,16 @@ namespace GenieClient.Genie
 
             if (sTextBuffer.Length > 0)
             {
+                
                 if (bCombatRow == true)
                 {
                     m_bBold = true;
+                }
+                else if (!string.IsNullOrWhiteSpace(sBoldBuffer))
+                {
+                    sBoldBuffer = ParseSubstitutions(sBoldBuffer);
+                    m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer.Trim())); //trim because excessive whitespace seems to be breaking this
+                    sBoldBuffer = string.Empty;
                 }
 
                 // Fix for broke familiar XML
@@ -714,10 +785,11 @@ namespace GenieClient.Genie
                     }
                 }
 
-
+                
                 bool argbIsPrompt1 = false;
                 WindowTarget argoWindowTarget1 = 0;
                 PrintTextWithParse(sTextBuffer, bIsPrompt: argbIsPrompt1, oWindowTarget: argoWindowTarget1);
+                
                 if (bCombatRow == true)
                 {
                     m_bBold = false;
@@ -806,6 +878,7 @@ namespace GenieClient.Genie
                         m_bUpdatingRoom = false;
                         UpdateRoom();
                     }
+                    m_oGlobals.VolatileHighlights.Clear();
                 }
                 finally
                 {
@@ -925,9 +998,9 @@ namespace GenieClient.Genie
             }
         }
 
-        private ArrayList _CharacterList = new ArrayList();
+        private Genie.Collections.ArrayList _CharacterList = new Genie.Collections.ArrayList();
 
-        public ArrayList CharacterList
+        public Genie.Collections.ArrayList CharacterList
         {
             get
             {
@@ -948,201 +1021,201 @@ namespace GenieClient.Genie
             else
             {
                 var oData = new ArrayList();
-                foreach (string strLine in sText.Split(Conversions.ToChar(Constants.vbTab)))
-                    oData.Add(strLine);
-                if (oData.Count > 0)
+            foreach (string strLine in sText.Split(Conversions.ToChar(Constants.vbTab)))
+                oData.Add(strLine);
+            if (oData.Count > 0)
+            {
+                var switchExpr = oData[0];
+                switch (switchExpr)
                 {
-                    var switchExpr = oData[0];
-                    switch (switchExpr)
-                    {
-                        case "?":
+                    case "?":
+                        {
+                            string argtext = "Unable to get login key.";
+                            PrintError(argtext);
+                            m_oSocket.Disconnect();
+                            break;
+                        }
+
+                    case "A":
+                        {
+                            var switchExpr1 = oData[2];
+                            switch (switchExpr1)
                             {
-                                string argtext = "Unable to get login key.";
-                                PrintError(argtext);
-                                m_oSocket.Disconnect();
-                                break;
-                            }
-
-                        case "A":
-                            {
-                                var switchExpr1 = oData[2];
-                                switch (switchExpr1)
-                                {
-                                    case "KEY":
-                                        {
-                                            m_sLoginKey = Conversions.ToString(oData[3]);
-                                            m_sAccountOwner = Conversions.ToString(oData[4]);
-                                            m_oSocket.Send("G" + Constants.vbTab + m_sAccountGame.ToUpper() + System.Environment.NewLine);
-                                            break;
-                                        }
-
-                                    case "NORECORD":
-                                        {
-                                            string argtext1 = "Account does not exist.";
-                                            PrintError(argtext1);
-                                            m_oSocket.Disconnect();
-                                            break;
-                                        }
-
-                                    case "PASSWORD":
-                                        {
-                                            string argtext2 = "Invalid password.";
-                                            PrintError(argtext2);
-                                            m_oSocket.Disconnect();
-                                            break;
-                                        }
-
-                                    case "REJECT":
-                                        {
-                                            string argtext3 = "Access rejected.";
-                                            PrintError(argtext3);
-                                            m_oSocket.Disconnect();
-                                            break;
-                                        }
-                                }
-
-                                break;
-                            }
-
-                        case "G":
-                            {
-                                m_oSocket.Send("C" + System.Environment.NewLine);
-                                break;
-                            }
-
-                        case "C":
-                            {
-                                if (m_sAccountCharacter.Trim().Length == 0)
-                                {
-                                    string argtext4 = "Listing characters:";
-                                    PrintError(argtext4);
-                                    string strUserKey = string.Empty;
-                                    // bool blnFoundMatch = false;
-                                    for (int i = 5, loopTo = oData.Count - 1; i <= loopTo; i++)
+                                case "KEY":
                                     {
-                                        if (i % 2 == 0)
-                                        {
-                                            _CharacterList.Clear();
-                                            _CharacterList.Add(oData[i].ToString());
-                                            var temp = oData[i].ToString();
-                                            PrintError(temp);
-                                        }
-                                        else
-                                        {
-                                            strUserKey = Conversions.ToString(oData[i]);
-                                        }
+                                        m_sLoginKey = Conversions.ToString(oData[3]);
+                                        m_sAccountOwner = Conversions.ToString(oData[4]);
+                                        m_oSocket.Send("G" + Constants.vbTab + m_sAccountGame.ToUpper() + System.Environment.NewLine);
+                                        break;
                                     }
 
-                                    m_oSocket.Disconnect();
-                                }
-                                else
-                                {
-                                    string strUserKey = string.Empty;
-                                    string strUserKeyTemp = string.Empty;
-                                    bool blnFoundMatch = false;
-                                    bool bFoundBanned = false;
-                                    for (int i = 5, loopTo1 = oData.Count - 1; i <= loopTo1; i++)
+                                case "NORECORD":
                                     {
-                                        if (i % 2 == 0)
+                                        string argtext1 = "Account does not exist.";
+                                        PrintError(argtext1);
+                                        m_oSocket.Disconnect();
+                                        break;
+                                    }
+
+                                case "PASSWORD":
+                                    {
+                                        string argtext2 = "Invalid password.";
+                                        PrintError(argtext2);
+                                        m_oSocket.Disconnect();
+                                        break;
+                                    }
+
+                                case "REJECT":
+                                    {
+                                        string argtext3 = "Access rejected.";
+                                        PrintError(argtext3);
+                                        m_oSocket.Disconnect();
+                                        break;
+                                    }
+                            }
+
+                            break;
+                        }
+
+                    case "G":
+                        {
+                            m_oSocket.Send("C" + System.Environment.NewLine);
+                            break;
+                        }
+
+                    case "C":
+                        {
+                            if (m_sAccountCharacter.Trim().Length == 0)
+                            {
+                                string argtext4 = "Listing characters:";
+                                PrintError(argtext4);
+                                string strUserKey = string.Empty;
+                                // bool blnFoundMatch = false;
+                                for (int i = 5, loopTo = oData.Count - 1; i <= loopTo; i++)
+                                {
+                                    if (i % 2 == 0)
+                                    {
+                                        _CharacterList.Clear();
+                                        _CharacterList.Add(oData[i].ToString());
+                                        var temp = oData[i].ToString();
+                                        PrintError(temp);
+                                    }
+                                    else
+                                    {
+                                        strUserKey = Conversions.ToString(oData[i]);
+                                    }
+                                }
+
+                                m_oSocket.Disconnect();
+                            }
+                            else
+                            {
+                                string strUserKey = string.Empty;
+                                string strUserKeyTemp = string.Empty;
+                                bool blnFoundMatch = false;
+                                bool bFoundBanned = false;
+                                for (int i = 5, loopTo1 = oData.Count - 1; i <= loopTo1; i++)
+                                {
+                                    if (i % 2 == 0)
+                                    {
+                                        string sChar = oData[i].ToString();
+                                        if (sChar.Contains(" "))
+                                            sChar = sChar.Substring(0, sChar.IndexOf(' '));
+                                        if (m_oBanned.ContainsKey(Utility.GenerateHashSHA256(sChar)))
+                                            bFoundBanned = true;
+                                        if (sChar.ToUpper().Equals(m_sAccountCharacter.ToUpper()))
                                         {
-                                            string sChar = oData[i].ToString();
-                                            if (sChar.Contains(" "))
-                                                sChar = sChar.Substring(0, sChar.IndexOf(' '));
-                                            if (m_oBanned.ContainsKey(Utility.GenerateHashSHA256(sChar)))
-                                                bFoundBanned = true;
-                                            if (sChar.ToUpper().Equals(m_sAccountCharacter.ToUpper()))
+                                            blnFoundMatch = true;
+                                            strUserKey = strUserKeyTemp;
+                                        }
+
+                                        if (blnFoundMatch == false)
+                                        {
+                                            if (sChar.ToUpper().StartsWith(m_sAccountCharacter.ToUpper()))
                                             {
                                                 blnFoundMatch = true;
                                                 strUserKey = strUserKeyTemp;
                                             }
-
-                                            if (blnFoundMatch == false)
-                                            {
-                                                if (sChar.ToUpper().StartsWith(m_sAccountCharacter.ToUpper()))
-                                                {
-                                                    blnFoundMatch = true;
-                                                    strUserKey = strUserKeyTemp;
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            strUserKeyTemp = Conversions.ToString(oData[i]);
                                         }
                                     }
-
-                                    if (bFoundBanned)
+                                    else
                                     {
-                                        m_oSocket.Disconnect();
-                                        return;
-                                    }
-
-                                    if (blnFoundMatch)
-                                    {
-                                        m_oSocket.Send("L" + Constants.vbTab + strUserKey + Constants.vbTab + "STORM" + Constants.vbLf);
-                                    }
-
-                                    if (blnFoundMatch == false)
-                                    {
-                                        string argtext5 = "Character not found.";
-                                        PrintError(argtext5);
-                                        m_oSocket.Disconnect();
+                                        strUserKeyTemp = Conversions.ToString(oData[i]);
                                     }
                                 }
 
-                                break;
-                            }
-                        case "E": //Indicates an Error Message
-                            {
-                                string[] errorStrings = sText.Split("\t");
-                                for (int i = 1; i < errorStrings.Length; i++)
+                                if (bFoundBanned)
                                 {
-                                    PrintError(errorStrings[i]);
+                                    m_oSocket.Disconnect();
+                                    return;
                                 }
-                                m_oSocket.Disconnect();
-                                break;
+
+                                if (blnFoundMatch)
+                                {
+                                    m_oSocket.Send("L" + Constants.vbTab + strUserKey + Constants.vbTab + "STORM" + Constants.vbLf);
+                                }
+
+                                if (blnFoundMatch == false)
+                                {
+                                    string argtext5 = "Character not found.";
+                                    PrintError(argtext5);
+                                    m_oSocket.Disconnect();
+                                }
                             }
 
-                        case "L":
+                            break;
+                        }
+                    case "E": //Indicates an Error Message
+                        {
+                            string[] errorStrings = sText.Split("\t");
+                            for(int i = 1;i < errorStrings.Length;i++)
                             {
-                                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(oData[1], "OK", false)))
+                                PrintError(errorStrings[i]);
+                            }
+                            m_oSocket.Disconnect();
+                            break;
+                        }
+
+                    case "L":
+                        {
+                            if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(oData[1], "OK", false)))
+                            {
+                                foreach (string strRow in oData)
                                 {
-                                    foreach (string strRow in oData)
+                                    if (strRow.IndexOf("GAMEHOST=") > -1)
                                     {
-                                        if (strRow.IndexOf("GAMEHOST=") > -1)
-                                        {
                                             m_sConnectHost = IsLich ? m_oGlobals.Config.LichServer : strRow.Substring(9);
 
                                         }
-                                        else if (strRow.IndexOf("GAMEPORT=") > -1)
-                                        {
+                                    else if (strRow.IndexOf("GAMEPORT=") > -1)
+                                    {
                                             m_sConnectPort = IsLich ? m_oGlobals.Config.LichPort : int.Parse(strRow.Substring(9));
                                         }
-                                        else if (strRow.IndexOf("KEY=") > -1)
-                                        {
-                                            m_sConnectKey = strRow.Substring(4).TrimEnd('\0');
-                                        }
-                                    }
-
-                                    if (m_sConnectKey.Length > 0)
+                                    else if (strRow.IndexOf("KEY=") > -1)
                                     {
-                                        m_oSocket.Disconnect();
-                                        m_oConnectState = ConnectStates.ConnectingGameServer;
-                                        m_oSocket.Connect(m_sConnectHost, m_sConnectPort);
+                                        m_sConnectKey = strRow.Substring(4).TrimEnd('\0');
                                     }
                                 }
-                                else if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(oData[1], "PROBLEM", false)))
-                                {
-                                    string argtext6 = "There is a problem with your account. Log in to play.net website for more information.";
-                                    PrintError(argtext6);
-                                    m_oSocket.Disconnect();
-                                }
 
-                                break;
+                                if (m_sConnectKey.Length > 0)
+                                {
+                                    m_oSocket.Disconnect();
+                                    m_oConnectState = ConnectStates.ConnectingGameServer;
+                                    m_oSocket.Connect(m_sConnectHost, m_sConnectPort);
+                                }
                             }
-                    }
+                            else if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(oData[1], "PROBLEM", false)))
+                            {
+                                string argtext6 = "There is a problem with your account. Log in to play.net website for more information.";
+                                PrintError(argtext6);
+                                m_oSocket.Disconnect();
+                            }
+
+                            break;
+                        }
                 }
             }
+        }
         }
 
         private bool m_bMonoOutput = false;
@@ -1154,7 +1227,7 @@ namespace GenieClient.Genie
         private string ProcessXMLNodeElement(XmlNode oXmlNode)
         {
             string sReturn = string.Empty;
-            Debug.WriteLine(oXmlNode.Name);
+           // Debug.WriteLine(oXmlNode.Name);
             if (oXmlNode.NodeType == XmlNodeType.Element)
             {
                 var switchExpr = oXmlNode.Name;
@@ -1568,6 +1641,7 @@ namespace GenieClient.Genie
                                 case "room objs":
                                     {
                                         m_sRoomObjs = GetTextFromXML(oXmlNode).TrimStart();
+                                        SetRoomObjects(oXmlNode);
                                         string argkey5 = "monstercount";
                                         string argvalue4 = CountMonsters(oXmlNode).ToString();
                                         m_oGlobals.VariableList.Add(argkey5, argvalue4, Globals.Variables.VariableType.Reserved); // $monstercount
@@ -1994,7 +2068,7 @@ namespace GenieClient.Genie
                         }
                     case "spelltime":
                         {
-                            if (m_oGlobals.VariableList["preparedspell"].ToString() == "None")
+                            if(m_oGlobals.VariableList["preparedspell"].ToString() == "None")
                             {
                                 if (m_oGlobals.VariableList.Contains("spellstarttime"))
                                 {
@@ -2059,7 +2133,7 @@ namespace GenieClient.Genie
                                 {
                                     strBuffer += "DEAD";
                                 }
-                                else
+                                else if (m_oGlobals.Config.PromptForce == true)
                                 {
                                     if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(m_oIndicatorHash[Indicator.Kneeling], true, false)))
                                     {
@@ -2149,7 +2223,7 @@ namespace GenieClient.Genie
                                 if (rt > 0)
                                 {
                                     SetRoundTime(rt);
-                                    if (m_bStatusPromptEnabled == false)
+                                    if (m_bStatusPromptEnabled == false && (m_oGlobals.Config.PromptForce == true))
                                         strBuffer += "R";
                                     rt += Convert.ToInt32(m_oGlobals.Config.dRTOffset);
                                     var rtString = rt.ToString();
@@ -2162,18 +2236,17 @@ namespace GenieClient.Genie
                                     string argvalue18 = "0";
                                     m_oGlobals.VariableList.Add(argkey43, argvalue18, Globals.Variables.VariableType.Reserved);
                                 }
-
                                 string argsVariable40 = "$roundtime";
                                 VariableChanged(argsVariable40);
-                                if (m_oGlobals.Config.sPrompt.Length > 0)
+
+                                if (m_oGlobals.Config.sPrompt.Length > 0 && !m_bLastRowWasPrompt)
                                 {
-                                    strBuffer = strBuffer.Replace(">", "");
+                                    strBuffer = strBuffer.Replace(m_oGlobals.Config.sPrompt.Trim(), "");
                                     strBuffer += m_oGlobals.Config.sPrompt;
                                     bool argbIsPrompt = true;
                                     WindowTarget argoWindowTarget = 0;
-
+                                    //Status prompt set from the XML printing to main/game 
                                     PrintTextWithParse(strBuffer, argbIsPrompt, oWindowTarget: argoWindowTarget);
-
                                 }
 
                                 string argkey44 = "prompt";
@@ -2401,7 +2474,7 @@ namespace GenieClient.Genie
             return sReturn;
         }
 
-        public void ResetIndicators()
+         public void ResetIndicators()
         {
             m_oIndicatorHash[Indicator.Bleeding] = false;
             m_oIndicatorHash[Indicator.Dead] = false;
@@ -2416,8 +2489,17 @@ namespace GenieClient.Genie
             m_oIndicatorHash[Indicator.Webbed] = false;
         }
 
-        private Regex m_MonsterRegex = new Regex("<pushBold/>([^<]*)<popBold/>([^,.]*)", MyRegexOptions.options);
+        private Regex m_MonsterRegex = new Regex("<pushBold />([^<]*)<popBold />([^,.]*)", MyRegexOptions.options);
+        private Regex m_RoomObjectsRegex = new Regex("<pushBold />([^<]*)<popBold />");
 
+        private void SetRoomObjects(XmlNode oXmlNode)
+        {
+            m_oGlobals.RoomObjects.Clear();
+            foreach (Match roomObject in m_RoomObjectsRegex.Matches(oXmlNode.InnerXml.Replace(" and ", ", ").Replace(" and <pushBold />", ", <pushBold />")))
+            {
+                m_oGlobals.RoomObjects.Add(new KeyValuePair<string, string>("creatures", ParseSubstitutions(roomObject.Groups[1].Value)));
+            }
+        }
         private int CountMonsters(XmlNode oXmlNode)
         {
             int iMonsterCount = 0;
@@ -2541,7 +2623,7 @@ namespace GenieClient.Genie
             m_sEncryptionKey = string.Empty;
             m_oConnectState = ConnectStates.ConnectingKeyServer;
             m_oSocket.ConnectAndAuthenticate(sHostName, iPort);
-
+            
         }
 
         private MatchCollection m_oMatchCollection;
@@ -2554,20 +2636,13 @@ namespace GenieClient.Genie
 
         public void PrintTextWithParse(string sText, Color color, Color bgcolor, bool bIsPrompt = false, WindowTarget oWindowTarget = WindowTarget.Unknown, bool bIsRoomOutput = false)
         {
-
+            
             if (sText.Trim().Length > 0)
             {
-                if (sText.Contains("You also see"))
+                if (sText.StartsWith("  You also see"))
                 {
-                    int I = sText.IndexOf("You also see");
-                    if (I > 0)
-                    {
-                        string argsText = sText.Substring(0, I).Trim() + System.Environment.NewLine;
-                        bool argbIsPrompt = false;
-                        WindowTarget argoWindowTarget = 0;
-                        PrintTextWithParse(argsText, bIsPrompt: argbIsPrompt, oWindowTarget: argoWindowTarget);
-                        sText = sText.Substring(I);
-                    }
+                    PrintTextToWindow(Environment.NewLine, color, bgcolor);
+                    sText = sText.TrimStart();
                 }
 
                 if (m_sStyle.Length > 0)
@@ -2601,57 +2676,13 @@ namespace GenieClient.Genie
                     m_sStyle = string.Empty;
                 }
 
-                if (m_bPresetSpeechOutput == true)
-                {
-                    if (sText.Contains(", \""))
-                    {
-                        color = m_oGlobals.PresetList["speech"].FgColor;
-                        bgcolor = m_oGlobals.PresetList["speech"].BgColor;
+                if (m_bPresetSpeechOutput) m_bPresetSpeechOutput = false;
+                if (m_bPresetWhisperOutput) m_bPresetWhisperOutput = false;
+                if (m_bPresetThoughtOutput) m_bPresetThoughtOutput = false;
 
-                        // Log Window
-                        // If m_oTargetWindow = WindowTarget.Other Then
-                        // PrintTextToWindow(sText, color, bgcolor, WindowTarget.Log)
-                        // End If
-                    }
-
-                    m_bPresetSpeechOutput = false;
-                }
-
-                if (m_bPresetWhisperOutput == true)
-                {
-                    if (sText.Contains(", \""))
-                    {
-                        color = m_oGlobals.PresetList["whispers"].FgColor;
-                        bgcolor = m_oGlobals.PresetList["whispers"].BgColor;
-
-                        // Log Window
-                        // If m_oTargetWindow = WindowTarget.Other Then
-                        // PrintTextToWindow(sText, color, bgcolor, WindowTarget.Log)
-                        // End If
-                    }
-
-                    m_bPresetWhisperOutput = false;
-                }
-
-                if (m_bPresetThoughtOutput == true)
-                {
-                    color = m_oGlobals.PresetList["thoughts"].FgColor;
-                    bgcolor = m_oGlobals.PresetList["thoughts"].BgColor;
-
-                    // If m_oTargetWindow = WindowTarget.Main Then
-                    // If sText.Contains(", """) Then
-                    // Exit Sub
-                    // End If
-                    // End If
-
-                    m_bPresetThoughtOutput = false;
-                }
-
-                if (m_bBold == true)
-                {
-                    color = m_oGlobals.PresetList["creatures"].FgColor;
-                    bgcolor = m_oGlobals.PresetList["creatures"].BgColor;
-                }
+                //if (m_bBold == true)
+                //{
+                //}
 
                 // Line begins with
                 if (m_oGlobals.HighlightBeginsWithList.AcquireReaderLock())
@@ -2709,6 +2740,7 @@ namespace GenieClient.Genie
                 oWindowTarget = m_oTargetWindow;
             }
             PrintTextToWindow(sText, color, bgcolor, oWindowTarget, bIsPrompt, bIsRoomOutput);
+            
         }
 
         private Color m_oLastFgColor = default;
@@ -2716,7 +2748,7 @@ namespace GenieClient.Genie
 
         private void PrintTextToWindow(string text, Color color, Color bgcolor, WindowTarget targetwindow = WindowTarget.Main, bool isprompt = false, bool isroomoutput = false)
         {
-            if (text.Length == 0)
+            if (text.Length == 0 || (m_oGlobals.Config.Condensed && text.Trim().Length == 0))
             {
                 return;
             }
@@ -2800,6 +2832,7 @@ namespace GenieClient.Genie
 
                 case WindowTarget.Other:
                     {
+                       // Debug.Write("Target Window is " + targetwindow.ToString());
                         sTargetWindowString = m_sTargetWindow.ToLower();
                         break;
                     }
@@ -2854,9 +2887,10 @@ namespace GenieClient.Genie
                 }
             }
 
-            if (text.Trim().Length > 0)
+            text = ParseSubstitutions(text);
+            if (0 == 1)//(text.Trim().Length > 0)
             {
-                // Substitute Lists
+                // Substitute Lists Switch this to text = ParseSubstrings(text) so theres only one place subs are processed at
                 if (m_oGlobals.SubstituteList.AcquireReaderLock())
                 {
                     try
@@ -2898,27 +2932,17 @@ namespace GenieClient.Genie
             {
                 if (text.Trim().Length == 0)
                 {
-                    if (m_bLastRowWasBlank == true || m_bLastRowWasPrompt == true)
+                    if (m_bLastRowWasBlank == true | m_bLastRowWasPrompt == true)
                     {
                         return;
                     }
 
                     m_bLastRowWasBlank = true;
                 }
-                else if (Regex.IsMatch(text, @"^.*\" + m_oGlobals.Config.sPrompt + "?$"))
-                {
-                    if (m_bLastRowWasBlank)
-                    {
-                        return;
-                    }
-                    m_bLastRowWasPrompt = true;
-                }
                 else
                 {
-                    m_bLastRowWasPrompt = false;
                     m_bLastRowWasBlank = false;
                 }
-
             }
 
             if (targetwindow == WindowTarget.Main | targetwindow == WindowTarget.Thoughts | targetwindow == WindowTarget.Combat)
@@ -2969,7 +2993,50 @@ namespace GenieClient.Genie
             var tempVar = false;
             EventPrintText?.Invoke(text, color, bgcolor, targetwindow, targetwindowstring, m_bMonoOutput, isprompt, tempVar);
         }
+        private String ParseSubstitutions(string text)
+        {
+            if (text.Trim().Length > 0)
+            {
+                // Substitute Lists
+                if (m_oGlobals.SubstituteList.AcquireReaderLock())
+                {
+                    try
+                    {
+                        foreach (Globals.SubstituteRegExp.Substitute sl in m_oGlobals.SubstituteList)
+                        {
+                            if (sl.IsActive && !Information.IsNothing(sl.SubstituteRegex))
+                            {
+                                if (sl.SubstituteRegex.Match(Utility.Trim(text)).Success)
+                                {
+                                    bool bNewLineStart = text.StartsWith(System.Environment.NewLine);
+                                    bool bNewLineEnd = text.EndsWith(System.Environment.NewLine);
+                                    text = sl.SubstituteRegex.Replace(Utility.Trim(text), sl.sReplaceBy.ToString());
+                                    if (bNewLineStart == true)
+                                    {
+                                        text = System.Environment.NewLine + text;
+                                    }
 
+                                    if (bNewLineEnd == true)
+                                    {
+                                        text += System.Environment.NewLine;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        m_oGlobals.SubstituteList.ReleaseReaderLock();
+                    }
+                }
+                else
+                {
+                    GenieError.Error("PrintTextToWindow", "Unable to aquire reader lock.");
+                }
+            }
+
+            return text;
+        }
         private void VariableChanged(string sVariable)
         {
             EventVariableChanged?.Invoke(sVariable);
@@ -2996,7 +3063,8 @@ namespace GenieClient.Genie
             var trueVar = true;
             var falseVar = false;
 
-            EventPrintText?.Invoke(sText, oColor, oBgColor, windowVar, emptyVar, m_bMonoOutput, trueVar, falseVar);
+         //   EventPrintText?.Invoke(sText, oColor, oBgColor, windowVar, emptyVar, m_bMonoOutput, trueVar, falseVar);
+            EventPrintText?.Invoke(sText, oColor, oBgColor, windowVar, emptyVar, m_bMonoOutput, falseVar, trueVar);
         }
 
         private void ClearWindow(string sWindow)
@@ -3072,7 +3140,7 @@ namespace GenieClient.Genie
                         m_oGlobals.VariableList.Add(argkey, argvalue, Globals.Variables.VariableType.Reserved);
                         string argsVariable = "$connected";
                         VariableChanged(argsVariable);
-                        m_bStatusPromptEnabled = false;
+                        m_bStatusPromptEnabled = false;                        
                         break;
                     }
             }
@@ -3105,10 +3173,9 @@ namespace GenieClient.Genie
         {
             if (m_oGlobals.PluginsEnabled == false)
                 return sText;
-
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
                     if ((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled)
                     {
@@ -3125,7 +3192,7 @@ namespace GenieClient.Genie
                         }
                     }
                 }
-                else if (oPlugin is GeniePlugin.Plugins.IPlugin)
+                else if(oPlugin is GeniePlugin.Plugins.IPlugin)
                 {
                     if ((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled)
                     {

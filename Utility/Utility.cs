@@ -304,7 +304,54 @@ namespace GenieClient
             return span.TotalMilliseconds;
         }
 
-        public static string ArrayToString(Genie.Collections.ArrayList oList)
+        // Public Shared Function SafeSplit(BysInput As String, BycSplitChar As Char) As ArrayList
+        // Dim oList As New ArrayList()
+
+        // Dim bInsideString As Boolean = False
+        // Dim cInsideStringChar As Char
+        // Dim iBracketDepth As Integer = 0
+        // Dim bPreviousWasEscapeChar As Boolean = False
+
+        // Dim ch As Char
+        // Dim l As Integer = 0
+        // Dim sp As Integer = 0
+
+        // For cp As Integer = 0 To sInput.Length - 1
+        // ch = sInput.Chars(cp)
+
+        // If bInsideString = True Then
+        // If ch = cInsideStringChar Then
+        // bInsideString = False
+        // End If
+        // ElseIf (ch = """"c) And bPreviousWasEscapeChar = False Then '  Or ch = "'"c
+        // bInsideString = True
+        // cInsideStringChar = ch
+        // ElseIf ch = cSplitChar And bPreviousWasEscapeChar = False Then
+        // If iBracketDepth = 0 Then
+        // l = (cp - sp)
+        // If l > 0 Then
+        // oList.Add(sInput.Substring(sp, l))
+        // End If
+        // sp = cp + 1 ' +1 So we don't get the split char
+        // End If
+        // End If
+
+        // If ch = "\"c Then
+        // bPreviousWasEscapeChar = Not bPreviousWasEscapeChar
+        // Else
+        // bPreviousWasEscapeChar = False
+        // End If
+        // Next
+
+        // l = (sInput.Length - sp)
+        // If l > 0 Then
+        // oList.Add(sInput.Substring(sp))
+        // End If
+
+        // Return oList
+        // End Function
+
+        public static string ArrayToString(ArrayList oList)
         {
             string sReturnText = string.Empty;
             foreach (string sText in oList)
@@ -331,9 +378,9 @@ namespace GenieClient
             return GenerateHashSHA512(argsText);
         }
 
-        public static Genie.Collections.ArrayList ParseArgs(string sText, bool bTreatUnderscoreAsSpace = false)
+        public static ArrayList ParseArgs(string sText, bool bTreatUnderscoreAsSpace = false)
         {
-            var oList = new Genie.Collections.ArrayList();
+            var oList = new ArrayList();
             try
             {
                 bool bInsideString = false;
@@ -435,7 +482,7 @@ namespace GenieClient
             return oList;
         }
 
-        public static void AddArrayItem(Genie.Collections.ArrayList oList, string sText, bool bTreatUnderscoreAsSpace = false)
+        public static void AddArrayItem(ArrayList oList, string sText, bool bTreatUnderscoreAsSpace = false)
         {
             if (sText.StartsWith("\""))
             {
@@ -652,7 +699,7 @@ namespace GenieClient
             }
         }
 
-        public static string ArrayToString(Genie.Collections.ArrayList oList, int iStartIndex)
+        public static string ArrayToString(ArrayList oList, int iStartIndex)
         {
             // This is for small strings. For large strings we would use StringBuilder
             string sReturnText = string.Empty;
@@ -668,9 +715,9 @@ namespace GenieClient
             return sReturnText.Trim();
         }
 
-        public static Genie.Collections.ArrayList SafeSplit(string sInput, char cSplitChar)
+        public static ArrayList SafeSplit(string sInput, char cSplitChar)
         {
-            var oList = new Genie.Collections.ArrayList();
+            var oList = new ArrayList();
             bool bInsideString = false;
             var cInsideStringChar = default(char);
             int iBracketDepth = 0;

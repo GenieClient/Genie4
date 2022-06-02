@@ -36,7 +36,7 @@ namespace GenieClient
             // Add any initialization after the InitializeComponent() call.
             LocalDirectory.CheckUserDirectory();
             bool bCustomConfigFile = false;
-            var al = new Genie.Collections.ArrayList();
+            var al = new ArrayList();
             al = Utility.ParseArgs(Interaction.Command());
             foreach (string cmd in al)
             {
@@ -186,8 +186,10 @@ namespace GenieClient
                     PrintError("Invalid Startup Parameters detected.");
                     return;
                 }
-                m_sCurrentProfileFile = string.Empty;
-                SafeLoadProfile(character + game + ".xml", false);
+                m_sCurrentProfileFile = character + game + ".xml";
+                m_oGame.AccountCharacter = character;
+                m_oGame.AccountGame = game;
+                SafeLoadProfile(m_sCurrentProfileFile, false);
                 m_oGame.DirectConnect(character, game, host, port);
             }
         }
@@ -1504,7 +1506,7 @@ namespace GenieClient
                 {
                     if (m_bLastKeyWasTab == true)
                     {
-                        ListScripts(TextBoxInput.Text.Substring(1) + "*.cmd");
+                        ListScripts(TextBoxInput.Text.Substring(1) + $"*.{m_oGlobals.Config.ScriptExtension}");
                         m_bLastKeyWasTab = false;
                     }
                     else if (TextBoxInput.Text.Length > 1)
@@ -1534,7 +1536,7 @@ namespace GenieClient
                 {
                     if (m_bLastKeyWasTab == true)
                     {
-                        ListScripts(TextBoxInput.Text.Substring(6) + "*.cmd");
+                        ListScripts(TextBoxInput.Text.Substring(6) + $"*.{m_oGlobals.Config.ScriptExtension}");
                         m_bLastKeyWasTab = false;
                     }
                     else if (TextBoxInput.Text.Length > 1)
@@ -1715,7 +1717,7 @@ namespace GenieClient
                 }
             }
 
-            sDir = FileSystem.Dir(sPattern + "*.cmd", Constants.vbArchive);
+            sDir = FileSystem.Dir(sPattern + $"*.{m_oGlobals.Config.ScriptExtension}", Constants.vbArchive);
             while (!string.IsNullOrEmpty(sDir))
             {
                 i += 1;
@@ -1726,7 +1728,7 @@ namespace GenieClient
 
             if (i == 1)
             {
-                return sFile.ToLower().Replace(".cmd", "") + " ";
+                return sFile.ToLower().Replace($".{m_oGlobals.Config.ScriptExtension}", "") + " ";
             }
             else if (Strings.Len(sMin) > 0)
             {
@@ -2901,7 +2903,7 @@ namespace GenieClient
             }
         }
 
-        private Script LoadScript(string sScriptName, Genie.Collections.ArrayList oArgList)
+        private Script LoadScript(string sScriptName, ArrayList oArgList)
         {
             if (m_oGlobals.Config.bAbortDupeScript == true)
             {
@@ -3144,9 +3146,9 @@ namespace GenieClient
                     if (!Information.IsNothing(oButton.Tag))
                     {
                         string sTemp = ((Script)oButton.Tag).FileName;
-                        if (sTemp.ToLower().EndsWith(".cmd") == false)
+                        if (sTemp.ToLower().EndsWith($".{m_oGlobals.Config.ScriptExtension}") == false)
                         {
-                            sTemp += ".cmd";
+                            sTemp += $".{m_oGlobals.Config.ScriptExtension}";
                         }
 
                         if (sTemp.IndexOf(@"\") == -1)
@@ -4135,12 +4137,12 @@ namespace GenieClient
         {
             try
             {
-                var al = new Genie.Collections.ArrayList();
+                var al = new ArrayList();
                 al = Utility.ParseArgs(sText, true);
                 string ScriptName = Conversions.ToString(al[0].ToString().ToLower().Trim().Substring(1));
-                if (ScriptName.EndsWith(".cmd") == false)
+                if (ScriptName.EndsWith($".{m_oGlobals.Config.ScriptExtension}") == false)
                 {
-                    ScriptName += ".cmd";
+                    ScriptName += $".{m_oGlobals.Config.ScriptExtension}";
                 }
 
                 Script oScript = null;
@@ -4519,9 +4521,9 @@ namespace GenieClient
             AddText(sText, argoColor, argoBgColor, oTargetWindow, argsTargetWindow, bMono, bPrompt, bInput);
         }
 
-        private void AddText(string sText, Color oColor, Color oBgColor, FormSkin oTargetWindow, bool bNoCache = true, bool bMono = false, bool bPrompt = false, bool bInput = false)
+         private void AddText(string sText, Color oColor, Color oBgColor, FormSkin oTargetWindow, bool bNoCache = true, bool bMono = false, bool bPrompt = false, bool bInput = false)
         {
-            bPrompt = false;
+           // bPrompt = false;
 
             if (IsDisposed)
             {
@@ -4550,9 +4552,9 @@ namespace GenieClient
                     {
                         if (!bInput)
                         {
-                            if (sText.StartsWith(System.Environment.NewLine) == false)
+                            if (sText.StartsWith(Constants.vbNewLine) == false && m_oGlobals.Config.PromptBreak)
                             {
-                                sText = System.Environment.NewLine + sText;
+                                sText = Constants.vbNewLine + sText;
                             }
                         }
 
@@ -6549,7 +6551,7 @@ namespace GenieClient
 
         private void Command_EventClassChange()
         {
-            var al = new Genie.Collections.ArrayList();
+            var al = new ArrayList();
             if (m_oGlobals.ClassList.AcquireReaderLock())
             {
                 try
@@ -6876,6 +6878,7 @@ namespace GenieClient
         private void SetMagicPanels(bool bVisible)
         {
             ComponentBarsMana.Visible = bVisible;
+            Castbar.Visible = bVisible;
             LabelSpell.Visible = bVisible;
             LabelSpellC.Visible = bVisible;
             if (bVisible == true)

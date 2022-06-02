@@ -26,14 +26,7 @@ namespace GenieClient
         {
             get
             {
-                if (TextBoxName.Text.ToLower().EndsWith(".cmd") | TextBoxName.Text.ToLower().EndsWith(".inc"))
-                {
                     return TextBoxName.Text;
-                }
-                else
-                {
-                    return TextBoxName.Text + ".cmd";
-                }
             }
 
             set
