@@ -515,6 +515,7 @@ namespace GenieClient.Genie
         public void ParseGameRow(string sText)
         {
             var oXMLBuffer = new StringBuilder();
+            bool hasXML = false;
             int iInsideXML = 0;
             bool bEndTagFound = false;
             bool bInsideHTMLTag = false;
@@ -548,6 +549,7 @@ namespace GenieClient.Genie
                     case '<':
                         {
                             iInsideXML += 1;
+                            hasXML = true;
                             oXMLBuffer.Append(c);
                             break;
                         }
@@ -785,10 +787,13 @@ namespace GenieClient.Genie
                     }
                 }
 
+                if (!(sTextBuffer == "\r\n" && hasXML))
+                {
+                    bool argbIsPrompt1 = false;
+                    WindowTarget argoWindowTarget1 = 0;
+                    PrintTextWithParse(sTextBuffer, bIsPrompt: argbIsPrompt1, oWindowTarget: argoWindowTarget1);
+                }
                 
-                bool argbIsPrompt1 = false;
-                WindowTarget argoWindowTarget1 = 0;
-                PrintTextWithParse(sTextBuffer, bIsPrompt: argbIsPrompt1, oWindowTarget: argoWindowTarget1);
                 
                 if (bCombatRow == true)
                 {
