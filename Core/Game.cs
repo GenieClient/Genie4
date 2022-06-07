@@ -3139,7 +3139,7 @@ namespace GenieClient.Genie
                         m_iConnectAttempts = 0;
                         m_bManualDisconnect = false;
                         m_oReconnectTime = default;
-                        m_oSocket.Send(m_sConnectKey + Constants.vbLf + "/FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " / P:WIN_UNKNOWN /XML" + Constants.vbLf);    // TEMP
+                        m_oSocket.Send(m_sConnectKey + Constants.vbLf + "FE:WRAYTH /VERSION:1.0.1.22 /P:WIN_UNKNOWN /XML" + Constants.vbLf);    // TEMP
                         string argkey = "connected";
                         string argvalue = m_oSocket.IsConnected ? "1" : "0";
                         m_oGlobals.VariableList.Add(argkey, argvalue, Globals.Variables.VariableType.Reserved);
