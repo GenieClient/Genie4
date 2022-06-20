@@ -429,7 +429,7 @@ namespace GenieClient.Mapper
             // _PanelBase
             // 
             this._PanelBase.AutoScroll = true;
-            this._PanelBase.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this._PanelBase.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(211)))), ((int)(((byte)(211)))));
             this._PanelBase.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this._PanelBase.Controls.Add(this._PanelMap);
             this._PanelBase.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -441,7 +441,7 @@ namespace GenieClient.Mapper
             // _PanelMap
             // 
             this._PanelMap.AutoScroll = true;
-            this._PanelMap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this._PanelMap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(211)))), ((int)(((byte)(211)))));
             this._PanelMap.Dock = System.Windows.Forms.DockStyle.Fill;
             this._PanelMap.DrawLines = false;
             this._PanelMap.Location = new System.Drawing.Point(0, 0);

@@ -148,7 +148,7 @@ namespace GenieClient.Mapper
         private int _mapOffsetY;
         private Point3D GetOffset()
         {
-            if(m_NodeList is not null) return new Point3D(_mapOffsetX, _mapOffsetY);
+            if (m_NodeList is not null) return new Point3D(_mapOffsetX, _mapOffsetY);
             return new Point3D((int)(this.Width / 2 * m_Scale), (int)(this.Height / 2 * m_Scale));
         }
 

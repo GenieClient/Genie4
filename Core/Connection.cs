@@ -126,7 +126,7 @@ namespace GenieClient.Genie
                 }
                 else
                 {
-                    if(_client != null) return _client.Connected;
+                    if (_client != null) return _client.Connected;
                     return m_SocketClient.Connected;
                 }
             }
@@ -547,7 +547,7 @@ namespace GenieClient.Genie
                     int bytes = s.Client.EndReceive(ar);
                     if (bytes > 0)
                     {
-                        if(CurrentAuthState == AuthState.ListeningForKey || CurrentAuthState == AuthState.KeyAuthenticated)
+                        if (CurrentAuthState == AuthState.ListeningForKey || CurrentAuthState == AuthState.KeyAuthenticated)
                         {
                             return;
                         }

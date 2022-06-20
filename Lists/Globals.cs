@@ -222,8 +222,10 @@ namespace GenieClient.Genie
             }
             
             sText = sText.Replace("@time@", DateTime.Now.ToString("hh:mm:ss tt").Trim());
+            sText = sText.Replace("@time24@", DateTime.Now.ToString("HH:mm:ss").Trim());
             sText = sText.Replace("@date@", DateTime.Now.ToString("M/d/yyyy").Trim());
             sText = sText.Replace("@datetime@", DateTime.Now.ToString("M/d/yyyy hh:mm:ss tt").Trim());
+            sText = sText.Replace("@date24time@", DateTime.Now.ToString("M/d/yyyy HH:mm:ss").Trim());
             sText = sText.Replace("@unixtime@", DateTimeOffset.Now.ToUnixTimeSeconds().ToString());
             return sText;
         }
@@ -856,7 +858,10 @@ namespace GenieClient.Genie
                 Add("version", My.MyProject.Application.Info.Version.ToString(), VariableType.Reserved);
                 Add("time", "@time@", VariableType.Reserved);
                 Add("date", "@date@", VariableType.Reserved);
+                Add("time24", "@time24@", VariableType.Reserved);
+                Add("date24time", "@date24time@", VariableType.Reserved);
                 Add("datetime", "@datetime@", VariableType.Reserved);
+                Add("unixtime", "@unixtime@", VariableType.Reserved);
                 Add("spelltime", "@spelltime@", VariableType.Reserved);
                 Add("spellpreptime", "@spellpreptime@", VariableType.Reserved);
                 Add("spellstarttime", "0", VariableType.Reserved);

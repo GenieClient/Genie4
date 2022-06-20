@@ -13,7 +13,7 @@ public bool AcquireWriterLock()
         {
             try
             {
-                if(m_oRWLock.IsWriteLockHeld | m_oRWLock.IsReadLockHeld)
+                if (m_oRWLock.IsWriteLockHeld | m_oRWLock.IsReadLockHeld)
                 {
                     return false;
                 }

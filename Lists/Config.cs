@@ -54,7 +54,8 @@ namespace GenieClient.Genie
         public bool CheckForUpdates { get; set; } = true;
         public bool AutoUpdate { get; set; } = false;
 
-        public string sConnectString = "FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " /P:WIN_XP /XML";
+        //public string sConnectString = "FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " /P:WIN_XP /XML";
+        public string sConnectString = "FE:WRAYTH /VERSION:1.0.1.22" + My.MyProject.Application.Info.Version.ToString() + " /P:WIN_XP /XML";
         public int[] iPickerColors = new int[17];
         public string RubyPath { get; set; } = @"C:\ruby4lich\bin\ruby.exe";
         public string CmdPath { get; set; } = @"C:\Windows\System32\cmd.exe";

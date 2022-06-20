@@ -515,6 +515,7 @@ namespace GenieClient.Genie
         public void ParseGameRow(string sText)
         {
             var oXMLBuffer = new StringBuilder();
+            bool hasXML = false;
             int iInsideXML = 0;
             bool bEndTagFound = false;
             bool bInsideHTMLTag = false;
@@ -548,6 +549,7 @@ namespace GenieClient.Genie
                     case '<':
                         {
                             iInsideXML += 1;
+                            hasXML = true;
                             oXMLBuffer.Append(c);
                             break;
                         }
@@ -591,7 +593,7 @@ namespace GenieClient.Genie
                                     }
                                     //sTmp = ParseSubstitutions(sTmp);
                                     m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>(presetLabel, sTmp));
-                                    if(presetLabel == "roomdesc")
+                                    if (presetLabel == "roomdesc")
                                     {
                                         PrintTextWithParse(sTmp, bIsPrompt: false, oWindowTarget: 0);
                                         sTmp = string.Empty;
@@ -785,10 +787,16 @@ namespace GenieClient.Genie
                     }
                 }
 
-                
-                bool argbIsPrompt1 = false;
-                WindowTarget argoWindowTarget1 = 0;
-                PrintTextWithParse(sTextBuffer, bIsPrompt: argbIsPrompt1, oWindowTarget: argoWindowTarget1);
+                if (!(sTextBuffer == "\r\n" && hasXML))
+                {
+                    bool argbIsPrompt1 = false;
+                    WindowTarget argoWindowTarget1 = 0;
+                    PrintTextWithParse(sTextBuffer, bIsPrompt: argbIsPrompt1, oWindowTarget: argoWindowTarget1);
+                }
+
+                //bool argbIsPrompt1 = false;
+                //WindowTarget argoWindowTarget1 = 0;
+                //PrintTextWithParse(sTextBuffer, bIsPrompt: argbIsPrompt1, oWindowTarget: argoWindowTarget1);
                 
                 if (bCombatRow == true)
                 {
@@ -2068,7 +2076,7 @@ namespace GenieClient.Genie
                         }
                     case "spelltime":
                         {
-                            if(m_oGlobals.VariableList["preparedspell"].ToString() == "None")
+                            if (m_oGlobals.VariableList["preparedspell"].ToString() == "None")
                             {
                                 if (m_oGlobals.VariableList.Contains("spellstarttime"))
                                 {
@@ -2888,7 +2896,8 @@ namespace GenieClient.Genie
             }
 
             text = ParseSubstitutions(text);
-            if (0 == 1)//(text.Trim().Length > 0)
+            /*if (0 == 1)//(text.Trim().Length > 0)
+            //if (text.Trim().Length > 0)
             {
                 // Substitute Lists Switch this to text = ParseSubstrings(text) so theres only one place subs are processed at
                 if (m_oGlobals.SubstituteList.AcquireReaderLock())
@@ -2926,7 +2935,7 @@ namespace GenieClient.Genie
                 {
                     GenieError.Error("PrintTextToWindow", "Unable to aquire reader lock.");
                 }
-            }
+            }*/
 
             if (targetwindow == WindowTarget.Main)
             {
@@ -3134,7 +3143,8 @@ namespace GenieClient.Genie
                         m_iConnectAttempts = 0;
                         m_bManualDisconnect = false;
                         m_oReconnectTime = default;
-                        m_oSocket.Send(m_sConnectKey + Constants.vbLf + "/FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " / P:WIN_UNKNOWN /XML" + Constants.vbLf);    // TEMP
+                        //m_oSocket.Send(m_sConnectKey + Constants.vbLf + "/FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " / P:WIN_UNKNOWN /XML" + Constants.vbLf);    // TEMP
+                        m_oSocket.Send(m_sConnectKey + Constants.vbLf + "FE:WRAYTH /VERSION:1.0.1.22 /P:WIN_UNKNOWN /XML" + Constants.vbLf); // TEMP
                         string argkey = "connected";
                         string argvalue = m_oSocket.IsConnected ? "1" : "0";
                         m_oGlobals.VariableList.Add(argkey, argvalue, Globals.Variables.VariableType.Reserved);
@@ -3175,7 +3185,7 @@ namespace GenieClient.Genie
                 return sText;
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
                     if ((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled)
                     {
@@ -3192,7 +3202,7 @@ namespace GenieClient.Genie
                         }
                     }
                 }
-                else if(oPlugin is GeniePlugin.Plugins.IPlugin)
+                else if (oPlugin is GeniePlugin.Plugins.IPlugin)
                 {
                     if ((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled)
                     {
