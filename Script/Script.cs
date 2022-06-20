@@ -3287,20 +3287,20 @@ namespace GenieClient
                     return false;
                 }
                 MatchCollection doRegex = Regex.Matches(FullCommand, PARAMETER_REGEX);
-                if(doRegex.Count == 0)
+                if (doRegex.Count == 0)
                 {   
                     DoCommandText = FullCommand;
                     DoCommandAdditionalRegex = "";
                     DoCommandRepeatRegex = m_oGlobals.VariableList["repeatregex"].ToString();
                 }
-                else if(doRegex.Count == 1)
+                else if (doRegex.Count == 1)
                 {   
                     DoCommandText = doRegex[0].Captures[0].ToString();
                     DoCommandText = DoCommandText.Substring(1, DoCommandText.Length - 2);
                     DoCommandAdditionalRegex = "";
                     DoCommandRepeatRegex = m_oGlobals.VariableList["repeatregex"].ToString();
                 }
-                else if(doRegex.Count > 1)
+                else if (doRegex.Count > 1)
                 {
                     DoCommandText = doRegex[0].Captures[0].ToString();
                     DoCommandText = DoCommandText.Substring(1, DoCommandText.Length - 2);

@@ -20,7 +20,7 @@ namespace GenieClient
     {
         public static string GetTimeStamp()
         {
-            return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.ShortTime) + "]";
+            return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.LongTime) + "]";
         }
 
         public static void OpenBrowser(string url)
