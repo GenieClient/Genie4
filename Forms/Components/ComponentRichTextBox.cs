@@ -196,11 +196,11 @@ namespace GenieClient
                 {
                     if (sText.StartsWith(" "))
                     {
-                        return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.ShortTime) + "]";
+                        return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.LongTime) + "]";
                     }
                     else
                     {
-                        return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.ShortTime) + "] ";
+                        return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.LongTime) + "] ";
                     }
                 }
             }
