@@ -1,8 +1,0 @@
-C:\Users\Gyp\Desktop\Genie Client 3\Plugins\Genie4-main\Plugin\bin\Release\net6.0-windows\Plugins.deps.json
-C:\Users\Gyp\Desktop\Genie Client 3\Plugins\Genie4-main\Plugin\bin\Release\net6.0-windows\Plugins.dll
-C:\Users\Gyp\Desktop\Genie Client 3\Plugins\Genie4-main\Plugin\obj\Release\net6.0-windows\Plugins.vbproj.AssemblyReference.cache
-C:\Users\Gyp\Desktop\Genie Client 3\Plugins\Genie4-main\Plugin\obj\Release\net6.0-windows\Plugins.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Gyp\Desktop\Genie Client 3\Plugins\Genie4-main\Plugin\obj\Release\net6.0-windows\Plugins.vbproj.CoreCompileInputs.cache
-C:\Users\Gyp\Desktop\Genie Client 3\Plugins\Genie4-main\Plugin\obj\Release\net6.0-windows\Plugins.dll
-C:\Users\Gyp\Desktop\Genie Client 3\Plugins\Genie4-main\Plugin\obj\Release\net6.0-windows\refint\Plugins.dll
-C:\Users\Gyp\Desktop\Genie Client 3\Plugins\Genie4-main\Plugin\obj\Release\net6.0-windows\ref\Plugins.dll
