@@ -1086,45 +1086,53 @@ namespace GenieClient.Genie.Script
                     {
                         if (args.Count == 3)
                         {
-                            int arg0 = ((Sections)args[0]).sBlock.Length;                   //Lenth of Word to be substringed
-                            int arg1 = Conversions.ToInteger(((Sections)args[1]).sBlock);   //Start posistion
-                            int arg2 = Conversions.ToInteger(((Sections)args[2]).sBlock);   //End postion
-                            if (arg2 < 0)                                                   //Logic for negative substring. Flips the args
+                            int stringLength = ((Sections)args[0]).sBlock.Length;                   
+                            int startPosition = Conversions.ToInteger(((Sections)args[1]).sBlock);   
+                            int substringLength = Conversions.ToInteger(((Sections)args[2]).sBlock);   
+                            if (substringLength < 0)
                             {
-                                if (arg1 + arg2 >= 0)
+                                //This allows for negative substrings lengths to read starting before the start index
+                                //however, we cannot actually go negative on our substring call so 
+                                if (startPosition + substringLength >= 0)
                                 {
-                                    arg1 = arg1 + arg2;
-                                    arg2 = System.Math.Abs(arg2);
+                                    //if the negative length is not below 0 simply set our new start there and 
+                                    //and set the length to its absolute value
+                                    startPosition = startPosition + substringLength;
+                                    substringLength = System.Math.Abs(substringLength);
                                 }
-                                else if (arg1 + arg2 < 0)                                   //if start position would be negative then set to 0
-                                {
-                                    arg1 = 0;
-                                    arg2 = Conversions.ToInteger(((Sections)args[1]).sBlock);
+                                else 
+                                {   
+                                    //the new startPosition would be less than 0 so set it to zero
+                                    startPosition = 0;
+                                    //and read the remainder of the length, which is conveniently the start position
+                                    substringLength = Conversions.ToInteger(((Sections)args[1]).sBlock);
                                 }
                             }
-                            if (arg1 < 0) arg1 = 0;                                         //If you give a negative start and end you get nothing back
-                            if (arg2 < 0) arg2 = 0;
+                            
+                            if (startPosition < 0) startPosition = 0; //prevent negative start or end positions
+                            if (substringLength < 0) substringLength = 0; //in the case we got a negative length and negative start position this can be negative here
 
-                            if (arg1 + arg2 <= arg0 && arg1 >= 0)                           //Will only evalutate if starting position and ending position are within supplied string
-                            {
-                                ((Sections)oSections[iStart]).sBlock = ((Sections)args[0]).sBlock.Substring(arg1, arg2).ToString();
+                            if (startPosition + substringLength > stringLength)
+                            {   //If the start position + substringLength are greater than the size of the string, just read to the end
+                                ((Sections)oSections[iStart]).sBlock = ((Sections)args[0]).sBlock.Substring(startPosition).ToString();
                                 ((Sections)oSections[iStart]).BlockType = ParseType.StringType; // Result
                                 ((Sections)oSections[iStart]).bParsed = false;
                             }
-                            else if (arg1 <= arg0 && arg1 >= 0)                             //Will only evalutate if starting position is within supplied string
-                            {
-                                ((Sections)oSections[iStart]).sBlock = ((Sections)args[0]).sBlock.Substring(arg1).ToString();
+                            else
+                            {   //the full substring is within the size of the string
+                                ((Sections)oSections[iStart]).sBlock = ((Sections)args[0]).sBlock.Substring(startPosition, substringLength).ToString();
                                 ((Sections)oSections[iStart]).BlockType = ParseType.StringType; // Result
                                 ((Sections)oSections[iStart]).bParsed = false;
                             }
                         }
                         else if (args.Count == 2)
                         {
-                            int arg0 = ((Sections)args[0]).sBlock.Length;                   //Lenth of Word to be substringed
-                            int arg1 = Conversions.ToInteger(((Sections)args[1]).sBlock);   //Start posistion
-                            if (arg1 <= arg0 && arg1 >= 0)                                  //Will only evalutate if starting position is within supplied string
+                            int stringLength = ((Sections)args[0]).sBlock.Length;                   
+                            int startPosition = Conversions.ToInteger(((Sections)args[1]).sBlock);   
+                            if (startPosition <= stringLength && startPosition >= 0)                                  
                             {
-                                ((Sections)oSections[iStart]).sBlock = ((Sections)args[0]).sBlock.Substring(arg1).ToString();
+                                //Will only evalutate if starting position is within supplied string
+                                ((Sections)oSections[iStart]).sBlock = ((Sections)args[0]).sBlock.Substring(startPosition).ToString();
                                 ((Sections)oSections[iStart]).BlockType = ParseType.StringType; // Result
                                 ((Sections)oSections[iStart]).bParsed = false;
                             }
