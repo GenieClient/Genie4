@@ -3015,7 +3015,7 @@ namespace GenieClient.Genie
                                 {
                                     bool bNewLineStart = text.StartsWith(System.Environment.NewLine);
                                     bool bNewLineEnd = text.EndsWith(System.Environment.NewLine);
-                                    text = sl.SubstituteRegex.Replace(Utility.Trim(text), sl.sReplaceBy.ToString());
+                                    text = sl.SubstituteRegex.Replace(Utility.Trim(text), m_oGlobals.ParseGlobalVars(sl.sReplaceBy).ToString());
                                     if (bNewLineStart == true)
                                     {
                                         text = System.Environment.NewLine + text;
