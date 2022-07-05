@@ -522,6 +522,7 @@ namespace GenieClient.Genie
             string sHTMLBuffer = string.Empty;
             string sTextBuffer = string.Empty;
             string sBoldBuffer = string.Empty;
+            int iBoldIndex = 0;
             char cPreviousChar = Conversions.ToChar("");
             bool bCombatRow = false;
             bool bPromptRow = false;
@@ -592,7 +593,7 @@ namespace GenieClient.Genie
                                             break;
                                     }
                                     sTmp = ParseSubstitutions(sTmp);
-                                    m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>(presetLabel, sTmp));
+                                    m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(sTmp, presetLabel, 0));
                                     if(presetLabel == "roomdesc")
                                     {
                                         PrintTextWithParse(sTmp, bIsPrompt: false, oWindowTarget: 0);
@@ -602,13 +603,14 @@ namespace GenieClient.Genie
                                 if (buffer.EndsWith(@"<pushBold/>"))
                                 {
                                     sBoldBuffer = string.Empty;
+                                    iBoldIndex = sTextBuffer.Length; //do not subtract 1 because our start index isn't added yet
                                 }
                                 if (buffer.EndsWith(@"<popBold/>"))
                                 {
                                     if (!string.IsNullOrWhiteSpace(sBoldBuffer))
                                     {
                                         sBoldBuffer = ParseSubstitutions(sBoldBuffer);
-                                        m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer));
+                                        m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(sBoldBuffer, "creatures", iBoldIndex));
                                     }
                                 }
                                 if (m_bBold)
@@ -765,7 +767,7 @@ namespace GenieClient.Genie
                 else if (!string.IsNullOrWhiteSpace(sBoldBuffer))
                 {
                     sBoldBuffer = ParseSubstitutions(sBoldBuffer);
-                    m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer.Trim())); //trim because excessive whitespace seems to be breaking this
+                    m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(sBoldBuffer.Trim(), "creatures", iBoldIndex)); //trim because excessive whitespace seems to be breaking this
                     sBoldBuffer = string.Empty;
                 }
 
