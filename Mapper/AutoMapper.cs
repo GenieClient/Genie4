@@ -243,7 +243,8 @@ namespace GenieClient.Mapper
                         if ((dif.Extension.ToLower() ?? "") == ".xml")
                     {
                         xdoc = new XmlDocument();
-                        xdoc.Load(dif.FullName);
+                        
+                        xdoc.Load(new StreamReader(dif.FullName,true));
                         xnlist = xdoc.SelectNodes("zone/node");
                         foreach (XmlNode xn in xnlist)
                         {
@@ -300,7 +301,7 @@ namespace GenieClient.Mapper
                 if ((dif.Extension.ToLower() ?? "") == ".xml")
                 {
                     xdoc = new XmlDocument();
-                    xdoc.Load(dif.FullName);
+                    xdoc.Load(new StreamReader(dif.FullName, true));
                     xnlist = xdoc.SelectNodes("zone/node");
                     foreach (XmlNode xn in xnlist)
                     {
