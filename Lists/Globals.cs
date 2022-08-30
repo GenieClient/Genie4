@@ -488,23 +488,23 @@ namespace GenieClient.Genie
 
             public void SetDefaultPresets()
             {
-                Add("roomname", "Yellow,DarkBlue");
-                Add("roomdesc", "Silver");
-                Add("creatures", "Cyan");
-                Add("speech", "Yellow");
-                Add("whispers", "Magenta");
-                Add("thoughts", "Cyan");
-                Add("roundtime", "MediumBlue");
-                Add("health", "Maroon");
-                Add("mana", "Navy");
-                Add("stamina", "Green");
-                Add("spirit", "Purple");
+                Add("castbar", "Magenta");
                 Add("concentration", "Navy");
+                Add("creatures", "Cyan");
+                Add("familiar", "PaleGreen");
+                Add("health", "Maroon");
                 Add("inputuser", "Yellow");
                 Add("inputother", "GreenYellow");
+                Add("mana", "Navy");
+                Add("roomdesc", "Silver");
+                Add("roomname", "Yellow,DarkBlue");
+                Add("roundtime", "MediumBlue");
                 Add("scriptecho", "Cyan");
-                Add("familiar", "PaleGreen");
-                Add("castbar", "Magenta");
+                Add("speech", "Yellow");
+                Add("spirit", "Purple");
+                Add("stamina", "Green");
+                Add("thoughts", "Cyan");
+                Add("whispers", "Magenta");
             }
 
             public Presets()
