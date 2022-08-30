@@ -528,21 +528,31 @@ namespace GenieClient
                         if (nextNewLineIndex == -1) nextNewLineIndex = m_oRichTextBuffer.Text.Length;
                         m_oRichTextBuffer.SelectionStart = lastNewLineIndex >= 0 ? lastNewLineIndex : 0;
                         m_oRichTextBuffer.SelectionLength = nextNewLineIndex - lastNewLineIndex;
+                        if (m_oParentForm.Globals.PresetList[highlight.Preset].FgColor != Color.Transparent)
+                        {
+                            m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList[highlight.Preset].FgColor;
+                        }
+
+                        if (m_oParentForm.Globals.PresetList[highlight.Preset].BgColor != Color.Transparent)
+                        {
+                            m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList[highlight.Preset].BgColor;
+                        }
                     }
                     else if(line.Length >= highlight.EndIndex + timestampOffset && line.Substring(highlight.StartIndex + timestampOffset, highlight.Length) == highlight)
                     {
                         m_oRichTextBuffer.SelectionStart = runningPosition + timestampOffset + highlight.StartIndex;
                         m_oRichTextBuffer.SelectionLength = highlight.Length;
-                    }
-                    if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList[highlight.Preset].FgColor, Color.Transparent, false))
-                    {
-                        m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList[highlight.Preset].FgColor;
+                        if (m_oParentForm.Globals.PresetList[highlight.Preset].FgColor != Color.Transparent)
+                        {
+                            m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList[highlight.Preset].FgColor;
+                        }
+
+                        if (m_oParentForm.Globals.PresetList[highlight.Preset].BgColor != Color.Transparent)
+                        {
+                            m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList[highlight.Preset].BgColor;
+                        }
                     }
 
-                    if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList[highlight.Preset].BgColor, Color.Transparent, false))
-                    {
-                        m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList[highlight.Preset].BgColor;
-                    }
                     runningPosition += line.Length + 1; //add 1 to account for the \n characters removed by the split
                 }
                 
