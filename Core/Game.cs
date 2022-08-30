@@ -592,7 +592,6 @@ namespace GenieClient.Genie
                                         default:
                                             break;
                                     }
-                                    sTmp = ParseSubstitutions(sTmp);
                                     m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(sTmp, presetLabel, 0));
                                     if(presetLabel == "roomdesc")
                                     {
