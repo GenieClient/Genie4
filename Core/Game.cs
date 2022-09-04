@@ -790,9 +790,8 @@ namespace GenieClient.Genie
 
                 if (!(sTextBuffer == "\r\n" && hasXML))
                 {
-                    bool argbIsPrompt1 = false;
-                    WindowTarget argoWindowTarget1 = 0;
-                    PrintTextWithParse(sTextBuffer, bIsPrompt: argbIsPrompt1, oWindowTarget: argoWindowTarget1);
+                    bool isRoomOutput = sText.Contains(@"<preset id='roomDesc'>");
+                    PrintTextWithParse(sTextBuffer, default, default, default, default, isRoomOutput);
                 }
                 
                 
