@@ -2497,13 +2497,15 @@ namespace GenieClient.Genie
 
         private Regex m_MonsterRegex = new Regex("<pushBold />([^<]*)<popBold />([^,.]*)", MyRegexOptions.options);
         private Regex m_RoomObjectsRegex = new Regex("<pushBold />([^<]*)<popBold />");
-
+        private static int tagOffset = "<pushBold /><popBold />".Length;
         private void SetRoomObjects(XmlNode oXmlNode)
         {
             m_oGlobals.RoomObjects.Clear();
-            foreach (Match roomObject in m_RoomObjectsRegex.Matches(oXmlNode.InnerXml.Replace(" and ", ", ").Replace(" and <pushBold />", ", <pushBold />")))
+            foreach (Match roomObject in m_RoomObjectsRegex.Matches(oXmlNode.InnerXml))
             {
-                m_oGlobals.RoomObjects.Add(new KeyValuePair<string, string>("creatures", ParseSubstitutions(roomObject.Groups[1].Value)));
+                int position = roomObject.Index - (tagOffset * m_oGlobals.RoomObjects.Count);
+                VolatileHighlight highlight = new VolatileHighlight(ParseSubstitutions(roomObject.Groups[1].Value), "creatures", position);
+                m_oGlobals.RoomObjects.Add(highlight);
             }
         }
         private int CountMonsters(XmlNode oXmlNode)
