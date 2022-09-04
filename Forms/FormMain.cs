@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -1902,7 +1903,7 @@ namespace GenieClient
             Application.DoEvents();
             int I = LoadPlugins();
             Application.DoEvents();
-            UpdateOnStartup();
+            Parallel.Invoke(UpdateOnStartup);
             Application.DoEvents();
 
             m_oOutputMain.RichTextBoxOutput.EndTextUpdate();
