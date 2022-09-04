@@ -480,46 +480,20 @@ namespace GenieClient
             public string Command;
         }
 
-        private void ParseHighlights()
+        private void ParseVolatileHighlights(List<VolatileHighlight> highlightList)
         {
-            MatchCollection oMatchCollection;
-
-            if (m_oRichTextBuffer.Text.Contains("You also see") && m_oParentForm.Globals.RoomObjects.Count > 0)
-            {
-                foreach (KeyValuePair<string, string> highlight in m_oParentForm.Globals.RoomObjects.ToArray())
-                {
-                    Regex volatileRegex = new Regex(Regex.Escape(highlight.Value));
-                    oMatchCollection = volatileRegex.Matches(m_oRichTextBuffer.Text);
-                    foreach (Match oMatch in oMatchCollection)
-                    {
-                        m_oRichTextBuffer.SelectionStart = oMatch.Groups[0].Index;
-                        m_oRichTextBuffer.SelectionLength = oMatch.Groups[0].Length;
-                        if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList[highlight.Key].FgColor, Color.Transparent, false))
-                        {
-                            m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList[highlight.Key].FgColor;
-                        }
-
-                        if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList[highlight.Key].BgColor, Color.Transparent, false))
-                        {
-                            m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList[highlight.Key].BgColor;
-                        }
-                    }
-                }
-            }
-
-            // Presets and Bold
-            foreach (VolatileHighlight highlight in m_oParentForm.Globals.VolatileHighlights.ToArray())
+            foreach (VolatileHighlight highlight in highlightList.ToArray())
             {
                 int runningPosition = 0;
-                Regex volatileRegex = new Regex(Regex.Escape(highlight));
-                foreach(string line in m_oRichTextBuffer.Text.Split('\n')) 
+                int lineIndex = 0;
+                foreach (string line in m_oRichTextBuffer.Text.Split('\n'))
                 {
                     int timestampOffset = 0;
                     if (m_bTimeStamp)
                     {
                         timestampOffset += GetTimeString(line).Length;
                     }
-                    if (m_oParentForm.Globals.PresetList[highlight.Preset].bHighlightLine)
+                    if (m_oParentForm.Globals.PresetList[highlight.Preset].bHighlightLine && line.Contains(highlight.Text))
                     {
                         int indexOfHighlight = m_oRichTextBuffer.Text.IndexOf(highlight);
                         int lastNewLineIndex = m_oRichTextBuffer.Text.LastIndexOf("\n", indexOfHighlight);
@@ -528,36 +502,46 @@ namespace GenieClient
                         if (nextNewLineIndex == -1) nextNewLineIndex = m_oRichTextBuffer.Text.Length;
                         m_oRichTextBuffer.SelectionStart = lastNewLineIndex >= 0 ? lastNewLineIndex : 0;
                         m_oRichTextBuffer.SelectionLength = nextNewLineIndex - lastNewLineIndex;
-                        if (m_oParentForm.Globals.PresetList[highlight.Preset].FgColor != Color.Transparent)
-                        {
-                            m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList[highlight.Preset].FgColor;
-                        }
-
-                        if (m_oParentForm.Globals.PresetList[highlight.Preset].BgColor != Color.Transparent)
-                        {
-                            m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList[highlight.Preset].BgColor;
-                        }
                     }
-                    else if(line.Length >= highlight.EndIndex + timestampOffset && line.Substring(highlight.StartIndex + timestampOffset, highlight.Length) == highlight)
+                    else if (line.Length >= highlight.EndIndex + timestampOffset
+                        && line.Substring(highlight.StartIndex + timestampOffset, highlight.Length) == highlight)
                     {
                         m_oRichTextBuffer.SelectionStart = runningPosition + timestampOffset + highlight.StartIndex;
                         m_oRichTextBuffer.SelectionLength = highlight.Length;
-                        if (m_oParentForm.Globals.PresetList[highlight.Preset].FgColor != Color.Transparent)
-                        {
-                            m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList[highlight.Preset].FgColor;
-                        }
-
-                        if (m_oParentForm.Globals.PresetList[highlight.Preset].BgColor != Color.Transparent)
-                        {
-                            m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList[highlight.Preset].BgColor;
-                        }
+                    }
+                    else
+                    {
+                        m_oRichTextBuffer.SelectionLength = 0;
                     }
 
+                    if (m_oParentForm.Globals.PresetList[highlight.Preset].FgColor != Color.Transparent)
+                    {
+                        m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList[highlight.Preset].FgColor;
+                    }
+
+                    if (m_oParentForm.Globals.PresetList[highlight.Preset].BgColor != Color.Transparent)
+                    {
+                        m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList[highlight.Preset].BgColor;
+                    }
+
+                    lineIndex += 1;
                     runningPosition += line.Length + 1; //add 1 to account for the \n characters removed by the split
                 }
-                
+
             }
-            
+        }
+        private void ParseHighlights()
+        {
+            MatchCollection oMatchCollection;
+
+            if (m_oRichTextBuffer.Text.Contains("You also see") && m_oParentForm.Globals.RoomObjects.Count > 0)
+            {
+                ParseVolatileHighlights(m_oParentForm.Globals.RoomObjects);
+            }
+
+            // Presets and Bold
+            ParseVolatileHighlights(m_oParentForm.Globals.VolatileHighlights);
+
 
             // Highlight String
             if (!Information.IsNothing(m_oParentForm.Globals.HighlightList.RegexString))
