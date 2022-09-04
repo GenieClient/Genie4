@@ -2649,7 +2649,7 @@ namespace GenieClient.Genie
             {
                 if (sText.StartsWith("  You also see"))
                 {
-                    PrintTextToWindow(Environment.NewLine, color, bgcolor);
+                    PrintTextToWindow(Environment.NewLine, color, bgcolor, oWindowTarget, bIsPrompt, true);
                     sText = sText.TrimStart();
                 }
 
@@ -2756,7 +2756,7 @@ namespace GenieClient.Genie
 
         private void PrintTextToWindow(string text, Color color, Color bgcolor, WindowTarget targetwindow = WindowTarget.Main, bool isprompt = false, bool isroomoutput = false)
         {
-            if (text.Length == 0 || (m_oGlobals.Config.Condensed && text.Trim().Length == 0))
+            if (text.Length == 0 || (!isroomoutput && m_oGlobals.Config.Condensed && text.Trim().Length == 0))
             {
                 return;
             }
