@@ -612,7 +612,7 @@ namespace GenieClient.Genie
                                         m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(sBoldBuffer, "creatures", iBoldIndex));
                                     }
                                 }
-                                if (m_bBold)
+                                if (m_bBold & !m_oGlobals.Config.Condensed)
                                 {
                                     if (sTextBuffer.StartsWith("< ") | sTextBuffer.StartsWith("> ") | sTextBuffer.StartsWith("* "))
                                     {
@@ -623,6 +623,7 @@ namespace GenieClient.Genie
                                         PrintTextWithParse(argsText, bIsPrompt: argbIsPrompt, oWindowTarget: argoWindowTarget);
                                         m_bBold = true;
                                         sTextBuffer = string.Empty;
+                                        iBoldIndex = sTextBuffer.Length;
                                         bCombatRow = true;
                                     }
                                 }
