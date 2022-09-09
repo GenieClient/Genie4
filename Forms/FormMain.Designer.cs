@@ -100,6 +100,7 @@ namespace GenieClient
             this._WindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._ScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._ScriptExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.updateScriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._ToolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this._ListAllScriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._TraceAllScriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -768,6 +769,7 @@ namespace GenieClient
             // 
             this._ScriptToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._ScriptExplorerToolStripMenuItem,
+            this.updateScriptsToolStripMenuItem,
             this._ToolStripSeparator11,
             this._ListAllScriptsToolStripMenuItem,
             this._TraceAllScriptsToolStripMenuItem,
@@ -783,58 +785,65 @@ namespace GenieClient
             // _ScriptExplorerToolStripMenuItem
             // 
             this._ScriptExplorerToolStripMenuItem.Name = "_ScriptExplorerToolStripMenuItem";
-            this._ScriptExplorerToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this._ScriptExplorerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this._ScriptExplorerToolStripMenuItem.Text = "Script &Explorer...";
             this._ScriptExplorerToolStripMenuItem.Click += new System.EventHandler(this.ScriptExplorerToolStripMenuItem_Click);
+            // 
+            // updateScriptsToolStripMenuItem
+            // 
+            this.updateScriptsToolStripMenuItem.Name = "updateScriptsToolStripMenuItem";
+            this.updateScriptsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.updateScriptsToolStripMenuItem.Text = "&Update Scripts";
+            this.updateScriptsToolStripMenuItem.Click += new System.EventHandler(this.updateScriptsToolStripMenuItem_Click);
             // 
             // _ToolStripSeparator11
             // 
             this._ToolStripSeparator11.Name = "_ToolStripSeparator11";
-            this._ToolStripSeparator11.Size = new System.Drawing.Size(174, 6);
+            this._ToolStripSeparator11.Size = new System.Drawing.Size(177, 6);
             // 
             // _ListAllScriptsToolStripMenuItem
             // 
             this._ListAllScriptsToolStripMenuItem.Name = "_ListAllScriptsToolStripMenuItem";
-            this._ListAllScriptsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this._ListAllScriptsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this._ListAllScriptsToolStripMenuItem.Text = "&Show Active Scripts";
             this._ListAllScriptsToolStripMenuItem.Click += new System.EventHandler(this.ListAllScriptsToolStripMenuItem_Click);
             // 
             // _TraceAllScriptsToolStripMenuItem
             // 
             this._TraceAllScriptsToolStripMenuItem.Name = "_TraceAllScriptsToolStripMenuItem";
-            this._TraceAllScriptsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this._TraceAllScriptsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this._TraceAllScriptsToolStripMenuItem.Text = "&Trace Active Scripts";
             this._TraceAllScriptsToolStripMenuItem.Click += new System.EventHandler(this.TraceAllScriptsToolStripMenuItem_Click);
             // 
             // _ToolStripSeparator9
             // 
             this._ToolStripSeparator9.Name = "_ToolStripSeparator9";
-            this._ToolStripSeparator9.Size = new System.Drawing.Size(174, 6);
+            this._ToolStripSeparator9.Size = new System.Drawing.Size(177, 6);
             // 
             // _PauseAllScriptsToolStripMenuItem
             // 
             this._PauseAllScriptsToolStripMenuItem.Name = "_PauseAllScriptsToolStripMenuItem";
-            this._PauseAllScriptsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this._PauseAllScriptsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this._PauseAllScriptsToolStripMenuItem.Text = "&Pause All Scripts";
             this._PauseAllScriptsToolStripMenuItem.Click += new System.EventHandler(this.PauseAllScriptsToolStripMenuItem_Click);
             // 
             // _ResumeAllScriptsToolStripMenuItem
             // 
             this._ResumeAllScriptsToolStripMenuItem.Name = "_ResumeAllScriptsToolStripMenuItem";
-            this._ResumeAllScriptsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this._ResumeAllScriptsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this._ResumeAllScriptsToolStripMenuItem.Text = "&Resume All Scripts";
             this._ResumeAllScriptsToolStripMenuItem.Click += new System.EventHandler(this.ResumeAllScriptsToolStripMenuItem_Click);
             // 
             // _ToolStripMenuItem3
             // 
             this._ToolStripMenuItem3.Name = "_ToolStripMenuItem3";
-            this._ToolStripMenuItem3.Size = new System.Drawing.Size(174, 6);
+            this._ToolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
             // 
             // _AbortAllScriptsToolStripMenuItem
             // 
             this._AbortAllScriptsToolStripMenuItem.Name = "_AbortAllScriptsToolStripMenuItem";
             this._AbortAllScriptsToolStripMenuItem.ShortcutKeyDisplayString = "";
-            this._AbortAllScriptsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this._AbortAllScriptsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this._AbortAllScriptsToolStripMenuItem.Text = "&Abort All Scripts";
             this._AbortAllScriptsToolStripMenuItem.Click += new System.EventHandler(this.AbortAllScriptsToolStripMenuItem_Click);
             // 
@@ -4194,6 +4203,7 @@ namespace GenieClient
         private ToolStripMenuItem loadTestClientToolStripMenuItem;
         private ToolStripMenuItem updateMapsToolStripMenuItem;
         private ToolStripMenuItem updatePluginsToolStripMenuItem;
+        private ToolStripMenuItem updateScriptsToolStripMenuItem;
 
         internal ToolStripMenuItem SaveSizedDefaultLayoutToolStripMenuItem
         {

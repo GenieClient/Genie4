@@ -66,6 +66,8 @@ namespace GenieClient.Genie
         public string ConnectScript { get; set; } = string.Empty;
         public string ScriptExtension { get; set; } = "cmd";
 
+        public string ScriptRepo { get; set; }
+         
         public string ScriptDir
         {
             get
@@ -365,6 +367,7 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine("#config {maxgosubdepth} {" + iMaxGoSubDepth + "}");
                 oStreamWriter.WriteLine("#config {ignorescriptwarnings} {" + bIgnoreScriptWarnings + "}");
                 oStreamWriter.WriteLine("#config {roundtimeoffset} {" + dRTOffset + "}");
+                oStreamWriter.WriteLine("#config {scriptrepo} {" + ScriptRepo + "}");
                 oStreamWriter.WriteLine("#config {scriptdir} {" + sScriptDir + "}");
                 oStreamWriter.WriteLine("#config {mapdir} {" + sMapDir + "}");
                 oStreamWriter.WriteLine("#config {plugindir} {" + sPluginDir + "}");
@@ -769,6 +772,13 @@ namespace GenieClient.Genie
 
                                 messages.Add(LocalDirectory.ValidateDirectory(sValue));
                                 ScriptDir = sValue;
+                                break;
+                            }
+                        
+                        case "scriptrepo":
+                            {
+
+                                ScriptRepo = sValue;
                                 break;
                             }
 
