@@ -66,7 +66,7 @@ namespace GenieClient.Genie
         public string ConnectScript { get; set; } = string.Empty;
         public string ScriptExtension { get; set; } = "cmd";
 
-        public string ScriptRepo { get; set; }
+        public string ScriptRepo { get; set; } = string.Empty;
          
         public string ScriptDir
         {
