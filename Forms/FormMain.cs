@@ -8025,7 +8025,7 @@ namespace GenieClient
 
         private void updatePluginsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult response = MessageBox.Show("This may take a moment. Update Plugins?\r\nNote: This will only update plugins from the Genie 4 Plugins folder..", "Update Maps?", MessageBoxButtons.YesNoCancel);
+            DialogResult response = MessageBox.Show("This may take a moment. Update Plugins?\r\nNote: This will only update plugins from the Genie 4 Plugins folder..", "Update Plugins?", MessageBoxButtons.YesNoCancel);
             if (response == DialogResult.Yes)
             {
                 Parallel.Invoke(() =>
@@ -8035,6 +8035,31 @@ namespace GenieClient
                     {
                         AddText("Plugins Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                         FormPlugin_ReloadPlugins();
+                    }
+                    else
+                    {
+                        AddText("Something went wrong.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    }
+                });
+            }
+        }
+
+        private void updateScriptsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!m_oGlobals.Config.ScriptRepo.EndsWith(".zip"))
+            {
+                MessageBox.Show("You do not have a repository configured properly." + Environment.NewLine + "Please use \"#config scriptrepo {address of a zip file}\" to configure." + Environment.NewLine + "The URI must be a zip file.");
+                return; 
+            }
+            DialogResult response = MessageBox.Show($"This may take a moment. Update Scripts?\r\nRepo: {m_oGlobals.Config.ScriptRepo}", "Update Scripts?", MessageBoxButtons.YesNoCancel);
+            if (response == DialogResult.Yes)
+            {
+                Parallel.Invoke(() =>
+                {
+                    AddText($"Updating Scripts in {m_oGlobals.Config.ScriptDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    if (Updater.UpdateScripts(m_oGlobals.Config.ScriptDir, m_oGlobals.Config.ScriptRepo))
+                    {
+                        AddText("Scripts Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                     }
                     else
                     {
