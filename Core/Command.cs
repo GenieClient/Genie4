@@ -1890,8 +1890,13 @@ namespace GenieClient.Genie
                                                             if (oArgs.Count > 3)
                                                             {
                                                                 string argsKey = oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 3));
-                                                                bool argbHighlightWholeRow = true;
-                                                                oGlobals.HighlightList.Add(argsKey, argbHighlightWholeRow, oGlobals.ParseGlobalVars(oArgs[2].ToString()));
+                                                                bool highlightWholeRow = true;
+                                                                string color = oGlobals.ParseGlobalVars(oArgs[2].ToString());
+                                                                bool caseSensitive = oArgs.Count > 4 ? oArgs[4].ToString().ToUpper() == "TRUE" : false;
+                                                                string soundFile = oArgs.Count > 5 ? oArgs[5].ToString() : string.Empty;
+                                                                string className = oArgs.Count > 6 ? oArgs[6].ToString() : string.Empty;
+                                                                bool isActive = oArgs.Count > 7 ? oArgs[7].ToString().ToUpper() == "TRUE" : true;
+                                                                oGlobals.HighlightList.Add(argsKey, highlightWholeRow, color, caseSensitive, soundFile, className, isActive);
                                                                 oGlobals.HighlightList.RebuildLineIndex();
                                                             }
 
@@ -1903,9 +1908,14 @@ namespace GenieClient.Genie
                                                         {
                                                             if (oArgs.Count > 3)
                                                             {
-                                                                string argsKey1 = oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 3));
-                                                                bool argbHighlightWholeRow1 = false;
-                                                                oGlobals.HighlightList.Add(argsKey1, argbHighlightWholeRow1, oGlobals.ParseGlobalVars(oArgs[2].ToString()));
+                                                                string highlightText = oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 3));
+                                                                bool highlightWholeRow = false;
+                                                                string color = oGlobals.ParseGlobalVars(oArgs[2].ToString());
+                                                                bool caseSensitive = oArgs.Count > 4 ? oArgs[4].ToString().ToUpper() == "TRUE" : false;
+                                                                string soundFile = oArgs.Count > 5 ? oArgs[5].ToString() : string.Empty;
+                                                                string className = oArgs.Count > 6 ? oArgs[6].ToString() : string.Empty;
+                                                                bool isActive = oArgs.Count > 7 ? oArgs[7].ToString().ToUpper() == "TRUE" : true;
+                                                                oGlobals.HighlightList.Add(highlightText, highlightWholeRow, color , caseSensitive, soundFile, className, isActive);
                                                                 oGlobals.HighlightList.RebuildStringIndex();
                                                             }
 
@@ -1916,9 +1926,13 @@ namespace GenieClient.Genie
                                                         {
                                                             if (oArgs.Count > 3)
                                                             {
-                                                                string argsKey2 = oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 3));
-                                                                string argsColorName = oGlobals.ParseGlobalVars(oArgs[2].ToString());
-                                                                oGlobals.HighlightBeginsWithList.Add(argsKey2, argsColorName);
+                                                                string beginsWithText = oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 3));
+                                                                string color = oGlobals.ParseGlobalVars(oArgs[2].ToString());
+                                                                bool caseSensitive = oArgs.Count > 4 ? oArgs[4].ToString().ToUpper() == "TRUE" : false;
+                                                                string soundFile = oArgs.Count > 5 ? oArgs[5].ToString() : string.Empty;
+                                                                string className = oArgs.Count > 6 ? oArgs[6].ToString() : string.Empty;
+                                                                bool isActive = oArgs.Count > 7 ? oArgs[7].ToString().ToUpper() == "TRUE" : true;
+                                                                oGlobals.HighlightBeginsWithList.Add(beginsWithText, color, caseSensitive, soundFile, className, isActive);
                                                             }
 
                                                             break;
@@ -1932,9 +1946,13 @@ namespace GenieClient.Genie
                                                                 string argsRegExp = oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 3));
                                                                 if (Utility.ValidateRegExp(argsRegExp) == true)
                                                                 {
-                                                                    string argsKey3 = oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 3));
-                                                                    string argsColorName1 = oGlobals.ParseGlobalVars(oArgs[2].ToString());
-                                                                    oGlobals.HighlightRegExpList.Add(argsKey3, argsColorName1);
+                                                                    string regexPattern = oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 3));
+                                                                    string color = oGlobals.ParseGlobalVars(oArgs[2].ToString());
+                                                                    bool caseSensitive = oArgs.Count > 4 ? oArgs[4].ToString().ToUpper() == "TRUE" : false;
+                                                                    string soundFile = oArgs.Count > 5 ? oArgs[5].ToString() : string.Empty;
+                                                                    string className = oArgs.Count > 6 ? oArgs[6].ToString() : string.Empty;
+                                                                    bool isActive = oArgs.Count > 7 ? oArgs[7].ToString().ToUpper() == "TRUE" : true;
+                                                                    oGlobals.HighlightRegExpList.Add(regexPattern, color, caseSensitive, soundFile, className, isActive);
                                                                 }
                                                                 else
                                                                 {
@@ -2859,6 +2877,7 @@ namespace GenieClient.Genie
             EchoText("mapdir=" + oGlobals.Config.sMapDir + System.Environment.NewLine);
             EchoText("scriptdir=" + oGlobals.Config.sScriptDir + System.Environment.NewLine);
             EchoText("scriptchar=" + oGlobals.Config.ScriptChar.ToString() + System.Environment.NewLine);
+            EchoText("scriptrepo=" + oGlobals.Config.ScriptRepo + System.Environment.NewLine);
             EchoText("scriptextension=" + oGlobals.Config.ScriptExtension + System.Environment.NewLine);
             EchoText("scripttimeout=" + oGlobals.Config.iScriptTimeout.ToString() + System.Environment.NewLine);
             EchoText("separatorchar=" + oGlobals.Config.cSeparatorChar.ToString() + System.Environment.NewLine);

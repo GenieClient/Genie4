@@ -81,7 +81,7 @@ namespace GenieClient
 
         public static void UpdateUpdater()
         {
-            if (UpdaterIsCurrent) return;
+            if (1 == 1) return;
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             client.DefaultRequestHeaders.Add("User-Agent", "Genie Client Updater");
@@ -114,13 +114,18 @@ namespace GenieClient
         public static bool UpdateMaps(string mapdir)
         {
             UpdateUpdater();
-            return Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--a --m|\"{mapdir}\"", true);
+            return Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --maps|\"{mapdir}\"", true);
         }
 
         public static bool UpdatePlugins(string plugindir)
         {
             UpdateUpdater();
-            return Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--a --p|\"{plugindir}\"", true);
+            return Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --plugins|\"{plugindir}\"", true);
+        }
+        public static bool UpdateScripts(string scriptdir, string scriptrepo)
+        {
+            UpdateUpdater();
+            return Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --scripts|\"{scriptdir}\"|\"{scriptrepo}\"", true);
         }
         public static void ForceUpdate()
         {

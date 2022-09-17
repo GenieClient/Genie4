@@ -2510,8 +2510,6 @@ namespace GenieClient
                             // Skip "block"
                             m_oCurrentLine.SkipBlock = true;
                         }
-
-                        m_oCurrentLine.BlockValue = CurrentLine.BlockState.noeval;
                         break;
                     }
 

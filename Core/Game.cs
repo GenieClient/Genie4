@@ -515,12 +515,14 @@ namespace GenieClient.Genie
         public void ParseGameRow(string sText)
         {
             var oXMLBuffer = new StringBuilder();
+            bool hasXML = false;
             int iInsideXML = 0;
             bool bEndTagFound = false;
             bool bInsideHTMLTag = false;
             string sHTMLBuffer = string.Empty;
             string sTextBuffer = string.Empty;
             string sBoldBuffer = string.Empty;
+            int iBoldIndex = 0;
             char cPreviousChar = Conversions.ToChar("");
             bool bCombatRow = false;
             bool bPromptRow = false;
@@ -548,6 +550,7 @@ namespace GenieClient.Genie
                     case '<':
                         {
                             iInsideXML += 1;
+                            hasXML = true;
                             oXMLBuffer.Append(c);
                             break;
                         }
@@ -589,8 +592,7 @@ namespace GenieClient.Genie
                                         default:
                                             break;
                                     }
-                                    sTmp = ParseSubstitutions(sTmp);
-                                    m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>(presetLabel, sTmp));
+                                    m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(sTmp, presetLabel, 0));
                                     if(presetLabel == "roomdesc")
                                     {
                                         PrintTextWithParse(sTmp, bIsPrompt: false, oWindowTarget: 0);
@@ -600,16 +602,17 @@ namespace GenieClient.Genie
                                 if (buffer.EndsWith(@"<pushBold/>"))
                                 {
                                     sBoldBuffer = string.Empty;
+                                    iBoldIndex = sTextBuffer.Length; //do not subtract 1 because our start index isn't added yet
                                 }
                                 if (buffer.EndsWith(@"<popBold/>"))
                                 {
                                     if (!string.IsNullOrWhiteSpace(sBoldBuffer))
                                     {
                                         sBoldBuffer = ParseSubstitutions(sBoldBuffer);
-                                        m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer));
+                                        m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(sBoldBuffer, "creatures", iBoldIndex));
                                     }
                                 }
-                                if (m_bBold)
+                                if (m_bBold & !m_oGlobals.Config.Condensed)
                                 {
                                     if (sTextBuffer.StartsWith("< ") | sTextBuffer.StartsWith("> ") | sTextBuffer.StartsWith("* "))
                                     {
@@ -620,6 +623,7 @@ namespace GenieClient.Genie
                                         PrintTextWithParse(argsText, bIsPrompt: argbIsPrompt, oWindowTarget: argoWindowTarget);
                                         m_bBold = true;
                                         sTextBuffer = string.Empty;
+                                        iBoldIndex = sTextBuffer.Length;
                                         bCombatRow = true;
                                     }
                                 }
@@ -763,7 +767,7 @@ namespace GenieClient.Genie
                 else if (!string.IsNullOrWhiteSpace(sBoldBuffer))
                 {
                     sBoldBuffer = ParseSubstitutions(sBoldBuffer);
-                    m_oGlobals.VolatileHighlights.Add(new System.Collections.Generic.KeyValuePair<string, string>("creatures", sBoldBuffer.Trim())); //trim because excessive whitespace seems to be breaking this
+                    m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(sBoldBuffer.Trim(), "creatures", iBoldIndex)); //trim because excessive whitespace seems to be breaking this
                     sBoldBuffer = string.Empty;
                 }
 
@@ -785,10 +789,12 @@ namespace GenieClient.Genie
                     }
                 }
 
+                if (!(sTextBuffer == "\r\n" && hasXML))
+                {
+                    bool isRoomOutput = sText.Contains(@"<preset id='roomDesc'>");
+                    PrintTextWithParse(sTextBuffer, default, default, default, default, isRoomOutput);
+                }
                 
-                bool argbIsPrompt1 = false;
-                WindowTarget argoWindowTarget1 = 0;
-                PrintTextWithParse(sTextBuffer, bIsPrompt: argbIsPrompt1, oWindowTarget: argoWindowTarget1);
                 
                 if (bCombatRow == true)
                 {
@@ -2491,13 +2497,15 @@ namespace GenieClient.Genie
 
         private Regex m_MonsterRegex = new Regex("<pushBold />([^<]*)<popBold />([^,.]*)", MyRegexOptions.options);
         private Regex m_RoomObjectsRegex = new Regex("<pushBold />([^<]*)<popBold />");
-
+        private static int tagOffset = "<pushBold /><popBold />".Length;
         private void SetRoomObjects(XmlNode oXmlNode)
         {
             m_oGlobals.RoomObjects.Clear();
-            foreach (Match roomObject in m_RoomObjectsRegex.Matches(oXmlNode.InnerXml.Replace(" and ", ", ").Replace(" and <pushBold />", ", <pushBold />")))
+            foreach (Match roomObject in m_RoomObjectsRegex.Matches(oXmlNode.InnerXml))
             {
-                m_oGlobals.RoomObjects.Add(new KeyValuePair<string, string>("creatures", ParseSubstitutions(roomObject.Groups[1].Value)));
+                int position = roomObject.Index - (tagOffset * m_oGlobals.RoomObjects.Count);
+                VolatileHighlight highlight = new VolatileHighlight(ParseSubstitutions(roomObject.Groups[1].Value), "creatures", position);
+                m_oGlobals.RoomObjects.Add(highlight);
             }
         }
         private int CountMonsters(XmlNode oXmlNode)
@@ -2641,7 +2649,7 @@ namespace GenieClient.Genie
             {
                 if (sText.StartsWith("  You also see"))
                 {
-                    PrintTextToWindow(Environment.NewLine, color, bgcolor);
+                    PrintTextToWindow(Environment.NewLine, color, bgcolor, oWindowTarget, bIsPrompt, true);
                     sText = sText.TrimStart();
                 }
 
@@ -2748,7 +2756,7 @@ namespace GenieClient.Genie
 
         private void PrintTextToWindow(string text, Color color, Color bgcolor, WindowTarget targetwindow = WindowTarget.Main, bool isprompt = false, bool isroomoutput = false)
         {
-            if (text.Length == 0 || (m_oGlobals.Config.Condensed && text.Trim().Length == 0))
+            if (text.Length == 0 || (!isroomoutput && m_oGlobals.Config.Condensed && text.Trim().Length == 0))
             {
                 return;
             }
@@ -3010,7 +3018,7 @@ namespace GenieClient.Genie
                                 {
                                     bool bNewLineStart = text.StartsWith(System.Environment.NewLine);
                                     bool bNewLineEnd = text.EndsWith(System.Environment.NewLine);
-                                    text = sl.SubstituteRegex.Replace(Utility.Trim(text), sl.sReplaceBy.ToString());
+                                    text = sl.SubstituteRegex.Replace(Utility.Trim(text), m_oGlobals.ParseGlobalVars(sl.sReplaceBy).ToString());
                                     if (bNewLineStart == true)
                                     {
                                         text = System.Environment.NewLine + text;
@@ -3134,7 +3142,7 @@ namespace GenieClient.Genie
                         m_iConnectAttempts = 0;
                         m_bManualDisconnect = false;
                         m_oReconnectTime = default;
-                        m_oSocket.Send(m_sConnectKey + Constants.vbLf + "/FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " / P:WIN_UNKNOWN /XML" + Constants.vbLf);    // TEMP
+                        m_oSocket.Send(m_sConnectKey + Constants.vbLf + "FE:WRAYTH /VERSION:1.0.1.22 /P:WIN_UNKNOWN /XML" + Constants.vbLf);    // TEMP
                         string argkey = "connected";
                         string argvalue = m_oSocket.IsConnected ? "1" : "0";
                         m_oGlobals.VariableList.Add(argkey, argvalue, Globals.Variables.VariableType.Reserved);

@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -455,6 +456,7 @@ namespace GenieClient
                 {
                     _m_oAutoMapper.EventEchoText -= Plugin_EventEchoText;
                     _m_oAutoMapper.EventSendText -= Plugin_EventSendText;
+                    _m_oAutoMapper.EventParseText -= ClassCommand_ParseText;
                     _m_oAutoMapper.EventVariableChanged -= PluginHost_EventVariableChanged;
                 }
 
@@ -463,6 +465,7 @@ namespace GenieClient
                 {
                     _m_oAutoMapper.EventEchoText += Plugin_EventEchoText;
                     _m_oAutoMapper.EventSendText += Plugin_EventSendText;
+                    _m_oAutoMapper.EventParseText += ClassCommand_ParseText;
                     _m_oAutoMapper.EventVariableChanged += PluginHost_EventVariableChanged;
                 }
             }
@@ -1902,7 +1905,7 @@ namespace GenieClient
             Application.DoEvents();
             int I = LoadPlugins();
             Application.DoEvents();
-            UpdateOnStartup();
+            Parallel.Invoke(UpdateOnStartup);
             Application.DoEvents();
 
             m_oOutputMain.RichTextBoxOutput.EndTextUpdate();
@@ -7916,35 +7919,38 @@ namespace GenieClient
 
         private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Updater.ClientIsCurrent)
+            Parallel.Invoke(() =>
             {
-                AddText("You have the latest version of Genie.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor);
-            }
-            else
-            {
-                AddText("An Update is Available.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                DialogResult response = MessageBox.Show("An Update is Available. Would you like to update?", "Rub the Bottle?", MessageBoxButtons.YesNoCancel);
-                if (response == DialogResult.Yes)
+                if (Updater.ClientIsCurrent)
                 {
-                    if (m_oGame.IsConnectedToGame)
+                    AddText("You have the latest version of Genie.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor);
+                }
+                else
+                {
+                    AddText("An Update is Available.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    DialogResult response = MessageBox.Show("An Update is Available. Would you like to update?", "Rub the Bottle?", MessageBoxButtons.YesNoCancel);
+                    if (response == DialogResult.Yes)
                     {
-                        response = MessageBox.Show("Genie will close and this will disconnect you from the game.", "Close Genie?", MessageBoxButtons.YesNoCancel);
-                        if(response == DialogResult.Yes)
+                        if (m_oGame.IsConnectedToGame)
+                        {
+                            response = MessageBox.Show("Genie will close and this will disconnect you from the game.", "Close Genie?", MessageBoxButtons.YesNoCancel);
+                            if (response == DialogResult.Yes)
+                            {
+                                AddText("Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                                Updater.RunUpdate();
+                                m_oGame.Disconnect(true);
+                                System.Windows.Forms.Application.Exit();
+                            }
+                        }
+                        else
                         {
                             AddText("Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                             Updater.RunUpdate();
-                            m_oGame.Disconnect(true);
                             System.Windows.Forms.Application.Exit();
                         }
                     }
-                    else
-                    {
-                        AddText("Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                        Updater.RunUpdate();
-                        System.Windows.Forms.Application.Exit();
-                    }
                 }
-            }
+            });
         }
 
         private void forceUpdateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -8004,33 +8010,64 @@ namespace GenieClient
             DialogResult response = MessageBox.Show("This may take a moment. Update Maps?", "Update Maps?", MessageBoxButtons.YesNoCancel);
             if (response == DialogResult.Yes)
             {
-                AddText($"Updating Maps in {m_oGlobals.Config.MapDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                if (Updater.UpdateMaps(m_oGlobals.Config.MapDir))
+                Parallel.Invoke(() =>
                 {
-                    AddText("Maps Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main); 
-                }
-                else
-                {
-                    AddText("Something went wrong.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                }
+                    AddText($"Updating Maps in {m_oGlobals.Config.MapDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    if (Updater.UpdateMaps(m_oGlobals.Config.MapDir))
+                    {
+                        AddText("Maps Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    }
+                    else
+                    {
+                        AddText("Something went wrong.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    }
+                });
             }
         }
 
         private void updatePluginsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult response = MessageBox.Show("This may take a moment. Update Plugins?\r\nNote: This will only update plugins from the Genie 4 Plugins folder..", "Update Maps?", MessageBoxButtons.YesNoCancel);
+            DialogResult response = MessageBox.Show("This may take a moment. Update Plugins?\r\nNote: This will only update plugins from the Genie 4 Plugins folder..", "Update Plugins?", MessageBoxButtons.YesNoCancel);
             if (response == DialogResult.Yes)
             {
-                AddText($"Updating Plugins in {m_oGlobals.Config.PluginDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                if (Updater.UpdatePlugins(m_oGlobals.Config.PluginDir))
+                Parallel.Invoke(() =>
                 {
-                    AddText("Plugins Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    FormPlugin_ReloadPlugins();
-                }
-                else
+                    AddText($"Updating Plugins in {m_oGlobals.Config.PluginDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    if (Updater.UpdatePlugins(m_oGlobals.Config.PluginDir))
+                    {
+                        AddText("Plugins Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                        FormPlugin_ReloadPlugins();
+                    }
+                    else
+                    {
+                        AddText("Something went wrong.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    }
+                });
+            }
+        }
+
+        private void updateScriptsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!m_oGlobals.Config.ScriptRepo.EndsWith(".zip"))
+            {
+                MessageBox.Show("You do not have a repository configured properly." + Environment.NewLine + "Please use \"#config scriptrepo {address of a zip file}\" to configure." + Environment.NewLine + "The URI must be a zip file.");
+                return; 
+            }
+            DialogResult response = MessageBox.Show($"This may take a moment. Update Scripts?\r\nRepo: {m_oGlobals.Config.ScriptRepo}", "Update Scripts?", MessageBoxButtons.YesNoCancel);
+            if (response == DialogResult.Yes)
+            {
+                Parallel.Invoke(() =>
                 {
-                    AddText("Something went wrong.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                }
+                    AddText($"Updating Scripts in {m_oGlobals.Config.ScriptDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    if (Updater.UpdateScripts(m_oGlobals.Config.ScriptDir, m_oGlobals.Config.ScriptRepo))
+                    {
+                        AddText("Scripts Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    }
+                    else
+                    {
+                        AddText("Something went wrong.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    }
+                });
             }
         }
     }

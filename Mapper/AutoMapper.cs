@@ -33,6 +33,10 @@ namespace GenieClient.Mapper
 
         public delegate void EventSendTextEventHandler(string sText, string sSource);
 
+        public event EventParseTextEventHandler EventParseText;
+
+        public delegate void EventParseTextEventHandler(string sText);
+
         public event EventVariableChangedEventHandler EventVariableChanged;
 
         public delegate void EventVariableChangedEventHandler(string sVariable);
@@ -243,7 +247,8 @@ namespace GenieClient.Mapper
                         if ((dif.Extension.ToLower() ?? "") == ".xml")
                     {
                         xdoc = new XmlDocument();
-                        xdoc.Load(dif.FullName);
+                        
+                        xdoc.Load(new StreamReader(dif.FullName,true));
                         xnlist = xdoc.SelectNodes("zone/node");
                         foreach (XmlNode xn in xnlist)
                         {
@@ -300,7 +305,7 @@ namespace GenieClient.Mapper
                 if ((dif.Extension.ToLower() ?? "") == ".xml")
                 {
                     xdoc = new XmlDocument();
-                    xdoc.Load(dif.FullName);
+                    xdoc.Load(new StreamReader(dif.FullName, true));
                     xnlist = xdoc.SelectNodes("zone/node");
                     foreach (XmlNode xn in xnlist)
                     {
@@ -1214,21 +1219,21 @@ namespace GenieClient.Mapper
                                     {
                                         EchoText("#goto " + sArg, true);
                                         set_GlobalVariable("destination", iNodeID.ToString());
-                                        SendText("#parse DESTINATION FOUND");
+                                        ParseText("DESTINATION FOUND", true);
                                         WalkToNode(n);
                                     }
                                     else
                                     {
                                         EchoText("[" + Name + "] Destination ID #" + iNodeID.ToString() + " not found - your current location is unknown.", true);
                                         set_GlobalVariable("destination", "0");
-                                        SendText("#parse DESTINATION NOT FOUND");
+                                        ParseText("DESTINATION NOT FOUND", true);
                                     }
                                 }
                                 else
                                 {
                                     EchoText("[" + Name + "] Destination ID \"" + sArg + "\" not found.", true);
                                     set_GlobalVariable("destination", "0");
-                                    SendText("#parse DESTINATION NOT FOUND");
+                                    ParseText("DESTINATION NOT FOUND", true);
                                 }
                             }
                             else
@@ -1330,13 +1335,13 @@ namespace GenieClient.Mapper
                             {
                                 // Show all labels in map zone (doesn't matter if player is located or not)
                                 EchoText("[" + Name + "] Listing current zone labels:", true);
-                                SendText("#parse [" + Name + "] Listing current zone labels:");
+                                ParseText("[" + Name + "] Listing current zone labels:", true);
                                 foreach (Node n in m_Nodes)
                                 {
                                     if (n.Note.Length > 0)
                                     {
                                         EchoText(Constants.vbTab + n.Note + " (" + n.ID.ToString() + ")", true);
-                                        SendText("#parse " + Constants.vbTab + n.Note + " (" + n.ID.ToString() + ")");
+                                        ParseText("" + Constants.vbTab + n.Note + " (" + n.ID.ToString() + ")", true);
                                     }
                                 }
                                 break;
@@ -1619,7 +1624,7 @@ namespace GenieClient.Mapper
                 if (m_Nodes.PathText.Length > 0)
                 {
                     EchoText("[" + Name + "] mapperpath: " + m_Nodes.PathVariableText, true);
-                    SendText("#parse [" + Name + "] mapperpath: " + m_Nodes.PathVariableText);
+                    ParseText("[" + Name + "] mapperpath: " + m_Nodes.PathVariableText, true);
                     set_GlobalVariable("mapperpath", m_Nodes.PathVariableText);
                 }
             }
@@ -1956,7 +1961,7 @@ namespace GenieClient.Mapper
         private void GrapForm_ClickNode(string zoneid, int nodeid)
         {
             set_GlobalVariable("destination", nodeid.ToString());
-            SendText(string.Format("#parse MAPCLICK {0} {1}", zoneid, nodeid));
+            ParseText(string.Format("MAPCLICK {0} {1}", zoneid, nodeid), true);
         }
 
         private void GraphForm_ZoneIDChange(string zoneid)
@@ -2011,6 +2016,11 @@ namespace GenieClient.Mapper
         public void SendText(string Text)
         {
             EventSendText?.Invoke(Text, "AutoMapper");
+
+        }
+        public void ParseText(string Text, bool automapper)
+        {
+            EventParseText?.Invoke(Text);
         }
 
         public string get_GlobalVariable(string Var)
