@@ -456,6 +456,7 @@ namespace GenieClient
                 {
                     _m_oAutoMapper.EventEchoText -= Plugin_EventEchoText;
                     _m_oAutoMapper.EventSendText -= Plugin_EventSendText;
+                    _m_oAutoMapper.EventParseText -= ClassCommand_ParseText;
                     _m_oAutoMapper.EventVariableChanged -= PluginHost_EventVariableChanged;
                 }
 
@@ -464,6 +465,7 @@ namespace GenieClient
                 {
                     _m_oAutoMapper.EventEchoText += Plugin_EventEchoText;
                     _m_oAutoMapper.EventSendText += Plugin_EventSendText;
+                    _m_oAutoMapper.EventParseText += ClassCommand_ParseText;
                     _m_oAutoMapper.EventVariableChanged += PluginHost_EventVariableChanged;
                 }
             }
