@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Net;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -150,35 +149,66 @@ namespace GenieClient
             }
         }
 
-        public void DirectConnect(string[] ConnectionParameters)
+        public void DirectConnect(string[] parameters)
         {
-            if(ConnectionParameters.Length > 0)
+            if(parameters.Length > 0)
             {
                 string character = "";
                 string game = "";
                 string host = "";
+                string key = "";
                 int port = 0;
-                string[] parameters = ConnectionParameters[0].Split(@"/",StringSplitOptions.RemoveEmptyEntries);
+                if (parameters.Length == 1)
+                {
+
+                    if (Path.GetExtension(parameters[0]).ToUpper() == ".SAL")
+                    {
+                        string pathToSAL = parameters[0];
+                        character = Path.GetFileNameWithoutExtension(pathToSAL).Split("(")[0].Split(" ")[0].Trim(); //in case the file was auto-renamed, split off everything before a peren and/or space;
+                        using (StreamReader reader = new StreamReader(pathToSAL))
+                        {
+                            List<string> salEntries = new List<string>();
+                            while (!reader.EndOfStream)
+                            {
+                                salEntries.Add(reader.ReadLine());
+                            }
+                            parameters = salEntries.ToArray();
+                        }
+                    }
+                    else
+                    {
+                        parameters = parameters[0].Split(@"/", StringSplitOptions.RemoveEmptyEntries);
+                    }
+                }
                 foreach (string parameter in parameters)
                 {
-                    switch (parameter[0])
+                    if (parameter.Length <= 1) continue;
+                    string value = parameter.Substring(1);
+                    if (parameter.Contains(":")) value = parameter.Split(':')[1];
+                    else if (parameter.Contains("=")) value = parameter.Split('=')[1];
+                    switch (parameter.ToUpper()[0])
                     {
-                        case 'K': //character name
-                            character = parameter.Substring(1);
+                        case 'K': //key
+                            key = value;
                             break;
                         case 'H': //host
-                            host = parameter.Substring(1);
+                            host = value;
                             break;
                         case 'P': //port
-                            int.TryParse(parameter.Substring(1), out port);
+                            int.TryParse(value, out port);
                             break;
                         case 'G': //instance code
-                            game = parameter.Substring(1); 
+                            game = value;
+                            break;
+                        case 'C': //character
+                            character = value;
                             break;
                         default:
                             break;
                     }
                 }
+                
+                
                 if(string.IsNullOrWhiteSpace(game) ||
                     string.IsNullOrWhiteSpace(host) ||
                     string.IsNullOrWhiteSpace(character) ||
@@ -191,7 +221,8 @@ namespace GenieClient
                 m_oGame.AccountCharacter = character;
                 m_oGame.AccountGame = game;
                 SafeLoadProfile(m_sCurrentProfileFile, false);
-                m_oGame.DirectConnect(character, game, host, port);
+                if(string.IsNullOrEmpty(key)) m_oGame.DirectConnect(character, game, host, port);
+                else m_oGame.DirectConnect(character, game, host, port, key);
             }
         }
 
