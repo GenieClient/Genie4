@@ -395,6 +395,11 @@ namespace GenieClient.Genie
             DoConnect("eaccess.play.net", 7910);
         }
 
+        public void DirectConnect(string Character, string Game, string Host, int Port, string Key)
+        {
+            m_sConnectKey = Key;
+            DirectConnect(Character, Game, Host, Port);
+        }
         public void DirectConnect(string Character, string Game, string Host, int Port)
         {
             m_oLastUserActivity = DateTime.Now;
