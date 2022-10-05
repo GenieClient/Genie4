@@ -183,24 +183,42 @@ namespace GenieClient
                 foreach (string parameter in parameters)
                 {
                     if (parameter.Length <= 1) continue;
+
+                    string param = parameter[0].ToString();
                     string value = parameter.Substring(1);
-                    if (parameter.Contains(":")) value = parameter.Split(':')[1];
-                    else if (parameter.Contains("=")) value = parameter.Split('=')[1];
-                    switch (parameter.ToUpper()[0])
+                    foreach(char delimiter in "|:;-~=")
                     {
-                        case 'K': //key
+                        if (parameter.Contains(delimiter))
+                        {
+                            value = parameter.Split(delimiter)[1];
+                            param = parameter.Split(delimiter)[0];
+                            break;
+                        }
+                    }
+
+                    switch (param.ToUpper())
+                    {
+                        case "K": //key
+                        case "KEY":
                             key = value;
                             break;
-                        case 'H': //host
+                        case "H": //host
+                        case "HOST":
+                        case "GAMEHOST":
                             host = value;
                             break;
-                        case 'P': //port
+                        case "P": //port
+                        case "PORT":
+                        case "GAMEPORT":
                             int.TryParse(value, out port);
                             break;
-                        case 'G': //instance code
+                        case "G": //instance code
+                        case "GAME":
+                        case "GAMECODE":
                             game = value;
                             break;
-                        case 'C': //character
+                        case "C": //character
+                        case "CHARACTER":
                             character = value;
                             break;
                         default:
