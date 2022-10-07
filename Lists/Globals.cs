@@ -853,6 +853,7 @@ namespace GenieClient.Genie
                 Add("poisoned", "0", VariableType.Reserved);
                 Add("diseased", "0", VariableType.Reserved);
                 Add("connected", "0", VariableType.Reserved);
+                Add("client", My.MyProject.Application.Info.ProductName.ToString(), VariableType.Reserved);
                 Add("version", My.MyProject.Application.Info.Version.ToString(), VariableType.Reserved);
                 Add("time", "@time@", VariableType.Reserved);
                 Add("date", "@date@", VariableType.Reserved);
