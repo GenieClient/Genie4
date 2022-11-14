@@ -182,6 +182,7 @@
   </ItemGroup>
   <ItemGroup>
 	  <EmbeddedResource Include="Graphics\Taleweaver.ico" />
+	  <EmbeddedResource Include="Libs\Interfaces.dll" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\skin_bottom.bmp" />
@@ -216,6 +217,7 @@
     <EmbeddedResource Remove="Forms\ConfigPanels\UCVariables.resx" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Libs\Interfaces.dll" />
     <None Remove="Libs\lua51.dll" />
     <None Remove="Libs\LuaInterface.dll" />
   </ItemGroup>
