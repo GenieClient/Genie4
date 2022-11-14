@@ -362,7 +362,6 @@ namespace GenieClient
         {
             m_oRichTextBuffer.SelectionLength = 0;
             m_oRichTextBuffer.SelectionStart = int.MaxValue;
-            int iStart = m_oRichTextBuffer.SelectionStart;
             if (oColor != Color.Transparent & oColor != m_oEmptyColor)
             {
                 m_oRichTextBuffer.SelectionColor = oColor;
@@ -397,7 +396,6 @@ namespace GenieClient
             if (sText.Length > 0)
             {
                 m_oRichTextBuffer.SelectedText = sText;
-                ParseLineHighlight(iStart, sText);
             }
         }
 
@@ -542,6 +540,8 @@ namespace GenieClient
             // Presets and Bold
             ParseVolatileHighlights(m_oParentForm.Globals.VolatileHighlights);
 
+            // Regex Highlights
+            ParseLineHighlight(m_oRichTextBuffer.SelectionStart, m_oRichTextBuffer.Text);
 
             // Highlight String
             if (!Information.IsNothing(m_oParentForm.Globals.HighlightList.RegexString))

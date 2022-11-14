@@ -198,7 +198,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Libs\Antlr3.Runtime.dll" />
-    <EmbeddedResource Include="Libs\Interfaces.dll" />
+    <EmbeddedResource Include="Libs\Interfaces.dll.invalid" />
     <EmbeddedResource Include="Libs\Jint.dll">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>

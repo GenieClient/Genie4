@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Net;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -150,35 +149,84 @@ namespace GenieClient
             }
         }
 
-        public void DirectConnect(string[] ConnectionParameters)
+        public void DirectConnect(string[] parameters)
         {
-            if(ConnectionParameters.Length > 0)
+            if(parameters.Length > 0)
             {
                 string character = "";
                 string game = "";
                 string host = "";
+                string key = "";
                 int port = 0;
-                string[] parameters = ConnectionParameters[0].Split(@"/",StringSplitOptions.RemoveEmptyEntries);
+                if (parameters.Length == 1)
+                {
+
+                    if (Path.GetExtension(parameters[0]).ToUpper() == ".SAL")
+                    {
+                        string pathToSAL = parameters[0];
+                        character = Path.GetFileNameWithoutExtension(pathToSAL).Split("(")[0].Split(" ")[0].Trim(); //in case the file was auto-renamed, split off everything before a peren and/or space;
+                        using (StreamReader reader = new StreamReader(pathToSAL))
+                        {
+                            List<string> salEntries = new List<string>();
+                            while (!reader.EndOfStream)
+                            {
+                                salEntries.Add(reader.ReadLine());
+                            }
+                            parameters = salEntries.ToArray();
+                        }
+                    }
+                    else
+                    {
+                        parameters = parameters[0].Split(@"/", StringSplitOptions.RemoveEmptyEntries);
+                    }
+                }
                 foreach (string parameter in parameters)
                 {
-                    switch (parameter[0])
+                    if (parameter.Length <= 1) continue;
+
+                    string param = parameter[0].ToString();
+                    string value = parameter.Substring(1);
+                    foreach(char delimiter in "|:;-~=")
                     {
-                        case 'K': //character name
-                            character = parameter.Substring(1);
+                        if (parameter.Contains(delimiter))
+                        {
+                            value = parameter.Split(delimiter)[1];
+                            param = parameter.Split(delimiter)[0];
                             break;
-                        case 'H': //host
-                            host = parameter.Substring(1);
+                        }
+                    }
+
+                    switch (param.ToUpper())
+                    {
+                        case "K": //key
+                        case "KEY":
+                            key = value;
                             break;
-                        case 'P': //port
-                            int.TryParse(parameter.Substring(1), out port);
+                        case "H": //host
+                        case "HOST":
+                        case "GAMEHOST":
+                            host = value;
                             break;
-                        case 'G': //instance code
-                            game = parameter.Substring(1); 
+                        case "P": //port
+                        case "PORT":
+                        case "GAMEPORT":
+                            int.TryParse(value, out port);
+                            break;
+                        case "G": //instance code
+                        case "GAME":
+                        case "GAMECODE":
+                            game = value;
+                            break;
+                        case "C": //character
+                        case "CHARACTER":
+                            character = value;
                             break;
                         default:
                             break;
                     }
                 }
+                
+                
                 if(string.IsNullOrWhiteSpace(game) ||
                     string.IsNullOrWhiteSpace(host) ||
                     string.IsNullOrWhiteSpace(character) ||
@@ -191,7 +239,8 @@ namespace GenieClient
                 m_oGame.AccountCharacter = character;
                 m_oGame.AccountGame = game;
                 SafeLoadProfile(m_sCurrentProfileFile, false);
-                m_oGame.DirectConnect(character, game, host, port);
+                if(string.IsNullOrEmpty(key)) m_oGame.DirectConnect(character, game, host, port);
+                else m_oGame.DirectConnect(character, game, host, port, key);
             }
         }
 
@@ -651,22 +700,33 @@ namespace GenieClient
         }
         private void LoadLegacyPlugin(GeniePlugin.Interfaces.IPlugin Plugin, string AssemblyPath, string Key)
         {
-            m_oPluginNameToFile.Add(Plugin.Name, Path.GetFileName(AssemblyPath));
-            string argsText = "Loading Plugin: " + Plugin.Name + ", Version: " + Plugin.Version + "...";
-            Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
-            AddText(argsText, oTargetWindow: argoTargetWindow);
-            VerifyAndLoadPlugin(Plugin, Key);
-            if (m_oGlobals.PluginList.Contains(Plugin))
+            if (m_oPluginNameToFile.ContainsKey(Plugin.Name))
             {
-                string argsText1 = "OK" + System.Environment.NewLine;
-                Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
-                AddText(argsText1, oTargetWindow: argoTargetWindow1);
+                string DuplicateText = $"Duplicate Plugin Detected: {Plugin.Name}. \r\n" +
+                    $"{m_oPluginNameToFile[Plugin.Name]} is the file which loaded. You can view its version in the Plugin menu.\r\n" +
+                    $"{Path.GetFileName(AssemblyPath)} was not loaded. It reports its version as {Plugin.Version}.\r\n" +
+                    $"Your plugin directory is at {Path.GetDirectoryName(AssemblyPath)}\r\n";
+                AddText(DuplicateText, m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor);
             }
             else
             {
-                string argsText3 = "Failed" + System.Environment.NewLine;
-                Genie.Game.WindowTarget argoTargetWindow3 = Genie.Game.WindowTarget.Main;
-                AddText(argsText3, oTargetWindow: argoTargetWindow3);
+                m_oPluginNameToFile.Add(Plugin.Name, Path.GetFileName(AssemblyPath));
+                string argsText = "Loading Plugin: " + Plugin.Name + ", Version: " + Plugin.Version + "...";
+                Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
+                AddText(argsText, oTargetWindow: argoTargetWindow);
+                VerifyAndLoadPlugin(Plugin, Key);
+                if (m_oGlobals.PluginList.Contains(Plugin))
+                {
+                    string argsText1 = "OK" + System.Environment.NewLine;
+                    Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
+                    AddText(argsText1, oTargetWindow: argoTargetWindow1);
+                }
+                else
+                {
+                    string argsText3 = "Failed" + System.Environment.NewLine;
+                    Genie.Game.WindowTarget argoTargetWindow3 = Genie.Game.WindowTarget.Main;
+                    AddText(argsText3, oTargetWindow: argoTargetWindow3);
+                }
             }
 
             Application.DoEvents();
@@ -674,24 +734,34 @@ namespace GenieClient
 
         private void LoadPlugin(GeniePlugin.Plugins.IPlugin Plugin, string AssemblyPath, string Key)
         {
-            m_oPluginNameToFile.Add(Plugin.Name, Path.GetFileName(AssemblyPath));
-            string argsText = "Loading Plugin: " + Plugin.Name + ", Version: " + Plugin.Version + "...";
-            Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
-            AddText(argsText, oTargetWindow: argoTargetWindow);
-            VerifyAndLoadPlugin(Plugin, Key);
-            if (m_oGlobals.PluginList.Contains(Plugin))
+            if (m_oPluginNameToFile.ContainsKey(Plugin.Name))
             {
-                string argsText1 = "OK" + System.Environment.NewLine;
-                Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
-                AddText(argsText1, oTargetWindow: argoTargetWindow1);
+                string DuplicateText = $"Duplicate Plugin Detected: {Plugin.Name}. \r\n" +
+                    $"{m_oPluginNameToFile[Plugin.Name]} is the file which loaded. You can view its version in the Plugin menu.\r\n" +
+                    $"{Path.GetFileName(AssemblyPath)} was not loaded. It reports its version as {Plugin.Version}.\r\n" +
+                    $"Your plugin directory is at {Path.GetDirectoryName(AssemblyPath)}\r\n";
+                AddText(DuplicateText, m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor);
             }
             else
             {
-                string argsText3 = "Failed" + System.Environment.NewLine;
-                Genie.Game.WindowTarget argoTargetWindow3 = Genie.Game.WindowTarget.Main;
-                AddText(argsText3, oTargetWindow: argoTargetWindow3);
+                m_oPluginNameToFile.Add(Plugin.Name, Path.GetFileName(AssemblyPath));
+                string argsText = "Loading Plugin: " + Plugin.Name + ", Version: " + Plugin.Version + "...";
+                Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
+                AddText(argsText, oTargetWindow: argoTargetWindow);
+                VerifyAndLoadPlugin(Plugin, Key);
+                if (m_oGlobals.PluginList.Contains(Plugin))
+                {
+                    string argsText1 = "OK" + System.Environment.NewLine;
+                    Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
+                    AddText(argsText1, oTargetWindow: argoTargetWindow1);
+                }
+                else
+                {
+                    string argsText3 = "Failed" + System.Environment.NewLine;
+                    Genie.Game.WindowTarget argoTargetWindow3 = Genie.Game.WindowTarget.Main;
+                    AddText(argsText3, oTargetWindow: argoTargetWindow3);
+                }
             }
-
             Application.DoEvents();
         }
 
