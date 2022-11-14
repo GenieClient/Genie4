@@ -700,22 +700,33 @@ namespace GenieClient
         }
         private void LoadLegacyPlugin(GeniePlugin.Interfaces.IPlugin Plugin, string AssemblyPath, string Key)
         {
-            m_oPluginNameToFile.Add(Plugin.Name, Path.GetFileName(AssemblyPath));
-            string argsText = "Loading Plugin: " + Plugin.Name + ", Version: " + Plugin.Version + "...";
-            Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
-            AddText(argsText, oTargetWindow: argoTargetWindow);
-            VerifyAndLoadPlugin(Plugin, Key);
-            if (m_oGlobals.PluginList.Contains(Plugin))
+            if (m_oPluginNameToFile.ContainsKey(Plugin.Name))
             {
-                string argsText1 = "OK" + System.Environment.NewLine;
-                Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
-                AddText(argsText1, oTargetWindow: argoTargetWindow1);
+                string DuplicateText = $"Duplicate Plugin Detected: {Plugin.Name}. \r\n" +
+                    $"{m_oPluginNameToFile[Plugin.Name]} is the file which loaded. You can view its version in the Plugin menu.\r\n" +
+                    $"{Path.GetFileName(AssemblyPath)} was not loaded. It reports its version as {Plugin.Version}.\r\n" +
+                    $"Your plugin directory is at {Path.GetDirectoryName(AssemblyPath)}\r\n";
+                AddText(DuplicateText, m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor);
             }
             else
             {
-                string argsText3 = "Failed" + System.Environment.NewLine;
-                Genie.Game.WindowTarget argoTargetWindow3 = Genie.Game.WindowTarget.Main;
-                AddText(argsText3, oTargetWindow: argoTargetWindow3);
+                m_oPluginNameToFile.Add(Plugin.Name, Path.GetFileName(AssemblyPath));
+                string argsText = "Loading Plugin: " + Plugin.Name + ", Version: " + Plugin.Version + "...";
+                Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
+                AddText(argsText, oTargetWindow: argoTargetWindow);
+                VerifyAndLoadPlugin(Plugin, Key);
+                if (m_oGlobals.PluginList.Contains(Plugin))
+                {
+                    string argsText1 = "OK" + System.Environment.NewLine;
+                    Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
+                    AddText(argsText1, oTargetWindow: argoTargetWindow1);
+                }
+                else
+                {
+                    string argsText3 = "Failed" + System.Environment.NewLine;
+                    Genie.Game.WindowTarget argoTargetWindow3 = Genie.Game.WindowTarget.Main;
+                    AddText(argsText3, oTargetWindow: argoTargetWindow3);
+                }
             }
 
             Application.DoEvents();
@@ -723,24 +734,34 @@ namespace GenieClient
 
         private void LoadPlugin(GeniePlugin.Plugins.IPlugin Plugin, string AssemblyPath, string Key)
         {
-            m_oPluginNameToFile.Add(Plugin.Name, Path.GetFileName(AssemblyPath));
-            string argsText = "Loading Plugin: " + Plugin.Name + ", Version: " + Plugin.Version + "...";
-            Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
-            AddText(argsText, oTargetWindow: argoTargetWindow);
-            VerifyAndLoadPlugin(Plugin, Key);
-            if (m_oGlobals.PluginList.Contains(Plugin))
+            if (m_oPluginNameToFile.ContainsKey(Plugin.Name))
             {
-                string argsText1 = "OK" + System.Environment.NewLine;
-                Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
-                AddText(argsText1, oTargetWindow: argoTargetWindow1);
+                string DuplicateText = $"Duplicate Plugin Detected: {Plugin.Name}. \r\n" +
+                    $"{m_oPluginNameToFile[Plugin.Name]} is the file which loaded. You can view its version in the Plugin menu.\r\n" +
+                    $"{Path.GetFileName(AssemblyPath)} was not loaded. It reports its version as {Plugin.Version}.\r\n" +
+                    $"Your plugin directory is at {Path.GetDirectoryName(AssemblyPath)}\r\n";
+                AddText(DuplicateText, m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor);
             }
             else
             {
-                string argsText3 = "Failed" + System.Environment.NewLine;
-                Genie.Game.WindowTarget argoTargetWindow3 = Genie.Game.WindowTarget.Main;
-                AddText(argsText3, oTargetWindow: argoTargetWindow3);
+                m_oPluginNameToFile.Add(Plugin.Name, Path.GetFileName(AssemblyPath));
+                string argsText = "Loading Plugin: " + Plugin.Name + ", Version: " + Plugin.Version + "...";
+                Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
+                AddText(argsText, oTargetWindow: argoTargetWindow);
+                VerifyAndLoadPlugin(Plugin, Key);
+                if (m_oGlobals.PluginList.Contains(Plugin))
+                {
+                    string argsText1 = "OK" + System.Environment.NewLine;
+                    Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
+                    AddText(argsText1, oTargetWindow: argoTargetWindow1);
+                }
+                else
+                {
+                    string argsText3 = "Failed" + System.Environment.NewLine;
+                    Genie.Game.WindowTarget argoTargetWindow3 = Genie.Game.WindowTarget.Main;
+                    AddText(argsText3, oTargetWindow: argoTargetWindow3);
+                }
             }
-
             Application.DoEvents();
         }
 
