@@ -1,12 +1,15 @@
-﻿using System.Drawing;
+﻿using GenieClient.Genie;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace GenieClient
 {
     public class FlickerFreePanel : Panel
     {
-        public FlickerFreePanel()
+        private Globals _Globals;
+        public FlickerFreePanel(Globals Globals)
         {
+            _Globals = Globals;
             this.Paint += FlickerFreePanel_Paint;
             SetStyle(ControlStyles.ResizeRedraw, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
@@ -38,31 +41,23 @@ namespace GenieClient
                 while (I < Height)
                 {
                     I += 20;
-                    e.Graphics.DrawLine(m_GridColor, 0, I, Width, I);
+                    e.Graphics.DrawLine(GridColor, 0, I, Width, I);
                 }
 
                 I = 0;
                 while (I < Width)
                 {
                     I += 20;
-                    e.Graphics.DrawLine(m_GridColor, I, 0, I, Height);
+                    e.Graphics.DrawLine(GridColor, I, 0, I, Height);
                 }
             }
         }
 
-        private Pen m_GridColor = Pens.PaleGoldenrod;
-
-        public Pen GridColor
-        {
-            get
-            {
-                return m_GridColor;
-            }
-
-            set
-            {
-                m_GridColor = value;
-            }
+        public Pen GridColor { 
+            get 
+            { 
+                return new Pen(_Globals.PresetList["automapper"].BgColor); 
+            } 
         }
     }
 }

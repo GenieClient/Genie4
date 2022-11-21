@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Xml;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using static GenieClient.My.MyProject;
 
 namespace GenieClient.Mapper
 {
@@ -60,8 +61,9 @@ namespace GenieClient.Mapper
         public MapForm(Genie.Globals Globals)
         {
             // This call is required by the Windows Form Designer.
-            InitializeComponent();
             m_oGlobals = Globals;
+            InitializeComponent();
+            UpdatePanelColor();
             // Add any initialization after the InitializeComponent() call.
         }
 
@@ -106,7 +108,11 @@ namespace GenieClient.Mapper
                 return m_NodeList;
             }
         }
-
+        public void UpdatePanelColor()
+        {
+            PanelMap.BackColor = m_oGlobals.PresetList["automapper"].BgColor;
+            PanelMap.Invalidate();
+        }
         public void UpdateGraph(Node n, NodeList nl, Direction dir)
         {
             m_AllowRecord = false;
@@ -138,6 +144,7 @@ namespace GenieClient.Mapper
             m_Offset.Y *= m_Scale;
             _mapOffsetX = m_Offset.X;
             _mapOffsetY = m_Offset.Y;
+            UpdatePanelColor();
             PanelMap.Invalidate();
         }
 
@@ -260,6 +267,7 @@ namespace GenieClient.Mapper
             var m_Offset = GetOffset();
             m_Offset.X -= m_Offset.X % 20;
             m_Offset.Y -= m_Offset.Y % 20;
+            UpdatePanelColor();
             LoadMaps();
             if (ZoneName.Length > 0)
             {
@@ -1529,7 +1537,6 @@ namespace GenieClient.Mapper
                 return;
 
             // Debug.WriteLine("Painting...")
-
             // First draw all lines
             foreach (Node n in m_NodeList)
             {
@@ -1827,11 +1834,11 @@ namespace GenieClient.Mapper
                         // End If
 
                         var b = Brushes.White;
-                        var bt = Brushes.Black;
+                        var bt = new SolidBrush(m_oGlobals.PresetList["automapper"].FgColor);
                         if (m_SelectedLabels.Contains(l))
                         {
                             b = Brushes.Blue;
-                            bt = Brushes.White;
+                            bt = new SolidBrush(Color.White);
                             e.Graphics.FillRectangle(b, l.Rectangle.X, l.Rectangle.Y, l.Rectangle.Width, l.Rectangle.Height);
                             e.Graphics.DrawRectangle(Pens.Black, l.Rectangle.X, l.Rectangle.Y, l.Rectangle.Width, l.Rectangle.Height);
                         }
@@ -1881,6 +1888,7 @@ namespace GenieClient.Mapper
             // Draw start point dot
             // Dim oWhere2 As Point = ConvertPoint(New Point3D(), 4)
             // e.Graphics.FillRectangle(Brushes.Red, oWhere2.X + 3, oWhere2.Y + 3, 3, 3)
+            //UpdatePanelColor();
         }
 
         private void CheckScrollTo(int NodeX, int NodeY)

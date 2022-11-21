@@ -69,7 +69,7 @@ namespace GenieClient.Mapper
             this._StatusStripMain = new System.Windows.Forms.StatusStrip();
             this._ToolStripStatusText = new System.Windows.Forms.ToolStripStatusLabel();
             this._PanelBase = new System.Windows.Forms.Panel();
-            this._PanelMap = new GenieClient.FlickerFreePanel();
+            this._PanelMap = new GenieClient.FlickerFreePanel(m_oGlobals);
             this._ToolStripMaps = new System.Windows.Forms.ToolStrip();
             this._ToolStripDropDownButtonMaps = new System.Windows.Forms.ToolStripDropDownButton();
             this._TestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -429,7 +429,7 @@ namespace GenieClient.Mapper
             // _PanelBase
             // 
             this._PanelBase.AutoScroll = true;
-            this._PanelBase.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this._PanelBase.BackColor = m_oGlobals.PresetList["automapper"].BgColor;
             this._PanelBase.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this._PanelBase.Controls.Add(this._PanelMap);
             this._PanelBase.Dock = System.Windows.Forms.DockStyle.Fill;
