@@ -488,6 +488,7 @@ namespace GenieClient.Genie
 
             public void SetDefaultPresets()
             {
+                Add("automapper", "Black, Silver");
                 Add("castbar", "Magenta");
                 Add("concentration", "Navy");
                 Add("creatures", "Cyan");
