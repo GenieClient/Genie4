@@ -6825,7 +6825,11 @@ namespace GenieClient
                                 Castbar.Refresh();
                                 break;
                             }
-
+                        case "automapper":
+                            {
+                                m_oAutoMapper.UpdatePanelBackgroundColor();
+                                break;
+                            }
                         case "health":
                             {
                                 ComponentBarsHealth.ForegroundColor = m_oGlobals.PresetList["health"].FgColor;
