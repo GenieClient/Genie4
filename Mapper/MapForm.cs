@@ -1486,7 +1486,7 @@ namespace GenieClient.Mapper
                 PanelNodeDetails.TextBoxRoomName.Text = "";
                 PanelNodeDetails.TextBoxDescription.Text = "";
                 PanelNodeDetails.TextBoxPosition.Text = "0, 0, 0";
-                PanelNodeDetails.ColorPicker1.Color = Color.White;
+                PanelNodeDetails.ColorPicker1.Color = Color.Transparent;
                 PanelNodeDetails.TextBoxNote.Text = "";
                 PanelNodeDetails.ButtonApply.Text = "Create";
                 PanelNodeDetails.ToolStripButtonNew.Enabled = false;
@@ -1660,7 +1660,7 @@ namespace GenieClient.Mapper
                     {
                         var oColorRoom = n.Color;
                         if (n.Color == Color.Transparent) { oColorRoom = m_oGlobals.PresetList["automapper.node"].FgColor; }
-                        else oColorRoom = Color.FromArgb(m_oGlobals.Config.bAutoMapperAlpha, n.Color.R, n.Color.G, n.Color.B);
+                        else oColorRoom = Color.FromArgb(m_oGlobals.Config.AutoMapperAlpha, n.Color.R, n.Color.G, n.Color.B);
 
                         var oColorRoomBorder = m_oGlobals.PresetList["automapper.line"].FgColor;
                         if (n.Position.Z != m_CurrentLevelZ) // Mark all other levels gray
@@ -1735,7 +1735,7 @@ namespace GenieClient.Mapper
                     {
                         var oColorRoom = n.Color;
                         if (n.Color == Color.Transparent) { oColorRoom = m_oGlobals.PresetList["automapper.node"].FgColor; }
-                        else oColorRoom = Color.FromArgb(m_oGlobals.Config.bAutoMapperAlpha, n.Color.R, n.Color.G, n.Color.B);
+                        else oColorRoom = Color.FromArgb(m_oGlobals.Config.AutoMapperAlpha, n.Color.R, n.Color.G, n.Color.B);
                         var oColorRoomBorder = m_oGlobals.PresetList["automapper.line"].FgColor;
                         if (n.Position.Z != m_CurrentLevelZ) // Mark all other levels gray
                         {
