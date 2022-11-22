@@ -511,6 +511,12 @@ namespace GenieClient.Genie
                 Add("spirit", "Purple");
                 Add("stamina", "Green");
                 Add("thoughts", "Cyan");
+                Add("ui.menu", "Black, #EEEEEE");
+                Add("ui.menu.checked", "LightBlue");
+                Add("ui.menu.highlight", "LightBlue");
+                Add("ui.window", "Black, #EEEEEE");
+                Add("ui.status", "Black, #EEEEEE");
+                Add("ui.textbox", "Black, White");
                 Add("whispers", "Magenta");
             }
 
