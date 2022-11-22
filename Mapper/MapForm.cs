@@ -933,7 +933,7 @@ namespace GenieClient.Mapper
                         xw.WriteAttributeString("name", n.Name);
                         if (n.Note.Length > 0)
                             xw.WriteAttributeString("note", n.Note);
-                        if (n.Color != Color.White)
+                        if (n.Color != Color.Transparent)
                             xw.WriteAttributeString("color", Genie.ColorCode.ColorToString(n.Color));
                         foreach (string s in n.Descriptions)
                         {
