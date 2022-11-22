@@ -6599,6 +6599,7 @@ namespace GenieClient
                 case Genie.Config.ConfigFieldUpdated.AutoMapper:
                     {
                         AutoMapperEnabledToolStripMenuItem.Checked = m_oGlobals.Config.bAutoMapper;
+                        m_oAutoMapper.UpdatePanelBackgroundColor();
                         break;
                     }
 
@@ -6808,6 +6809,7 @@ namespace GenieClient
             {
                 if (!Information.IsNothing(m_oGlobals.PresetList))
                 {
+                    if (sPreset.StartsWith("automapper")) { sPreset = "automapper"; }
                     switch (sPreset)
                     {
                         case "roundtime":

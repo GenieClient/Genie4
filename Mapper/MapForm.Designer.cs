@@ -429,7 +429,7 @@ namespace GenieClient.Mapper
             // _PanelBase
             // 
             this._PanelBase.AutoScroll = true;
-            this._PanelBase.BackColor = m_oGlobals.PresetList["automapper"].BgColor;
+            this._PanelBase.BackColor = m_oGlobals.PresetList["automapper.panel"].BgColor;
             this._PanelBase.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this._PanelBase.Controls.Add(this._PanelMap);
             this._PanelBase.Dock = System.Windows.Forms.DockStyle.Fill;

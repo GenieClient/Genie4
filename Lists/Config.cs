@@ -35,6 +35,7 @@ namespace GenieClient.Genie
         public bool bAbortDupeScript = true;
         public bool bParseGameOnly = false;
         public bool bAutoMapper = true;
+        public int bAutoMapperAlpha = 255;
         public int iServerActivityTimeout = 180;
         public string sServerActivityCommand = "fatigue";
         public int iUserActivityTimeout = 300;
@@ -357,6 +358,7 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine("#config {spelltimer} {" + bShowSpellTimer + "}");
                 oStreamWriter.WriteLine("#config {autolog} {" + bAutoLog + "}");
                 oStreamWriter.WriteLine("#config {automapper} {" + bAutoMapper + "}");
+                oStreamWriter.WriteLine("#config {automapperalpha} {" + bAutoMapperAlpha + "}"); 
                 oStreamWriter.WriteLine("#config {editor} {" + sEditor + "}");
                 oStreamWriter.WriteLine("#config {prompt} {" + sPrompt + "}");
                 oStreamWriter.WriteLine("#config {promptbreak} {" + PromptBreak + "}");
@@ -1099,6 +1101,12 @@ namespace GenieClient.Genie
                                         }
                                 }
 
+                                ConfigChanged?.Invoke(ConfigFieldUpdated.AutoMapper);
+                                break;
+                            }
+                        case "automapperalpha":
+                            {
+                                if (!string.IsNullOrEmpty(sValue)) bAutoMapperAlpha = Convert.ToInt32(sValue);
                                 ConfigChanged?.Invoke(ConfigFieldUpdated.AutoMapper);
                                 break;
                             }

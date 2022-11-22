@@ -488,7 +488,13 @@ namespace GenieClient.Genie
 
             public void SetDefaultPresets()
             {
-                Add("automapper", "Black, Silver");
+                Add("automapper.panel", "Black, PaleGoldenrod");
+                Add("automapper.line", "Black, White");
+                Add("automapper.linestump", "Cyan, White");
+                Add("automapper.lineclimb", "Green, White");
+                Add("automapper.linego", "Blue, White");
+                Add("automapper.node", "White, White");
+                Add("automapper.path", "Green, LightGreen");
                 Add("castbar", "Magenta");
                 Add("concentration", "Navy");
                 Add("creatures", "Cyan");
