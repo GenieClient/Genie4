@@ -399,62 +399,16 @@ namespace GenieClient
             }
         }
 
-        private void ParseLineHighlight(int iStart, string sLine)
+        private void ParseLineHighlights(string sLine)
         {
-            Genie.Globals.HighlightRegExp.Highlight oHighlight;
-            MatchCollection oMatchCollection;            
-            if (Conversions.ToBoolean(m_oParentForm.Globals.HighlightRegExpList.AcquireReaderLock()))
+            
+            if (m_oParentForm.Globals.HighlightRegExpList.AcquireReaderLock())
             {
                 try
                 {
-                    foreach (DictionaryEntry de in (IEnumerable)m_oParentForm.Globals.HighlightRegExpList)
+                    foreach (Globals.HighlightRegExp.Highlight oHighlight in m_oParentForm.Globals.HighlightRegExpList.Values)
                     {
-                        oHighlight = (Genie.Globals.HighlightRegExp.Highlight)de.Value;
-                        if (oHighlight.IsActive)
-                        {
-                            oMatchCollection = oHighlight.HighlightRegex.Matches(sLine.Trim(Conversions.ToChar(Constants.vbCr), Conversions.ToChar(Constants.vbLf)));
-                            if (oMatchCollection.Count > 0)
-                            {
-                                foreach (Match oMatch in oMatchCollection)
-                                {
-                                    if (oMatch.Groups.Count > 1)	// () highlighting
-                                    {
-                                        for (int I = 1, loopTo = oMatch.Groups.Count - 1; I <= loopTo; I++)
-                                        {
-                                            int iDiff = sLine.Length - sLine.TrimStart(Conversions.ToChar(Constants.vbCr)).Length; // RichText does not add both cr+lf
-                                            m_oRichTextBuffer.SelectionStart = iStart + oMatch.Groups[I].Index + iDiff;
-                                            m_oRichTextBuffer.SelectionLength = oMatch.Groups[I].Length;
-                                            if (oHighlight.FgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
-                                            {
-                                                m_oRichTextBuffer.SelectionColor = oHighlight.FgColor;
-                                            }
-
-                                            if (oHighlight.BgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
-                                            {
-                                                m_oRichTextBuffer.SelectionBackColor = oHighlight.BgColor;
-                                            }
-                                        }
-                                    }
-                                    else // highlight whole line
-                                    {
-                                        m_oRichTextBuffer.SelectionStart = iStart;
-                                        m_oRichTextBuffer.SelectionLength = int.MaxValue;
-                                        if (oHighlight.FgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
-                                        {
-                                            m_oRichTextBuffer.SelectionColor = oHighlight.FgColor;
-                                        }
-
-                                        if (oHighlight.BgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
-                                        {
-                                            m_oRichTextBuffer.SelectionBackColor = oHighlight.BgColor;
-                                        }
-                                    }
-                                }
-
-                                if (Conversions.ToBoolean(oHighlight.SoundFile.Length > 0 && m_oParentForm.Globals.Config.bPlaySounds))
-                                    Sound.PlayWaveFile(oHighlight.SoundFile);
-                            }
-                        }
+                        if (oHighlight.IsActive) ParseRegExpHighlight(sLine, oHighlight);
                     }
                 }
                 finally
@@ -465,6 +419,45 @@ namespace GenieClient
             else
             {
                 throw new Exception("Unable to aquire reader lock.");
+            }
+        }
+
+        private void ParseRegExpHighlight(string sLine, Globals.HighlightRegExp.Highlight oHighlight)
+        {
+            foreach (Match oMatch in oHighlight.HighlightRegex.Matches(sLine))
+            {
+                if (oMatch.Groups.Count > 1)    // () highlighting
+                {
+                    foreach (Group oGroup in oMatch.Groups)
+                    {
+                        m_oRichTextBuffer.SelectionStart = oGroup.Index;
+                        m_oRichTextBuffer.SelectionLength = oGroup.Length;
+                        if (oHighlight.FgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
+                        {
+                            m_oRichTextBuffer.SelectionColor = oHighlight.FgColor;
+                        }
+                        if (oHighlight.BgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
+                        {
+                            m_oRichTextBuffer.SelectionBackColor = oHighlight.BgColor;
+                        }
+                    }
+                }
+                else // highlight whole line -- WHY ARE WE DOING THIS?
+                {
+                    m_oRichTextBuffer.SelectionStart = 0;
+                    m_oRichTextBuffer.SelectionLength = int.MaxValue;
+                    if (oHighlight.FgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
+                    {
+                        m_oRichTextBuffer.SelectionColor = oHighlight.FgColor;
+                    }
+
+                    if (oHighlight.BgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
+                    {
+                        m_oRichTextBuffer.SelectionBackColor = oHighlight.BgColor;
+                    }
+                }
+                if (Conversions.ToBoolean(oHighlight.SoundFile.Length > 0 && m_oParentForm.Globals.Config.bPlaySounds))
+                    Sound.PlayWaveFile(oHighlight.SoundFile);
             }
         }
 
@@ -541,7 +534,7 @@ namespace GenieClient
             ParseVolatileHighlights(m_oParentForm.Globals.VolatileHighlights);
 
             // Regex Highlights
-            ParseLineHighlight(m_oRichTextBuffer.SelectionStart, m_oRichTextBuffer.Text);
+            ParseLineHighlights(m_oRichTextBuffer.Text);
 
             // Highlight String
             if (!Information.IsNothing(m_oParentForm.Globals.HighlightList.RegexString))

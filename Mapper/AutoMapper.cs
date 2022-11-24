@@ -185,6 +185,11 @@ namespace GenieClient.Mapper
             return Text;
         }
 
+        public void UpdatePanelBackgroundColor()
+        {
+            m_Form.UpdatePanelColor();
+        }
+
         private Genie.Collections.ArrayList m_Movement = new Genie.Collections.ArrayList();
         private bool m_RoomUpdated = false;
         // private bool m_AddDupeRooms = true;

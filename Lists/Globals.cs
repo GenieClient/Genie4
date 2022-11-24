@@ -488,6 +488,13 @@ namespace GenieClient.Genie
 
             public void SetDefaultPresets()
             {
+                Add("automapper.panel", "Black, PaleGoldenrod");
+                Add("automapper.line", "Black, White");
+                Add("automapper.linestump", "Cyan, White");
+                Add("automapper.lineclimb", "Green, White");
+                Add("automapper.linego", "Blue, White");
+                Add("automapper.node", "White, White");
+                Add("automapper.path", "Green, LightGreen");
                 Add("castbar", "Magenta");
                 Add("concentration", "Navy");
                 Add("creatures", "Cyan");
@@ -504,6 +511,12 @@ namespace GenieClient.Genie
                 Add("spirit", "Purple");
                 Add("stamina", "Green");
                 Add("thoughts", "Cyan");
+                Add("ui.menu", "Black, #EEEEEE");
+                Add("ui.menu.checked", "LightBlue");
+                Add("ui.menu.highlight", "LightBlue");
+                Add("ui.window", "Black, #EEEEEE");
+                Add("ui.status", "Black, #EEEEEE");
+                Add("ui.textbox", "Black, White");
                 Add("whispers", "Magenta");
             }
 
