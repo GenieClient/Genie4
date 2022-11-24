@@ -878,6 +878,7 @@ namespace GenieClient.Mapper
                 if (m_DebugEnabled)
                     EchoText("roomid = " + oNode.ID.ToString());
                 set_GlobalVariable("roomid", oNode.ID.ToString());
+                set_GlobalVariable("roomnote", oNode.Note.ToString());
                 if (oNode.ContainsArc(Direction.North))
                 {
                     set_GlobalVariable("northid", oNode.Arcs[Direction.North].DestinationID.ToString());
