@@ -396,6 +396,7 @@ namespace GenieClient
             if (sText.Length > 0)
             {
                 m_oRichTextBuffer.SelectedText = sText;
+                ParseLineHighlights(sText);
             }
         }
 
