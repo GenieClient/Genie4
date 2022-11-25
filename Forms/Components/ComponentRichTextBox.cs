@@ -396,11 +396,11 @@ namespace GenieClient
             if (sText.Length > 0)
             {
                 m_oRichTextBuffer.SelectedText = sText;
-                ParseLineHighlights(sText);
+                ParseLineHighlights(m_oRichTextBuffer.SelectionStart, sText);
             }
         }
 
-        private void ParseLineHighlights(string sLine)
+        private void ParseLineHighlights(int StartIndex, string Line)
         {
             
             if (m_oParentForm.Globals.HighlightRegExpList.AcquireReaderLock())
@@ -409,7 +409,7 @@ namespace GenieClient
                 {
                     foreach (Globals.HighlightRegExp.Highlight oHighlight in m_oParentForm.Globals.HighlightRegExpList.Values)
                     {
-                        if (oHighlight.IsActive) ParseRegExpHighlight(sLine, oHighlight);
+                        if (oHighlight.IsActive) ParseRegExpHighlight(StartIndex, Line, oHighlight);
                     }
                 }
                 finally
@@ -423,42 +423,42 @@ namespace GenieClient
             }
         }
 
-        private void ParseRegExpHighlight(string sLine, Globals.HighlightRegExp.Highlight oHighlight)
+        private void ParseRegExpHighlight(int StartIndex, string Line, Globals.HighlightRegExp.Highlight Highlight)
         {
-            foreach (Match oMatch in oHighlight.HighlightRegex.Matches(sLine))
+            foreach (Match oMatch in Highlight.HighlightRegex.Matches(Line))
             {
                 if (oMatch.Groups.Count > 1)    // () highlighting
                 {
                     foreach (Group oGroup in oMatch.Groups)
                     {
-                        m_oRichTextBuffer.SelectionStart = oGroup.Index;
+                        m_oRichTextBuffer.SelectionStart = StartIndex + oGroup.Index;
                         m_oRichTextBuffer.SelectionLength = oGroup.Length;
-                        if (oHighlight.FgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
+                        if (Highlight.FgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
                         {
-                            m_oRichTextBuffer.SelectionColor = oHighlight.FgColor;
+                            m_oRichTextBuffer.SelectionColor = Highlight.FgColor;
                         }
-                        if (oHighlight.BgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
+                        if (Highlight.BgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
                         {
-                            m_oRichTextBuffer.SelectionBackColor = oHighlight.BgColor;
+                            m_oRichTextBuffer.SelectionBackColor = Highlight.BgColor;
                         }
                     }
                 }
                 else // highlight whole line -- WHY ARE WE DOING THIS?
                 {
-                    m_oRichTextBuffer.SelectionStart = 0;
+                    m_oRichTextBuffer.SelectionStart = StartIndex;
                     m_oRichTextBuffer.SelectionLength = int.MaxValue;
-                    if (oHighlight.FgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
+                    if (Highlight.FgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
                     {
-                        m_oRichTextBuffer.SelectionColor = oHighlight.FgColor;
+                        m_oRichTextBuffer.SelectionColor = Highlight.FgColor;
                     }
 
-                    if (oHighlight.BgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
+                    if (Highlight.BgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
                     {
-                        m_oRichTextBuffer.SelectionBackColor = oHighlight.BgColor;
+                        m_oRichTextBuffer.SelectionBackColor = Highlight.BgColor;
                     }
                 }
-                if (Conversions.ToBoolean(oHighlight.SoundFile.Length > 0 && m_oParentForm.Globals.Config.bPlaySounds))
-                    Sound.PlayWaveFile(oHighlight.SoundFile);
+                if (Conversions.ToBoolean(Highlight.SoundFile.Length > 0 && m_oParentForm.Globals.Config.bPlaySounds))
+                    Sound.PlayWaveFile(Highlight.SoundFile);
             }
         }
 
@@ -535,7 +535,7 @@ namespace GenieClient
             ParseVolatileHighlights(m_oParentForm.Globals.VolatileHighlights);
 
             // Regex Highlights
-            ParseLineHighlights(m_oRichTextBuffer.Text);
+            ParseLineHighlights(0, m_oRichTextBuffer.Text);
 
             // Highlight String
             if (!Information.IsNothing(m_oParentForm.Globals.HighlightList.RegexString))
