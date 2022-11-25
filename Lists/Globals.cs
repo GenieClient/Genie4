@@ -1280,6 +1280,9 @@ namespace GenieClient.Genie
                 public string ClassName = string.Empty;
                 public bool IsActive = true;
                 public string SoundFile = string.Empty;
+                public int StartIndex = 0;
+                public int Length { get { return Text.Length; } }
+                public int EndIndex { get { return StartIndex + Length; } }
 
                 public Highlight(string text, string ColorName, Color FgColor, Color BgColor, bool CaseSensitive = true, string SoundFile = "", string ClassName = "", bool IsActive = true)
                 {
