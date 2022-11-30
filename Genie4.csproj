@@ -182,7 +182,6 @@
   </ItemGroup>
   <ItemGroup>
 	  <EmbeddedResource Include="Graphics\Taleweaver.ico" />
-	  <EmbeddedResource Include="Libs\Interfaces.dll" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\skin_bottom.bmp" />
@@ -199,7 +198,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Libs\Antlr3.Runtime.dll" />
-    <EmbeddedResource Include="Libs\Interfaces.dll.invalid" />
+    <EmbeddedResource Include="Libs\Interfaces.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Libs\Jint.dll">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -217,9 +218,14 @@
     <EmbeddedResource Remove="Forms\ConfigPanels\UCVariables.resx" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Libs\Interfaces.dll" />
+    
     <None Remove="Libs\lua51.dll" />
     <None Remove="Libs\LuaInterface.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="LICENSE">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
