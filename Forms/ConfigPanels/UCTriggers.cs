@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using System.Windows.Forms;
 using GenieClient.Genie;
 using Microsoft.VisualBasic;
@@ -106,6 +107,28 @@ namespace GenieClient
             ListViewBase.Columns.Add("Action", 150, HorizontalAlignment.Left);
             ListViewBase.Columns.Add("Eval", 50, HorizontalAlignment.Left);
             ListViewBase.Columns.Add("Class", 100, HorizontalAlignment.Left);
+        }
+
+        private void ListViewBase_SortColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            _ListViewBase.Sorting = System.Windows.Forms.SortOrder.None;
+
+            if (ListViewBase.Tag == null || (int)ListViewBase.Tag > 0)
+            {
+                ListViewItem[] tmp = ListViewBase.Items.Cast<ListViewItem>().OrderBy(t => t.SubItems[e.Column].Text).ToArray();
+                ListViewBase.Items.Clear();
+                ListViewBase.Items.AddRange(tmp);
+
+                ListViewBase.Tag = -1;
+            }
+            else
+            {
+                ListViewItem[] tmp = ListViewBase.Items.Cast<ListViewItem>().OrderByDescending(t => t.SubItems[e.Column].Text).ToArray();
+                ListViewBase.Items.Clear();
+                ListViewBase.Items.AddRange(tmp);
+
+                ListViewBase.Tag = +1;
+            }
         }
 
         private void ToolStripButtonRefresh_Click(object sender, EventArgs e)
