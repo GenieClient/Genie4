@@ -398,8 +398,6 @@ namespace GenieClient
             if (sText.Length > 0)
             {
                 m_oRichTextBuffer.SelectedText = sText;
-                
-                ParseLineHighlights(startIndex, sText);
             }
         }
 
@@ -557,7 +555,7 @@ namespace GenieClient
         private void ParseHighlights()
         {
             MatchCollection oMatchCollection;
-
+            ParseLineHighlights(m_oRichTextBuffer.SelectionStart, m_oRichTextBuffer.Text);
             // Highlight String
             if (!Information.IsNothing(m_oParentForm.Globals.HighlightList.RegexString))
             {
