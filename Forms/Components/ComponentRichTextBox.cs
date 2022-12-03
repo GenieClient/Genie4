@@ -2,9 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using Antlr.Runtime.Tree;
 using GenieClient.Genie;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -51,6 +55,15 @@ namespace GenieClient
         private const int SCF_SELECTION = 0x1;
         private const int SCF_WORD = 0x2;
         private const int SCF_ALL = 0x4;
+
+        private const uint WM_VSCROLL = 0x115;
+        private const uint SB_LINEUP = 0;
+        private const uint SB_LINEDOWN = 1;
+        private const uint SB_PAGEUP = 2;
+        private const uint SB_PAGEDOWN = 3;
+        private const uint SB_TOP = 6;
+        private const uint SB_BOTTOM = 7;
+        private const uint SB_ENDSCROLL = 8;
 
         /* TODO ERROR: Skipped RegionDirectiveTrivia */
         private const uint CFE_BOLD = 1;
@@ -480,72 +493,66 @@ namespace GenieClient
             public string Command;
         }
 
+        private void ParseVolatileHighlights(List<VolatileHighlight> highlightList)
+        {
+            foreach (VolatileHighlight highlight in highlightList.ToArray())
+            {
+                int runningPosition = 0;
+                int lineIndex = 0;
+                foreach (string line in m_oRichTextBuffer.Text.Split('\n'))
+                {
+                    int timestampOffset = 0;
+                    if (m_bTimeStamp)
+                    {
+                        timestampOffset += GetTimeString(line).Length;
+                    }
+                    if (m_oParentForm.Globals.PresetList[highlight.Preset].bHighlightLine && line.Contains(highlight.Text))
+                    {
+                        int indexOfHighlight = m_oRichTextBuffer.Text.IndexOf(highlight);
+                        int lastNewLineIndex = m_oRichTextBuffer.Text.LastIndexOf("\n", indexOfHighlight);
+                        int nextNewLineIndex = m_oRichTextBuffer.Text.IndexOf("\n", indexOfHighlight);
+                        if (lastNewLineIndex == -1) lastNewLineIndex = 0;
+                        if (nextNewLineIndex == -1) nextNewLineIndex = m_oRichTextBuffer.Text.Length;
+                        m_oRichTextBuffer.SelectionStart = lastNewLineIndex >= 0 ? lastNewLineIndex : 0;
+                        m_oRichTextBuffer.SelectionLength = nextNewLineIndex - lastNewLineIndex; 
+                    }		 
+                    else if (line.Length >= highlight.EndIndex + timestampOffset
+                        && line.Substring(highlight.StartIndex + timestampOffset, highlight.Length) == highlight)
+                    {
+                        m_oRichTextBuffer.SelectionStart = runningPosition + timestampOffset + highlight.StartIndex;
+                        m_oRichTextBuffer.SelectionLength = highlight.Length;
+                    }
+                    else
+                    {
+                        m_oRichTextBuffer.SelectionLength = 0;
+                    }
+
+                    if (m_oParentForm.Globals.PresetList[highlight.Preset].FgColor != Color.Transparent)
+                    {
+                        m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList[highlight.Preset].FgColor;
+                    }
+
+                    if (m_oParentForm.Globals.PresetList[highlight.Preset].BgColor != Color.Transparent)
+                    {
+                        m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList[highlight.Preset].BgColor;
+                    }
+
+                    lineIndex += 1;
+                    runningPosition += line.Length + 1; //add 1 to account for the \n characters removed by the split
+                }
+
+            }
+        }
         private void ParseHighlights()
         {
             MatchCollection oMatchCollection;
 
             if (m_oRichTextBuffer.Text.Contains("You also see") && m_oParentForm.Globals.RoomObjects.Count > 0)
             {
-                foreach (KeyValuePair<string, string> highlight in m_oParentForm.Globals.RoomObjects.ToArray())
-                {
-                    Regex volatileRegex = new Regex(Regex.Escape(highlight.Value));
-                    oMatchCollection = volatileRegex.Matches(m_oRichTextBuffer.Text);
-                    foreach (Match oMatch in oMatchCollection)
-                    {
-                        m_oRichTextBuffer.SelectionStart = oMatch.Groups[0].Index;
-                        m_oRichTextBuffer.SelectionLength = oMatch.Groups[0].Length;
-                        if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList[highlight.Key].FgColor, Color.Transparent, false))
-                        {
-                            m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList[highlight.Key].FgColor;
-                        }
-
-                        if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList[highlight.Key].BgColor, Color.Transparent, false))
-                        {
-                            m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList[highlight.Key].BgColor;
-                        }
-                    }
-                }
+                ParseVolatileHighlights(m_oParentForm.Globals.RoomObjects);
             }
-
             // Presets and Bold
-            if (m_oParentForm.Globals.VolatileHighlights.Count > 0)
-            {
-                foreach (KeyValuePair<string, string> highlight in m_oParentForm.Globals.VolatileHighlights.ToArray())
-                {
-                    Regex volatileRegex = new Regex(Regex.Escape(highlight.Value));
-                    oMatchCollection = volatileRegex.Matches(m_oRichTextBuffer.Text);
-                    {
-                        foreach (Match oMatch in oMatchCollection)
-                        {
-                            if (m_oParentForm.Globals.PresetList[highlight.Key].bHighlightLine)
-                            {
-                                int indexOfHighlight = m_oRichTextBuffer.Text.IndexOf(highlight.Value);
-                                int lastNewLineIndex = m_oRichTextBuffer.Text.LastIndexOf("\n", indexOfHighlight);
-                                int nextNewLineIndex = m_oRichTextBuffer.Text.IndexOf("\n", indexOfHighlight);
-                                if (lastNewLineIndex == -1) lastNewLineIndex = 0;
-                                if (nextNewLineIndex == -1) nextNewLineIndex = m_oRichTextBuffer.Text.Length;
-                                m_oRichTextBuffer.SelectionStart = lastNewLineIndex >= 0 ? lastNewLineIndex : 0;
-                                m_oRichTextBuffer.SelectionLength = nextNewLineIndex - lastNewLineIndex;
-                            }
-                            else
-                            {
-                                m_oRichTextBuffer.SelectionStart = oMatch.Groups[0].Index;
-                                m_oRichTextBuffer.SelectionLength = oMatch.Groups[0].Length;
-                            }
-                            if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList[highlight.Key].FgColor, Color.Transparent, false))
-                            {
-                                m_oRichTextBuffer.SelectionColor = (Color)m_oParentForm.Globals.PresetList[highlight.Key].FgColor;
-                            }
-
-                            if (!Operators.ConditionalCompareObjectEqual(m_oParentForm.Globals.PresetList[highlight.Key].BgColor, Color.Transparent, false))
-                            {
-                                m_oRichTextBuffer.SelectionBackColor = (Color)m_oParentForm.Globals.PresetList[highlight.Key].BgColor;
-                            }
-                        }
-                    }
-                }
-            }
-
+            ParseVolatileHighlights(m_oParentForm.Globals.VolatileHighlights);
             // Highlight String
             if (!Information.IsNothing(m_oParentForm.Globals.HighlightList.RegexString))
             {
@@ -855,6 +862,40 @@ namespace GenieClient
             EventKeyPress?.Invoke(e);
             e.Handled = true;
         }
+
+        // No Scrollbars
+        [DllImport("User32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern int SendMessage(IntPtr hWnd, uint msg, int wParam, IntPtr lParam);
+
+        public const int SB_LINELEFT = 0;
+        public const int SB_LINERIGHT = 1;
+        public const int SB_PAGELEFT = 2;
+        public const int SB_PAGERIGHT = 3;
+        public const int SB_THUMBPOSITION = 4;
+        public const int SB_THUMBTRACK = 5;
+        public const int SB_LEFT = 6;
+        public const int SB_RIGHT = 7;
+
+        public static uint MakeWord(byte low, byte high)
+        {
+            return ((uint)high << 8) | low;
+        }
+
+        public void ComponentRichTextBox_MouseWheel(object sender, MouseEventArgs e)
+        {
+            int bLines = e.Delta * SystemInformation.MouseWheelScrollLines / 120;
+            if (bLines > 0)
+            {
+                for (int i = 0; i < bLines; i++)
+                    SendMessage(Handle, WM_VSCROLL, (int)MakeWord((byte)SB_LINEUP, 0), IntPtr.Zero);
+            }
+            else
+            {
+                for (int i = bLines; i < 0; i++)
+                    SendMessage(Handle, WM_VSCROLL, (int)MakeWord((byte)SB_LINEDOWN, 0), IntPtr.Zero);
+            }
+        }
+        /// End No Scrollbars
 
         private bool m_bMouseDown = false;
 
