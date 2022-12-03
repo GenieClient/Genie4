@@ -77,7 +77,7 @@ namespace GenieClient
             this._RichTextBoxOutput.Name = "_RichTextBoxOutput";
             this._RichTextBoxOutput.NameListOnly = false;
             this._RichTextBoxOutput.ReadOnly = true;
-            this._RichTextBoxOutput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this._RichTextBoxOutput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
             this._RichTextBoxOutput.ShowSelectionMargin = true;
             this._RichTextBoxOutput.Size = new System.Drawing.Size(500, 385);
             this._RichTextBoxOutput.TabIndex = 7;
@@ -90,8 +90,9 @@ namespace GenieClient
             this._RichTextBoxOutput.KeyDown += new System.Windows.Forms.KeyEventHandler(this._RichTextBoxOutput_KeyDown);
             this._RichTextBoxOutput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._RichTextBoxOutput_KeyPress);
             this._RichTextBoxOutput.MouseUp += new System.Windows.Forms.MouseEventHandler(this._RichTextBoxOutput_MouseUp);
-            this._RichTextBoxOutput.MouseDown += new System.Windows.Forms.MouseEventHandler(_RichTextBoxOutput_MouseDown);
-
+            this._RichTextBoxOutput.MouseDown += new System.Windows.Forms.MouseEventHandler(this._RichTextBoxOutput_MouseDown);				
+            // No Scrollbars
+            this._RichTextBoxOutput.MouseWheel += new System.Windows.Forms.MouseEventHandler(this._RichTextBoxOutput_MouseWheel);
             // 
             // _ContextMenuStripOutput
             // 
