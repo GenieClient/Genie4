@@ -52,15 +52,6 @@ namespace GenieClient
         private const int SCF_WORD = 0x2;
         private const int SCF_ALL = 0x4;
 
-        private const uint WM_VSCROLL = 0x115;
-        private const uint SB_LINEUP = 0;
-        private const uint SB_LINEDOWN = 1;
-        private const uint SB_PAGEUP = 2;
-        private const uint SB_PAGEDOWN = 3;
-        private const uint SB_TOP = 6;
-        private const uint SB_BOTTOM = 7;
-        private const uint SB_ENDSCROLL = 8;
-
         /* TODO ERROR: Skipped RegionDirectiveTrivia */
         private const uint CFE_BOLD = 1;
         private const uint CFE_ITALIC = 2;
@@ -863,14 +854,11 @@ namespace GenieClient
         [DllImport("User32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern int SendMessage(IntPtr hWnd, uint msg, int wParam, IntPtr lParam);
 
-        public const int SB_LINELEFT = 0;
-        public const int SB_LINERIGHT = 1;
-        public const int SB_PAGELEFT = 2;
-        public const int SB_PAGERIGHT = 3;
-        public const int SB_THUMBPOSITION = 4;
-        public const int SB_THUMBTRACK = 5;
-        public const int SB_LEFT = 6;
-        public const int SB_RIGHT = 7;
+        private const uint WM_VSCROLL = 0x115;
+        private const uint SB_LINEUP = 0;
+        private const uint SB_LINEDOWN = 1;
+
+
 
         public static uint MakeWord(byte low, byte high)
         {
