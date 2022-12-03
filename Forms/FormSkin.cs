@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.Tracing;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
@@ -806,7 +808,7 @@ namespace GenieClient
                     LText = "#" + e.LinkText;
                 }
             }
-            EventLinkClicked?.Invoke(LText,e);
+            EventLinkClicked?.Invoke(LText, e);
         }
 
         private void _RichTextBoxOutput_KeyDown(object sender, KeyEventArgs e)
@@ -827,6 +829,13 @@ namespace GenieClient
         private void _RichTextBoxOutput_MouseDown(object sender, MouseEventArgs e)
         {
             this._RichTextBoxOutput.ComponentRichTextBox_MouseDown(sender, e);
+        }
+
+        // No Scrollbars
+
+        private void _RichTextBoxOutput_MouseWheel(object sender, MouseEventArgs e)
+        {
+            this._RichTextBoxOutput.ComponentRichTextBox_MouseWheel(sender, e);
         }
     }
 }
