@@ -669,6 +669,20 @@ namespace GenieClient
             }
         }
 
+        public bool HideScrollbars
+        {
+            get
+            {
+                return RichTextBoxOutput.HideScrollbars;
+            }
+
+            set
+            {
+                RichTextBoxOutput.HideScrollbars = value;
+                HideScrollbarsToolStripMenuItem.Checked = value;
+            }
+        }
+
         private bool m_bUserForm = true;
 
         public bool UserForm
@@ -781,6 +795,17 @@ namespace GenieClient
         private void NameListOnlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NameListOnly = !NameListOnly;
+        }
+
+        private void HideScrollbarsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (RichTextBoxOutput.ScrollBars == RichTextBoxScrollBars.ForcedVertical)
+                RichTextBoxOutput.ScrollBars = RichTextBoxScrollBars.None;
+            else
+                RichTextBoxOutput.ScrollBars = RichTextBoxScrollBars.ForcedVertical;
+
+            HideScrollbars = !HideScrollbars;
+            ShowOutput();
         }
 
         private void CloseWindowToolStripMenuItem_Click(object sender, EventArgs e)

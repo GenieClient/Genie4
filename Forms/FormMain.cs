@@ -152,11 +152,12 @@ namespace GenieClient
 
         public void DirectConnect(string[] ConnectionParameters)
         {
-            if(ConnectionParameters.Length > 0)
+            if (ConnectionParameters.Length > 0)
             {
                 string character = "";
                 string game = "";
                 string host = "";
+                string key = "";
                 int port = 0;
                 string[] parameters = ConnectionParameters[0].Split(@"/",StringSplitOptions.RemoveEmptyEntries);
                 foreach (string parameter in parameters)
@@ -179,7 +180,7 @@ namespace GenieClient
                             break;
                     }
                 }
-                if(string.IsNullOrWhiteSpace(game) ||
+                if (string.IsNullOrWhiteSpace(game) ||
                     string.IsNullOrWhiteSpace(host) ||
                     string.IsNullOrWhiteSpace(character) ||
                     port <= 0)
@@ -465,7 +466,7 @@ namespace GenieClient
                 {
                     _m_oAutoMapper.EventEchoText += Plugin_EventEchoText;
                     _m_oAutoMapper.EventSendText += Plugin_EventSendText;
-                    _m_oAutoMapper.EventParseText += ClassCommand_ParseText;
+                    _m_oAutoMapper.EventParseText -= ClassCommand_ParseText;
                     _m_oAutoMapper.EventVariableChanged += PluginHost_EventVariableChanged;
                 }
             }
@@ -763,14 +764,14 @@ namespace GenieClient
         {
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
                     if (((oPlugin as GeniePlugin.Interfaces.IPlugin).Name ?? "") == (name ?? ""))
                     {
                         (oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled = value;
                     }
                 }
-                else if(oPlugin is GeniePlugin.Plugins.IPlugin)
+                else if (oPlugin is GeniePlugin.Plugins.IPlugin)
                 {
                     if (((oPlugin as GeniePlugin.Plugins.IPlugin).Name ?? "") == (name ?? ""))
                     {
@@ -851,7 +852,7 @@ namespace GenieClient
             int I = 0;
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
                     if (((oPlugin as GeniePlugin.Interfaces.IPlugin).Name ?? "") == (name ?? ""))
                     {
@@ -897,7 +898,7 @@ namespace GenieClient
         {
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                     (oPlugin as GeniePlugin.Interfaces.IPlugin).ParentClosing();
                 else if (oPlugin is GeniePlugin.Plugins.IPlugin)
                     (oPlugin as GeniePlugin.Plugins.IPlugin).ParentClosing();
@@ -913,12 +914,12 @@ namespace GenieClient
             {
                 if (!Information.IsNothing(oPlugin))
                 {
-                    if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                    if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                     {
                         AppendText(Conversions.ToString(Constants.vbTab + (oPlugin as GeniePlugin.Interfaces.IPlugin).Name + " " + (oPlugin as GeniePlugin.Interfaces.IPlugin).Version + " - " + Interaction.IIf((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled, "Enabled", "Disabled") + System.Environment.NewLine));
                         AppendText(Constants.vbTab + Constants.vbTab + m_oPluginNameToFile[(oPlugin as GeniePlugin.Interfaces.IPlugin).Name] + System.Environment.NewLine);
                     }
-                    else if(oPlugin is GeniePlugin.Plugins.IPlugin)
+                    else if (oPlugin is GeniePlugin.Plugins.IPlugin)
                     {
                         AppendText(Conversions.ToString(Constants.vbTab + (oPlugin as GeniePlugin.Plugins.IPlugin).Name + " " + (oPlugin as GeniePlugin.Plugins.IPlugin).Version + " - " + Interaction.IIf((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled, "Enabled", "Disabled") + System.Environment.NewLine));
                         AppendText(Constants.vbTab + Constants.vbTab + m_oPluginNameToFile[(oPlugin as GeniePlugin.Plugins.IPlugin).Name] + System.Environment.NewLine);
@@ -1076,12 +1077,12 @@ namespace GenieClient
                 if (!Information.IsNothing(oPlugin))
                 {
                     pluginDialogItem = new ToolStripMenuItem();
-                    if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                    if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                     {
                         pluginDialogItem.Name = "ToolStripMenuItemPlugin" + (oPlugin as GeniePlugin.Interfaces.IPlugin).Name;
                         pluginDialogItem.Text = (oPlugin as GeniePlugin.Interfaces.IPlugin).Name;
                     }
-                    else if(oPlugin is GeniePlugin.Plugins.IPlugin)
+                    else if (oPlugin is GeniePlugin.Plugins.IPlugin)
                     {
                         pluginDialogItem.Name = "ToolStripMenuItemPlugin" + (oPlugin as GeniePlugin.Plugins.IPlugin).Name;
                         pluginDialogItem.Text = (oPlugin as GeniePlugin.Plugins.IPlugin).Name;
@@ -1176,7 +1177,7 @@ namespace GenieClient
                         /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                     }
                 }
-                else if(oPlugin is GeniePlugin.Plugins.IPlugin)
+                else if (oPlugin is GeniePlugin.Plugins.IPlugin)
                 {
                     try
                     {
@@ -1227,7 +1228,7 @@ namespace GenieClient
 
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
                     try
                     {
@@ -1359,7 +1360,7 @@ namespace GenieClient
         {
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
                     try
                     {
@@ -1415,7 +1416,7 @@ namespace GenieClient
 
                 foreach (object oPlugin in m_oGlobals.PluginList)
                 {
-                    if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                    if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                     {
                         try
                         {
@@ -2128,6 +2129,8 @@ namespace GenieClient
 
                 bool bNameListOnly = m_oConfig.GetValue("Genie/Windows/Game", "NameListOnly", false);
                 m_oOutputMain.NameListOnly = bNameListOnly;
+                bool bHideScrollbars = m_oConfig.GetValue("Genie/Windows/Game", "HideScrollbars", true);
+                m_oOutputMain.HideScrollbars = bHideScrollbars;
                 string sFontFamily = m_oConfig.GetValue("Genie/Windows/Game/Font", "Family", string.Empty);
                 if (sFontFamily.Length > 0)
                 {
@@ -2187,6 +2190,7 @@ namespace GenieClient
                         sColorName = m_oConfig.GetValue("Genie/Windows/Window" + j.ToString(), "Colors", string.Empty);
                         bTimeStamp = m_oConfig.GetValue("Genie/Windows/Window" + j.ToString(), "TimeStamp", false);
                         bNameListOnly = m_oConfig.GetValue("Genie/Windows/Window" + j.ToString(), "NameListOnly", false);
+                        bHideScrollbars = m_oConfig.GetValue("Genie/Windows/Window" + j.ToString(), "HideScrollbars", true);
                         FormSkin oFormTemp = null;
                         sFontFamily = m_oConfig.GetValue("Genie/Windows/Window" + j.ToString() + "/Font", "Family", string.Empty);
                         if (sFontFamily.Length > 0)
@@ -2205,6 +2209,7 @@ namespace GenieClient
                         {
                             oFormTemp.TimeStamp = bTimeStamp;
                             oFormTemp.NameListOnly = bNameListOnly;
+                            oFormTemp.HideScrollbars = bHideScrollbars;
                         }
                     }
                 }
@@ -2308,6 +2313,7 @@ namespace GenieClient
             m_oConfig.SetValue("Genie/Windows/Game", "TimeStamp", m_oOutputMain.TimeStamp.ToString());
             m_oConfig.SetValue("Genie/Windows/Game", "Colors", Genie.ColorCode.ColorToString(m_oOutputMain.RichTextBoxOutput.ForeColor, m_oOutputMain.RichTextBoxOutput.BackColor));
             m_oConfig.SetValue("Genie/Windows/Game", "NameListOnly", m_oOutputMain.NameListOnly.ToString());
+            m_oConfig.SetValue("Genie/Windows/Game", "HideScrollbars", m_oOutputMain.HideScrollbars.ToString());
             m_oConfig.SetValue("Genie/Windows/Game/Font", "Family", m_oOutputMain.TextFont.Name.ToString());
             m_oConfig.SetValue("Genie/Windows/Game/Font", "Size", m_oOutputMain.TextFont.Size.ToString());
             m_oConfig.SetValue("Genie/Windows/Game/Font", "Style", m_oOutputMain.TextFont.Style.ToString());
@@ -2338,6 +2344,7 @@ namespace GenieClient
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "Top", tmpFormSkin.Top.ToString());
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "Visible", tmpFormSkin.Visible.ToString());
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "TimeStamp", tmpFormSkin.TimeStamp.ToString());
+                m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "HideScrollbars", tmpFormSkin.HideScrollbars.ToString());
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "Colors", Genie.ColorCode.ColorToString(tmpFormSkin.RichTextBoxOutput.ForeColor, tmpFormSkin.RichTextBoxOutput.BackColor));
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "NameListOnly", tmpFormSkin.NameListOnly.ToString());
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString() + "/Font", "Family", tmpFormSkin.TextFont.Name.ToString());
@@ -4328,7 +4335,7 @@ namespace GenieClient
                         IconBar.UpdateWebbed();
                         if (m_oGame.IsConnectedToGame )
                         {
-                            if(!string.IsNullOrWhiteSpace(m_oGlobals.Config.ConnectScript)) ClassCommand_SendText(m_oGlobals.Config.ScriptChar + m_oGlobals.Config.ConnectScript, false, "Connected");
+                            if (!string.IsNullOrWhiteSpace(m_oGlobals.Config.ConnectScript)) ClassCommand_SendText(m_oGlobals.Config.ScriptChar + m_oGlobals.Config.ConnectScript, false, "Connected");
                             if (m_oGlobals.VariableList.ContainsKey("connectscript")) ClassCommand_SendText(m_oGlobals.Config.ScriptChar + m_oGlobals.Config.ConnectScript, false, "Connected");
                         }
                         SafeUpdateMainWindowTitle();
@@ -7919,38 +7926,35 @@ namespace GenieClient
 
         private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Parallel.Invoke(() =>
+            if (Updater.ClientIsCurrent)
             {
-                if (Updater.ClientIsCurrent)
+                AddText("You have the latest version of Genie.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor);
+            }
+            else
+            {
+                AddText("An Update is Available.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                DialogResult response = MessageBox.Show("An Update is Available. Would you like to update?", "Rub the Bottle?", MessageBoxButtons.YesNoCancel);
+                if (response == DialogResult.Yes)
                 {
-                    AddText("You have the latest version of Genie.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor);
-                }
-                else
-                {
-                    AddText("An Update is Available.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    DialogResult response = MessageBox.Show("An Update is Available. Would you like to update?", "Rub the Bottle?", MessageBoxButtons.YesNoCancel);
-                    if (response == DialogResult.Yes)
+                    if (m_oGame.IsConnectedToGame)
                     {
-                        if (m_oGame.IsConnectedToGame)
-                        {
-                            response = MessageBox.Show("Genie will close and this will disconnect you from the game.", "Close Genie?", MessageBoxButtons.YesNoCancel);
-                            if (response == DialogResult.Yes)
-                            {
-                                AddText("Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                                Updater.RunUpdate();
-                                m_oGame.Disconnect(true);
-                                System.Windows.Forms.Application.Exit();
-                            }
-                        }
-                        else
+                        response = MessageBox.Show("Genie will close and this will disconnect you from the game.", "Close Genie?", MessageBoxButtons.YesNoCancel);
+                        if (response == DialogResult.Yes)
                         {
                             AddText("Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                             Updater.RunUpdate();
+                            m_oGame.Disconnect(true);
                             System.Windows.Forms.Application.Exit();
                         }
                     }
+                    else
+                    {
+                        AddText("Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                        Updater.RunUpdate();
+                        System.Windows.Forms.Application.Exit();
+                    }
                 }
-            });
+            }
         }
 
         private void forceUpdateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -8010,18 +8014,15 @@ namespace GenieClient
             DialogResult response = MessageBox.Show("This may take a moment. Update Maps?", "Update Maps?", MessageBoxButtons.YesNoCancel);
             if (response == DialogResult.Yes)
             {
-                Parallel.Invoke(() =>
+                AddText($"Updating Maps in {m_oGlobals.Config.MapDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                if (Updater.UpdateMaps(m_oGlobals.Config.MapDir))
                 {
-                    AddText($"Updating Maps in {m_oGlobals.Config.MapDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    if (Updater.UpdateMaps(m_oGlobals.Config.MapDir))
-                    {
-                        AddText("Maps Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    }
-                    else
-                    {
-                        AddText("Something went wrong.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    }
-                });
+                    AddText("Maps Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main); 
+                }
+                else
+                {
+                    AddText("Something went wrong.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                }
             }
         }
 
@@ -8030,28 +8031,26 @@ namespace GenieClient
             DialogResult response = MessageBox.Show("This may take a moment. Update Plugins?\r\nNote: This will only update plugins from the Genie 4 Plugins folder..", "Update Plugins?", MessageBoxButtons.YesNoCancel);
             if (response == DialogResult.Yes)
             {
-                Parallel.Invoke(() =>
+                AddText($"Updating Plugins in {m_oGlobals.Config.PluginDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                if (Updater.UpdatePlugins(m_oGlobals.Config.PluginDir))
                 {
-                    AddText($"Updating Plugins in {m_oGlobals.Config.PluginDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    if (Updater.UpdatePlugins(m_oGlobals.Config.PluginDir))
-                    {
-                        AddText("Plugins Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                        FormPlugin_ReloadPlugins();
-                    }
-                    else
-                    {
-                        AddText("Something went wrong.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    }
-                });
+                    AddText("Plugins Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    FormPlugin_ReloadPlugins();
+                }
+                else
+                {
+                    AddText("Something went wrong.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                }
             }
         }
+
 
         private void updateScriptsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!m_oGlobals.Config.ScriptRepo.EndsWith(".zip"))
             {
                 MessageBox.Show("You do not have a repository configured properly." + Environment.NewLine + "Please use \"#config scriptrepo {address of a zip file}\" to configure." + Environment.NewLine + "The URI must be a zip file.");
-                return; 
+                return;
             }
             DialogResult response = MessageBox.Show($"This may take a moment. Update Scripts?\r\nRepo: {m_oGlobals.Config.ScriptRepo}", "Update Scripts?", MessageBoxButtons.YesNoCancel);
             if (response == DialogResult.Yes)
