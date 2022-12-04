@@ -133,6 +133,7 @@ namespace GenieClient
         private Font m_MonoFont = new Font("Courier New", 9, FontStyle.Regular);
         private bool m_bTimeStamp = false;
         private bool m_bNameListOnly = false;
+        private bool m_bHideScrollbars = true;
         private int m_iMaxBufferSize = 500000;
         private bool m_bIsMainWindow = false;
        
@@ -188,6 +189,19 @@ namespace GenieClient
             }
         }
 
+        public bool HideScrollbars
+        {
+            get
+            {
+                return m_bHideScrollbars;
+            }
+
+            set
+            {
+                m_bHideScrollbars = value;
+            }
+        }
+
         private string GetTimeString(string sText)
         {
             if (m_bTimeStamp == true)
@@ -196,11 +210,11 @@ namespace GenieClient
                 {
                     if (sText.StartsWith(" "))
                     {
-                        return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.LongTime) + "]";
+                        return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.ShortTime) + "]";
                     }
                     else
                     {
-                        return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.LongTime) + "] ";
+                        return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.ShortTime) + "] ";
                     }
                 }
             }
@@ -208,7 +222,8 @@ namespace GenieClient
             return string.Empty;
         }
 
-        public override Font Font
+
+    public override Font Font
         {
             get
             {
@@ -857,8 +872,6 @@ namespace GenieClient
         private const uint WM_VSCROLL = 0x115;
         private const uint SB_LINEUP = 0;
         private const uint SB_LINEDOWN = 1;
-
-
 
         public static uint MakeWord(byte low, byte high)
         {
