@@ -39,7 +39,7 @@ namespace GenieClient
             this._ClearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._TimeStampToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._NameListOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this._HideScrollbarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._HideShowScrollbarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._ToolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this._CloseWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._PanelContents.SuspendLayout();
@@ -69,6 +69,7 @@ namespace GenieClient
             this._RichTextBoxOutput.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this._RichTextBoxOutput.ForeColor = System.Drawing.Color.WhiteSmoke;
             this._RichTextBoxOutput.FormParent = null;
+            this._RichTextBoxOutput.HideShowScrollbars = false;
             this._RichTextBoxOutput.HideSelection = false;
             this._RichTextBoxOutput.IsMainWindow = false;
             this._RichTextBoxOutput.Location = new System.Drawing.Point(0, 0);
@@ -79,7 +80,6 @@ namespace GenieClient
             this._RichTextBoxOutput.NameListOnly = false;
             this._RichTextBoxOutput.ReadOnly = true;
             this._RichTextBoxOutput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this._RichTextBoxOutput.HideScrollbars = true;
             this._RichTextBoxOutput.ShowSelectionMargin = true;
             this._RichTextBoxOutput.Size = new System.Drawing.Size(350, 231);
             this._RichTextBoxOutput.TabIndex = 7;
@@ -91,6 +91,7 @@ namespace GenieClient
             this._RichTextBoxOutput.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.RichTextBoxOutput_LinkClicked);
             this._RichTextBoxOutput.KeyDown += new System.Windows.Forms.KeyEventHandler(this._RichTextBoxOutput_KeyDown);
             this._RichTextBoxOutput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._RichTextBoxOutput_KeyPress);
+            this._RichTextBoxOutput.Layout += new System.Windows.Forms.LayoutEventHandler(this._HideShowscrollbars_Update_Layout);
             this._RichTextBoxOutput.MouseDown += new System.Windows.Forms.MouseEventHandler(this._RichTextBoxOutput_MouseDown);
             this._RichTextBoxOutput.MouseUp += new System.Windows.Forms.MouseEventHandler(this._RichTextBoxOutput_MouseUp);
             this._RichTextBoxOutput.MouseWheel += new System.Windows.Forms.MouseEventHandler(this._RichTextBoxOutput_MouseWheel);
@@ -102,7 +103,7 @@ namespace GenieClient
             this._ClearToolStripMenuItem,
             this._TimeStampToolStripMenuItem,
             this._NameListOnlyToolStripMenuItem,
-            this._HideScrollbarsToolStripMenuItem,
+            this._HideShowScrollbarsToolStripMenuItem,
             this._ToolStripSeparator1,
             this._CloseWindowToolStripMenuItem});
             this._ContextMenuStripOutput.Name = "ContextMenuStripOutput";
@@ -129,12 +130,15 @@ namespace GenieClient
             this._NameListOnlyToolStripMenuItem.Text = "Name List Only";
             this._NameListOnlyToolStripMenuItem.Click += new System.EventHandler(this.NameListOnlyToolStripMenuItem_Click);
             // 
-            // _HideScrollbarsToolStripMenuItem
+            // _HideShowScrollbarsToolStripMenuItem
             // 
-            this._HideScrollbarsToolStripMenuItem.Name = "_HideScrollbarsToolStripMenuItem";
-            this._HideScrollbarsToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            this._HideScrollbarsToolStripMenuItem.Text = "Show Scrollbars";
-            this._HideScrollbarsToolStripMenuItem.Click += new System.EventHandler(this.HideScrollbarsToolStripMenuItem_Click);
+            this._HideShowScrollbarsToolStripMenuItem.Checked = true;
+            this._HideShowScrollbarsToolStripMenuItem.CheckOnClick = true;
+            this._HideShowScrollbarsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this._HideShowScrollbarsToolStripMenuItem.Name = "_HideShowScrollbarsToolStripMenuItem";
+            this._HideShowScrollbarsToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this._HideShowScrollbarsToolStripMenuItem.Text = "Show Scrollbars";
+            this._HideShowScrollbarsToolStripMenuItem.Click += new System.EventHandler(this.HideShowScrollbarsToolStripMenuItem_Click);
             // 
             // _ToolStripSeparator1
             // 
@@ -167,6 +171,7 @@ namespace GenieClient
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormSkin_Paint);
             this.DoubleClick += new System.EventHandler(this.FormSkin_DoubleClick);
             this.Enter += new System.EventHandler(this.FormSkin_Enter);
+            this.Layout += new System.Windows.Forms.LayoutEventHandler(this._HideShowscrollbars_Update_Layout);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormSkin_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormSkin_MouseMove);
             this.Resize += new System.EventHandler(this.FormSkin_Resize);
@@ -339,28 +344,28 @@ namespace GenieClient
             }
         }
 
-        private ToolStripMenuItem _HideScrollbarsToolStripMenuItem;
+        private ToolStripMenuItem _HideShowScrollbarsToolStripMenuItem; // Hide/Show scrollbars
 
-        internal ToolStripMenuItem HideScrollbarsToolStripMenuItem
+        internal ToolStripMenuItem HideShowScrollbarsToolStripMenuItem
         {
             [MethodImpl(MethodImplOptions.Synchronized)]
             get
             {
-                return _HideScrollbarsToolStripMenuItem;
+                return _HideShowScrollbarsToolStripMenuItem;
             }
 
             [MethodImpl(MethodImplOptions.Synchronized)]
             set
             {
-                if (_HideScrollbarsToolStripMenuItem != null)
+                if (_HideShowScrollbarsToolStripMenuItem != null)
                 {
-                    _HideScrollbarsToolStripMenuItem.Click -= HideScrollbarsToolStripMenuItem_Click;
+                    _HideShowScrollbarsToolStripMenuItem.Click -= HideShowScrollbarsToolStripMenuItem_Click;
                 }
 
-                _HideScrollbarsToolStripMenuItem = value;
-                if (_HideScrollbarsToolStripMenuItem != null)
+                _HideShowScrollbarsToolStripMenuItem = value;
+                if (_HideShowScrollbarsToolStripMenuItem != null)
                 {
-                    _HideScrollbarsToolStripMenuItem.Click += HideScrollbarsToolStripMenuItem_Click;
+                    _HideShowScrollbarsToolStripMenuItem.Click += HideShowScrollbarsToolStripMenuItem_Click;
                 }
             }
         }

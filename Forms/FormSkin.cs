@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using Windows.UI.Xaml;
 
 namespace GenieClient
 {
@@ -669,17 +670,29 @@ namespace GenieClient
             }
         }
 
-        public bool HideScrollbars
+        public bool HideShowScrollbars // Hide/Show scrollbars
         {
             get
             {
-                return RichTextBoxOutput.HideScrollbars;
+                return RichTextBoxOutput.HideShowScrollbars;
             }
 
             set
             {
-                RichTextBoxOutput.HideScrollbars = value;
-                HideScrollbarsToolStripMenuItem.Checked = value;
+                RichTextBoxOutput.HideShowScrollbars = value;
+                HideShowScrollbarsToolStripMenuItem.Checked = value;
+            }
+        }
+
+        private void _HideShowscrollbars_Update_Layout(object sender, LayoutEventArgs e)
+        {
+            if (HideShowScrollbars == true)
+            {
+                this._RichTextBoxOutput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            }
+            else
+            {
+                this._RichTextBoxOutput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
             }
         }
 
@@ -754,6 +767,15 @@ namespace GenieClient
             if (!Information.IsNothing(MdiParent))
             {
                 ((FormMain)MdiParent).ActiveFormSkin = this;
+
+                if (HideShowScrollbars)
+                {
+                    this._RichTextBoxOutput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+                }
+                else
+                {
+                    this._RichTextBoxOutput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+                }
             }
         }
 
@@ -797,15 +819,17 @@ namespace GenieClient
             NameListOnly = !NameListOnly;
         }
 
-        private void HideScrollbarsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void HideShowScrollbarsToolStripMenuItem_Click(object sender, EventArgs e) // Hide/Show scrollbars
         {
-            if (RichTextBoxOutput.ScrollBars == RichTextBoxScrollBars.ForcedVertical)
-                RichTextBoxOutput.ScrollBars = RichTextBoxScrollBars.None;
+            HideShowScrollbars = !HideShowScrollbars;
+            if (HideShowScrollbars)
+            {
+                this._RichTextBoxOutput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            }
             else
-                RichTextBoxOutput.ScrollBars = RichTextBoxScrollBars.ForcedVertical;
-
-            HideScrollbars = !HideScrollbars;
-            ShowOutput();
+            {
+                this._RichTextBoxOutput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            }
         }
 
         private void CloseWindowToolStripMenuItem_Click(object sender, EventArgs e)
@@ -854,9 +878,7 @@ namespace GenieClient
             this._RichTextBoxOutput.ComponentRichTextBox_MouseDown(sender, e);
         }
 
-        // No Scrollbars
-
-        private void _RichTextBoxOutput_MouseWheel(object sender, MouseEventArgs e)
+        private void _RichTextBoxOutput_MouseWheel(object sender, MouseEventArgs e) // No Scrollbars
         {
             this._RichTextBoxOutput.ComponentRichTextBox_MouseWheel(sender, e);
         }
