@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using GenieClient.Genie;
 using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+using Microsoft.VisualBasic.CompilerServices;											
 
 namespace GenieClient
 {
@@ -133,10 +133,10 @@ namespace GenieClient
         private Font m_MonoFont = new Font("Courier New", 9, FontStyle.Regular);
         private bool m_bTimeStamp = false;
         private bool m_bNameListOnly = false;
-        private bool m_bHideScrollbars = true;
+        private bool m_bHideShowScrollbars = false; // Hide/Show scrollbars
         private int m_iMaxBufferSize = 500000;
         private bool m_bIsMainWindow = false;
-       
+
         public bool IsMainWindow
         {
             get
@@ -189,16 +189,16 @@ namespace GenieClient
             }
         }
 
-        public bool HideScrollbars
+        public bool HideShowScrollbars // Hide/Show scrollbars
         {
             get
             {
-                return m_bHideScrollbars;
+                return m_bHideShowScrollbars;
             }
 
             set
             {
-                m_bHideScrollbars = value;
+                m_bHideShowScrollbars = value;
             }
         }
 
@@ -222,8 +222,7 @@ namespace GenieClient
             return string.Empty;
         }
 
-
-    public override Font Font
+        public override Font Font
         {
             get
             {
@@ -419,7 +418,8 @@ namespace GenieClient
         private void ParseLineHighlight(int iStart, string sLine)
         {
             Genie.Globals.HighlightRegExp.Highlight oHighlight;
-            MatchCollection oMatchCollection;            
+            MatchCollection oMatchCollection;
+
             if (Conversions.ToBoolean(m_oParentForm.Globals.HighlightRegExpList.AcquireReaderLock()))
             {
                 try
@@ -494,7 +494,7 @@ namespace GenieClient
             public int Length;
             public string Command;
         }
-
+		  
         private void ParseVolatileHighlights(List<VolatileHighlight> highlightList)
         {
             foreach (VolatileHighlight highlight in highlightList.ToArray())
@@ -548,13 +548,15 @@ namespace GenieClient
         private void ParseHighlights()
         {
             MatchCollection oMatchCollection;
+				
 
             if (m_oRichTextBuffer.Text.Contains("You also see") && m_oParentForm.Globals.RoomObjects.Count > 0)
             {
                 ParseVolatileHighlights(m_oParentForm.Globals.RoomObjects);
             }
+
             // Presets and Bold
-            ParseVolatileHighlights(m_oParentForm.Globals.VolatileHighlights);
+            ParseVolatileHighlights(m_oParentForm.Globals.VolatileHighlights);						
             // Highlight String
             if (!Information.IsNothing(m_oParentForm.Globals.HighlightList.RegexString))
             {
