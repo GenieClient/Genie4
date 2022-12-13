@@ -58,7 +58,7 @@ namespace GenieClient
             this._TextBoxColor = new System.Windows.Forms.TextBox();
             this._CheckBoxNameListOnly = new System.Windows.Forms.CheckBox();
             this._CheckBoxTimeStamp = new System.Windows.Forms.CheckBox();
-            this._CheckBoxHideScrollbars = new System.Windows.Forms.CheckBox();
+            this._CheckBoxHideShowScrollbars = new System.Windows.Forms.CheckBox();
             this._ButtonFont = new System.Windows.Forms.Button();
             this._LabelFont = new System.Windows.Forms.Label();
             this._TextBoxFont = new System.Windows.Forms.TextBox();
@@ -223,7 +223,7 @@ namespace GenieClient
             this._GroupBoxBase.Controls.Add(this._TextBoxColor);
             this._GroupBoxBase.Controls.Add(this._CheckBoxNameListOnly);
             this._GroupBoxBase.Controls.Add(this._CheckBoxTimeStamp);
-            this._GroupBoxBase.Controls.Add(this._CheckBoxHideScrollbars);
+            this._GroupBoxBase.Controls.Add(this._CheckBoxHideShowScrollbars);
             this._GroupBoxBase.Controls.Add(this._ButtonFont);
             this._GroupBoxBase.Controls.Add(this._LabelFont);
             this._GroupBoxBase.Controls.Add(this._TextBoxFont);
@@ -341,17 +341,19 @@ namespace GenieClient
             this._CheckBoxTimeStamp.UseVisualStyleBackColor = true;
             this._CheckBoxTimeStamp.CheckedChanged += new System.EventHandler(this.CheckBoxTimeStamp_CheckedChanged);
             // 
-            // _CheckBoxHideScrollbars
+            // _CheckBoxHideShowScrollbars
             // 
-            this._CheckBoxHideScrollbars.AutoSize = true;
-            this._CheckBoxHideScrollbars.Location = new System.Drawing.Point(307, 112);
-            this._CheckBoxHideScrollbars.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this._CheckBoxHideScrollbars.Name = "_CheckBoxHideScrollbars";
-            this._CheckBoxHideScrollbars.Size = new System.Drawing.Size(155, 19);
-            this._CheckBoxHideScrollbars.TabIndex = 12;
-            this._CheckBoxHideScrollbars.Text = "Show Scrollbars?";
-            this._CheckBoxHideScrollbars.UseVisualStyleBackColor = true;
-            this._CheckBoxHideScrollbars.CheckedChanged += new System.EventHandler(this.CheckBoxHideScrollbars_CheckedChanged);
+            this._CheckBoxHideShowScrollbars.AutoSize = true;
+            this._CheckBoxHideShowScrollbars.Checked = true;
+            this._CheckBoxHideShowScrollbars.CheckState = System.Windows.Forms.CheckState.Checked;
+            this._CheckBoxHideShowScrollbars.Location = new System.Drawing.Point(307, 112);
+            this._CheckBoxHideShowScrollbars.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._CheckBoxHideShowScrollbars.Name = "_CheckBoxHideShowScrollbars";
+            this._CheckBoxHideShowScrollbars.Size = new System.Drawing.Size(114, 19);
+            this._CheckBoxHideShowScrollbars.TabIndex = 12;
+            this._CheckBoxHideShowScrollbars.Text = "Show Scrollbars?";
+            this._CheckBoxHideShowScrollbars.UseVisualStyleBackColor = true;
+            this._CheckBoxHideShowScrollbars.CheckedChanged += new System.EventHandler(this.CheckBoxHideShowScrollbars_CheckedChanged);
             // 
             // _ButtonFont
             // 
@@ -920,28 +922,28 @@ namespace GenieClient
             }
         }
 
-        private CheckBox _CheckBoxHideScrollbars;
+        private CheckBox _CheckBoxHideShowScrollbars; // Hide/Show scrollbars
 
-        internal CheckBox CheckBoxHideScrollbars
+        internal CheckBox CheckBoxHideShowScrollbars
         {
             [MethodImpl(MethodImplOptions.Synchronized)]
             get
             {
-                return _CheckBoxHideScrollbars;
+                return _CheckBoxHideShowScrollbars;
             }
 
             [MethodImpl(MethodImplOptions.Synchronized)]
             set
             {
-                if (_CheckBoxHideScrollbars != null)
+                if (_CheckBoxHideShowScrollbars != null)
                 {
-                    _CheckBoxHideScrollbars.CheckedChanged -= CheckBoxHideScrollbars_CheckedChanged;
+                    _CheckBoxHideShowScrollbars.CheckedChanged -= CheckBoxHideShowScrollbars_CheckedChanged;
                 }
 
-                _CheckBoxHideScrollbars = value;
-                if (_CheckBoxHideScrollbars != null)
+                _CheckBoxHideShowScrollbars = value;
+                if (_CheckBoxHideShowScrollbars != null)
                 {
-                    _CheckBoxHideScrollbars.CheckedChanged += CheckBoxHideScrollbars_CheckedChanged;
+                    _CheckBoxHideShowScrollbars.CheckedChanged += CheckBoxHideShowScrollbars_CheckedChanged;
                 }
             }
         }
