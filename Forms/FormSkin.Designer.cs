@@ -69,8 +69,8 @@ namespace GenieClient
             this._RichTextBoxOutput.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this._RichTextBoxOutput.ForeColor = System.Drawing.Color.WhiteSmoke;
             this._RichTextBoxOutput.FormParent = null;
-            this._RichTextBoxOutput.HideShowScrollbars = false;
             this._RichTextBoxOutput.HideSelection = false;
+            this._RichTextBoxOutput.HideShowScrollbars = false;
             this._RichTextBoxOutput.IsMainWindow = false;
             this._RichTextBoxOutput.Location = new System.Drawing.Point(0, 0);
             this._RichTextBoxOutput.Margin = new System.Windows.Forms.Padding(4);
@@ -91,7 +91,6 @@ namespace GenieClient
             this._RichTextBoxOutput.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.RichTextBoxOutput_LinkClicked);
             this._RichTextBoxOutput.KeyDown += new System.Windows.Forms.KeyEventHandler(this._RichTextBoxOutput_KeyDown);
             this._RichTextBoxOutput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._RichTextBoxOutput_KeyPress);
-            this._RichTextBoxOutput.Layout += new System.Windows.Forms.LayoutEventHandler(this._HideShowscrollbars_Update_Layout);
             this._RichTextBoxOutput.MouseDown += new System.Windows.Forms.MouseEventHandler(this._RichTextBoxOutput_MouseDown);
             this._RichTextBoxOutput.MouseUp += new System.Windows.Forms.MouseEventHandler(this._RichTextBoxOutput_MouseUp);
             this._RichTextBoxOutput.MouseWheel += new System.Windows.Forms.MouseEventHandler(this._RichTextBoxOutput_MouseWheel);
@@ -171,7 +170,6 @@ namespace GenieClient
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormSkin_Paint);
             this.DoubleClick += new System.EventHandler(this.FormSkin_DoubleClick);
             this.Enter += new System.EventHandler(this.FormSkin_Enter);
-            this.Layout += new System.Windows.Forms.LayoutEventHandler(this._HideShowscrollbars_Update_Layout);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormSkin_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormSkin_MouseMove);
             this.Resize += new System.EventHandler(this.FormSkin_Resize);

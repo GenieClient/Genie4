@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
@@ -684,18 +685,6 @@ namespace GenieClient
             }
         }
 
-        private void _HideShowscrollbars_Update_Layout(object sender, LayoutEventArgs e)
-        {
-            if (HideShowScrollbars == true)
-            {
-                this._RichTextBoxOutput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            }
-            else
-            {
-                this._RichTextBoxOutput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            }
-        }
-
         private bool m_bUserForm = true;
 
         public bool UserForm
@@ -746,6 +735,7 @@ namespace GenieClient
         }
 
         private bool m_bUnloadWindow = false;
+        private IntPtr handle;
 
         protected override void OnClosing(CancelEventArgs e)
         {
