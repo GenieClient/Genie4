@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Xml;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using static GenieClient.My.MyProject;
 
 namespace GenieClient.Mapper
 {
@@ -60,8 +61,9 @@ namespace GenieClient.Mapper
         public MapForm(Genie.Globals Globals)
         {
             // This call is required by the Windows Form Designer.
-            InitializeComponent();
             m_oGlobals = Globals;
+            InitializeComponent();
+            UpdatePanelColor();
             // Add any initialization after the InitializeComponent() call.
         }
 
@@ -106,7 +108,12 @@ namespace GenieClient.Mapper
                 return m_NodeList;
             }
         }
-
+        public void UpdatePanelColor()
+        {
+            PanelBase.BackColor = m_oGlobals.PresetList["automapper.panel"].BgColor;
+            PanelMap.BackColor = m_oGlobals.PresetList["automapper.panel"].BgColor;
+            PanelMap.Invalidate();
+        }
         public void UpdateGraph(Node n, NodeList nl, Direction dir)
         {
             m_AllowRecord = false;
@@ -138,6 +145,7 @@ namespace GenieClient.Mapper
             m_Offset.Y *= m_Scale;
             _mapOffsetX = m_Offset.X;
             _mapOffsetY = m_Offset.Y;
+            UpdatePanelColor();
             PanelMap.Invalidate();
         }
 
@@ -260,6 +268,7 @@ namespace GenieClient.Mapper
             var m_Offset = GetOffset();
             m_Offset.X -= m_Offset.X % 20;
             m_Offset.Y -= m_Offset.Y % 20;
+            UpdatePanelColor();
             LoadMaps();
             if (ZoneName.Length > 0)
             {
@@ -671,7 +680,7 @@ namespace GenieClient.Mapper
                     }
                     else
                     {
-                        n.Color = Color.White;
+                        n.Color = Color.Transparent;
                     }
 
                     var xPos = xn.SelectSingleNode("position");
@@ -924,7 +933,7 @@ namespace GenieClient.Mapper
                         xw.WriteAttributeString("name", n.Name);
                         if (n.Note.Length > 0)
                             xw.WriteAttributeString("note", n.Note);
-                        if (n.Color != Color.White)
+                        if (n.Color != Color.Transparent)
                             xw.WriteAttributeString("color", Genie.ColorCode.ColorToString(n.Color));
                         foreach (string s in n.Descriptions)
                         {
@@ -1477,7 +1486,7 @@ namespace GenieClient.Mapper
                 PanelNodeDetails.TextBoxRoomName.Text = "";
                 PanelNodeDetails.TextBoxDescription.Text = "";
                 PanelNodeDetails.TextBoxPosition.Text = "0, 0, 0";
-                PanelNodeDetails.ColorPicker1.Color = Color.White;
+                PanelNodeDetails.ColorPicker1.Color = Color.Transparent;
                 PanelNodeDetails.TextBoxNote.Text = "";
                 PanelNodeDetails.ButtonApply.Text = "Create";
                 PanelNodeDetails.ToolStripButtonNew.Enabled = false;
@@ -1529,7 +1538,6 @@ namespace GenieClient.Mapper
                 return;
 
             // Debug.WriteLine("Painting...")
-
             // First draw all lines
             foreach (Node n in m_NodeList)
             {
@@ -1537,16 +1545,16 @@ namespace GenieClient.Mapper
                 {
                     if (n.Position.Z <= m_CurrentLevelZ)
                     {
-                        var oColorLine = Color.Black;
-                        var oColorLineStump = Color.Cyan;
-                        var oColorLineClimb = Color.Green;
-                        var oColorLineGo = Color.Blue;
+                        var oColorLine = m_oGlobals.PresetList["automapper.line"].FgColor;
+                        var oColorLineStump = m_oGlobals.PresetList["automapper.linestump"].FgColor;
+                        var oColorLineClimb = m_oGlobals.PresetList["automapper.lineclimb"].FgColor;
+                        var oColorLineGo = m_oGlobals.PresetList["automapper.linego"].FgColor;
                         if (n.Position.Z != m_CurrentLevelZ) // Mark all other levels gray
                         {
-                            oColorLine = Color.White;
-                            oColorLineStump = Color.White;
-                            oColorLineClimb = Color.White;
-                            oColorLineGo = Color.White;
+                            oColorLine = m_oGlobals.PresetList["automapper.line"].BgColor;
+                            oColorLineStump = m_oGlobals.PresetList["automapper.linestump"].BgColor;
+                            oColorLineClimb = m_oGlobals.PresetList["automapper.lineclimb"].BgColor;
+                            oColorLineGo = m_oGlobals.PresetList["automapper.linego"].BgColor;
                         }
 
                         foreach (Arc a in n.Arcs)
@@ -1620,7 +1628,7 @@ namespace GenieClient.Mapper
                             {
                                 var pt = new Point3D(n.Position);
                                 pt.Offset(a.Direction, 10);
-                                var oLinePen = new Pen(Color.Cyan);
+                                var oLinePen = new Pen(m_oGlobals.PresetList["automapper.linestump"].FgColor);
                                 if (m_ToggleMoveNodes == true || m_ToggleRecording == true)
                                 {
                                     oLinePen = Pens.Red;
@@ -1651,11 +1659,14 @@ namespace GenieClient.Mapper
                     if (n.Position.Z < m_CurrentLevelZ)
                     {
                         var oColorRoom = n.Color;
-                        var oColorRoomBorder = Color.Black;
+                        if (n.Color == Color.Transparent) { oColorRoom = m_oGlobals.PresetList["automapper.node"].FgColor; }
+                        else oColorRoom = Color.FromArgb(m_oGlobals.Config.AutoMapperAlpha, n.Color.R, n.Color.G, n.Color.B);
+
+                        var oColorRoomBorder = m_oGlobals.PresetList["automapper.line"].FgColor;
                         if (n.Position.Z != m_CurrentLevelZ) // Mark all other levels gray
                         {
-                            oColorRoom = Color.White; // Color.FromArgb(255, 255, 192) ' Base BG
-                            oColorRoomBorder = Color.White;
+                            oColorRoom = m_oGlobals.PresetList["automapper.node"].BgColor; // Color.FromArgb(255, 255, 192) ' Base BG
+                            oColorRoomBorder = m_oGlobals.PresetList["automapper.line"].BgColor;
                         }
 
                         if (!Information.IsNothing(m_SelectedNodes.Find(n.ID)))
@@ -1666,11 +1677,11 @@ namespace GenieClient.Mapper
                         {
                             if (m_PathDestination.Equals(n))
                             {
-                                oColorRoom = Color.Green;
+                                oColorRoom = m_oGlobals.PresetList["automapper.path"].FgColor;
                             }
                             else if (n.State == Node.States.EndPath)
                             {
-                                oColorRoom = Color.LightGreen;
+                                oColorRoom = m_oGlobals.PresetList["automapper.path"].BgColor;
                             }
                         }
 
@@ -1723,11 +1734,14 @@ namespace GenieClient.Mapper
                     if (n.Position.Z == m_CurrentLevelZ)
                     {
                         var oColorRoom = n.Color;
-                        var oColorRoomBorder = Color.Black;
+                        if (n.Color == Color.Transparent) { oColorRoom = m_oGlobals.PresetList["automapper.node"].FgColor; }
+                        else oColorRoom = Color.FromArgb(m_oGlobals.Config.AutoMapperAlpha, n.Color.R, n.Color.G, n.Color.B);
+                        var oColorRoomBorder = m_oGlobals.PresetList["automapper.line"].FgColor;
                         if (n.Position.Z != m_CurrentLevelZ) // Mark all other levels gray
                         {
-                            oColorRoom = Color.FromArgb(255, 255, 192); // Base BG
-                            oColorRoomBorder = Color.LightGray;
+                            oColorRoom = m_oGlobals.PresetList["automapper.node"].BgColor;
+                            //oColorRoom = Color.FromArgb(255, 255, 192); // Base BG
+                            oColorRoomBorder = m_oGlobals.PresetList["automapper.line"].BgColor;
                         }
 
                         if (!Information.IsNothing(m_SelectedNodes.Find(n.ID)))
@@ -1738,11 +1752,11 @@ namespace GenieClient.Mapper
                         {
                             if (m_PathDestination.Equals(n))
                             {
-                                oColorRoom = Color.Green;
+                                oColorRoom = m_oGlobals.PresetList["automapper.path"].FgColor;
                             }
                             else if (n.State == Node.States.EndPath)
                             {
-                                oColorRoom = Color.LightGreen;
+                                oColorRoom = m_oGlobals.PresetList["automapper.path"].BgColor;
                             }
                         }
 
@@ -1803,6 +1817,7 @@ namespace GenieClient.Mapper
             // End If
 
             // Draw labels
+            Font LabelText = new Font(m_Font.Name, (m_Font.Size * m_Scale));
 
             if (!Information.IsNothing(m_NodeList))
             {
@@ -1815,9 +1830,9 @@ namespace GenieClient.Mapper
                         r.Height = 15;
 
                         var m_Offset = GetOffset();
-                        r.X = l.Position.X + m_Offset.X;
-                        r.Y = l.Position.Y + m_Offset.Y;
-                        var size = e.Graphics.MeasureString(l.Text, m_Font);
+                        r.X = (l.Position.X * m_Scale) + m_Offset.X;
+                        r.Y = (l.Position.Y * m_Scale) + m_Offset.Y;
+                        var size = e.Graphics.MeasureString(l.Text, LabelText);
                         r.Width = size.Width;
                         l.Rectangle = r;
                         // End If
@@ -1827,16 +1842,16 @@ namespace GenieClient.Mapper
                         // End If
 
                         var b = Brushes.White;
-                        var bt = Brushes.Black;
+                        var bt = new SolidBrush(m_oGlobals.PresetList["automapper.panel"].FgColor);
                         if (m_SelectedLabels.Contains(l))
                         {
                             b = Brushes.Blue;
-                            bt = Brushes.White;
+                            bt = new SolidBrush(Color.White);
                             e.Graphics.FillRectangle(b, l.Rectangle.X, l.Rectangle.Y, l.Rectangle.Width, l.Rectangle.Height);
                             e.Graphics.DrawRectangle(Pens.Black, l.Rectangle.X, l.Rectangle.Y, l.Rectangle.Width, l.Rectangle.Height);
                         }
 
-                        e.Graphics.DrawString(l.Text, m_Font, bt, l.Rectangle.X + 1, l.Rectangle.Y + 1);
+                        e.Graphics.DrawString(l.Text, LabelText, bt, l.Rectangle.X + 1, l.Rectangle.Y + 1);
                     }
                 }
             }
@@ -1873,7 +1888,7 @@ namespace GenieClient.Mapper
             // Draw lasso
             if (!Information.IsNothing(m_LassoStart))
             {
-                var p = new Pen(Color.Black);
+                var p = new Pen(m_oGlobals.PresetList["automapper.line"].FgColor);
                 p.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
                 e.Graphics.DrawRectangle(p, m_Lasso);
             }
@@ -1881,6 +1896,7 @@ namespace GenieClient.Mapper
             // Draw start point dot
             // Dim oWhere2 As Point = ConvertPoint(New Point3D(), 4)
             // e.Graphics.FillRectangle(Brushes.Red, oWhere2.X + 3, oWhere2.Y + 3, 3, 3)
+            //UpdatePanelColor();
         }
 
         private void CheckScrollTo(int NodeX, int NodeY)

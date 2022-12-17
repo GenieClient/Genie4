@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Net;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -33,6 +32,7 @@ namespace GenieClient
             m_PluginDialog = new FormPlugins(ref _m_oGlobals.PluginList);
             // This call is required by the Windows Form Designer.
             InitializeComponent();
+            RecolorUI();
 
             // Add any initialization after the InitializeComponent() call.
             LocalDirectory.CheckUserDirectory();
@@ -129,6 +129,39 @@ namespace GenieClient
             UpdateMainWindowTitle();
         }
 
+        private void RecolorUI()
+        {
+            this._MenuStripMain.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+            this._MenuStripMain.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
+            this._MenuStripMain.Renderer = new GenieClient.Forms.Components.MenuRenderer(m_oGlobals.PresetList);
+            
+            this._ToolStripButtons.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+            this._ToolStripButtons.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
+            this._ToolStripButtons.Renderer = new GenieClient.Forms.Components.MenuRenderer(m_oGlobals.PresetList);
+
+            this._TextBoxInput.BackColor = m_oGlobals.PresetList["ui.textbox"].BgColor;
+            this._TextBoxInput.ForeColor = m_oGlobals.PresetList["ui.textbox"].FgColor;
+
+            this._StatusStripMain.BackColor = m_oGlobals.PresetList["ui.status"].BgColor;
+            this._StatusStripMain.ForeColor = m_oGlobals.PresetList["ui.status"].FgColor;
+            
+            foreach (ToolStripMenuItem menu in _MenuStripMain.Items)
+            {
+                foreach (ToolStripItem item in menu.DropDownItems)
+                {
+                    item.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+                    item.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
+                    if (string.IsNullOrWhiteSpace(item.Text))
+                    {
+                        item.AutoSize = false;
+                        item.Height = item.Height / 2;
+                    }
+                }
+            }
+        }
+
+        
+
         public void UpdateOnStartup()
         {
             if (m_oGlobals.Config.CheckForUpdates || m_oGlobals.Config.AutoUpdate)
@@ -150,35 +183,84 @@ namespace GenieClient
             }
         }
 
-        public void DirectConnect(string[] ConnectionParameters)
+        public void DirectConnect(string[] parameters)
         {
-            if(ConnectionParameters.Length > 0)
+            if(parameters.Length > 0)
             {
                 string character = "";
                 string game = "";
                 string host = "";
+                string key = "";
                 int port = 0;
-                string[] parameters = ConnectionParameters[0].Split(@"/",StringSplitOptions.RemoveEmptyEntries);
+                if (parameters.Length == 1)
+                {
+
+                    if (Path.GetExtension(parameters[0]).ToUpper() == ".SAL")
+                    {
+                        string pathToSAL = parameters[0];
+                        character = Path.GetFileNameWithoutExtension(pathToSAL).Split("(")[0].Split(" ")[0].Trim(); //in case the file was auto-renamed, split off everything before a peren and/or space;
+                        using (StreamReader reader = new StreamReader(pathToSAL))
+                        {
+                            List<string> salEntries = new List<string>();
+                            while (!reader.EndOfStream)
+                            {
+                                salEntries.Add(reader.ReadLine());
+                            }
+                            parameters = salEntries.ToArray();
+                        }
+                    }
+                    else
+                    {
+                        parameters = parameters[0].Split(@"/", StringSplitOptions.RemoveEmptyEntries);
+                    }
+                }
                 foreach (string parameter in parameters)
                 {
-                    switch (parameter[0])
+                    if (parameter.Length <= 1) continue;
+
+                    string param = parameter[0].ToString();
+                    string value = parameter.Substring(1);
+                    foreach(char delimiter in "|:;-~=")
                     {
-                        case 'K': //character name
-                            character = parameter.Substring(1);
+                        if (parameter.Contains(delimiter))
+                        {
+                            value = parameter.Split(delimiter)[1];
+                            param = parameter.Split(delimiter)[0];
                             break;
-                        case 'H': //host
-                            host = parameter.Substring(1);
+                        }
+                    }
+
+                    switch (param.ToUpper())
+                    {
+                        case "K": //key
+                        case "KEY":
+                            key = value;
                             break;
-                        case 'P': //port
-                            int.TryParse(parameter.Substring(1), out port);
+                        case "H": //host
+                        case "HOST":
+                        case "GAMEHOST":
+                            host = value;
                             break;
-                        case 'G': //instance code
-                            game = parameter.Substring(1); 
+                        case "P": //port
+                        case "PORT":
+                        case "GAMEPORT":
+                            int.TryParse(value, out port);
+                            break;
+                        case "G": //instance code
+                        case "GAME":
+                        case "GAMECODE":
+                            game = value;
+                            break;
+                        case "C": //character
+                        case "CHARACTER":
+                            character = value;
                             break;
                         default:
                             break;
                     }
                 }
+                
+                
                 if(string.IsNullOrWhiteSpace(game) ||
                     string.IsNullOrWhiteSpace(host) ||
                     string.IsNullOrWhiteSpace(character) ||
@@ -191,7 +273,8 @@ namespace GenieClient
                 m_oGame.AccountCharacter = character;
                 m_oGame.AccountGame = game;
                 SafeLoadProfile(m_sCurrentProfileFile, false);
-                m_oGame.DirectConnect(character, game, host, port);
+                if(string.IsNullOrEmpty(key)) m_oGame.DirectConnect(character, game, host, port);
+                else m_oGame.DirectConnect(character, game, host, port, key);
             }
         }
 
@@ -651,22 +734,33 @@ namespace GenieClient
         }
         private void LoadLegacyPlugin(GeniePlugin.Interfaces.IPlugin Plugin, string AssemblyPath, string Key)
         {
-            m_oPluginNameToFile.Add(Plugin.Name, Path.GetFileName(AssemblyPath));
-            string argsText = "Loading Plugin: " + Plugin.Name + ", Version: " + Plugin.Version + "...";
-            Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
-            AddText(argsText, oTargetWindow: argoTargetWindow);
-            VerifyAndLoadPlugin(Plugin, Key);
-            if (m_oGlobals.PluginList.Contains(Plugin))
+            if (m_oPluginNameToFile.ContainsKey(Plugin.Name))
             {
-                string argsText1 = "OK" + System.Environment.NewLine;
-                Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
-                AddText(argsText1, oTargetWindow: argoTargetWindow1);
+                string DuplicateText = $"Duplicate Plugin Detected: {Plugin.Name}. \r\n" +
+                    $"{m_oPluginNameToFile[Plugin.Name]} is the file which loaded. You can view its version in the Plugin menu.\r\n" +
+                    $"{Path.GetFileName(AssemblyPath)} was not loaded. It reports its version as {Plugin.Version}.\r\n" +
+                    $"Your plugin directory is at {Path.GetDirectoryName(AssemblyPath)}\r\n";
+                AddText(DuplicateText, m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor);
             }
             else
             {
-                string argsText3 = "Failed" + System.Environment.NewLine;
-                Genie.Game.WindowTarget argoTargetWindow3 = Genie.Game.WindowTarget.Main;
-                AddText(argsText3, oTargetWindow: argoTargetWindow3);
+                m_oPluginNameToFile.Add(Plugin.Name, Path.GetFileName(AssemblyPath));
+                string argsText = "Loading Plugin: " + Plugin.Name + ", Version: " + Plugin.Version + "...";
+                Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
+                AddText(argsText, oTargetWindow: argoTargetWindow);
+                VerifyAndLoadPlugin(Plugin, Key);
+                if (m_oGlobals.PluginList.Contains(Plugin))
+                {
+                    string argsText1 = "OK" + System.Environment.NewLine;
+                    Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
+                    AddText(argsText1, oTargetWindow: argoTargetWindow1);
+                }
+                else
+                {
+                    string argsText3 = "Failed" + System.Environment.NewLine;
+                    Genie.Game.WindowTarget argoTargetWindow3 = Genie.Game.WindowTarget.Main;
+                    AddText(argsText3, oTargetWindow: argoTargetWindow3);
+                }
             }
 
             Application.DoEvents();
@@ -674,24 +768,34 @@ namespace GenieClient
 
         private void LoadPlugin(GeniePlugin.Plugins.IPlugin Plugin, string AssemblyPath, string Key)
         {
-            m_oPluginNameToFile.Add(Plugin.Name, Path.GetFileName(AssemblyPath));
-            string argsText = "Loading Plugin: " + Plugin.Name + ", Version: " + Plugin.Version + "...";
-            Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
-            AddText(argsText, oTargetWindow: argoTargetWindow);
-            VerifyAndLoadPlugin(Plugin, Key);
-            if (m_oGlobals.PluginList.Contains(Plugin))
+            if (m_oPluginNameToFile.ContainsKey(Plugin.Name))
             {
-                string argsText1 = "OK" + System.Environment.NewLine;
-                Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
-                AddText(argsText1, oTargetWindow: argoTargetWindow1);
+                string DuplicateText = $"Duplicate Plugin Detected: {Plugin.Name}. \r\n" +
+                    $"{m_oPluginNameToFile[Plugin.Name]} is the file which loaded. You can view its version in the Plugin menu.\r\n" +
+                    $"{Path.GetFileName(AssemblyPath)} was not loaded. It reports its version as {Plugin.Version}.\r\n" +
+                    $"Your plugin directory is at {Path.GetDirectoryName(AssemblyPath)}\r\n";
+                AddText(DuplicateText, m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor);
             }
             else
             {
-                string argsText3 = "Failed" + System.Environment.NewLine;
-                Genie.Game.WindowTarget argoTargetWindow3 = Genie.Game.WindowTarget.Main;
-                AddText(argsText3, oTargetWindow: argoTargetWindow3);
+                m_oPluginNameToFile.Add(Plugin.Name, Path.GetFileName(AssemblyPath));
+                string argsText = "Loading Plugin: " + Plugin.Name + ", Version: " + Plugin.Version + "...";
+                Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
+                AddText(argsText, oTargetWindow: argoTargetWindow);
+                VerifyAndLoadPlugin(Plugin, Key);
+                if (m_oGlobals.PluginList.Contains(Plugin))
+                {
+                    string argsText1 = "OK" + System.Environment.NewLine;
+                    Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
+                    AddText(argsText1, oTargetWindow: argoTargetWindow1);
+                }
+                else
+                {
+                    string argsText3 = "Failed" + System.Environment.NewLine;
+                    Genie.Game.WindowTarget argoTargetWindow3 = Genie.Game.WindowTarget.Main;
+                    AddText(argsText3, oTargetWindow: argoTargetWindow3);
+                }
             }
-
             Application.DoEvents();
         }
 
@@ -1057,6 +1161,8 @@ namespace GenieClient
             PluginsToolStripMenuItem.DropDownItems.Clear();
             ToolStripMenuItem pluginDialogItem;
             pluginDialogItem = new ToolStripMenuItem();
+            pluginDialogItem.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+            pluginDialogItem.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
             pluginDialogItem.Name = "ToolStripMenuItemPluginDialog";
             pluginDialogItem.Text = "&Plugins...";
             pluginDialogItem.Click += PluginDialogItem_Click;
@@ -1064,19 +1170,27 @@ namespace GenieClient
 
             ToolStripMenuItem pluginUpdateItem;
             pluginUpdateItem = new ToolStripMenuItem();
+            pluginUpdateItem.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+            pluginUpdateItem.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
             pluginUpdateItem.Name = "ToolStripMenuItemPluginDialog";
             pluginUpdateItem.Text = "&Update Plugins";
             pluginUpdateItem.Click += updatePluginsToolStripMenuItem_Click;
             PluginsToolStripMenuItem.DropDownItems.Add(pluginUpdateItem);
 
-            PluginsToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
+            ToolStripMenuItem pluginSeparator = new ToolStripMenuItem();
+            pluginSeparator.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+            pluginSeparator.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
+            pluginSeparator.Name = "ToolStripMenuItemPluginSeparator";
+            PluginsToolStripMenuItem.DropDownItems.Add(pluginSeparator);
             int I = 1;
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
                 if (!Information.IsNothing(oPlugin))
                 {
                     pluginDialogItem = new ToolStripMenuItem();
-                    if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                    pluginDialogItem.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+                    pluginDialogItem.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
+                    if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                     {
                         pluginDialogItem.Name = "ToolStripMenuItemPlugin" + (oPlugin as GeniePlugin.Interfaces.IPlugin).Name;
                         pluginDialogItem.Text = (oPlugin as GeniePlugin.Interfaces.IPlugin).Name;
@@ -1865,6 +1979,7 @@ namespace GenieClient
             m_oGlobals.PresetList.Load(m_oGlobals.Config.ConfigDir + @"\presets.cfg");
             string argsPreset = "all";
             PresetChanged(argsPreset);
+            RecolorUI();
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Global Variables...");
@@ -3397,6 +3512,8 @@ namespace GenieClient
         {
             WindowToolStripMenuItem.DropDownItems.Clear();
             var ti = new ToolStripMenuItem();
+            ti.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+            ti.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
             ti.Name = "ToolStripMenuItemWindowMain";
             ti.Text = "&1. " + m_oOutputMain.Text;
             ti.Tag = m_oOutputMain;
@@ -3406,6 +3523,8 @@ namespace GenieClient
             foreach (FormSkin fo in m_oFormList)
             {
                 ti = new ToolStripMenuItem();
+                ti.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+                ti.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
                 ti.Name = "ToolStripMenuItemWindow" + fo.Text;
                 ti.Text = "&" + I.ToString() + ". " + fo.Text;
                 ti.Tag = fo;
@@ -6529,6 +6648,7 @@ namespace GenieClient
                 case Genie.Config.ConfigFieldUpdated.AutoMapper:
                     {
                         AutoMapperEnabledToolStripMenuItem.Checked = m_oGlobals.Config.bAutoMapper;
+                        m_oAutoMapper.UpdatePanelBackgroundColor();
                         break;
                     }
 
@@ -6738,6 +6858,8 @@ namespace GenieClient
             {
                 if (!Information.IsNothing(m_oGlobals.PresetList))
                 {
+                    if (sPreset.StartsWith("automapper")) { sPreset = "automapper"; }
+                    if (sPreset.StartsWith("ui")) { sPreset = "ui"; }
                     switch (sPreset)
                     {
                         case "roundtime":
@@ -6755,7 +6877,16 @@ namespace GenieClient
                                 Castbar.Refresh();
                                 break;
                             }
-
+                        case "automapper":
+                            {
+                                m_oAutoMapper.UpdatePanelBackgroundColor();
+                                break;
+                            }
+                        case "ui":
+                            {
+                                RecolorUI();
+                                break;
+                            }
                         case "health":
                             {
                                 ComponentBarsHealth.ForegroundColor = m_oGlobals.PresetList["health"].FgColor;
@@ -8069,6 +8200,31 @@ namespace GenieClient
                     }
                 });
             }
+        }
+
+        private void genieToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Interaction.Shell("explorer.exe " + LocalDirectory.Path, AppWinStyle.NormalFocus, false);
+        }
+
+        private void mapsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Interaction.Shell("explorer.exe " + m_oGlobals.Config.MapDir, AppWinStyle.NormalFocus, false);
+        }
+
+        private void pluginsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Interaction.Shell("explorer.exe " + m_oGlobals.Config.PluginDir, AppWinStyle.NormalFocus, false);
+        }
+
+        private void scriptsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Interaction.Shell("explorer.exe " + m_oGlobals.Config.ScriptDir, AppWinStyle.NormalFocus, false);
+        }
+
+        private void logsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Interaction.Shell("explorer.exe " + m_oGlobals.Config.sLogDir, AppWinStyle.NormalFocus, false);
         }
     }
 }

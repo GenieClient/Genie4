@@ -35,6 +35,7 @@ namespace GenieClient.Genie
         public bool bAbortDupeScript = true;
         public bool bParseGameOnly = false;
         public bool bAutoMapper = true;
+        public int iAutoMapperAlpha = 255;
         public int iServerActivityTimeout = 180;
         public string sServerActivityCommand = "fatigue";
         public int iUserActivityTimeout = 300;
@@ -67,7 +68,21 @@ namespace GenieClient.Genie
         public string ScriptExtension { get; set; } = "cmd";
 
         public string ScriptRepo { get; set; } = string.Empty;
-         
+        
+        public int AutoMapperAlpha
+        {
+            get
+            {
+                return iAutoMapperAlpha;
+            }
+            set
+            {
+                if (value < 0) value = 0;
+                else if (value > 255) value = 255;
+                iAutoMapperAlpha = value;
+            }
+        }
+
         public string ScriptDir
         {
             get
@@ -357,6 +372,7 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine("#config {spelltimer} {" + bShowSpellTimer + "}");
                 oStreamWriter.WriteLine("#config {autolog} {" + bAutoLog + "}");
                 oStreamWriter.WriteLine("#config {automapper} {" + bAutoMapper + "}");
+                oStreamWriter.WriteLine("#config {automapperalpha} {" + AutoMapperAlpha + "}"); 
                 oStreamWriter.WriteLine("#config {editor} {" + sEditor + "}");
                 oStreamWriter.WriteLine("#config {prompt} {" + sPrompt + "}");
                 oStreamWriter.WriteLine("#config {promptbreak} {" + PromptBreak + "}");
@@ -1099,6 +1115,16 @@ namespace GenieClient.Genie
                                         }
                                 }
 
+                                ConfigChanged?.Invoke(ConfigFieldUpdated.AutoMapper);
+                                break;
+                            }
+                        case "automapperalpha":
+                            {
+                                if (!string.IsNullOrEmpty(sValue))
+                                {
+                                    AutoMapperAlpha = Convert.ToInt32(sValue);
+                                    sValue = AutoMapperAlpha.ToString(); //the setter can change the value, reflect that
+                                }
                                 ConfigChanged?.Invoke(ConfigFieldUpdated.AutoMapper);
                                 break;
                             }
