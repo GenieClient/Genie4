@@ -645,6 +645,8 @@ namespace GenieClient
             }
         }
 
+        public bool Checked { get; internal set; }
+
         private void AddRTF(string rtf)
         {
             if (IsDisposed)
