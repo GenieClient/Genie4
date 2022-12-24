@@ -1190,14 +1190,6 @@ namespace GenieClient.Mapper
                             if (sArg.Length > 0)
                             {
                                 int iNodeID = 0;
-                                if (sArg.Length > 3)
-                                {
-                                // Other zone
-                                // - Find the destination map
-                                // - Find what path it needs to take trough the different zones
-                                // Integer.TryParse(sArg.Substring(0, 3), iNodeID)
-                                }
-                                else
                                 {
                                     int.TryParse(sArg, out iNodeID);
                                 }
