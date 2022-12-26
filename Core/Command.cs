@@ -2890,6 +2890,7 @@ namespace GenieClient.Genie
             EchoText("connectscript=" + oGlobals.Config.ConnectScript.ToString() + System.Environment.NewLine);
             EchoText("checkforupdates=" + oGlobals.Config.CheckForUpdates.ToString() + System.Environment.NewLine);
             EchoText("autoupdate=" + oGlobals.Config.AutoUpdate.ToString() + System.Environment.NewLine);
+            EchoText("automapperalpha=" + oGlobals.Config.AutoMapperAlpha.ToString() + System.Environment.NewLine);
         }
 
         private void ListColors()

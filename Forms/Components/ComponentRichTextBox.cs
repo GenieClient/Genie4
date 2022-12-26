@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,7 +7,8 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using GenieClient.Genie;
 using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;											
+using Microsoft.VisualBasic.CompilerServices;
+using static GenieClient.Genie.Globals;
 
 namespace GenieClient
 {
@@ -133,10 +134,10 @@ namespace GenieClient
         private Font m_MonoFont = new Font("Courier New", 9, FontStyle.Regular);
         private bool m_bTimeStamp = false;
         private bool m_bNameListOnly = false;
-        private bool m_bHideShowScrollbars = false; // Hide/Show scrollbars
+        private bool m_bHideShowScrollbars = false; // Hide/Show scrollbars																						
         private int m_iMaxBufferSize = 500000;
         private bool m_bIsMainWindow = false;
-
+       
         public bool IsMainWindow
         {
             get
@@ -188,7 +189,7 @@ namespace GenieClient
                 m_bNameListOnly = value;
             }
         }
-
+		  
         public bool HideShowScrollbars // Hide/Show scrollbars
         {
             get
@@ -201,7 +202,7 @@ namespace GenieClient
                 m_bHideShowScrollbars = value;
             }
         }
-
+		  
         private string GetTimeString(string sText)
         {
             if (m_bTimeStamp == true)
@@ -376,7 +377,7 @@ namespace GenieClient
         {
             m_oRichTextBuffer.SelectionLength = 0;
             m_oRichTextBuffer.SelectionStart = int.MaxValue;
-            int iStart = m_oRichTextBuffer.SelectionStart;
+            int startIndex = m_oRichTextBuffer.SelectionStart;
             if (oColor != Color.Transparent & oColor != m_oEmptyColor)
             {
                 m_oRichTextBuffer.SelectionColor = oColor;
@@ -411,67 +412,27 @@ namespace GenieClient
             if (sText.Length > 0)
             {
                 m_oRichTextBuffer.SelectedText = sText;
-                ParseLineHighlight(iStart, sText);
             }
         }
 
-        private void ParseLineHighlight(int iStart, string sLine)
+        private void ParseLineHighlights(int StartIndex, string Line)
         {
-            Genie.Globals.HighlightRegExp.Highlight oHighlight;
-            MatchCollection oMatchCollection;
+            if (m_oRichTextBuffer.Text.Contains("You also see") && m_oParentForm.Globals.RoomObjects.Count > 0)
+            {
+                ParseVolatileHighlights(m_oParentForm.Globals.RoomObjects);
+            }
 
-            if (Conversions.ToBoolean(m_oParentForm.Globals.HighlightRegExpList.AcquireReaderLock()))
+            // Presets and Bold
+            ParseVolatileHighlights(m_oParentForm.Globals.VolatileHighlights);
+
+            //RegExp
+            if (m_oParentForm.Globals.HighlightRegExpList.AcquireReaderLock())
             {
                 try
                 {
-                    foreach (DictionaryEntry de in (IEnumerable)m_oParentForm.Globals.HighlightRegExpList)
+                    foreach (Globals.HighlightRegExp.Highlight oHighlight in m_oParentForm.Globals.HighlightRegExpList.Values)
                     {
-                        oHighlight = (Genie.Globals.HighlightRegExp.Highlight)de.Value;
-                        if (oHighlight.IsActive)
-                        {
-                            oMatchCollection = oHighlight.HighlightRegex.Matches(sLine.Trim(Conversions.ToChar(Constants.vbCr), Conversions.ToChar(Constants.vbLf)));
-                            if (oMatchCollection.Count > 0)
-                            {
-                                foreach (Match oMatch in oMatchCollection)
-                                {
-                                    if (oMatch.Groups.Count > 1)	// () highlighting
-                                    {
-                                        for (int I = 1, loopTo = oMatch.Groups.Count - 1; I <= loopTo; I++)
-                                        {
-                                            int iDiff = sLine.Length - sLine.TrimStart(Conversions.ToChar(Constants.vbCr)).Length; // RichText does not add both cr+lf
-                                            m_oRichTextBuffer.SelectionStart = iStart + oMatch.Groups[I].Index + iDiff;
-                                            m_oRichTextBuffer.SelectionLength = oMatch.Groups[I].Length;
-                                            if (oHighlight.FgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
-                                            {
-                                                m_oRichTextBuffer.SelectionColor = oHighlight.FgColor;
-                                            }
-
-                                            if (oHighlight.BgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
-                                            {
-                                                m_oRichTextBuffer.SelectionBackColor = oHighlight.BgColor;
-                                            }
-                                        }
-                                    }
-                                    else // highlight whole line
-                                    {
-                                        m_oRichTextBuffer.SelectionStart = iStart;
-                                        m_oRichTextBuffer.SelectionLength = int.MaxValue;
-                                        if (oHighlight.FgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
-                                        {
-                                            m_oRichTextBuffer.SelectionColor = oHighlight.FgColor;
-                                        }
-
-                                        if (oHighlight.BgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
-                                        {
-                                            m_oRichTextBuffer.SelectionBackColor = oHighlight.BgColor;
-                                        }
-                                    }
-                                }
-
-                                if (Conversions.ToBoolean(oHighlight.SoundFile.Length > 0 && m_oParentForm.Globals.Config.bPlaySounds))
-                                    Sound.PlayWaveFile(oHighlight.SoundFile);
-                            }
-                        }
+                        if (oHighlight.IsActive) ParseRegExpHighlight(oHighlight);
                     }
                 }
                 finally
@@ -485,6 +446,47 @@ namespace GenieClient
             }
         }
 
+        private void ParseRegExpHighlight(int StartIndex, string Line, Globals.HighlightRegExp.Highlight Highlight)
+        {
+            int iDiff = Line.Length - Line.TrimStart(Conversions.ToChar(Constants.vbCr)).Length; // RichText does not add both cr+lf
+            foreach (Match oMatch in Highlight.HighlightRegex.Matches(Line))
+            {
+                if (oMatch.Groups.Count > 1)    // () highlighting
+                {
+                    foreach (Group oGroup in oMatch.Groups)
+                    {
+                        
+                        m_oRichTextBuffer.SelectionStart = StartIndex + oGroup.Index - iDiff;
+                        m_oRichTextBuffer.SelectionLength = oGroup.Length;
+                        if (Highlight.FgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
+                        {
+                            m_oRichTextBuffer.SelectionColor = Highlight.FgColor;
+                        }
+                        if (Highlight.BgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
+                        {
+                            m_oRichTextBuffer.SelectionBackColor = Highlight.BgColor;
+                        }
+                    }
+                }
+                else // highlight the whole match
+                {
+                    m_oRichTextBuffer.SelectionStart = StartIndex - iDiff;
+                    m_oRichTextBuffer.SelectionLength = oMatch.Length;
+                    if (Highlight.FgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
+                    {
+                        m_oRichTextBuffer.SelectionColor = Highlight.FgColor;
+                    }
+
+                    if (Highlight.BgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
+                    {
+                        m_oRichTextBuffer.SelectionBackColor = Highlight.BgColor;
+                    }
+                }
+                if (Conversions.ToBoolean(Highlight.SoundFile.Length > 0 && m_oParentForm.Globals.Config.bPlaySounds))
+                    Sound.PlayWaveFile(Highlight.SoundFile);
+            }
+        }
+
         private Regex oClickRegex = new Regex("{([^{]*):([^{]*)}", MyRegexOptions.options);
         private List<Link> LinkList = new List<Link>();
 
@@ -494,7 +496,26 @@ namespace GenieClient
             public int Length;
             public string Command;
         }
-		  
+
+        private void ParseRegExpHighlight(HighlightRegExp.Highlight Highlight)
+        {
+            foreach (Match oMatch in Highlight.HighlightRegex.Matches(m_oRichTextBuffer.Text))
+            {
+                m_oRichTextBuffer.SelectionStart = oMatch.Groups[1].Index;
+                m_oRichTextBuffer.SelectionLength = oMatch.Groups[1].Length;
+                if (Highlight.FgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
+                {
+                    m_oRichTextBuffer.SelectionColor = Highlight.FgColor;
+                }
+
+                if (Highlight.BgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
+                {
+                    m_oRichTextBuffer.SelectionBackColor = Highlight.BgColor;
+                }
+            }
+            
+        }
+
         private void ParseVolatileHighlights(List<VolatileHighlight> highlightList)
         {
             foreach (VolatileHighlight highlight in highlightList.ToArray())
@@ -548,15 +569,7 @@ namespace GenieClient
         private void ParseHighlights()
         {
             MatchCollection oMatchCollection;
-				
-
-            if (m_oRichTextBuffer.Text.Contains("You also see") && m_oParentForm.Globals.RoomObjects.Count > 0)
-            {
-                ParseVolatileHighlights(m_oParentForm.Globals.RoomObjects);
-            }
-
-            // Presets and Bold
-            ParseVolatileHighlights(m_oParentForm.Globals.VolatileHighlights);						
+            ParseLineHighlights(m_oRichTextBuffer.SelectionStart, m_oRichTextBuffer.Text);
             // Highlight String
             if (!Information.IsNothing(m_oParentForm.Globals.HighlightList.RegexString))
             {
@@ -644,8 +657,6 @@ namespace GenieClient
                 m_oParentForm = value;
             }
         }
-
-        public bool Checked { get; internal set; }
 
         private void AddRTF(string rtf)
         {
@@ -868,7 +879,7 @@ namespace GenieClient
             EventKeyPress?.Invoke(e);
             e.Handled = true;
         }
-
+		  
         // No Scrollbars
         [DllImport("User32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern int SendMessage(IntPtr hWnd, uint msg, int wParam, IntPtr lParam);
@@ -897,7 +908,7 @@ namespace GenieClient
             }
         }
         /// End No Scrollbars
-
+		  
         private bool m_bMouseDown = false;
 
         public void ComponentRichTextBox_MouseDown(object sender, MouseEventArgs e)

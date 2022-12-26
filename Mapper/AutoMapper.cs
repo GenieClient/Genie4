@@ -185,6 +185,11 @@ namespace GenieClient.Mapper
             return Text;
         }
 
+        public void UpdatePanelBackgroundColor()
+        {
+            m_Form.UpdatePanelColor();
+        }
+
         private Genie.Collections.ArrayList m_Movement = new Genie.Collections.ArrayList();
         private bool m_RoomUpdated = false;
         // private bool m_AddDupeRooms = true;
@@ -878,6 +883,7 @@ namespace GenieClient.Mapper
                 if (m_DebugEnabled)
                     EchoText("roomid = " + oNode.ID.ToString());
                 set_GlobalVariable("roomid", oNode.ID.ToString());
+                set_GlobalVariable("roomnote", oNode.Note.ToString());
                 if (oNode.ContainsArc(Direction.North))
                 {
                     set_GlobalVariable("northid", oNode.Arcs[Direction.North].DestinationID.ToString());

@@ -395,6 +395,11 @@ namespace GenieClient.Genie
             DoConnect("eaccess.play.net", 7910);
         }
 
+        public void DirectConnect(string Character, string Game, string Host, int Port, string Key)
+        {
+            m_sConnectKey = Key;
+            DirectConnect(Character, Game, Host, Port);
+        }
         public void DirectConnect(string Character, string Game, string Host, int Port)
         {
             m_oLastUserActivity = DateTime.Now;
@@ -592,7 +597,7 @@ namespace GenieClient.Genie
                                         default:
                                             break;
                                     }
-                                    m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(sTmp, presetLabel, 0));
+                                    m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(sTmp, presetLabel, sTextBuffer.Length));
                                     if(presetLabel == "roomdesc")
                                     {
                                         PrintTextWithParse(sTmp, bIsPrompt: false, oWindowTarget: 0);
@@ -2724,7 +2729,7 @@ namespace GenieClient.Genie
                 }
 
                 // Line contains
-                if (!Information.IsNothing(m_oGlobals.HighlightList.RegexLine))
+                if (!Information.IsNothing(m_oGlobals.HighlightList.RegexLine) && !string.IsNullOrWhiteSpace(m_oGlobals.HighlightList.RegexLine.ToString()))
                 {
                     m_oMatchCollection = m_oGlobals.HighlightList.RegexLine.Matches(sText);
                     Highlights.Highlight oHighlightString;

@@ -488,6 +488,13 @@ namespace GenieClient.Genie
 
             public void SetDefaultPresets()
             {
+                Add("automapper.panel", "Black, PaleGoldenrod");
+                Add("automapper.line", "Black, White");
+                Add("automapper.linestump", "Cyan, White");
+                Add("automapper.lineclimb", "Green, White");
+                Add("automapper.linego", "Blue, White");
+                Add("automapper.node", "White, White");
+                Add("automapper.path", "Green, LightGreen");
                 Add("castbar", "Magenta");
                 Add("concentration", "Navy");
                 Add("creatures", "Cyan");
@@ -504,6 +511,12 @@ namespace GenieClient.Genie
                 Add("spirit", "Purple");
                 Add("stamina", "Green");
                 Add("thoughts", "Cyan");
+                Add("ui.menu", "Black, #EEEEEE");
+                Add("ui.menu.checked", "LightBlue");
+                Add("ui.menu.highlight", "LightBlue");
+                Add("ui.window", "Black, #EEEEEE");
+                Add("ui.status", "Black, #EEEEEE");
+                Add("ui.textbox", "Black, White");
                 Add("whispers", "Magenta");
             }
 
@@ -815,7 +828,8 @@ namespace GenieClient.Genie
                 Add("roomobjs", "", VariableType.Reserved);
                 Add("roomplayers", "", VariableType.Reserved);
                 Add("roomexits", "", VariableType.Reserved);
-                
+                Add("roomnote", "", VariableType.Reserved);
+
                 Add("concentration", "100", VariableType.Reserved);
                 Add("encumbrance", "0", VariableType.Reserved);
                 Add("health", "100", VariableType.Reserved);
@@ -853,6 +867,7 @@ namespace GenieClient.Genie
                 Add("poisoned", "0", VariableType.Reserved);
                 Add("diseased", "0", VariableType.Reserved);
                 Add("connected", "0", VariableType.Reserved);
+                Add("client", My.MyProject.Application.Info.ProductName.ToString(), VariableType.Reserved);
                 Add("version", My.MyProject.Application.Info.Version.ToString(), VariableType.Reserved);
                 Add("time", "@time@", VariableType.Reserved);
                 Add("date", "@date@", VariableType.Reserved);
@@ -861,6 +876,7 @@ namespace GenieClient.Genie
                 Add("spellpreptime", "@spellpreptime@", VariableType.Reserved);
                 Add("spellstarttime", "0", VariableType.Reserved);
                 Add("casttime", "0", VariableType.Reserved);
+                Add("unixtime", "@unixtime@", VariableType.Reserved);
                 Add("casttimeremaining", "@casttimeremaining@", VariableType.Reserved);
                 Add("monstercount", "0", VariableType.Reserved);
                 Add("monsterlist", "", VariableType.Reserved);
@@ -1264,6 +1280,9 @@ namespace GenieClient.Genie
                 public string ClassName = string.Empty;
                 public bool IsActive = true;
                 public string SoundFile = string.Empty;
+                public int StartIndex = 0;
+                public int Length { get { return Text.Length; } }
+                public int EndIndex { get { return StartIndex + Length; } }
 
                 public Highlight(string text, string ColorName, Color FgColor, Color BgColor, bool CaseSensitive = true, string SoundFile = "", string ClassName = "", bool IsActive = true)
                 {
