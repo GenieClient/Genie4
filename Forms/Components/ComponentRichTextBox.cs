@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -134,10 +134,10 @@ namespace GenieClient
         private Font m_MonoFont = new Font("Courier New", 9, FontStyle.Regular);
         private bool m_bTimeStamp = false;
         private bool m_bNameListOnly = false;
-        private bool m_bHideShowScrollbars = false; // Hide/Show scrollbars																						
+        private bool m_bHideShowScrollbars = false; // Hide/Show scrollbars
         private int m_iMaxBufferSize = 500000;
         private bool m_bIsMainWindow = false;
-       
+
         public bool IsMainWindow
         {
             get
@@ -189,7 +189,7 @@ namespace GenieClient
                 m_bNameListOnly = value;
             }
         }
-		  
+
         public bool HideShowScrollbars // Hide/Show scrollbars
         {
             get
@@ -202,7 +202,7 @@ namespace GenieClient
                 m_bHideShowScrollbars = value;
             }
         }
-		  
+
         private string GetTimeString(string sText)
         {
             if (m_bTimeStamp == true)
@@ -211,11 +211,11 @@ namespace GenieClient
                 {
                     if (sText.StartsWith(" "))
                     {
-                        return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.ShortTime) + "]";
+                        return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.LongTime) + "]";
                     }
                     else
                     {
-                        return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.ShortTime) + "] ";
+                        return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.LongTime) + "] ";
                     }
                 }
             }
@@ -455,7 +455,7 @@ namespace GenieClient
                 {
                     foreach (Group oGroup in oMatch.Groups)
                     {
-                        
+
                         m_oRichTextBuffer.SelectionStart = StartIndex + oGroup.Index - iDiff;
                         m_oRichTextBuffer.SelectionLength = oGroup.Length;
                         if (Highlight.FgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
@@ -496,7 +496,7 @@ namespace GenieClient
             public int Length;
             public string Command;
         }
-
+		  
         private void ParseRegExpHighlight(HighlightRegExp.Highlight Highlight)
         {
             foreach (Match oMatch in Highlight.HighlightRegex.Matches(m_oRichTextBuffer.Text))
@@ -515,7 +515,6 @@ namespace GenieClient
             }
             
         }
-
         private void ParseVolatileHighlights(List<VolatileHighlight> highlightList)
         {
             foreach (VolatileHighlight highlight in highlightList.ToArray())
@@ -879,7 +878,7 @@ namespace GenieClient
             EventKeyPress?.Invoke(e);
             e.Handled = true;
         }
-		  
+
         // No Scrollbars
         [DllImport("User32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern int SendMessage(IntPtr hWnd, uint msg, int wParam, IntPtr lParam);
@@ -908,7 +907,7 @@ namespace GenieClient
             }
         }
         /// End No Scrollbars
-		  
+
         private bool m_bMouseDown = false;
 
         public void ComponentRichTextBox_MouseDown(object sender, MouseEventArgs e)

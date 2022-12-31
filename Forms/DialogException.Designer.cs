@@ -177,7 +177,6 @@ namespace GenieClient
             // txtMore
             // 
             _txtMore.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-
             _txtMore.CausesValidation = false;
             _txtMore.Font = new Font("Courier New", 8.25F, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(0));
             _txtMore.Location = new Point(12, 235);

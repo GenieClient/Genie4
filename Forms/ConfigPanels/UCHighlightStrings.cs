@@ -181,8 +181,9 @@ namespace GenieClient
 
         private void UCWindows_Load(object sender, EventArgs e)
         {
+            m_ItemChanged = false;           
             PopulateList();
-            m_ItemChanged = false;
+
         }
 
         private void PopulateList()
