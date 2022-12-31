@@ -12,7 +12,7 @@ namespace GenieClient.Genie.Collections
         {
             try
             {
-                if(m_oRWLock.IsWriteLockHeld | m_oRWLock.IsReadLockHeld)
+                if (m_oRWLock.IsWriteLockHeld | m_oRWLock.IsReadLockHeld)
                 {
                     return false;
                 }

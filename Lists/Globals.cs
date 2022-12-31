@@ -222,8 +222,11 @@ namespace GenieClient.Genie
             }
             
             sText = sText.Replace("@time@", DateTime.Now.ToString("hh:mm:ss tt").Trim());
+            sText = sText.Replace("@time24@", DateTime.Now.ToString("HH:mm:ss").Trim());
+            sText = sText.Replace("@timeyear@", DateTime.Now.ToString("yyyy").Trim());
             sText = sText.Replace("@date@", DateTime.Now.ToString("M/d/yyyy").Trim());
             sText = sText.Replace("@datetime@", DateTime.Now.ToString("M/d/yyyy hh:mm:ss tt").Trim());
+            sText = sText.Replace("@date24time@", DateTime.Now.ToString("M/d/yyyy HH:mm:ss").Trim());
             sText = sText.Replace("@unixtime@", DateTimeOffset.Now.ToUnixTimeSeconds().ToString());
             return sText;
         }
@@ -493,15 +496,18 @@ namespace GenieClient.Genie
                 Add("automapper.linestump", "Cyan, White");
                 Add("automapper.lineclimb", "Green, White");
                 Add("automapper.linego", "Blue, White");
+                Add("automapper.linkroom", "Blue");
                 Add("automapper.node", "White, White");
+                Add("automapper.nodeborder", "White, White");
                 Add("automapper.path", "Green, LightGreen");
+                Add("automapper.heredot" , "Magenta");
                 Add("castbar", "Magenta");
                 Add("concentration", "Navy");
                 Add("creatures", "Cyan");
                 Add("familiar", "PaleGreen");
                 Add("health", "Maroon");
-                Add("inputuser", "Yellow");
                 Add("inputother", "GreenYellow");
+                Add("inputuser", "Yellow");
                 Add("mana", "Navy");
                 Add("roomdesc", "Silver");
                 Add("roomname", "Yellow,DarkBlue");
@@ -516,7 +522,7 @@ namespace GenieClient.Genie
                 Add("ui.menu.highlight", "LightBlue");
                 Add("ui.window", "Black, #EEEEEE");
                 Add("ui.status", "Black, #EEEEEE");
-                Add("ui.textbox", "Black, White");
+                Add("ui.textbox", "Black, White");																		  
                 Add("whispers", "Magenta");
             }
 
@@ -828,8 +834,7 @@ namespace GenieClient.Genie
                 Add("roomobjs", "", VariableType.Reserved);
                 Add("roomplayers", "", VariableType.Reserved);
                 Add("roomexits", "", VariableType.Reserved);
-                Add("roomnote", "", VariableType.Reserved);
-
+                Add("roomnote", "", VariableType.Reserved);                
                 Add("concentration", "100", VariableType.Reserved);
                 Add("encumbrance", "0", VariableType.Reserved);
                 Add("health", "100", VariableType.Reserved);
@@ -871,12 +876,15 @@ namespace GenieClient.Genie
                 Add("version", My.MyProject.Application.Info.Version.ToString(), VariableType.Reserved);
                 Add("time", "@time@", VariableType.Reserved);
                 Add("date", "@date@", VariableType.Reserved);
+                Add("time24", "@time24@", VariableType.Reserved);
+                Add("timeyear", "@timeyear@", VariableType.Reserved);
+                Add("date24time", "@date24time@", VariableType.Reserved);
                 Add("datetime", "@datetime@", VariableType.Reserved);
+                Add("unixtime", "@unixtime@", VariableType.Reserved);
                 Add("spelltime", "@spelltime@", VariableType.Reserved);
                 Add("spellpreptime", "@spellpreptime@", VariableType.Reserved);
                 Add("spellstarttime", "0", VariableType.Reserved);
                 Add("casttime", "0", VariableType.Reserved);
-                Add("unixtime", "@unixtime@", VariableType.Reserved);
                 Add("casttimeremaining", "@casttimeremaining@", VariableType.Reserved);
                 Add("monstercount", "0", VariableType.Reserved);
                 Add("monsterlist", "", VariableType.Reserved);
@@ -1280,9 +1288,6 @@ namespace GenieClient.Genie
                 public string ClassName = string.Empty;
                 public bool IsActive = true;
                 public string SoundFile = string.Empty;
-                public int StartIndex = 0;
-                public int Length { get { return Text.Length; } }
-                public int EndIndex { get { return StartIndex + Length; } }
 
                 public Highlight(string text, string ColorName, Color FgColor, Color BgColor, bool CaseSensitive = true, string SoundFile = "", string ClassName = "", bool IsActive = true)
                 {

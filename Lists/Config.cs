@@ -35,7 +35,7 @@ namespace GenieClient.Genie
         public bool bAbortDupeScript = true;
         public bool bParseGameOnly = false;
         public bool bAutoMapper = true;
-        public int iAutoMapperAlpha = 255;
+        public int iAutoMapperAlpha = 255;														
         public int iServerActivityTimeout = 180;
         public string sServerActivityCommand = "fatigue";
         public int iUserActivityTimeout = 300;
@@ -56,6 +56,7 @@ namespace GenieClient.Genie
         public bool AutoUpdate { get; set; } = false;
 
         public string sConnectString = "FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " /P:WIN_XP /XML";
+        //public string sConnectString = "FE:WRAYTH /VERSION:1.0.1.22" + My.MyProject.Application.Info.Version.ToString() + " /P:WIN_XP /XML";
         public int[] iPickerColors = new int[17];
         public string RubyPath { get; set; } = @"C:\ruby4lich\bin\ruby.exe";
         public string CmdPath { get; set; } = @"C:\Windows\System32\cmd.exe";
@@ -67,8 +68,7 @@ namespace GenieClient.Genie
         public string ConnectScript { get; set; } = string.Empty;
         public string ScriptExtension { get; set; } = "cmd";
 
-        public string ScriptRepo { get; set; } = string.Empty;
-        
+        public string ScriptRepo { get; set; } = string.Empty; 
         public int AutoMapperAlpha
         {
             get
@@ -81,7 +81,7 @@ namespace GenieClient.Genie
                 else if (value > 255) value = 255;
                 iAutoMapperAlpha = value;
             }
-        }
+        }		
 
         public string ScriptDir
         {
@@ -372,7 +372,7 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine("#config {spelltimer} {" + bShowSpellTimer + "}");
                 oStreamWriter.WriteLine("#config {autolog} {" + bAutoLog + "}");
                 oStreamWriter.WriteLine("#config {automapper} {" + bAutoMapper + "}");
-                oStreamWriter.WriteLine("#config {automapperalpha} {" + AutoMapperAlpha + "}"); 
+                oStreamWriter.WriteLine("#config {automapperalpha} {" + AutoMapperAlpha + "}");
                 oStreamWriter.WriteLine("#config {editor} {" + sEditor + "}");
                 oStreamWriter.WriteLine("#config {prompt} {" + sPrompt + "}");
                 oStreamWriter.WriteLine("#config {promptbreak} {" + PromptBreak + "}");
@@ -790,7 +790,7 @@ namespace GenieClient.Genie
                                 ScriptDir = sValue;
                                 break;
                             }
-                        
+
                         case "scriptrepo":
                             {
 
@@ -1127,7 +1127,7 @@ namespace GenieClient.Genie
                                 }
                                 ConfigChanged?.Invoke(ConfigFieldUpdated.AutoMapper);
                                 break;
-                            }
+                            }																					
 
                         case "showlinks":
                             {
