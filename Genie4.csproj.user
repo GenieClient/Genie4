@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_LastSelectedProfileId>C:\Users\Gyp\Desktop\Genie Client 3\Plugins\Genie4-main\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="Forms\DialogChangelog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\DialogConnect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\DialogDownload.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\DialogEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\DialogException.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\DialogKey.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\DialogProfileConnect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\DialogReconnect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\DialogScriptName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\FormConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\FormPlugins.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\FormSkin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\ScriptExplorer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Mapper\MapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Forms\FormMain.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
