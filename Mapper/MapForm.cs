@@ -1662,11 +1662,12 @@ namespace GenieClient.Mapper
                         if (n.Color == Color.Transparent) { oColorRoom = m_oGlobals.PresetList["automapper.node"].FgColor; }
                         else oColorRoom = Color.FromArgb(m_oGlobals.Config.AutoMapperAlpha, n.Color.R, n.Color.G, n.Color.B);
 
-                        var oColorRoomBorder = m_oGlobals.PresetList["automapper.line"].FgColor;
+                        var oColorRoomBorder = m_oGlobals.PresetList["automapper.nodeborder"].FgColor;
+                        var oColorHere = m_oGlobals.PresetList["automapper.here"].FgColor;
                         if (n.Position.Z != m_CurrentLevelZ) // Mark all other levels gray
                         {
                             oColorRoom = m_oGlobals.PresetList["automapper.node"].BgColor; // Color.FromArgb(255, 255, 192) ' Base BG
-                            oColorRoomBorder = m_oGlobals.PresetList["automapper.line"].BgColor;
+                            oColorRoomBorder = m_oGlobals.PresetList["automapper.nodeborder"].BgColor;
                         }
 
                         if (!Information.IsNothing(m_SelectedNodes.Find(n.ID)))
@@ -1709,7 +1710,8 @@ namespace GenieClient.Mapper
                             int iSpace = 2 * m_Scale;
                             if (bCurrentRoom == true) // Draw "HERE" dot
                             {
-                                e.Graphics.FillRectangle(Brushes.Magenta, oWhere.X + iSpace, oWhere.Y + iSpace, 8 * m_Scale - 2 * iSpace + 1, 8 * m_Scale - 2 * iSpace + 1);
+                                //e.Graphics.FillRectangle(Brushes.Magenta, oWhere.X + iSpace, oWhere.Y + iSpace, 8 * m_Scale - 2 * iSpace + 1, 8 * m_Scale - 2 * iSpace + 1);
+                                e.Graphics.FillRectangle(new SolidBrush(oColorHere), oWhere.X + iSpace, oWhere.Y + iSpace, 8 * m_Scale - 2 * iSpace + 1, 8 * m_Scale - 2 * iSpace + 1);
                             }
                         }
                     }
@@ -1736,12 +1738,13 @@ namespace GenieClient.Mapper
                         var oColorRoom = n.Color;
                         if (n.Color == Color.Transparent) { oColorRoom = m_oGlobals.PresetList["automapper.node"].FgColor; }
                         else oColorRoom = Color.FromArgb(m_oGlobals.Config.AutoMapperAlpha, n.Color.R, n.Color.G, n.Color.B);
-                        var oColorRoomBorder = m_oGlobals.PresetList["automapper.line"].FgColor;
+                        var oColorRoomBorder = m_oGlobals.PresetList["automapper.nodeborder"].FgColor;
+                        var oColorHereDot = m_oGlobals.PresetList["automapper.heredot"].FgColor;
+                        var oColorLinkRoom = m_oGlobals.PresetList["automapper.linkroom"].FgColor;
                         if (n.Position.Z != m_CurrentLevelZ) // Mark all other levels gray
                         {
                             oColorRoom = m_oGlobals.PresetList["automapper.node"].BgColor;
-                            //oColorRoom = Color.FromArgb(255, 255, 192); // Base BG
-                            oColorRoomBorder = m_oGlobals.PresetList["automapper.line"].BgColor;
+                            oColorRoomBorder = m_oGlobals.PresetList["automapper.nodeborder"].BgColor;
                         }
 
                         if (!Information.IsNothing(m_SelectedNodes.Find(n.ID)))
@@ -1773,7 +1776,7 @@ namespace GenieClient.Mapper
                         {
                             var oWhere = ConvertPoint(n.Position, 4 * m_Scale);
                             e.Graphics.FillRectangle(new SolidBrush(oColorRoom), oWhere.X + 1, oWhere.Y + 1, 8 * m_Scale, 8 * m_Scale);
-                            e.Graphics.DrawRectangle(new Pen(Color.Blue, 2), oWhere.X, oWhere.Y, 8 * m_Scale, 8 * m_Scale);
+                            e.Graphics.DrawRectangle(new Pen(oColorLinkRoom, 2), oWhere.X, oWhere.Y, 8 * m_Scale, 8 * m_Scale);
                         }
                         else
                         {
@@ -1784,7 +1787,8 @@ namespace GenieClient.Mapper
                             int iSpace = 2 * m_Scale;
                             if (bCurrentRoom == true) // Draw "HERE" dot
                             {
-                                e.Graphics.FillRectangle(Brushes.Magenta, oWhere.X + iSpace, oWhere.Y + iSpace, 8 * m_Scale - 2 * iSpace + 1, 8 * m_Scale - 2 * iSpace + 1);
+                                //e.Graphics.FillRectangle(Brushes.Magenta, oWhere.X + iSpace, oWhere.Y + iSpace, 8 * m_Scale - 2 * iSpace + 1, 8 * m_Scale - 2 * iSpace + 1);
+                                e.Graphics.FillRectangle(new SolidBrush(oColorHereDot), oWhere.X + iSpace, oWhere.Y + iSpace, 8 * m_Scale - 2 * iSpace + 1, 8 * m_Scale - 2 * iSpace + 1);
                             }
                         }
                     }

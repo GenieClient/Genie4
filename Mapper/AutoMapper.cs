@@ -32,12 +32,12 @@ namespace GenieClient.Mapper
         public event EventSendTextEventHandler EventSendText;
 
         public delegate void EventSendTextEventHandler(string sText, string sSource);
-
-        public event EventParseTextEventHandler EventParseText;
+        
+		  public event EventParseTextEventHandler EventParseText;
 
         public delegate void EventParseTextEventHandler(string sText);
-
-        public event EventVariableChangedEventHandler EventVariableChanged;
+        
+		  public event EventVariableChangedEventHandler EventVariableChanged;
 
         public delegate void EventVariableChangedEventHandler(string sVariable);
 
@@ -188,8 +188,7 @@ namespace GenieClient.Mapper
         public void UpdatePanelBackgroundColor()
         {
             m_Form.UpdatePanelColor();
-        }
-
+        }																
         private Genie.Collections.ArrayList m_Movement = new Genie.Collections.ArrayList();
         private bool m_RoomUpdated = false;
         // private bool m_AddDupeRooms = true;
@@ -252,7 +251,6 @@ namespace GenieClient.Mapper
                         if ((dif.Extension.ToLower() ?? "") == ".xml")
                     {
                         xdoc = new XmlDocument();
-                        
                         xdoc.Load(new StreamReader(dif.FullName,true));
                         xnlist = xdoc.SelectNodes("zone/node");
                         foreach (XmlNode xn in xnlist)
@@ -883,7 +881,7 @@ namespace GenieClient.Mapper
                 if (m_DebugEnabled)
                     EchoText("roomid = " + oNode.ID.ToString());
                 set_GlobalVariable("roomid", oNode.ID.ToString());
-                set_GlobalVariable("roomnote", oNode.Note.ToString());
+                set_GlobalVariable("roomnote", oNode.Note.ToString());			
                 if (oNode.ContainsArc(Direction.North))
                 {
                     set_GlobalVariable("northid", oNode.Arcs[Direction.North].DestinationID.ToString());
@@ -1190,14 +1188,14 @@ namespace GenieClient.Mapper
                             if (sArg.Length > 0)
                             {
                                 int iNodeID = 0;
-                                if (sArg.Length > 3)
+                                /*if (sArg.Length > 3)
                                 {
                                 // Other zone
                                 // - Find the destination map
                                 // - Find what path it needs to take trough the different zones
                                 // Integer.TryParse(sArg.Substring(0, 3), iNodeID)
                                 }
-                                else
+                                else*/
                                 {
                                     int.TryParse(sArg, out iNodeID);
                                 }
@@ -2024,6 +2022,7 @@ namespace GenieClient.Mapper
             EventSendText?.Invoke(Text, "AutoMapper");
 
         }
+
         public void ParseText(string Text, bool automapper)
         {
             EventParseText?.Invoke(Text);
