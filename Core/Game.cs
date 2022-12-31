@@ -597,6 +597,7 @@ namespace GenieClient.Genie
                                         default:
                                             break;
                                     }
+
                                     m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(sTmp, presetLabel, sTextBuffer.Length));
                                     if(presetLabel == "roomdesc")
                                     {
@@ -796,11 +797,9 @@ namespace GenieClient.Genie
 
                 if (!(sTextBuffer == "\r\n" && hasXML))
                 {
-                    bool isRoomOutput = sText.Contains(@"<preset id='roomDesc'>");
+                    bool isRoomOutput = sText.Contains(@"<preset id='roomDesc'>");									 
                     PrintTextWithParse(sTextBuffer, default, default, default, default, isRoomOutput);
                 }
-                
-                
                 if (bCombatRow == true)
                 {
                     m_bBold = false;

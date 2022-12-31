@@ -94,7 +94,7 @@ namespace GenieClient
             string argsText = Utility.GenerateAccountHash(key);
             string premKey = Utility.EncryptString(m_oGlobals.GenieKey, argsText);
             return true;
-            //return m_oGlobals.PluginPremiumKeyList.ContainsKey(premKey); #Was checking Hash and returning true/false. Now always true.
+            //return m_oGlobals.PluginPremiumKeyList.ContainsKey(premKey);
         }
 
         public LegacyPluginHost(Form Form, ref Genie.Globals Globals)

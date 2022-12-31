@@ -93,7 +93,8 @@ namespace GenieClient
                 return false;
             string argsText = Utility.GenerateAccountHash(key);
             string premKey = Utility.EncryptString(m_oGlobals.GenieKey, argsText);
-            return m_oGlobals.PluginPremiumKeyList.ContainsKey(premKey);
+            return true;
+            //return m_oGlobals.PluginPremiumKeyList.ContainsKey(premKey);
         }
 
         public PluginHost(Form Form, ref Genie.Globals Globals)

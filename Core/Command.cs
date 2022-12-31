@@ -141,7 +141,7 @@ namespace GenieClient.Genie
         public event EventAddWindowEventHandler EventAddWindow;
 
         public delegate void EventAddWindowEventHandler(string sWindow, int sWidth, int sHeight, int? sTop, int? sLeft);
-
+ 
         public event EventPositionWindowEventHandler EventPositionWindow;
 
         public delegate void EventPositionWindowEventHandler(string sWindow, int? sWidth, int? sHeight, int? sTop, int? sLeft);
@@ -384,7 +384,7 @@ namespace GenieClient.Genie
                                     case "lconnect":
                                     case "lichconnect":
                                         {
-                                            string failure = string.Empty;
+													 string failure = string.Empty;
                                             if (!File.Exists(oGlobals.Config.CmdPath)) failure += "CMD not found at Path:\t" + oGlobals.Config.CmdPath + System.Environment.NewLine;
                                             if (!File.Exists(oGlobals.Config.RubyPath)) failure += "Ruby not found at Path:\t" + oGlobals.Config.RubyPath + System.Environment.NewLine;
                                             if (!File.Exists(oGlobals.Config.LichPath)) failure += "Lich not found at Path:\t" + oGlobals.Config.LichPath + System.Environment.NewLine;
@@ -1452,7 +1452,7 @@ namespace GenieClient.Genie
 
                                                     default:
                                                         {
-                                                            try
+																			try
                                                             {
                                                                 List<string> response = oGlobals.Config.SetSetting(oArgs[1].ToString());
                                                                 foreach (string message in response)
@@ -1488,7 +1488,7 @@ namespace GenieClient.Genie
 
                                             break;
                                         }
-
+													 
                                     case "parse":
                                         {
                                             string argsText5 = oGlobals.ParseGlobalVars(GetArgumentString(sRow));
@@ -1915,7 +1915,7 @@ namespace GenieClient.Genie
                                                                 string soundFile = oArgs.Count > 5 ? oArgs[5].ToString() : string.Empty;
                                                                 string className = oArgs.Count > 6 ? oArgs[6].ToString() : string.Empty;
                                                                 bool isActive = oArgs.Count > 7 ? oArgs[7].ToString().ToUpper() == "TRUE" : true;
-                                                                oGlobals.HighlightList.Add(highlightText, highlightWholeRow, color , caseSensitive, soundFile, className, isActive);
+                                                                oGlobals.HighlightList.Add(highlightText, highlightWholeRow, color, caseSensitive, soundFile, className, isActive);
                                                                 oGlobals.HighlightList.RebuildStringIndex();
                                                             }
 
@@ -2326,7 +2326,6 @@ namespace GenieClient.Genie
                                                             }
                                                             break;
                                                         }
-
 
                                                     case "remove":
                                                         {
@@ -2877,8 +2876,8 @@ namespace GenieClient.Genie
             EchoText("mapdir=" + oGlobals.Config.sMapDir + System.Environment.NewLine);
             EchoText("scriptdir=" + oGlobals.Config.sScriptDir + System.Environment.NewLine);
             EchoText("scriptchar=" + oGlobals.Config.ScriptChar.ToString() + System.Environment.NewLine);
-            EchoText("scriptrepo=" + oGlobals.Config.ScriptRepo + System.Environment.NewLine);
             EchoText("scriptextension=" + oGlobals.Config.ScriptExtension + System.Environment.NewLine);
+            EchoText("scriptrepo=" + oGlobals.Config.ScriptRepo + System.Environment.NewLine);
             EchoText("scripttimeout=" + oGlobals.Config.iScriptTimeout.ToString() + System.Environment.NewLine);
             EchoText("separatorchar=" + oGlobals.Config.cSeparatorChar.ToString() + System.Environment.NewLine);
             EchoText("spelltimer=" + oGlobals.Config.bShowSpellTimer.ToString() + System.Environment.NewLine);
