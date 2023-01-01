@@ -1,0 +1,1 @@
+F:\GitHubPorjects\Genie4\Genie\Genie.Windows\Genie.Windows.csproj;x86

@@ -1,0 +1,104 @@
+{
+  "format": 1,
+  "restore": {
+    "F:\\GitHubPorjects\\Genie4\\Genie\\Genie.Skia.Wpf\\Genie.Skia.Wpf.csproj": {}
+  },
+  "projects": {
+    "F:\\GitHubPorjects\\Genie4\\Genie\\Genie.Skia.Wpf\\Genie.Skia.Wpf.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "F:\\GitHubPorjects\\Genie4\\Genie\\Genie.Skia.Wpf\\Genie.Skia.Wpf.csproj",
+        "projectName": "Genie.Skia.Wpf",
+        "projectPath": "F:\\GitHubPorjects\\Genie4\\Genie\\Genie.Skia.Wpf\\Genie.Skia.Wpf.csproj",
+        "packagesPath": "C:\\Users\\depri\\.nuget\\packages\\",
+        "outputPath": "F:\\GitHubPorjects\\Genie4\\Genie\\Genie.Skia.Wpf\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "F:\\GitHubPorjects\\Genie4\\NuGet.Config",
+          "F:\\GitHubPorjects\\NuGet.Config",
+          "C:\\Users\\depri\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0-windows"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0-windows7.0": {
+            "targetAlias": "net6.0-windows",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0-windows7.0": {
+          "targetAlias": "net6.0-windows",
+          "dependencies": {
+            "Microsoft.Extensions.Logging.Console": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "SkiaSharp.Skottie": {
+              "target": "Package",
+              "version": "[2.88.3, )"
+            },
+            "SkiaSharp.Views.Uno.WinUI": {
+              "target": "Package",
+              "version": "[2.88.3, )"
+            },
+            "Uno.UI.Adapter.Microsoft.Extensions.Logging": {
+              "target": "Package",
+              "version": "[4.6.39, )"
+            },
+            "Uno.WinUI.Lottie": {
+              "target": "Package",
+              "version": "[4.6.39, )"
+            },
+            "Uno.WinUI.RemoteControl": {
+              "target": "Package",
+              "version": "[4.6.39, )"
+            },
+            "Uno.WinUI.Skia.Wpf": {
+              "target": "Package",
+              "version": "[4.6.39, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WPF": {
+              "privateAssets": "none"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

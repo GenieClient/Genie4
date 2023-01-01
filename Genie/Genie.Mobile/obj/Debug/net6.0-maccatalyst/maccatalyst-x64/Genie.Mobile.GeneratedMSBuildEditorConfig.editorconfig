@@ -1,0 +1,69 @@
+is_global = true
+build_property.XamlSourceGeneratorTracingFolder = 
+build_property.TargetPlatformIdentifier = MacCatalyst
+build_property.TargetFramework = net6.0-maccatalyst
+build_property.TargetFramework = net6.0-maccatalyst
+build_property.ProjectTypeGuidsProperty = 
+build_property.MSBuildProjectFullPath = F:\GitHubPorjects\Genie4\Genie\Genie.Mobile\Genie.Mobile.csproj
+build_property.RootNamespace = Genie.Mobile
+build_property.RootNamespace = Genie.Mobile
+build_property.DefineConstantsProperty = __MACCATALYST__,__IOS__,__MOBILE__,__UNIFIED__,TRACE,DEBUG,NET,NET6_0,NETCOREAPP,HAS_UNO,HAS_UNO_WINUI,UNO_HAS_FRAMEWORKELEMENT_MEASUREOVERRIDE,UNO_HAS_NO_IDEPENDENCYOBJECT,UNO_REFERENCE_API
+build_property.Configuration = Debug
+build_property.IntermediateOutputPath = obj\Debug\net6.0-maccatalyst\maccatalyst-x64\
+build_property.AndroidApplication = 
+build_property.OutputType = Exe
+build_property.MSBuildProjectName = Genie.Mobile
+build_property.BuildingProject = false
+build_property.DesignTimeBuild = true
+build_property.UnoUISourceGeneratorDebuggerBreak = 
+build_property.BuildingInsideVisualStudio = true
+build_property.IsHotReloadHost = 
+build_property.UseWPF = 
+build_property.IsUnoHead = true
+build_property.WindowsAppSDKWinUI = 
+build_property.UnoRemoteControlPort = 
+build_property.UnoRemoteControlHost = 
+build_property.UnoRemoteControlProcessorsPath = C:\Users\depri\.nuget\packages\uno.winui.remotecontrol\4.6.39\buildTransitive\../tools/rc/processors
+build_property.UseUnoXamlParser = 
+build_property.UnoSkipUserControlsInVisualTree = 
+build_property.ShouldWriteErrorOnInvalidXaml = 
+build_property.IsUiAutomationMappingEnabled = 
+build_property.ShouldAnnotateGeneratedXaml = 
+build_property.DefaultLanguage = 
+build_property.UnoPlatformTelemetryOptOut = 
+build_property.ExcludeXamlNamespacesProperty = win,not_mux,android,wasm,macos,skia,not_ios
+build_property.IncludeXamlNamespacesProperty = xamarin,not_win,legacy,ios,not_android,not_wasm,not_macos,not_skia,not_netstdref
+build_property.XamlGeneratorAnalyzerSuppressionsProperty = nventive.Usage-NV0056,nventive.Usage-NV0058,nventive.Usage-NV1003,nventive.Usage-NV0085,nventive.Usage-NV2001,nventive.Usage-NV2003,nventive.Usage-NV2004,nventive.Usage-NV2005,csharp-618 // Ignore obsolete members warnings,csharp-105 // Ignore duplicate namespaces,csharp-1591 // Ignore missing XML comment warnings,csharp-CS8669 // Ignore annotation for nullable reference types,dotnet-CA1001
+build_property.LegacyTypesProperty = 
+build_property.UnoXamlResourcesTrimming = 
+build_property.BaseIntermediateOutputPath = obj\
+build_property.AssemblyName = Genie.Mobile
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.ProjectDir = F:\GitHubPorjects\Genie4\Genie\Genie.Mobile\
+
+[F:/GitHubPorjects/Genie4/Genie/Genie.Shared/MainPage.xaml]
+build_metadata.AdditionalFiles.SourceItemGroup = Page
+build_metadata.AdditionalFiles.Link = MainPage.xaml
+build_metadata.AdditionalFiles.FullPath = F:\GitHubPorjects\Genie4\Genie\Genie.Shared\MainPage.xaml
+build_metadata.AdditionalFiles.Identity = F:\GitHubPorjects\Genie4\Genie\Genie.Shared\MainPage.xaml
+build_metadata.AdditionalFiles.XamlRuntime = WinUI
+
+[F:/GitHubPorjects/Genie4/Genie/Genie.Shared/App.xaml]
+build_metadata.AdditionalFiles.SourceItemGroup = ApplicationDefinition
+build_metadata.AdditionalFiles.Link = App.xaml
+build_metadata.AdditionalFiles.FullPath = F:\GitHubPorjects\Genie4\Genie\Genie.Shared\App.xaml
+build_metadata.AdditionalFiles.Identity = F:\GitHubPorjects\Genie4\Genie\Genie.Shared\App.xaml
+build_metadata.AdditionalFiles.XamlRuntime = WinUI
+
+[F:/GitHubPorjects/Genie4/Genie/Genie.Shared/Strings/en/Resources.resw]
+build_metadata.AdditionalFiles.SourceItemGroup = PRIResource
+build_metadata.AdditionalFiles.Link = 
+build_metadata.AdditionalFiles.FullPath = F:\GitHubPorjects\Genie4\Genie\Genie.Shared\Strings\en\Resources.resw
+build_metadata.AdditionalFiles.Identity = F:\GitHubPorjects\Genie4\Genie\Genie.Shared\Strings\en\Resources.resw
+build_metadata.AdditionalFiles.XamlRuntime = 

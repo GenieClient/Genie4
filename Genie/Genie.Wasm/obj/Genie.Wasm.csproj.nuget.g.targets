@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)uno.sourcegenerationtasks\4.2.0\build\netstandard1.0\Uno.SourceGenerationTasks.targets" Condition="Exists('$(NuGetPackageRoot)uno.sourcegenerationtasks\4.2.0\build\netstandard1.0\Uno.SourceGenerationTasks.targets')" />
+    <Import Project="$(NuGetPackageRoot)uno.winui\4.6.39\buildTransitive\netstandard2.0\uno.winui.targets" Condition="Exists('$(NuGetPackageRoot)uno.winui\4.6.39\buildTransitive\netstandard2.0\uno.winui.targets')" />
+    <Import Project="$(NuGetPackageRoot)uno.winui.runtime.webassembly\4.6.39\buildTransitive\Uno.WinUI.Runtime.WebAssembly.targets" Condition="Exists('$(NuGetPackageRoot)uno.winui.runtime.webassembly\4.6.39\buildTransitive\Uno.WinUI.Runtime.WebAssembly.targets')" />
+    <Import Project="$(NuGetPackageRoot)uno.winui.webassembly\4.6.39\build\Uno.WinUI.WebAssembly.targets" Condition="Exists('$(NuGetPackageRoot)uno.winui.webassembly\4.6.39\build\Uno.WinUI.WebAssembly.targets')" />
+    <Import Project="$(NuGetPackageRoot)uno.winui.remotecontrol\4.6.39\buildTransitive\Uno.WinUI.RemoteControl.targets" Condition="Exists('$(NuGetPackageRoot)uno.winui.remotecontrol\4.6.39\buildTransitive\Uno.WinUI.RemoteControl.targets')" />
+    <Import Project="$(NuGetPackageRoot)uno.winui.lottie\4.6.39\buildTransitive\Uno.WinUI.Lottie.targets" Condition="Exists('$(NuGetPackageRoot)uno.winui.lottie\4.6.39\buildTransitive\Uno.WinUI.Lottie.targets')" />
+    <Import Project="$(NuGetPackageRoot)uno.wasm.bootstrap.devserver\7.0.3\build\Uno.Wasm.Bootstrap.DevServer.targets" Condition="Exists('$(NuGetPackageRoot)uno.wasm.bootstrap.devserver\7.0.3\build\Uno.Wasm.Bootstrap.DevServer.targets')" />
+    <Import Project="$(NuGetPackageRoot)uno.wasm.bootstrap\7.0.3\build\Uno.Wasm.Bootstrap.targets" Condition="Exists('$(NuGetPackageRoot)uno.wasm.bootstrap\7.0.3\build\Uno.Wasm.Bootstrap.targets')" />
+  </ImportGroup>
+</Project>

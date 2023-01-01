@@ -1,0 +1,26 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "da666ffd-3be5-06e4-3978-5ec08f4edbb3": {
+      "ProjectGuid": "da666ffd-3be5-06e4-3978-5ec08f4edbb3",
+      "DisplayName": "Genie4",
+      "ColorIndex": 0
+    },
+    "b0882700-5eaf-4712-ade5-69dafe473a01": {
+      "ProjectGuid": "b0882700-5eaf-4712-ade5-69dafe473a01",
+      "DisplayName": "Interfaces",
+      "ColorIndex": 1
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    },
+    "da91259e-e378-443e-a0de-11e8e160842c": {
+      "ProjectGuid": "da91259e-e378-443e-a0de-11e8e160842c",
+      "DisplayName": "Genie4",
+      "ColorIndex": 2
+    }
+  },
+  "NextColorIndex": 3
+}

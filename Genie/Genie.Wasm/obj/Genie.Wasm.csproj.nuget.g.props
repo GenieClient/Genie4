@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <RestoreSuccess Condition=" '$(RestoreSuccess)' == '' ">True</RestoreSuccess>
+    <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
+    <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
+    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\depri\.nuget\packages\;C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages</NuGetPackageFolders>
+    <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.4.0</NuGetToolVersion>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <SourceRoot Include="C:\Users\depri\.nuget\packages\" />
+    <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Content Include="$(NuGetPackageRoot)uno.wasm.bootstrap\7.0.3\contentFiles\any\netstandard2.0\obj\uno-bootstrap.d.ts" Condition="Exists('$(NuGetPackageRoot)uno.wasm.bootstrap\7.0.3\contentFiles\any\netstandard2.0\obj\uno-bootstrap.d.ts')">
+      <NuGetPackageId>Uno.Wasm.Bootstrap</NuGetPackageId>
+      <NuGetPackageVersion>7.0.3</NuGetPackageVersion>
+      <NuGetItemType>Content</NuGetItemType>
+      <Pack>false</Pack>
+      <Private>False</Private>
+      <Link>obj\uno-bootstrap.d.ts</Link>
+    </Content>
+    <Content Include="$(NuGetPackageRoot)uno.wasm.bootstrap\7.0.3\contentFiles\any\netstandard2.0\obj\uno-bootstrap.js" Condition="Exists('$(NuGetPackageRoot)uno.wasm.bootstrap\7.0.3\contentFiles\any\netstandard2.0\obj\uno-bootstrap.js')">
+      <NuGetPackageId>Uno.Wasm.Bootstrap</NuGetPackageId>
+      <NuGetPackageVersion>7.0.3</NuGetPackageVersion>
+      <NuGetItemType>Content</NuGetItemType>
+      <Pack>false</Pack>
+      <Private>False</Private>
+      <Link>obj\uno-bootstrap.js</Link>
+    </Content>
+  </ItemGroup>
+  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)uno.winui.runtime.webassembly\4.6.39\buildTransitive\Uno.WinUI.Runtime.WebAssembly.props" Condition="Exists('$(NuGetPackageRoot)uno.winui.runtime.webassembly\4.6.39\buildTransitive\Uno.WinUI.Runtime.WebAssembly.props')" />
+    <Import Project="$(NuGetPackageRoot)uno.winui.webassembly\4.6.39\build\Uno.WinUI.WebAssembly.props" Condition="Exists('$(NuGetPackageRoot)uno.winui.webassembly\4.6.39\build\Uno.WinUI.WebAssembly.props')" />
+    <Import Project="$(NuGetPackageRoot)uno.wasm.bootstrap\7.0.3\build\Uno.Wasm.Bootstrap.props" Condition="Exists('$(NuGetPackageRoot)uno.wasm.bootstrap\7.0.3\build\Uno.Wasm.Bootstrap.props')" />
+  </ImportGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgUno_WinUI Condition=" '$(PkgUno_WinUI)' == '' ">C:\Users\depri\.nuget\packages\uno.winui\4.6.39</PkgUno_WinUI>
+    <PkgUno_WinUI_RemoteControl Condition=" '$(PkgUno_WinUI_RemoteControl)' == '' ">C:\Users\depri\.nuget\packages\uno.winui.remotecontrol\4.6.39</PkgUno_WinUI_RemoteControl>
+    <PkgUno_Wasm_Bootstrap_DevServer Condition=" '$(PkgUno_Wasm_Bootstrap_DevServer)' == '' ">C:\Users\depri\.nuget\packages\uno.wasm.bootstrap.devserver\7.0.3</PkgUno_Wasm_Bootstrap_DevServer>
+    <PkgUno_Wasm_Bootstrap Condition=" '$(PkgUno_Wasm_Bootstrap)' == '' ">C:\Users\depri\.nuget\packages\uno.wasm.bootstrap\7.0.3</PkgUno_Wasm_Bootstrap>
+  </PropertyGroup>
+</Project>

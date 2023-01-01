@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)uno.sourcegenerationtasks\4.2.0\build\netstandard1.0\Uno.SourceGenerationTasks.targets" Condition="Exists('$(NuGetPackageRoot)uno.sourcegenerationtasks\4.2.0\build\netstandard1.0\Uno.SourceGenerationTasks.targets')" />
+    <Import Project="$(NuGetPackageRoot)uno.winui\4.6.39\buildTransitive\netstandard2.0\uno.winui.targets" Condition="Exists('$(NuGetPackageRoot)uno.winui\4.6.39\buildTransitive\netstandard2.0\uno.winui.targets')" />
+    <Import Project="$(NuGetPackageRoot)uno.winui.runtime.skia.gtk\4.6.39\buildTransitive\Uno.WinUI.Runtime.Skia.Gtk.targets" Condition="Exists('$(NuGetPackageRoot)uno.winui.runtime.skia.gtk\4.6.39\buildTransitive\Uno.WinUI.Runtime.Skia.Gtk.targets')" />
+    <Import Project="$(NuGetPackageRoot)uno.winui.skia.gtk\4.6.39\build\Uno.WinUI.Skia.Gtk.targets" Condition="Exists('$(NuGetPackageRoot)uno.winui.skia.gtk\4.6.39\build\Uno.WinUI.Skia.Gtk.targets')" />
+    <Import Project="$(NuGetPackageRoot)uno.winui.remotecontrol\4.6.39\buildTransitive\Uno.WinUI.RemoteControl.targets" Condition="Exists('$(NuGetPackageRoot)uno.winui.remotecontrol\4.6.39\buildTransitive\Uno.WinUI.RemoteControl.targets')" />
+    <Import Project="$(NuGetPackageRoot)uno.winui.lottie\4.6.39\buildTransitive\Uno.WinUI.Lottie.targets" Condition="Exists('$(NuGetPackageRoot)uno.winui.lottie\4.6.39\buildTransitive\Uno.WinUI.Lottie.targets')" />
+    <Import Project="$(NuGetPackageRoot)skiasharp.nativeassets.webassembly\2.88.3\buildTransitive\netstandard1.0\SkiaSharp.NativeAssets.WebAssembly.targets" Condition="Exists('$(NuGetPackageRoot)skiasharp.nativeassets.webassembly\2.88.3\buildTransitive\netstandard1.0\SkiaSharp.NativeAssets.WebAssembly.targets')" />
+    <Import Project="$(NuGetPackageRoot)skiasharp.views.uno.winui\2.88.3\buildTransitive\netstandard2.0\SkiaSharp.Views.Uno.WinUI.targets" Condition="Exists('$(NuGetPackageRoot)skiasharp.views.uno.winui\2.88.3\buildTransitive\netstandard2.0\SkiaSharp.Views.Uno.WinUI.targets')" />
+  </ImportGroup>
+</Project>
