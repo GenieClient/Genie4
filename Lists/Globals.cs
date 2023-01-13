@@ -491,16 +491,16 @@ namespace GenieClient.Genie
 
             public void SetDefaultPresets()
             {
-                Add("automapper.panel", "Black, PaleGoldenrod");
-                Add("automapper.line", "Black, White");
-                Add("automapper.linestump", "Cyan, White");
+                Add("automapper.heredot" , "Magenta");
                 Add("automapper.lineclimb", "Green, White");
                 Add("automapper.linego", "Blue, White");
+                Add("automapper.line", "Black, White");
+                Add("automapper.linestump", "Cyan, White");
                 Add("automapper.linkroom", "Blue");
                 Add("automapper.node", "White, White");
                 Add("automapper.nodeborder", "White, White");
+                Add("automapper.panel", "Black, PaleGoldenrod");
                 Add("automapper.path", "Green, LightGreen");
-                Add("automapper.heredot" , "Magenta");
                 Add("castbar", "Magenta");
                 Add("concentration", "Navy");
                 Add("creatures", "Cyan");
@@ -1288,6 +1288,9 @@ namespace GenieClient.Genie
                 public string ClassName = string.Empty;
                 public bool IsActive = true;
                 public string SoundFile = string.Empty;
+                public int StartIndex = 0;
+                public int Length { get { return Text.Length; } }
+                public int EndIndex { get { return StartIndex + Length; } }
 
                 public Highlight(string text, string ColorName, Color FgColor, Color BgColor, bool CaseSensitive = true, string SoundFile = "", string ClassName = "", bool IsActive = true)
                 {
