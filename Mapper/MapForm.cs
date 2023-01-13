@@ -1663,7 +1663,7 @@ namespace GenieClient.Mapper
                         else oColorRoom = Color.FromArgb(m_oGlobals.Config.AutoMapperAlpha, n.Color.R, n.Color.G, n.Color.B);
 
                         var oColorRoomBorder = m_oGlobals.PresetList["automapper.nodeborder"].FgColor;
-                        var oColorHere = m_oGlobals.PresetList["automapper.here"].FgColor;
+                        var oColorHere = m_oGlobals.PresetList["automapper.heredot"].FgColor;
                         if (n.Position.Z != m_CurrentLevelZ) // Mark all other levels gray
                         {
                             oColorRoom = m_oGlobals.PresetList["automapper.node"].BgColor; // Color.FromArgb(255, 255, 192) ' Base BG
