@@ -789,7 +789,7 @@ namespace GenieClient
         {
             RichTextBoxOutput.Visible = false;
             Visible = false;
-            if (WindowMenuItem != null) {
+            if (WindowMenuItem is ToolStripMenuItem) {
                 WindowMenuItem.Checked = false;
             }
         }
