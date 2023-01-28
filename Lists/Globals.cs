@@ -222,8 +222,11 @@ namespace GenieClient.Genie
             }
             
             sText = sText.Replace("@time@", DateTime.Now.ToString("hh:mm:ss tt").Trim());
+            sText = sText.Replace("@time24@", DateTime.Now.ToString("HH:mm:ss").Trim());
+            sText = sText.Replace("@timeyear@", DateTime.Now.ToString("yyyy").Trim());
             sText = sText.Replace("@date@", DateTime.Now.ToString("M/d/yyyy").Trim());
             sText = sText.Replace("@datetime@", DateTime.Now.ToString("M/d/yyyy hh:mm:ss tt").Trim());
+            sText = sText.Replace("@date24time@", DateTime.Now.ToString("M/d/yyyy HH:mm:ss").Trim());
             sText = sText.Replace("@unixtime@", DateTimeOffset.Now.ToUnixTimeSeconds().ToString());
             return sText;
         }
@@ -500,8 +503,8 @@ namespace GenieClient.Genie
                 Add("creatures", "Cyan");
                 Add("familiar", "PaleGreen");
                 Add("health", "Maroon");
-                Add("inputuser", "Yellow");
                 Add("inputother", "GreenYellow");
+                Add("inputuser", "Yellow");
                 Add("mana", "Navy");
                 Add("roomdesc", "Silver");
                 Add("roomname", "Yellow,DarkBlue");
@@ -516,7 +519,7 @@ namespace GenieClient.Genie
                 Add("ui.menu.highlight", "LightBlue");
                 Add("ui.window", "Black, #EEEEEE");
                 Add("ui.status", "Black, #EEEEEE");
-                Add("ui.textbox", "Black, White");
+                Add("ui.textbox", "Black, White");																		  
                 Add("whispers", "Magenta");
             }
 
@@ -828,8 +831,7 @@ namespace GenieClient.Genie
                 Add("roomobjs", "", VariableType.Reserved);
                 Add("roomplayers", "", VariableType.Reserved);
                 Add("roomexits", "", VariableType.Reserved);
-                Add("roomnote", "", VariableType.Reserved);
-
+                Add("roomnote", "", VariableType.Reserved);                
                 Add("concentration", "100", VariableType.Reserved);
                 Add("encumbrance", "0", VariableType.Reserved);
                 Add("health", "100", VariableType.Reserved);
@@ -872,11 +874,11 @@ namespace GenieClient.Genie
                 Add("time", "@time@", VariableType.Reserved);
                 Add("date", "@date@", VariableType.Reserved);
                 Add("datetime", "@datetime@", VariableType.Reserved);
+                Add("unixtime", "@unixtime@", VariableType.Reserved);
                 Add("spelltime", "@spelltime@", VariableType.Reserved);
                 Add("spellpreptime", "@spellpreptime@", VariableType.Reserved);
                 Add("spellstarttime", "0", VariableType.Reserved);
                 Add("casttime", "0", VariableType.Reserved);
-                Add("unixtime", "@unixtime@", VariableType.Reserved);
                 Add("casttimeremaining", "@casttimeremaining@", VariableType.Reserved);
                 Add("monstercount", "0", VariableType.Reserved);
                 Add("monsterlist", "", VariableType.Reserved);
@@ -906,6 +908,254 @@ namespace GenieClient.Genie
             }
 
             return TriggerList.Add(sTrigger, sAction, bIgnoreCase, bIsEvalTrigger, ClassName);
+        }
+
+        public class NamesList : Collections.SortedList
+        {
+        private Regex m_oRegexNames = null;
+
+        public Regex RegexNames
+        {
+            get
+            {
+                return m_oRegexNames;
+            }
+
+            set
+            {
+                m_oRegexNames = value;
+            }
+        }
+
+        public class Name
+        {
+            public Color FgColor;
+            public Color BgColor;
+            public string ColorName;
+            public string ClassName = string.Empty;
+            public bool IsActive = true;
+
+            public Name(Color oColor, Color oBgColor, string sColorName = "", string ClassName = "", bool IsActive = true)
+            {
+                FgColor = oColor;
+                BgColor = oBgColor;
+                ColorName = sColorName;
+                this.ClassName = ClassName;
+                this.IsActive = IsActive;
+            }
+        }
+
+        public void ToggleClass(string ClassName, bool Value)
+        {
+            if (AcquireReaderLock())
+            {
+                var al = new ArrayList();
+                try
+                {
+                    foreach (string s in base.Keys)
+                        al.Add(s);
+                }
+                finally
+                {
+                    ReleaseReaderLock();
+                    foreach (string s in al)
+                    {
+                        Name hl = (Name)base[s];
+                        if ((hl.ClassName.ToLower() ?? "") == (ClassName.ToLower() ?? ""))
+                        {
+                            hl.IsActive = Value;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception("Unable to aquire reader lock.");
+            }
+        }
+
+        public bool Add(string sKey, string sColorName, string ClassName = "", bool IsActive = true)
+        {
+            if (sKey.Length == 0)
+            {
+                return false;
+            }
+            else
+            {
+                Color oColor;
+                Color oBgcolor;
+                if (sColorName.Contains(",") == true && sColorName.EndsWith(",") == false)
+                {
+                    string sColor = sColorName.Substring(0, sColorName.IndexOf(",")).Trim();
+                    string sBgColor = sColorName.Substring(sColorName.IndexOf(",") + 1).Trim();
+                    oColor = ColorCode.StringToColor(sColor);
+                    oBgcolor = ColorCode.StringToColor(sBgColor);
+                }
+                else
+                {
+                    oColor = ColorCode.StringToColor(sColorName);
+                    oBgcolor = Color.Transparent;
+                }
+
+                if (base.ContainsKey(sKey) == true)
+                {
+                    base[sKey] = new Name(oColor, oBgcolor, sColorName, ClassName, IsActive);
+                }
+                else
+                {
+                    object argvalue = new Name(oColor, oBgcolor, sColorName, ClassName, IsActive);
+                    Add(sKey, argvalue);
+                }
+
+                return true;
+            }
+        }
+
+        public int Remove(string sKey)
+        {
+            if (base.ContainsKey(sKey) == true)
+            {
+                base.Remove(sKey);
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        public bool Load(string sFileName = "names.cfg")
+        {
+            if (sFileName.IndexOf(@"\") == -1)
+            {
+                sFileName = LocalDirectory.Path + @"\Config\" + sFileName;
+            }
+
+            if (File.Exists(sFileName) == true)
+            {
+                var oStreamReader = new StreamReader(sFileName);
+                string strLine = oStreamReader.ReadLine();
+                while (!Information.IsNothing(strLine))
+                {
+                    LoadRow(strLine);
+                    strLine = oStreamReader.ReadLine();
+                }
+
+                oStreamReader.Close();
+                RebuildIndex();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private void LoadRow(string sText)
+        {
+            var oArgs = Utility.ParseArgs(sText);
+            if (oArgs.Count > 2)
+            {
+                string sClass = string.Empty;
+                if (oArgs.Count > 3)
+                {
+                    sClass = oArgs[3].ToString();
+                }
+
+                var arg1 = oArgs[1].ToString();
+                var arg2 = oArgs[2].ToString();
+                Add(arg2, arg1, sClass, true);
+
+            }
+        }
+
+        public void RebuildIndex()
+        {
+            var al = new ArrayList();
+            foreach (string s in base.Keys)
+                al.Add(s);
+            al.Sort();
+            string sList = string.Empty;
+            foreach (string s in al)
+            {
+                if (sList.Length > 0)
+                {
+                    sList += "|";
+                }
+
+                sList += s;
+            }
+
+            if (sList.Length > 0)
+            {
+                sList = @"\b(" + sList + @")\b";
+            }
+
+            m_oRegexNames = new Regex(sList, MyRegexOptions.options);
+        }
+
+        public bool Save(string sFileName = "names.cfg")
+        {
+            try
+            {
+                if (sFileName.IndexOf(@"\") == -1)
+                {
+                    sFileName = LocalDirectory.Path + @"\Config\" + sFileName;
+                }
+
+                if (File.Exists(sFileName) == true)
+                {
+                    Utility.DeleteFile(sFileName);
+                }
+
+                if (AcquireReaderLock())
+                {
+                    try
+                    {
+                        var oStreamWriter = new StreamWriter(sFileName, false);
+                        foreach (string key in base.Keys)
+                        {
+                            string sColorName = ((Name)base[key]).ColorName;
+                            string sClassName = ((Name)base[key]).ClassName;
+                            if (sColorName.Length == 0)
+                            {
+                                sColorName = ColorCode.ColorToHex(((Name)base[key]).FgColor) + "," + ColorCode.ColorToHex(((Name)base[key]).BgColor);
+                            }
+
+                            //oStreamWriter.WriteLine("#name {" + sColorName + "} {" + key + "}");
+
+                            string sLine = "#name {" + sColorName + "} {" + key + "}";
+                            if (sClassName.Length > 0)
+                            {
+                                sLine += " {" + sClassName + "}";
+                            }
+
+                            oStreamWriter.WriteLine(sLine);
+
+                        }
+
+                        oStreamWriter.Close();
+                    }
+                    finally
+                    {
+                        ReleaseReaderLock();
+                    }
+                }
+                else
+                {
+                    throw new Exception("Unable to aquire reader lock.");
+                }
+
+                return true;
+            }
+#pragma warning disable CS0168
+            catch (Exception ex)
+#pragma warning restore CS0168
+            {
+                return false;
+            }
+        }
+
         }
 
         public class Triggers : Collections.SortedList
