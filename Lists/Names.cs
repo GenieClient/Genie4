@@ -24,21 +24,54 @@ namespace GenieClient.Genie
             }
         }
 
+        public void ToggleClass(string ClassName, bool Value)
+        {
+            if (AcquireReaderLock())
+            {
+                var al = new ArrayList();
+                try
+                {
+                    foreach (string s in base.Keys)
+                        al.Add(s);
+                }
+                finally
+                {
+                    ReleaseReaderLock();
+                    foreach (string s in al)
+                    {
+                        Name hl = (Name)base[s];
+                        if ((hl.ClassName.ToLower() ?? "") == (ClassName.ToLower() ?? ""))
+                        {
+                            hl.IsActive = Value;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception("Unable to aquire reader lock.");
+            }
+        }
+
         public class Name
         {
             public Color FgColor;
             public Color BgColor;
             public string ColorName;
+            public string ClassName = string.Empty;
+            public bool IsActive = true;
 
-            public Name(Color oColor, Color oBgColor, string sColorName = "")
+            public Name(Color oColor, Color oBgColor, string sColorName = "", string ClassName = "", bool IsActive = true)
             {
                 FgColor = oColor;
                 BgColor = oBgColor;
                 ColorName = sColorName;
+                this.ClassName = ClassName;
+                this.IsActive = IsActive;
             }
         }
 
-        public bool Add(string sKey, string sColorName)
+        public bool Add(string sKey, string sColorName, string ClassName = "", bool IsActive = true)
         {
             if (sKey.Length == 0)
             {
@@ -63,11 +96,11 @@ namespace GenieClient.Genie
 
                 if (base.ContainsKey(sKey) == true)
                 {
-                    base[sKey] = new Name(oColor, oBgcolor, sColorName);
+                    base[sKey] = new Name(oColor, oBgcolor, sColorName, ClassName, IsActive);
                 }
                 else
                 {
-                    object argvalue = new Name(oColor, oBgcolor, sColorName);
+                    object argvalue = new Name(oColor, oBgcolor, sColorName, ClassName, IsActive);
                     Add(sKey, argvalue);
                 }
 
@@ -143,9 +176,18 @@ namespace GenieClient.Genie
         private void LoadRow(string sText)
         {
             var oArgs = Utility.ParseArgs(sText);
-            if (oArgs.Count == 3)
+            if (oArgs.Count > 2)
             {
-                Add(oArgs[2].ToString(), oArgs[1].ToString());
+                string sClass = string.Empty;
+                if (oArgs.Count > 3)
+                {
+                    sClass = oArgs[3].ToString();
+                }
+
+                var arg1 = oArgs[1].ToString();
+                var arg2 = oArgs[2].ToString();
+                Add(arg2, arg1, sClass);
+
             }
         }
 
@@ -171,12 +213,22 @@ namespace GenieClient.Genie
                         foreach (string key in base.Keys)
                         {
                             string sColorName = ((Name)base[key]).ColorName;
+                            string sClassName = ((Name)base[key]).ClassName;
                             if (sColorName.Length == 0)
                             {
                                 sColorName = ColorCode.ColorToHex(((Name)base[key]).FgColor) + "," + ColorCode.ColorToHex(((Name)base[key]).BgColor);
                             }
 
-                            oStreamWriter.WriteLine("#name {" + sColorName + "} {" + key + "}");
+                            //oStreamWriter.WriteLine("#name {" + sColorName + "} {" + key + "}");
+
+                            string sLine = "#name {" + sColorName + "} {" + key + "}";
+                            if (sClassName.Length > 0)
+                            {
+                                sLine += " {" + sClassName + "}";
+                            }
+
+                            oStreamWriter.WriteLine(sLine);
+
                         }
 
                         oStreamWriter.Close();
