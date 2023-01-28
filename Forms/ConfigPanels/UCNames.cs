@@ -3,6 +3,7 @@ using System.Collections;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using GenieClient.Genie;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
@@ -17,6 +18,41 @@ namespace GenieClient
 
         private Genie.Names m_NameList;
         private bool m_ItemChanged = false;
+        private Genie.Globals m_Globals;
+
+        public Genie.Globals Globals
+        {
+            get
+            {
+                return m_Globals;
+            }
+
+            set
+            {
+                m_Globals = value;
+            }
+        }
+
+        public Genie.Names NameList
+        {
+            get
+            {
+                return m_NameList;
+            }
+
+            set
+            {
+                m_NameList = value;
+            }
+        }
+
+        public bool ItemChanged
+        {
+            get
+            {
+                return m_ItemChanged;
+            }
+        }
 
         private void ButtonColorFg_Click(object sender, EventArgs e)
         {
@@ -111,37 +147,24 @@ namespace GenieClient
             }
         }
 
-        public Genie.Names NameList
-        {
-            get
-            {
-                return m_NameList;
-            }
-
-            set
-            {
-                m_NameList = value;
-            }
-        }
-
-        public bool ItemChanged
-        {
-            get
-            {
-                return m_ItemChanged;
-            }
-        }
-
         private void UCWindows_Load(object sender, EventArgs e)
         {
-            PopulateList();
+            try
+            {
+                PopulateList();
+            }
+            catch (NullReferenceException)
+            {
+                // todo
+            }
         }
 
         private void PopulateList()
         {
+            ResetList();
             if (!Information.IsNothing(m_NameList))
             {
-                ResetList();
+
                 foreach (DictionaryEntry de in m_NameList)
                 {
                     var li = ListViewBase.Items.Add(de.Key.ToString());
@@ -154,6 +177,32 @@ namespace GenieClient
                     {
                         li.BackColor = oName.BgColor;
                     }
+                    li.SubItems.Add(oName.ClassName);
+                }
+            }
+
+            PopulateClasses();
+        }
+
+        private void PopulateClasses()
+        {
+            ComboBoxClass.Items.Clear();
+            ComboBoxClass.Items.Add("(default)");
+            foreach (DictionaryEntry sl in m_NameList)
+                AddClass(((Genie.Names.Name)sl.Value).ClassName);
+            foreach (DictionaryEntry de in Globals.ClassList)
+                AddClass(Conversions.ToString(de.Key));
+        }
+
+        private void AddClass(string ClassName)
+        {
+            if ((ClassName ?? "") == "default")
+                return;
+            if (ClassName.Length > 0)
+            {
+                if (ComboBoxClass.Items.Contains(ClassName.ToLower()) == false)
+                {
+                    ComboBoxClass.Items.Add(ClassName.ToLower());
                 }
             }
         }
@@ -163,6 +212,7 @@ namespace GenieClient
             ListViewBase.Clear();
             ListViewBase.Columns.Add("Name", 200, HorizontalAlignment.Left);
             ListViewBase.Columns.Add("Color", 400, HorizontalAlignment.Left);
+            ListViewBase.Columns.Add("Class", 100, HorizontalAlignment.Left);
         }
 
         private void ListViewBase_SortColumnClick(object sender, ColumnClickEventArgs e)
@@ -252,6 +302,14 @@ namespace GenieClient
                 LabelExampleColor.BackColor = ListViewBase.SelectedItems[0].BackColor;
                 ToolStripButtonRemove.Enabled = true;
                 RemoveToolStripMenuItem.Enabled = true;
+                if (ListViewBase.SelectedItems[0].SubItems[2].Text.Length > 0)
+                {
+                    ComboBoxClass.Text = ListViewBase.SelectedItems[0].SubItems[2].Text;
+                }
+                else
+                {
+                    ComboBoxClass.Text = "(default)";
+                }
             }
             else if (ListViewBase.SelectedItems.Count > 1) // Can only edit properties that are same for all
             {
@@ -335,8 +393,18 @@ namespace GenieClient
                         li.BackColor = LabelExampleColor.BackColor;
                     }
 
+                    string sClass = string.Empty;
+                    if ((ComboBoxClass.Text ?? "") == "(default)")
+                    {
+                        sClass = "";
+                    }
+                    else
+                    {
+                        sClass = ComboBoxClass.Text;
+                    }
+                    li.SubItems[2].Text = sClass;
                     string argsKey1 = li.Text;
-                    m_NameList.Add(argsKey1, TextBoxColor.Text);
+                    m_NameList.Add(argsKey1, TextBoxColor.Text, sClass);
                     li.Tag = li.Text;
                 }
             }
@@ -349,9 +417,29 @@ namespace GenieClient
                     return false;
                 }
 
+                string sClass = string.Empty;
+                if ((ComboBoxClass.Text ?? "") == "(default)")
+                {
+                    sClass = "";
+                }
+                else
+                {
+                    sClass = ComboBoxClass.Text;
+                }
+
                 string argsKey2 = TextBoxName.Text;
                 m_NameList.Add(argsKey2, TextBoxColor.Text);
-                var li = ListViewBase.Items.Add(TextBoxName.Text);
+                var li = ListViewBase.Items.Add(TextBoxName.Text, sClass);
+
+                if ((ComboBoxClass.Text ?? "") == "(default)")
+                {
+                    li.SubItems.Add("");
+                }
+                else
+                {
+                    li.SubItems.Add(ComboBoxClass.Text);
+                }
+
                 li.SubItems.Add(TextBoxColor.Text);
                 li.Tag = TextBoxName.Text;
                 li.ForeColor = LabelExampleColor.ForeColor;
@@ -442,8 +530,16 @@ namespace GenieClient
 
             m_NameList.Clear();
             bool bResult = m_NameList.Load();
-            PopulateList();
+            try
+            {
+                PopulateList();
+            }
+            catch (NullReferenceException)
+            {
+                // todo
+            }
             UpdateGroupBox();
+
             if (bResult == false)
             {
                 Interaction.MsgBox("Load Failed!", MsgBoxStyle.Critical);

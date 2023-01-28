@@ -56,6 +56,8 @@ namespace GenieClient
             this._ToolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this._ToolStripButtonLoad = new System.Windows.Forms.ToolStripButton();
             this._ToolStripButtonSave = new System.Windows.Forms.ToolStripButton();
+            this._LabelClass = new System.Windows.Forms.Label();
+            this._ComboBoxClass = new System.Windows.Forms.ComboBox();
             this._ContextMenuStripBase.SuspendLayout();
             this._GroupBoxBase.SuspendLayout();
             this._ToolStripMenu.SuspendLayout();
@@ -110,6 +112,8 @@ namespace GenieClient
             // _GroupBoxBase
             // 
             this._GroupBoxBase.AutoSize = true;
+            this._GroupBoxBase.Controls.Add(this._LabelClass);
+            this._GroupBoxBase.Controls.Add(this._ComboBoxClass);
             this._GroupBoxBase.Controls.Add(this._ButtonColorBg);
             this._GroupBoxBase.Controls.Add(this._LabelExampleColor);
             this._GroupBoxBase.Controls.Add(this._ButtonColorFg);
@@ -125,7 +129,7 @@ namespace GenieClient
             this._GroupBoxBase.Name = "_GroupBoxBase";
             this._GroupBoxBase.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._GroupBoxBase.Size = new System.Drawing.Size(814, 126);
-            this._GroupBoxBase.TabIndex = 2;
+            this._GroupBoxBase.TabIndex = 1;
             this._GroupBoxBase.TabStop = false;
             // 
             // _ButtonColorBg
@@ -289,6 +293,26 @@ namespace GenieClient
             this._ToolStripButtonSave.Size = new System.Drawing.Size(51, 22);
             this._ToolStripButtonSave.Text = "Save";
             this._ToolStripButtonSave.Click += new System.EventHandler(this.ToolStripButtonSave_Click);
+            // 
+            // _LabelClass
+            // 
+            this._LabelClass.AutoSize = true;
+            this._LabelClass.Location = new System.Drawing.Point(188, 62);
+            this._LabelClass.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this._LabelClass.Name = "_LabelClass";
+            this._LabelClass.Size = new System.Drawing.Size(34, 15);
+            this._LabelClass.TabIndex = 19;
+            this._LabelClass.Text = "Class";
+            // 
+            // _ComboBoxClass
+            // 
+            this._ComboBoxClass.FormattingEnabled = true;
+            this._ComboBoxClass.Location = new System.Drawing.Point(191, 81);
+            this._ComboBoxClass.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._ComboBoxClass.Name = "_ComboBoxClass";
+            this._ComboBoxClass.Size = new System.Drawing.Size(149, 23);
+            this._ComboBoxClass.TabIndex = 10;
+            this._ComboBoxClass.Text = "(default)";
             // 
             // UCName
             // 
@@ -867,6 +891,54 @@ namespace GenieClient
                 if (_RemoveToolStripMenuItem != null)
                 {
                     _RemoveToolStripMenuItem.Click += RemoveToolStripMenuItem_Click;
+                }
+            }
+        }
+
+        private Label _LabelClass;
+
+        internal Label LabelClass
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _LabelClass;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_LabelClass != null)
+                {
+                }
+
+                _LabelClass = value;
+                if (_LabelClass != null)
+                {
+                }
+            }
+        }
+
+        private ComboBox _ComboBoxClass;
+
+        internal ComboBox ComboBoxClass
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _ComboBoxClass;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_ComboBoxClass != null)
+                {
+                }
+
+                _ComboBoxClass = value;
+                if (_ComboBoxClass != null)
+                {
                 }
             }
         }
