@@ -3491,6 +3491,21 @@ namespace GenieClient
             }
         }
 
+        private void HideForm(Form oForm)
+        {
+            if (oForm is null)
+            {
+                throw new ArgumentNullException("form", "Unable to hide null form.");
+            }
+            else
+            {
+                if (oForm.Visible)
+                {
+                    oForm.Hide();
+                }
+            }
+        }
+
         private void ShowForm(Form oForm)
         {
             if (oForm is null)
@@ -3518,6 +3533,11 @@ namespace GenieClient
             ti.Text = "&1. " + m_oOutputMain.Text;
             ti.Tag = m_oOutputMain;
             ti.Click += WindowMenuItem_Click;
+            if (m_oOutputMain.Visible)
+            {
+                ti.Checked = true;
+            }
+            m_oOutputMain.WindowMenuItem = ti;
             WindowToolStripMenuItem.DropDownItems.Add(ti);
             int I = 2;
             foreach (FormSkin fo in m_oFormList)
@@ -3529,6 +3549,11 @@ namespace GenieClient
                 ti.Text = "&" + I.ToString() + ". " + fo.Text;
                 ti.Tag = fo;
                 ti.Click += WindowMenuItem_Click;
+                if (fo.Visible)
+                {
+                    ti.Checked = true;
+                }
+                fo.WindowMenuItem = ti;
                 WindowToolStripMenuItem.DropDownItems.Add(ti);
                 I += 1;
             }
@@ -3543,7 +3568,15 @@ namespace GenieClient
                 {
                     if (mi.Tag is FormSkin)
                     {
-                        ShowForm((FormSkin)mi.Tag);
+                        FormSkin fo = (FormSkin)mi.Tag;
+                        if (fo.Visible)
+                        {
+                            HideForm(fo);
+                        } else
+                        {
+                            ShowForm(fo);
+                        }
+                        UpdateWindowMenuList();
                     }
                 }
             }
@@ -3563,6 +3596,7 @@ namespace GenieClient
                     }
                 }
             }
+            UpdateWindowMenuList();
         }
 
         private void HideTagOutputForms()
