@@ -487,8 +487,8 @@ namespace GenieClient
         {
             foreach (Match oMatch in Highlight.HighlightRegex.Matches(m_oRichTextBuffer.Text))
             {
-                m_oRichTextBuffer.SelectionStart = oMatch.Groups[1].Index;
-                m_oRichTextBuffer.SelectionLength = oMatch.Groups[1].Length;
+                m_oRichTextBuffer.SelectionStart = oMatch.Groups[0].Index;
+                m_oRichTextBuffer.SelectionLength = oMatch.Groups[0].Length;
                 if (Highlight.FgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
                 {
                     m_oRichTextBuffer.SelectionColor = Highlight.FgColor;
