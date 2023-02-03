@@ -123,27 +123,46 @@ namespace GenieClient.Genie
 
         public void RebuildIndex()
         {
-            var al = new ArrayList();
-            foreach (string s in base.Keys)
-                al.Add(s);
-            al.Sort();
-            string sList = string.Empty;
-            foreach (string s in al)
+            if (AcquireReaderLock())
             {
-                if (sList.Length > 0)
+                try
                 {
-                    sList += "|";
+                    var al = new ArrayList();
+                    foreach (string s in base.Keys)
+                    {
+                        if (((Names.Name)base[s]).IsActive == true)
+                        {
+                                al.Add(s);
+                        }
+                    }
+                    al.Sort();
+                    string sList = string.Empty;
+                    foreach (string s in al)
+                    {
+                        if (sList.Length > 0)
+                        {
+                            sList += "|";
+                        }
+
+                        sList += s;
+                    }
+
+                    if (sList.Length > 0)
+                    {
+                        sList = @"\b(" + sList + @")\b";
+                    }
+
+                    m_oRegexNames = new Regex(sList, MyRegexOptions.options);
                 }
-
-                sList += s;
+                finally
+                {
+                    ReleaseReaderLock();
+                }
             }
-
-            if (sList.Length > 0)
+            else
             {
-                sList = @"\b(" + sList + @")\b";
+                throw new Exception("Unable to aquire writer lock.");
             }
-
-            m_oRegexNames = new Regex(sList, MyRegexOptions.options);
         }
 
         public bool Load(string sFileName = "names.cfg")
@@ -181,7 +200,7 @@ namespace GenieClient.Genie
                 string sClass = string.Empty;
                 if (oArgs.Count > 3)
                 {
-                    sClass = oArgs[3].ToString();
+                    sClass =oArgs[3].ToString();
                 }
 
                 var arg1 = oArgs[1].ToString();

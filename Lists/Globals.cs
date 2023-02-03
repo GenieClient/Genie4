@@ -491,13 +491,17 @@ namespace GenieClient.Genie
 
             public void SetDefaultPresets()
             {
-                Add("automapper.panel", "Black, PaleGoldenrod");
-                Add("automapper.line", "Black, White");
-                Add("automapper.linestump", "Cyan, White");
+                Add("automapper.heredot" , "Magenta");
                 Add("automapper.lineclimb", "Green, White");
                 Add("automapper.linego", "Blue, White");
+                Add("automapper.line", "Black, White");
+                Add("automapper.linestump", "Cyan, White");
+                Add("automapper.linkroom", "Blue");
                 Add("automapper.node", "White, White");
+                Add("automapper.nodeborder", "White, White");
+                Add("automapper.panel", "Black, PaleGoldenrod");
                 Add("automapper.path", "Green, LightGreen");
+                Add("automapper.selected", "Orange");
                 Add("castbar", "Magenta");
                 Add("concentration", "Navy");
                 Add("creatures", "Cyan");
@@ -873,6 +877,9 @@ namespace GenieClient.Genie
                 Add("version", My.MyProject.Application.Info.Version.ToString(), VariableType.Reserved);
                 Add("time", "@time@", VariableType.Reserved);
                 Add("date", "@date@", VariableType.Reserved);
+                Add("time24", "@time24@", VariableType.Reserved);
+                Add("timeyear", "@timeyear@", VariableType.Reserved);
+                Add("date24time", "@date24time@", VariableType.Reserved);
                 Add("datetime", "@datetime@", VariableType.Reserved);
                 Add("unixtime", "@unixtime@", VariableType.Reserved);
                 Add("spelltime", "@spelltime@", VariableType.Reserved);
@@ -909,7 +916,7 @@ namespace GenieClient.Genie
 
             return TriggerList.Add(sTrigger, sAction, bIgnoreCase, bIsEvalTrigger, ClassName);
         }
-        
+
         public class Triggers : Collections.SortedList
         {
             public class Trigger
