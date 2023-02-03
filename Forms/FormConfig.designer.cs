@@ -51,7 +51,7 @@ namespace GenieClient
             this._TabPageString = new System.Windows.Forms.TabPage();
             this._UcHighlightStrings1 = new GenieClient.UCHighlightStrings();
             this._TabPageNames = new System.Windows.Forms.TabPage();
-            this._UcName1 = new GenieClient.UCName();
+            this._UcName1 = new GenieClient.UCNames();
             this._TabPagePreset = new System.Windows.Forms.TabPage();
             this._UcPreset1 = new GenieClient.UCPreset();
             this._TabPageTriggers = new System.Windows.Forms.TabPage();
@@ -287,6 +287,7 @@ namespace GenieClient
             // _UcName1
             // 
             this._UcName1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._UcName1.Globals = null;
             this._UcName1.Location = new System.Drawing.Point(0, 0);
             this._UcName1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this._UcName1.Name = "_UcName1";
@@ -1049,9 +1050,9 @@ namespace GenieClient
             }
         }
 
-        private UCName _UcName1;
+        private UCNames _UcName1;
 
-        internal UCName UcName1
+        internal UCNames UcName1
         {
             [MethodImpl(MethodImplOptions.Synchronized)]
             get
