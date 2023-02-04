@@ -23,7 +23,6 @@ namespace GenieClient.Genie
                 m_oRegexNames = value;
             }
         }
-
         public void ToggleClass(string ClassName, bool Value)
         {
             if (AcquireReaderLock())
@@ -39,10 +38,10 @@ namespace GenieClient.Genie
                     ReleaseReaderLock();
                     foreach (string s in al)
                     {
-                        Name hl = (Name)base[s];
-                        if ((hl.ClassName.ToLower() ?? "") == (ClassName.ToLower() ?? ""))
+                        Name nl = (Name)base[s];
+                        if ((nl.ClassName.ToLower() ?? "") == (ClassName.ToLower() ?? ""))
                         {
-                            hl.IsActive = Value;
+                            nl.IsActive = Value;
                         }
                     }
                 }
@@ -52,7 +51,7 @@ namespace GenieClient.Genie
                 throw new Exception("Unable to aquire reader lock.");
             }
         }
-
+		
         public class Name
         {
             public Color FgColor;
