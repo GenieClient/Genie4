@@ -48,6 +48,7 @@ namespace GenieClient.Genie
         public string sConfigDirProfile = "Config";
         public bool bShowLinks = false;
         public string sLogDir = "Logs";
+        public bool bWebLinkSafety = true;
 
         public bool PromptBreak { get; set; } = true;
         public bool PromptForce { get; set; } = true;
@@ -401,6 +402,7 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine("#config {usertimeout} {" + iUserActivityTimeout + "}");
                 oStreamWriter.WriteLine("#config {usertimeoutcommand} {" + sUserActivityCommand + "}");
                 oStreamWriter.WriteLine("#config {showlinks} {" + bShowLinks + "}");
+                oStreamWriter.WriteLine("#config {weblinksafety} {" + bWebLinkSafety + "}");
                 oStreamWriter.WriteLine($"#config {{rubypath}} {{{RubyPath}}}");
                 oStreamWriter.WriteLine($"#config {{cmdpath}} {{{CmdPath}}}");
                 oStreamWriter.WriteLine($"#config {{lichpath}} {{{LichPath}}}");
@@ -1151,6 +1153,30 @@ namespace GenieClient.Genie
 
                                 break;
                             }
+
+                        case "weblinksafety":
+                            {
+                                var switchExpr13 = sValue.ToLower();
+                                switch (switchExpr13)
+                                {
+                                    case "on":
+                                    case "true":
+                                    case "1":
+                                        {
+                                            bWebLinkSafety = true;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            bWebLinkSafety = false;
+                                            break;
+                                        }
+                                }
+
+                                break;
+                            }
+
                         default:
                             throw new Exception($"Config {switchExpr} was not recognized.");
                     }

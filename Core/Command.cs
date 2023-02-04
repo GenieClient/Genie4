@@ -2891,6 +2891,7 @@ namespace GenieClient.Genie
             EchoText("checkforupdates=" + oGlobals.Config.CheckForUpdates.ToString() + System.Environment.NewLine);
             EchoText("autoupdate=" + oGlobals.Config.AutoUpdate.ToString() + System.Environment.NewLine);
             EchoText("automapperalpha=" + oGlobals.Config.AutoMapperAlpha.ToString() + System.Environment.NewLine);
+            EchoText("weblinksafety=" + oGlobals.Config.bWebLinkSafety.ToString() + System.Environment.NewLine);
         }
 
         private void ListColors()
