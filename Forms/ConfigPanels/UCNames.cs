@@ -1,545 +1,948 @@
 using System;
-using System.Collections;
+using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient
 {
-    public partial class UCName
+    [DesignerGenerated()]
+    public partial class UCName : UserControl
     {
-        public UCName()
-        {
-            InitializeComponent();
-        }
 
-        private Genie.Names m_NameList;
-        private bool m_ItemChanged = false;
-	    private Genie.Globals m_Globals;
-
-        public Genie.Globals Globals
+        // UserControl overrides dispose to clean up the component list.
+        [DebuggerNonUserCode()]
+        protected override void Dispose(bool disposing)
         {
-            get
+            if (disposing && components is object)
             {
-                return m_Globals;
+                components.Dispose();
             }
 
+            base.Dispose(disposing);
+        }
+
+        // Required by the Windows Form Designer
+        private System.ComponentModel.IContainer components;
+
+        // NOTE: The following procedure is required by the Windows Form Designer
+        // It can be modified using the Windows Form Designer.  
+        // Do not modify it using the code editor.
+        [DebuggerStepThrough()]
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCName));
+            this._ListViewBase = new System.Windows.Forms.ListView();
+            this._ContextMenuStripBase = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this._AddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._RemoveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._GroupBoxBase = new System.Windows.Forms.GroupBox();
+            this._ButtonColorBg = new System.Windows.Forms.Button();
+            this._LabelExampleColor = new System.Windows.Forms.Label();
+            this._ButtonColorFg = new System.Windows.Forms.Button();
+            this._LabelColor = new System.Windows.Forms.Label();
+            this._TextBoxName = new System.Windows.Forms.TextBox();
+            this._LabelAlias = new System.Windows.Forms.Label();
+            this._ButtonApply = new System.Windows.Forms.Button();
+            this._TextBoxColor = new System.Windows.Forms.TextBox();
+            this._ColorDialogPicker = new System.Windows.Forms.ColorDialog();
+            this._ToolStripMenu = new System.Windows.Forms.ToolStrip();
+            this._ToolStripButtonRefresh = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this._ToolStripButtonAdd = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripButtonRemove = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this._ToolStripButtonLoad = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripButtonSave = new System.Windows.Forms.ToolStripButton();
+            this._LabelClass = new System.Windows.Forms.Label();
+            this._ComboBoxClass = new System.Windows.Forms.ComboBox();																														  
+            this._ContextMenuStripBase.SuspendLayout();
+            this._GroupBoxBase.SuspendLayout();
+            this._ToolStripMenu.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // _ListViewBase
+            // 
+            this._ListViewBase.BackColor = System.Drawing.Color.Black;
+            this._ListViewBase.ContextMenuStrip = this._ContextMenuStripBase;
+            this._ListViewBase.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._ListViewBase.ForeColor = System.Drawing.Color.White;
+            this._ListViewBase.FullRowSelect = true;
+            this._ListViewBase.Location = new System.Drawing.Point(0, 25);
+            this._ListViewBase.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._ListViewBase.Name = "_ListViewBase";
+            this._ListViewBase.ShowGroups = false;
+            this._ListViewBase.Size = new System.Drawing.Size(814, 364);
+            this._ListViewBase.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this._ListViewBase.TabIndex = 0;
+            this._ListViewBase.UseCompatibleStateImageBehavior = false;
+            this._ListViewBase.View = System.Windows.Forms.View.Details;
+            this._ListViewBase.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.ListViewBase_SortColumnClick);
+            this._ListViewBase.SelectedIndexChanged += new System.EventHandler(this.ListViewBase_SelectedIndexChanged);
+            this._ListViewBase.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ListViewBase_KeyUp);
+            this._ListViewBase.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ListViewBase_MouseUp);
+            // 
+            // _ContextMenuStripBase
+            // 
+            this._ContextMenuStripBase.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._AddToolStripMenuItem,
+            this._RemoveToolStripMenuItem});
+            this._ContextMenuStripBase.Name = "ContextMenuStripBase";
+            this._ContextMenuStripBase.Size = new System.Drawing.Size(118, 48);
+            // 
+            // _AddToolStripMenuItem
+            // 
+            this._AddToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_AddToolStripMenuItem.Image")));
+            this._AddToolStripMenuItem.Name = "_AddToolStripMenuItem";
+            this._AddToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this._AddToolStripMenuItem.Text = "Add";
+            this._AddToolStripMenuItem.Click += new System.EventHandler(this.AddToolStripMenuItem_Click);
+            // 
+            // _RemoveToolStripMenuItem
+            // 
+            this._RemoveToolStripMenuItem.Enabled = false;
+            this._RemoveToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_RemoveToolStripMenuItem.Image")));
+            this._RemoveToolStripMenuItem.Name = "_RemoveToolStripMenuItem";
+            this._RemoveToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this._RemoveToolStripMenuItem.Text = "Remove";
+            this._RemoveToolStripMenuItem.Click += new System.EventHandler(this.RemoveToolStripMenuItem_Click);
+            // 
+            // _GroupBoxBase
+            // 
+            this._GroupBoxBase.AutoSize = true;
+            this._GroupBoxBase.Controls.Add(this._LabelClass);
+            this._GroupBoxBase.Controls.Add(this._ComboBoxClass);															  												 
+            this._GroupBoxBase.Controls.Add(this._ButtonColorBg);
+            this._GroupBoxBase.Controls.Add(this._LabelExampleColor);
+            this._GroupBoxBase.Controls.Add(this._ButtonColorFg);
+            this._GroupBoxBase.Controls.Add(this._LabelColor);
+            this._GroupBoxBase.Controls.Add(this._TextBoxName);
+            this._GroupBoxBase.Controls.Add(this._LabelAlias);
+            this._GroupBoxBase.Controls.Add(this._ButtonApply);
+            this._GroupBoxBase.Controls.Add(this._TextBoxColor);
+            this._GroupBoxBase.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this._GroupBoxBase.Enabled = false;
+            this._GroupBoxBase.Location = new System.Drawing.Point(0, 389);
+            this._GroupBoxBase.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._GroupBoxBase.Name = "_GroupBoxBase";
+            this._GroupBoxBase.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._GroupBoxBase.Size = new System.Drawing.Size(814, 126);
+            this._GroupBoxBase.TabIndex = 2;
+            this._GroupBoxBase.TabStop = false;
+            // 
+            // _ButtonColorBg
+            // 
+            this._ButtonColorBg.Image = ((System.Drawing.Image)(resources.GetObject("_ButtonColorBg.Image")));
+            this._ButtonColorBg.Location = new System.Drawing.Point(491, 36);
+            this._ButtonColorBg.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._ButtonColorBg.Name = "_ButtonColorBg";
+            this._ButtonColorBg.Size = new System.Drawing.Size(27, 27);
+            this._ButtonColorBg.TabIndex = 12;
+            this._ButtonColorBg.UseVisualStyleBackColor = true;
+            this._ButtonColorBg.Click += new System.EventHandler(this.ButtonColorBg_Click);
+            // 
+            // _LabelExampleColor
+            // 
+            this._LabelExampleColor.BackColor = System.Drawing.Color.Black;
+            this._LabelExampleColor.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this._LabelExampleColor.ForeColor = System.Drawing.Color.Black;
+            this._LabelExampleColor.Location = new System.Drawing.Point(376, 37);
+            this._LabelExampleColor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this._LabelExampleColor.Name = "_LabelExampleColor";
+            this._LabelExampleColor.Size = new System.Drawing.Size(75, 23);
+            this._LabelExampleColor.TabIndex = 11;
+            this._LabelExampleColor.Text = "Color";
+            this._LabelExampleColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // _ButtonColorFg
+            // 
+            this._ButtonColorFg.Image = ((System.Drawing.Image)(resources.GetObject("_ButtonColorFg.Image")));
+            this._ButtonColorFg.Location = new System.Drawing.Point(457, 36);
+            this._ButtonColorFg.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._ButtonColorFg.Name = "_ButtonColorFg";
+            this._ButtonColorFg.Size = new System.Drawing.Size(27, 27);
+            this._ButtonColorFg.TabIndex = 3;
+            this._ButtonColorFg.UseVisualStyleBackColor = true;
+            this._ButtonColorFg.Click += new System.EventHandler(this.ButtonColorFg_Click);
+            // 
+            // _LabelColor
+            // 
+            this._LabelColor.AutoSize = true;
+            this._LabelColor.Location = new System.Drawing.Point(188, 18);
+            this._LabelColor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this._LabelColor.Name = "_LabelColor";
+            this._LabelColor.Size = new System.Drawing.Size(36, 15);
+            this._LabelColor.TabIndex = 10;
+            this._LabelColor.Text = "Color";
+            // 
+            // _TextBoxName
+            // 
+            this._TextBoxName.Location = new System.Drawing.Point(7, 37);
+            this._TextBoxName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._TextBoxName.Name = "_TextBoxName";
+            this._TextBoxName.Size = new System.Drawing.Size(177, 23);
+            this._TextBoxName.TabIndex = 0;
+            this._TextBoxName.TextChanged += new System.EventHandler(this.TextBox_TextChanged);
+            // 
+            // _LabelAlias
+            // 
+            this._LabelAlias.AutoSize = true;
+            this._LabelAlias.Location = new System.Drawing.Point(4, 18);
+            this._LabelAlias.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this._LabelAlias.Name = "_LabelAlias";
+            this._LabelAlias.Size = new System.Drawing.Size(39, 15);
+            this._LabelAlias.TabIndex = 8;
+            this._LabelAlias.Text = "Name";
+            // 
+            // _ButtonApply
+            // 
+            this._ButtonApply.Location = new System.Drawing.Point(7, 77);
+            this._ButtonApply.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._ButtonApply.Name = "_ButtonApply";
+            this._ButtonApply.Size = new System.Drawing.Size(88, 27);
+            this._ButtonApply.TabIndex = 2;
+            this._ButtonApply.Text = "Apply";
+            this._ButtonApply.UseVisualStyleBackColor = true;
+            this._ButtonApply.Click += new System.EventHandler(this.ButtonApply_Click);
+            // 
+            // _TextBoxColor
+            // 
+            this._TextBoxColor.Location = new System.Drawing.Point(191, 37);
+            this._TextBoxColor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._TextBoxColor.Name = "_TextBoxColor";
+            this._TextBoxColor.Size = new System.Drawing.Size(177, 23);
+            this._TextBoxColor.TabIndex = 1;
+            this._TextBoxColor.TextChanged += new System.EventHandler(this.TextBox_TextChanged);
+            this._TextBoxColor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxColor_KeyDown);
+            this._TextBoxColor.Leave += new System.EventHandler(this.TextBoxColor_Leave);
+            // 
+            // _ColorDialogPicker
+            // 
+            this._ColorDialogPicker.FullOpen = true;
+            // 
+            // _ToolStripMenu
+            // 
+            this._ToolStripMenu.AllowMerge = false;
+            this._ToolStripMenu.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this._ToolStripMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._ToolStripButtonRefresh,
+            this._ToolStripSeparator2,
+            this._ToolStripButtonAdd,
+            this._ToolStripButtonRemove,
+            this._ToolStripSeparator1,
+            this._ToolStripButtonLoad,
+            this._ToolStripButtonSave});
+            this._ToolStripMenu.Location = new System.Drawing.Point(0, 0);
+            this._ToolStripMenu.Name = "_ToolStripMenu";
+            this._ToolStripMenu.Size = new System.Drawing.Size(814, 25);
+            this._ToolStripMenu.TabIndex = 6;
+            // 
+            // _ToolStripButtonRefresh
+            // 
+            this._ToolStripButtonRefresh.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonRefresh.Image")));
+            this._ToolStripButtonRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonRefresh.Name = "_ToolStripButtonRefresh";
+            this._ToolStripButtonRefresh.Size = new System.Drawing.Size(66, 22);
+            this._ToolStripButtonRefresh.Text = "Refresh";
+            this._ToolStripButtonRefresh.Click += new System.EventHandler(this.ToolStripButtonRefresh_Click);																								 
+            // 
+            // _ToolStripSeparator2
+            // 
+            this._ToolStripSeparator2.Name = "_ToolStripSeparator2";
+            this._ToolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // _ToolStripButtonAdd
+            // 
+            this._ToolStripButtonAdd.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonAdd.Image")));
+            this._ToolStripButtonAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonAdd.Name = "_ToolStripButtonAdd";
+            this._ToolStripButtonAdd.Size = new System.Drawing.Size(49, 22);
+            this._ToolStripButtonAdd.Text = "Add";
+            this._ToolStripButtonAdd.Click += new System.EventHandler(this.ToolStripButtonAdd_Click);
+            // 
+            // _ToolStripButtonRemove
+            // 
+            this._ToolStripButtonRemove.Enabled = false;
+            this._ToolStripButtonRemove.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonRemove.Image")));
+            this._ToolStripButtonRemove.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonRemove.Name = "_ToolStripButtonRemove";
+            this._ToolStripButtonRemove.Size = new System.Drawing.Size(70, 22);
+            this._ToolStripButtonRemove.Text = "Remove";
+            this._ToolStripButtonRemove.Click += new System.EventHandler(this.ToolStripButtonRemove_Click);
+            // 
+            // _ToolStripSeparator1
+            // 
+            this._ToolStripSeparator1.Name = "_ToolStripSeparator1";
+            this._ToolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // _ToolStripButtonLoad
+            // 
+            this._ToolStripButtonLoad.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonLoad.Image")));
+            this._ToolStripButtonLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonLoad.Name = "_ToolStripButtonLoad";
+            this._ToolStripButtonLoad.Size = new System.Drawing.Size(53, 22);
+            this._ToolStripButtonLoad.Text = "Load";
+            this._ToolStripButtonLoad.Click += new System.EventHandler(this.ToolStripButtonLoad_Click);
+            // 
+            // _ToolStripButtonSave
+            // 
+            this._ToolStripButtonSave.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonSave.Image")));
+            this._ToolStripButtonSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonSave.Name = "_ToolStripButtonSave";
+            this._ToolStripButtonSave.Size = new System.Drawing.Size(51, 22);
+            this._ToolStripButtonSave.Text = "Save";
+            this._ToolStripButtonSave.Click += new System.EventHandler(this.ToolStripButtonSave_Click);
+            // 
+            // _LabelClass
+            // 
+            this._LabelClass.AutoSize = true;
+            this._LabelClass.Location = new System.Drawing.Point(188, 62);
+            this._LabelClass.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this._LabelClass.Name = "_LabelClass";
+            this._LabelClass.Size = new System.Drawing.Size(34, 15);
+            this._LabelClass.TabIndex = 19;
+            this._LabelClass.Text = "Class";
+            // 
+            // _ComboBoxClass
+            // 
+            this._ComboBoxClass.FormattingEnabled = true;
+            this._ComboBoxClass.Location = new System.Drawing.Point(191, 81);
+            this._ComboBoxClass.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._ComboBoxClass.Name = "_ComboBoxClass";
+            this._ComboBoxClass.Size = new System.Drawing.Size(149, 23);
+            this._ComboBoxClass.TabIndex = 10;
+            this._ComboBoxClass.Text = "(default)";			
+            // 
+            // UCName
+            //
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this._ListViewBase);
+            this.Controls.Add(this._GroupBoxBase);
+            this.Controls.Add(this._ToolStripMenu);
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.Name = "UCName";
+            this.Size = new System.Drawing.Size(814, 515);
+            this.Load += new System.EventHandler(this.UCWindows_Load);
+            this._ContextMenuStripBase.ResumeLayout(false);
+            this._GroupBoxBase.ResumeLayout(false);
+            this._GroupBoxBase.PerformLayout();
+            this._ToolStripMenu.ResumeLayout(false);
+            this._ToolStripMenu.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        private ListView _ListViewBase;
+
+        internal ListView ListViewBase
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _ListViewBase;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
             set
             {
-                m_Globals = value;
+                if (_ListViewBase != null)
+                {
+                    _ListViewBase.KeyUp -= ListViewBase_KeyUp;
+                    _ListViewBase.MouseUp -= ListViewBase_MouseUp;
+                    _ListViewBase.SelectedIndexChanged -= ListViewBase_SelectedIndexChanged;
+                }
+
+                _ListViewBase = value;
+                if (_ListViewBase != null)
+                {
+                    _ListViewBase.KeyUp += ListViewBase_KeyUp;
+                    _ListViewBase.MouseUp += ListViewBase_MouseUp;
+                    _ListViewBase.SelectedIndexChanged += ListViewBase_SelectedIndexChanged;
+                }
             }
         }
 
-        public Genie.Names NameList
+        private GroupBox _GroupBoxBase;
+
+        internal GroupBox GroupBoxBase
         {
+            [MethodImpl(MethodImplOptions.Synchronized)]
             get
             {
-                return m_NameList;
+                return _GroupBoxBase;
             }
 
+            [MethodImpl(MethodImplOptions.Synchronized)]
             set
             {
-                m_NameList = value;
+                if (_GroupBoxBase != null)
+                {
+                }
+
+                _GroupBoxBase = value;
+                if (_GroupBoxBase != null)
+                {
+                }
             }
         }
 
-        public bool ItemChanged
+        private Label _LabelColor;
+
+        internal Label LabelColor
         {
+            [MethodImpl(MethodImplOptions.Synchronized)]
             get
             {
-                return m_ItemChanged;
+                return _LabelColor;
             }
-        }
 
-        private void ButtonColorFg_Click(object sender, EventArgs e)
-        {
-            ColorDialogPicker.Color = LabelExampleColor.ForeColor;
-            if (ColorDialogPicker.ShowDialog(this) == DialogResult.OK)
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
             {
-                LabelExampleColor.ForeColor = ColorDialogPicker.Color;
-                if (LabelExampleColor.BackColor != Color.Black)
+                if (_LabelColor != null)
                 {
-                    TextBoxColor.Text = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor) + ", " + Genie.ColorCode.ColorToString(LabelExampleColor.BackColor);
                 }
-                else
+
+                _LabelColor = value;
+                if (_LabelColor != null)
                 {
-                    TextBoxColor.Text = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor);
                 }
             }
         }
 
-        private void ButtonColorBg_Click(object sender, EventArgs e)
-        {
-            ColorDialogPicker.Color = LabelExampleColor.BackColor;
-            if (ColorDialogPicker.ShowDialog(this) == DialogResult.OK)
-            {
-                LabelExampleColor.BackColor = ColorDialogPicker.Color;
-                TextBoxColor.Text = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor) + ", " + Genie.ColorCode.ColorToString(LabelExampleColor.BackColor);
-            }
-            else
-            {
-                LabelExampleColor.BackColor = Color.Black;
-                TextBoxColor.Text = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor);
-            }
-        }
+        private TextBox _TextBoxName;
 
-        private void TextBoxColor_KeyDown(object sender, KeyEventArgs e)
+        internal TextBox TextBoxName
         {
-            if (e.KeyCode == Keys.Enter)
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
             {
-                UpdateTextBoxColor();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
+                return _TextBoxName;
             }
-            else if (e.KeyCode == Keys.Escape)
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
             {
-                if (!Information.IsNothing(TextBoxColor.Tag))
+                if (_TextBoxName != null)
                 {
-                    TextBoxColor.Text = Conversions.ToString(TextBoxColor.Tag);
-                    UpdateTextBoxColor();
+                    _TextBoxName.TextChanged -= TextBox_TextChanged;
                 }
 
-                e.Handled = true;
-                e.SuppressKeyPress = true;
-            }
-        }
-
-        private void UpdateTextBoxColor()
-        {
-            if (TextBoxColor.Text.Trim().Length > 0)
-            {
-                if (TextBoxColor.Text.Contains(",") == true && TextBoxColor.Text.EndsWith(",") == false)
+                _TextBoxName = value;
+                if (_TextBoxName != null)
                 {
-                    string sColor = TextBoxColor.Text.Substring(0, TextBoxColor.Text.IndexOf(",")).Trim();
-                    string sBgColor = TextBoxColor.Text.Substring(TextBoxColor.Text.IndexOf(",") + 1).Trim();
-                    LabelExampleColor.ForeColor = Genie.ColorCode.StringToColor(sColor);
-                    LabelExampleColor.BackColor = Genie.ColorCode.StringToColor(sBgColor);
-                    string sText = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor) + ", " + Genie.ColorCode.ColorToString(LabelExampleColor.BackColor);
-                    if (sText.Contains("ControlText"))
-                    {
-                        sText = "";
-                    }
-
-                    TextBoxColor.Text = sText;
-                }
-                else
-                {
-                    LabelExampleColor.ForeColor = Genie.ColorCode.StringToColor(TextBoxColor.Text);
-                    LabelExampleColor.BackColor = Color.Black;
-                    string sText = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor);
-                    if (sText.Contains("ControlText"))
-                    {
-                        sText = "";
-                    }
-
-                    TextBoxColor.Text = sText;
-                }
-
-                if (TextBoxColor.Text.Trim().Length > 0)
-                {
-                    TextBoxColor.Tag = TextBoxColor.Text; // Save it
-                }
-
-                TextBoxColor.SelectionStart = int.MaxValue;
-            }
-        }
-
-        private void UCWindows_Load(object sender, EventArgs e)
-        {
-            PopulateList();
-        }
-
-        private void PopulateList()
-        {
-            if (!Information.IsNothing(m_NameList))
-            {
-                ResetList();
-                foreach (DictionaryEntry de in m_NameList)
-                {
-                    var li = ListViewBase.Items.Add(de.Key.ToString());
-                    li.Tag = de.Key.ToString();
-                    Genie.Names.Name oName = (Genie.Names.Name)de.Value;
-                    li.SubItems.Add(oName.ColorName);
-                    li.ForeColor = oName.FgColor;
-                    // MsgBox(li.BackColor.ToString)
-                    if (oName.BgColor != Color.Transparent)
-                    {
-                        li.BackColor = oName.BgColor;
-                    }
-                    li.SubItems.Add(oName.ClassName);
-                }
-            }
-            PopulateClasses();
-        }
-
-        private void PopulateClasses()
-        {
-            ComboBoxClass.Items.Clear();
-            ComboBoxClass.Items.Add("(default)");
-            foreach (DictionaryEntry nl in m_NameList)
-                AddClass(((Genie.Names.Name)nl.Value).ClassName);
-            foreach (DictionaryEntry de in Globals.ClassList)
-                AddClass(Conversions.ToString(de.Key));
-        }
-
-        private void AddClass(string ClassName)
-        {
-            if ((ClassName ?? "") == "default")
-                return;
-            if (ClassName.Length > 0)
-            {
-                if (ComboBoxClass.Items.Contains(ClassName.ToLower()) == false)
-                {
-                    ComboBoxClass.Items.Add(ClassName.ToLower());
-                }
-            }
-        }
-        private void ResetList()
-        {
-            ListViewBase.Clear();
-            ListViewBase.Columns.Add("Name", 200, HorizontalAlignment.Left);
-            ListViewBase.Columns.Add("Color", 400, HorizontalAlignment.Left);
-            ListViewBase.Columns.Add("Class", 100, HorizontalAlignment.Left);
-        }
-
-        private void ListViewBase_SortColumnClick(object sender, ColumnClickEventArgs e)
-        {
-            _ListViewBase.Sorting = System.Windows.Forms.SortOrder.None;
-
-            if (ListViewBase.Tag == null || (int)ListViewBase.Tag > 0)
-            {
-                ListViewItem[] tmp = ListViewBase.Items.Cast<ListViewItem>().OrderBy(t => t.SubItems[e.Column].Text).ToArray();
-                ListViewBase.Items.Clear();
-                ListViewBase.Items.AddRange(tmp);
-
-                ListViewBase.Tag = -1;
-            }
-            else
-            {
-                ListViewItem[] tmp = ListViewBase.Items.Cast<ListViewItem>().OrderByDescending(t => t.SubItems[e.Column].Text).ToArray();
-                ListViewBase.Items.Clear();
-                ListViewBase.Items.AddRange(tmp);
-
-                ListViewBase.Tag = +1;
-            }
-        }
-
-        private void ToolStripButtonRefresh_Click(object sender, EventArgs e)
-        {
-            PopulateList();
-            UpdateGroupBox();
-        }
-
-        private bool m_bSelectedChanged = false;
-
-        private void ListViewBase_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (m_bSelectedChanged == false)
-            {
-                return;
-            }
-
-            UpdateGroupBox();
-            m_bSelectedChanged = false;
-        }
-
-        private void ListViewBase_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (m_bSelectedChanged == false)
-            {
-                return;
-            }
-
-            UpdateGroupBox();
-            m_bSelectedChanged = false;
-        }
-
-        private void ListViewBase_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            m_bSelectedChanged = true;
-        }
-
-        private void CheckApplyChanges()
-        {
-            if (m_ItemChanged == true)
-            {
-                if (ListViewBase.SelectedItems.Count < 2)
-                {
-                    if (Interaction.MsgBox("Current item has been changed. Apply changes?", MsgBoxStyle.YesNo) == MsgBoxResult.Yes)
-                    {
-                        ApplyChanges();
-                    }
+                    _TextBoxName.TextChanged += TextBox_TextChanged;
                 }
             }
         }
 
-        private void UpdateGroupBox()
+        private Label _LabelAlias;
+
+        internal Label LabelAlias
         {
-            CheckApplyChanges();
-            if (ListViewBase.SelectedItems.Count == 1)
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
             {
-                TextBoxName.Enabled = true;
-                TextBoxName.Text = ListViewBase.SelectedItems[0].Text;
-                TextBoxColor.Enabled = true;
-                TextBoxColor.Text = ListViewBase.SelectedItems[0].SubItems[1].Text;
-                TextBoxColor.Tag = ListViewBase.SelectedItems[0].SubItems[1].Text;
-                GroupBoxBase.Enabled = true;
-                GroupBoxBase.Tag = new ArrayList(ListViewBase.SelectedItems);
-                LabelExampleColor.ForeColor = ListViewBase.SelectedItems[0].ForeColor;
-                LabelExampleColor.BackColor = ListViewBase.SelectedItems[0].BackColor;
-                ToolStripButtonRemove.Enabled = true;
-                RemoveToolStripMenuItem.Enabled = true;
-                if (ListViewBase.SelectedItems[0].SubItems[2].Text.Length > 0)
+                return _LabelAlias;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_LabelAlias != null)
                 {
-                    ComboBoxClass.Text = ListViewBase.SelectedItems[0].SubItems[2].Text;
-                }
-                else
-                {
-                    ComboBoxClass.Text = "(default)";
-                }
-            }
-            else if (ListViewBase.SelectedItems.Count > 1) // Can only edit properties that are same for all
-            {
-                TextBoxName.Enabled = false;
-                TextBoxName.Text = "";
-                TextBoxColor.Enabled = true;
-                GroupBoxBase.Enabled = true;
-                GroupBoxBase.Tag = new ArrayList(ListViewBase.SelectedItems);
-                ToolStripButtonRemove.Enabled = true;
-                RemoveToolStripMenuItem.Enabled = true;
-            }
-            else
-            {
-                ListWasUnselected();
-            }
-
-            m_ItemChanged = false; // Since textchanged event will fire when we change text
-        }
-
-        private void ListWasUnselected()
-        {
-            TextBoxName.Text = "";
-            TextBoxColor.Text = "";
-            LabelExampleColor.ForeColor = Color.Black;
-            LabelExampleColor.BackColor = Color.Black;
-            GroupBoxBase.Enabled = false;
-            GroupBoxBase.Tag = null;
-            ToolStripButtonRemove.Enabled = false;
-            RemoveToolStripMenuItem.Enabled = false;
-        }
-
-        private void TextBoxColor_Leave(object sender, EventArgs e)
-        {
-            UpdateTextBoxColor();
-        }
-
-        private void TextBox_TextChanged(object sender, EventArgs e)
-        {
-            m_ItemChanged = true;
-        }
-
-        public bool ApplyChanges()
-        {
-            if (Information.IsNothing(m_NameList))
-            {
-                return false;
-            }
-
-            if (TextBoxName.Enabled == true & TextBoxName.Text.Length == 0)
-            {
-                Interaction.MsgBox("Name box can not be empty!", MsgBoxStyle.Critical);
-                TextBoxName.Focus();
-                return false;
-            }
-
-            if (TextBoxColor.Text.Length == 0)
-            {
-                Interaction.MsgBox("Color box can not be empty!", MsgBoxStyle.Critical);
-                TextBoxColor.Focus();
-                return false;
-            }
-
-            if (!Information.IsNothing(GroupBoxBase.Tag))
-            {
-                foreach (ListViewItem li in (ArrayList)GroupBoxBase.Tag)
-                {
-                    if (TextBoxName.Enabled == true) // Single edit
-                    {
-                        li.Text = TextBoxName.Text;
-                        string argsKey = Conversions.ToString(li.Tag);
-                        m_NameList.Remove(argsKey); // Remove old
-                    }
-                    else
-                    {
-                    } // Multi edit
-
-                    if (TextBoxColor.Enabled == true)
-                    {
-                        li.SubItems[1].Text = TextBoxColor.Text;
-                        li.ForeColor = LabelExampleColor.ForeColor;
-                        li.BackColor = LabelExampleColor.BackColor;
-                    }
-                    string sClass = string.Empty;
-                    bool bIsActive = Globals.ClassList.GetValue(li.SubItems[2].Text);
-                    if ((ComboBoxClass.Text ?? "") == "(default)")
-                    {
-                        sClass = "";
-                    }
-                    else
-                    {
-                        sClass = ComboBoxClass.Text;
-                    }
-                    li.SubItems[2].Text = sClass;
-                    string argsKey1 = li.Text;
-                    m_NameList.Add(argsKey1, TextBoxColor.Text, sClass, bIsActive);
-                    li.Tag = li.Text;
-                }
-            }
-            else // New
-            {
-                if (IsDuplicateName(TextBoxName.Text))
-                {
-                    Interaction.MsgBox("Name already exist!", MsgBoxStyle.Critical);
-                    TextBoxName.Focus();
-                    return false;
                 }
 
-                string sClass = string.Empty;
-                if ((ComboBoxClass.Text ?? "") == "(default)")
+                _LabelAlias = value;
+                if (_LabelAlias != null)
                 {
-                    sClass = ComboBoxClass.Text;
-                }
-                bool bIsActive = Globals.ClassList.GetValue(sClass);
-                string argsKey2 = TextBoxName.Text;
-                string argsColorName3 = TextBoxColor.Text;
-                m_NameList.Add(argsKey2, argsColorName3, sClass, bIsActive);
-                var li = ListViewBase.Items.Add(TextBoxName.Text);
-
-                if ((ComboBoxClass.Text ?? "") == "(default)")
-                {
-                    li.SubItems.Add("");
-                }
-                else
-                {
-                    li.SubItems.Add(ComboBoxClass.Text);
-                }
-                li.SubItems.Add(TextBoxColor.Text);
-                li.Tag = TextBoxName.Text;
-                li.ForeColor = LabelExampleColor.ForeColor;
-                li.BackColor = LabelExampleColor.BackColor;
-                li.Selected = true;
-                ToolStripButtonRemove.Enabled = true;
-                RemoveToolStripMenuItem.Enabled = true;
-                GroupBoxBase.Tag = new ArrayList(ListViewBase.SelectedItems);
-            }
-
-            m_NameList.RebuildIndex();
-            return true;
-        }
-
-        private bool IsDuplicateName(string sKey)
-        {
-            foreach (ListViewItem li in ListViewBase.Items)
-            {
-                if (li.Selected == false)
-                {
-                    if (!Information.IsNothing(li.Tag) && (Conversions.ToString(li.Tag) ?? "") == (sKey ?? ""))
-                    {
-                        return true;
-                    }
                 }
             }
-
-            return false;
         }
 
-        private void ButtonApply_Click(object sender, EventArgs e)
+        private Button _ButtonApply;
+
+        internal Button ButtonApply
         {
-            if (ApplyChanges() == true)
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
             {
-                m_ItemChanged = false;
+                return _ButtonApply;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_ButtonApply != null)
+                {
+                    _ButtonApply.Click -= ButtonApply_Click;
+                }
+
+                _ButtonApply = value;
+                if (_ButtonApply != null)
+                {
+                    _ButtonApply.Click += ButtonApply_Click;
+                }
             }
         }
 
-        private void ToolStripButtonAdd_Click(object sender, EventArgs e)
-        {
-            CheckApplyChanges();
-            ListViewBase.SelectedItems.Clear();
-            GroupBoxBase.Enabled = true;
-            GroupBoxBase.Tag = null;
-            TextBoxName.Text = "";
-            TextBoxName.Enabled = true;
-            TextBoxColor.Text = "";
-            TextBoxColor.Enabled = true;
-            TextBoxName.Focus();
-        }
+        private TextBox _TextBoxColor;
 
-        private void AddToolStripMenuItem_Click(object sender, EventArgs e)
+        internal TextBox TextBoxColor
         {
-            ToolStripButtonAdd_Click(sender, e);
-        }
-
-        private void ToolStripButtonRemove_Click(object sender, EventArgs e)
-        {
-            CheckApplyChanges();
-            if (Information.IsNothing(m_NameList))
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
             {
-                return;
+                return _TextBoxColor;
             }
 
-            foreach (ListViewItem li in ListViewBase.SelectedItems)
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
             {
-                string argsKey = li.Text;
-                m_NameList.Remove(argsKey);
-                li.Remove();
-            }
+                if (_TextBoxColor != null)
+                {
+                    _TextBoxColor.KeyDown -= TextBoxColor_KeyDown;
+                    _TextBoxColor.Leave -= TextBoxColor_Leave;
+                    _TextBoxColor.TextChanged -= TextBox_TextChanged;
+                }
 
-            ListViewBase.SelectedItems.Clear();
-            ListWasUnselected();
-            m_ItemChanged = false;
-        }
-
-        private void RemoveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ToolStripButtonRemove_Click(sender, e);
-        }
-
-        private void ToolStripButtonLoad_Click(object sender, EventArgs e)
-        {
-            if (Information.IsNothing(m_NameList))
-            {
-                return;
-            }
-
-            m_NameList.Clear();
-            bool bResult = m_NameList.Load();
-            PopulateList();
-            UpdateGroupBox();
-            if (bResult == false)
-            {
-                Interaction.MsgBox("Load Failed!", MsgBoxStyle.Critical);
+                _TextBoxColor = value;
+                if (_TextBoxColor != null)
+                {
+                    _TextBoxColor.KeyDown += TextBoxColor_KeyDown;
+                    _TextBoxColor.Leave += TextBoxColor_Leave;
+                    _TextBoxColor.TextChanged += TextBox_TextChanged;
+                }
             }
         }
 
-        private void ToolStripButtonSave_Click(object sender, EventArgs e)
+        private ColorDialog _ColorDialogPicker;
+
+        internal ColorDialog ColorDialogPicker
         {
-            if (Information.IsNothing(m_NameList))
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
             {
-                return;
+                return _ColorDialogPicker;
             }
 
-            bool bResult = SaveToFile();
-            if (bResult == false)
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
             {
-                Interaction.MsgBox("Saved Failed!", MsgBoxStyle.Information);
+                if (_ColorDialogPicker != null)
+                {
+                }
+
+                _ColorDialogPicker = value;
+                if (_ColorDialogPicker != null)
+                {
+                }
             }
         }
 
-        public bool SaveToFile()
+        private Button _ButtonColorFg;
+
+        internal Button ButtonColorFg
         {
-            return m_NameList.Save();
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _ButtonColorFg;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_ButtonColorFg != null)
+                {
+                    _ButtonColorFg.Click -= ButtonColorFg_Click;
+                }
+
+                _ButtonColorFg = value;
+                if (_ButtonColorFg != null)
+                {
+                    _ButtonColorFg.Click += ButtonColorFg_Click;
+                }
+            }
         }
+
+        private Label _LabelExampleColor;
+
+        internal Label LabelExampleColor
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _LabelExampleColor;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_LabelExampleColor != null)
+                {
+                }
+
+                _LabelExampleColor = value;
+                if (_LabelExampleColor != null)
+                {
+                }
+            }
+        }
+
+        private Button _ButtonColorBg;
+
+        internal Button ButtonColorBg
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _ButtonColorBg;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_ButtonColorBg != null)
+                {
+                    _ButtonColorBg.Click -= ButtonColorBg_Click;
+                }
+
+                _ButtonColorBg = value;
+                if (_ButtonColorBg != null)
+                {
+                    _ButtonColorBg.Click += ButtonColorBg_Click;
+                }
+            }
+        }
+
+        private ToolStrip _ToolStripMenu;
+
+        internal ToolStrip ToolStripMenu
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _ToolStripMenu;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_ToolStripMenu != null)
+                {
+                }
+
+                _ToolStripMenu = value;
+                if (_ToolStripMenu != null)
+                {
+                }
+            }
+        }
+
+        private ToolStripButton _ToolStripButtonRefresh;
+
+        internal ToolStripButton ToolStripButtonRefresh
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _ToolStripButtonRefresh;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_ToolStripButtonRefresh != null)
+                {
+                    _ToolStripButtonRefresh.Click -= ToolStripButtonRefresh_Click;																				  
+                }
+
+                _ToolStripButtonRefresh = value;
+                if (_ToolStripButtonRefresh != null)
+                {
+                    _ToolStripButtonRefresh.Click += ToolStripButtonRefresh_Click;																				  
+                }
+            }
+        }
+
+        private ToolStripSeparator _ToolStripSeparator2;
+
+        internal ToolStripSeparator ToolStripSeparator2
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _ToolStripSeparator2;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_ToolStripSeparator2 != null)
+                {
+                }
+
+                _ToolStripSeparator2 = value;
+                if (_ToolStripSeparator2 != null)
+                {
+                }
+            }
+        }
+
+        private ToolStripButton _ToolStripButtonAdd;
+
+        internal ToolStripButton ToolStripButtonAdd
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _ToolStripButtonAdd;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_ToolStripButtonAdd != null)
+                {
+                    _ToolStripButtonAdd.Click -= ToolStripButtonAdd_Click;
+                }
+
+                _ToolStripButtonAdd = value;
+                if (_ToolStripButtonAdd != null)
+                {
+                    _ToolStripButtonAdd.Click += ToolStripButtonAdd_Click;
+                }
+            }
+        }
+
+        private ToolStripButton _ToolStripButtonRemove;
+
+        internal ToolStripButton ToolStripButtonRemove
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _ToolStripButtonRemove;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_ToolStripButtonRemove != null)
+                {
+                    _ToolStripButtonRemove.Click -= ToolStripButtonRemove_Click;
+                }
+
+                _ToolStripButtonRemove = value;
+                if (_ToolStripButtonRemove != null)
+                {
+                    _ToolStripButtonRemove.Click += ToolStripButtonRemove_Click;
+                }
+            }
+        }
+
+        private ToolStripSeparator _ToolStripSeparator1;
+
+        internal ToolStripSeparator ToolStripSeparator1
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _ToolStripSeparator1;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_ToolStripSeparator1 != null)
+                {
+                }
+
+                _ToolStripSeparator1 = value;
+                if (_ToolStripSeparator1 != null)
+                {
+                }
+            }
+        }
+
+        private ToolStripButton _ToolStripButtonLoad;
+
+        internal ToolStripButton ToolStripButtonLoad
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _ToolStripButtonLoad;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_ToolStripButtonLoad != null)
+                {
+                    _ToolStripButtonLoad.Click -= ToolStripButtonLoad_Click;
+                }
+
+                _ToolStripButtonLoad = value;
+                if (_ToolStripButtonLoad != null)
+                {
+                    _ToolStripButtonLoad.Click += ToolStripButtonLoad_Click;
+                }
+            }
+        }
+
+        private ToolStripButton _ToolStripButtonSave;
+
+        internal ToolStripButton ToolStripButtonSave
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _ToolStripButtonSave;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_ToolStripButtonSave != null)
+                {
+                    _ToolStripButtonSave.Click -= ToolStripButtonSave_Click;
+                }
+
+                _ToolStripButtonSave = value;
+                if (_ToolStripButtonSave != null)
+                {
+                    _ToolStripButtonSave.Click += ToolStripButtonSave_Click;
+                }
+            }
+        }
+
+        private ContextMenuStrip _ContextMenuStripBase;
+
+        internal ContextMenuStrip ContextMenuStripBase
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _ContextMenuStripBase;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_ContextMenuStripBase != null)
+                {
+                }
+
+                _ContextMenuStripBase = value;
+                if (_ContextMenuStripBase != null)
+                {
+                }
+            }
+        }
+
+        private ToolStripMenuItem _AddToolStripMenuItem;
+
+        internal ToolStripMenuItem AddToolStripMenuItem
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _AddToolStripMenuItem;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_AddToolStripMenuItem != null)
+                {
+                    _AddToolStripMenuItem.Click -= AddToolStripMenuItem_Click;
+                }
+
+                _AddToolStripMenuItem = value;
+                if (_AddToolStripMenuItem != null)
+                {
+                    _AddToolStripMenuItem.Click += AddToolStripMenuItem_Click;
+                }
+            }
+        }
+
+        private ToolStripMenuItem _RemoveToolStripMenuItem;
+
+        internal ToolStripMenuItem RemoveToolStripMenuItem
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _RemoveToolStripMenuItem;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_RemoveToolStripMenuItem != null)
+                {
+                    _RemoveToolStripMenuItem.Click -= RemoveToolStripMenuItem_Click;
+                }
+
+                _RemoveToolStripMenuItem = value;
+                if (_RemoveToolStripMenuItem != null)
+                {
+                    _RemoveToolStripMenuItem.Click += RemoveToolStripMenuItem_Click;
+                }
+            }
+        }
+        private Label _LabelClass;
+
+        internal Label LabelClass
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _LabelClass;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_LabelClass != null)
+                {
+                }
+
+                _LabelClass = value;
+                if (_LabelClass != null)
+                {
+                }
+            }
+        }
+
+        private ComboBox _ComboBoxClass;
+
+        internal ComboBox ComboBoxClass
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            get
+            {
+                return _ComboBoxClass;
+            }
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            set
+            {
+                if (_ComboBoxClass != null)
+                {
+                }
+
+                _ComboBoxClass = value;
+                if (_ComboBoxClass != null)
+                {
+                }
+            }
+        }		
     }
 }
