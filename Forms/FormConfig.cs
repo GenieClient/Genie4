@@ -139,7 +139,7 @@ namespace GenieClient
                 UcVariables1.VariableList = oFormMain.m_oGlobals.VariableList;
                 UcPreset1.PresetList = oFormMain.m_oGlobals.PresetList;
                 UcName1.NameList = oFormMain.m_oGlobals.NameList;
-                UcName1.Globals = oFormMain.m_oGlobals;
+                UcName1.Globals = oFormMain.m_oGlobals;													   
                 UcHighlightStrings1.Globals = oFormMain.m_oGlobals;
                 UcHighlightStrings1.HighlightList = oFormMain.m_oGlobals.HighlightList;
                 UcHighlightStrings1.HighlightLineBeginsWith = oFormMain.m_oGlobals.HighlightBeginsWithList;

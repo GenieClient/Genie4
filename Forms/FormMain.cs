@@ -161,6 +161,7 @@ namespace GenieClient
         }
 
         
+
         public void UpdateOnStartup()
         {
             if (m_oGlobals.Config.CheckForUpdates || m_oGlobals.Config.AutoUpdate)
@@ -866,14 +867,14 @@ namespace GenieClient
         {
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
                     if (((oPlugin as GeniePlugin.Interfaces.IPlugin).Name ?? "") == (name ?? ""))
                     {
                         (oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled = value;
                     }
                 }
-                else if (oPlugin is GeniePlugin.Plugins.IPlugin)
+                else if(oPlugin is GeniePlugin.Plugins.IPlugin)
                 {
                     if (((oPlugin as GeniePlugin.Plugins.IPlugin).Name ?? "") == (name ?? ""))
                     {
@@ -954,7 +955,7 @@ namespace GenieClient
             int I = 0;
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
                     if (((oPlugin as GeniePlugin.Interfaces.IPlugin).Name ?? "") == (name ?? ""))
                     {
@@ -1000,7 +1001,7 @@ namespace GenieClient
         {
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
                     (oPlugin as GeniePlugin.Interfaces.IPlugin).ParentClosing();
                 else if (oPlugin is GeniePlugin.Plugins.IPlugin)
                     (oPlugin as GeniePlugin.Plugins.IPlugin).ParentClosing();
@@ -1016,12 +1017,12 @@ namespace GenieClient
             {
                 if (!Information.IsNothing(oPlugin))
                 {
-                    if (oPlugin is GeniePlugin.Interfaces.IPlugin)
+                    if(oPlugin is GeniePlugin.Interfaces.IPlugin)
                     {
                         AppendText(Conversions.ToString(Constants.vbTab + (oPlugin as GeniePlugin.Interfaces.IPlugin).Name + " " + (oPlugin as GeniePlugin.Interfaces.IPlugin).Version + " - " + Interaction.IIf((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled, "Enabled", "Disabled") + System.Environment.NewLine));
                         AppendText(Constants.vbTab + Constants.vbTab + m_oPluginNameToFile[(oPlugin as GeniePlugin.Interfaces.IPlugin).Name] + System.Environment.NewLine);
                     }
-                    else if (oPlugin is GeniePlugin.Plugins.IPlugin)
+                    else if(oPlugin is GeniePlugin.Plugins.IPlugin)
                     {
                         AppendText(Conversions.ToString(Constants.vbTab + (oPlugin as GeniePlugin.Plugins.IPlugin).Name + " " + (oPlugin as GeniePlugin.Plugins.IPlugin).Version + " - " + Interaction.IIf((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled, "Enabled", "Disabled") + System.Environment.NewLine));
                         AppendText(Constants.vbTab + Constants.vbTab + m_oPluginNameToFile[(oPlugin as GeniePlugin.Plugins.IPlugin).Name] + System.Environment.NewLine);
@@ -1176,7 +1177,6 @@ namespace GenieClient
             pluginUpdateItem.Click += updatePluginsToolStripMenuItem_Click;
             PluginsToolStripMenuItem.DropDownItems.Add(pluginUpdateItem);
 
-
             ToolStripMenuItem pluginSeparator = new ToolStripMenuItem();
             pluginSeparator.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
             pluginSeparator.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
@@ -1195,7 +1195,7 @@ namespace GenieClient
                         pluginDialogItem.Name = "ToolStripMenuItemPlugin" + (oPlugin as GeniePlugin.Interfaces.IPlugin).Name;
                         pluginDialogItem.Text = (oPlugin as GeniePlugin.Interfaces.IPlugin).Name;
                     }
-                    else if (oPlugin is GeniePlugin.Plugins.IPlugin)
+                    else if(oPlugin is GeniePlugin.Plugins.IPlugin)
                     {
                         pluginDialogItem.Name = "ToolStripMenuItemPlugin" + (oPlugin as GeniePlugin.Plugins.IPlugin).Name;
                         pluginDialogItem.Text = (oPlugin as GeniePlugin.Plugins.IPlugin).Name;
@@ -1290,7 +1290,7 @@ namespace GenieClient
                         /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                     }
                 }
-                else if (oPlugin is GeniePlugin.Plugins.IPlugin)
+                else if(oPlugin is GeniePlugin.Plugins.IPlugin)
                 {
                     try
                     {
@@ -1341,7 +1341,7 @@ namespace GenieClient
 
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
                     try
                     {
@@ -1473,7 +1473,7 @@ namespace GenieClient
         {
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
                     try
                     {
@@ -1529,7 +1529,7 @@ namespace GenieClient
 
                 foreach (object oPlugin in m_oGlobals.PluginList)
                 {
-                    if (oPlugin is GeniePlugin.Interfaces.IPlugin)
+                    if(oPlugin is GeniePlugin.Interfaces.IPlugin)
                     {
                         try
                         {
@@ -2243,8 +2243,6 @@ namespace GenieClient
 
                 bool bNameListOnly = m_oConfig.GetValue("Genie/Windows/Game", "NameListOnly", false);
                 m_oOutputMain.NameListOnly = bNameListOnly;
-                bool bHideShowScrollbars = m_oConfig.GetValue("Genie/Windows/Game", "HideShowScrollbars", false); // Hide/Show scrollbars
-                m_oOutputMain.HideShowScrollbars = bHideShowScrollbars;
                 string sFontFamily = m_oConfig.GetValue("Genie/Windows/Game/Font", "Family", string.Empty);
                 if (sFontFamily.Length > 0)
                 {
@@ -2304,7 +2302,6 @@ namespace GenieClient
                         sColorName = m_oConfig.GetValue("Genie/Windows/Window" + j.ToString(), "Colors", string.Empty);
                         bTimeStamp = m_oConfig.GetValue("Genie/Windows/Window" + j.ToString(), "TimeStamp", false);
                         bNameListOnly = m_oConfig.GetValue("Genie/Windows/Window" + j.ToString(), "NameListOnly", false);
-                        bHideShowScrollbars = m_oConfig.GetValue("Genie/Windows/Window" + j.ToString(), "HideShowScrollbars", false); // Hide/Show scrollbars
                         FormSkin oFormTemp = null;
                         sFontFamily = m_oConfig.GetValue("Genie/Windows/Window" + j.ToString() + "/Font", "Family", string.Empty);
                         if (sFontFamily.Length > 0)
@@ -2323,7 +2320,6 @@ namespace GenieClient
                         {
                             oFormTemp.TimeStamp = bTimeStamp;
                             oFormTemp.NameListOnly = bNameListOnly;
-                            oFormTemp.HideShowScrollbars = bHideShowScrollbars; // Hide/Show scrollbars
                         }
                     }
                 }
@@ -2427,7 +2423,6 @@ namespace GenieClient
             m_oConfig.SetValue("Genie/Windows/Game", "TimeStamp", m_oOutputMain.TimeStamp.ToString());
             m_oConfig.SetValue("Genie/Windows/Game", "Colors", Genie.ColorCode.ColorToString(m_oOutputMain.RichTextBoxOutput.ForeColor, m_oOutputMain.RichTextBoxOutput.BackColor));
             m_oConfig.SetValue("Genie/Windows/Game", "NameListOnly", m_oOutputMain.NameListOnly.ToString());
-            m_oConfig.SetValue("Genie/Windows/Game", "HideShowScrollbars", m_oOutputMain.HideShowScrollbars.ToString()); // Hide/Show scrollbars
             m_oConfig.SetValue("Genie/Windows/Game/Font", "Family", m_oOutputMain.TextFont.Name.ToString());
             m_oConfig.SetValue("Genie/Windows/Game/Font", "Size", m_oOutputMain.TextFont.Size.ToString());
             m_oConfig.SetValue("Genie/Windows/Game/Font", "Style", m_oOutputMain.TextFont.Style.ToString());
@@ -2458,7 +2453,6 @@ namespace GenieClient
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "Top", tmpFormSkin.Top.ToString());
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "Visible", tmpFormSkin.Visible.ToString());
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "TimeStamp", tmpFormSkin.TimeStamp.ToString());
-                m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "HideShowScrollbars", tmpFormSkin.HideShowScrollbars.ToString()); // Hide/Show scrollbars
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "Colors", Genie.ColorCode.ColorToString(tmpFormSkin.RichTextBoxOutput.ForeColor, tmpFormSkin.RichTextBoxOutput.BackColor));
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "NameListOnly", tmpFormSkin.NameListOnly.ToString());
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString() + "/Font", "Family", tmpFormSkin.TextFont.Name.ToString());
@@ -3497,6 +3491,21 @@ namespace GenieClient
             }
         }
 
+        private void HideForm(Form oForm)
+        {
+            if (oForm is null)
+            {
+                throw new ArgumentNullException("form", "Unable to hide null form.");
+            }
+            else
+            {
+                if (oForm.Visible)
+                {
+                    oForm.Hide();
+                }
+            }
+        }
+
         private void ShowForm(Form oForm)
         {
             if (oForm is null)
@@ -3524,6 +3533,11 @@ namespace GenieClient
             ti.Text = "&1. " + m_oOutputMain.Text;
             ti.Tag = m_oOutputMain;
             ti.Click += WindowMenuItem_Click;
+            if (m_oOutputMain.Visible)
+            {
+                ti.Checked = true;
+            }
+            m_oOutputMain.WindowMenuItem = ti;
             WindowToolStripMenuItem.DropDownItems.Add(ti);
             int I = 2;
             foreach (FormSkin fo in m_oFormList)
@@ -3535,6 +3549,11 @@ namespace GenieClient
                 ti.Text = "&" + I.ToString() + ". " + fo.Text;
                 ti.Tag = fo;
                 ti.Click += WindowMenuItem_Click;
+                if (fo.Visible)
+                {
+                    ti.Checked = true;
+                }
+                fo.WindowMenuItem = ti;
                 WindowToolStripMenuItem.DropDownItems.Add(ti);
                 I += 1;
             }
@@ -3549,7 +3568,15 @@ namespace GenieClient
                 {
                     if (mi.Tag is FormSkin)
                     {
-                        ShowForm((FormSkin)mi.Tag);
+                        FormSkin fo = (FormSkin)mi.Tag;
+                        if (fo.Visible)
+                        {
+                            HideForm(fo);
+                        } else
+                        {
+                            ShowForm(fo);
+                        }
+                        UpdateWindowMenuList();
                     }
                 }
             }
@@ -3569,6 +3596,7 @@ namespace GenieClient
                     }
                 }
             }
+            UpdateWindowMenuList();
         }
 
         private void HideTagOutputForms()
@@ -4680,9 +4708,9 @@ namespace GenieClient
                     {
                         if (!bInput)
                         {
-                            if (sText.StartsWith(Constants.vbCrLf) == false && m_oGlobals.Config.PromptBreak)
+                            if (sText.StartsWith(Constants.vbNewLine) == false && m_oGlobals.Config.PromptBreak)
                             {
-                                sText = Constants.vbCrLf + sText;
+                                sText = Constants.vbNewLine + sText;
                             }
                         }
 
@@ -6707,10 +6735,9 @@ namespace GenieClient
 
                         // Triggers
                         m_oGlobals.TriggerList.ToggleClass(key, bState);
-                        
+
                         // Names
-                        m_oGlobals.NameList.ToggleClass(key, bState);
-                        
+                        m_oGlobals.NameList.ToggleClass(key, bState);								
                         // Subs
                         m_oGlobals.SubstituteList.ToggleClass(key, bState);
 
@@ -8092,6 +8119,7 @@ namespace GenieClient
                 }
             });
         }
+
         private void forceUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (m_oGame.IsConnectedToGame)
@@ -8190,7 +8218,7 @@ namespace GenieClient
             if (!m_oGlobals.Config.ScriptRepo.EndsWith(".zip"))
             {
                 MessageBox.Show("You do not have a repository configured properly." + Environment.NewLine + "Please use \"#config scriptrepo {address of a zip file}\" to configure." + Environment.NewLine + "The URI must be a zip file.");
-                return;
+                return; 
             }
             DialogResult response = MessageBox.Show($"This may take a moment. Update Scripts?\r\nRepo: {m_oGlobals.Config.ScriptRepo}", "Update Scripts?", MessageBoxButtons.YesNoCancel);
             if (response == DialogResult.Yes)
@@ -8209,6 +8237,7 @@ namespace GenieClient
                 });
             }
         }
+
         private void genieToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Interaction.Shell("explorer.exe " + LocalDirectory.Path, AppWinStyle.NormalFocus, false);
