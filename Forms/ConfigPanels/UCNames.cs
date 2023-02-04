@@ -3,7 +3,6 @@ using System.Collections;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using GenieClient.Genie;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
@@ -18,7 +17,7 @@ namespace GenieClient
 
         private Genie.Names m_NameList;
         private bool m_ItemChanged = false;
-        private Genie.Globals m_Globals;
+	    private Genie.Globals m_Globals;
 
         public Genie.Globals Globals
         {
@@ -149,22 +148,14 @@ namespace GenieClient
 
         private void UCWindows_Load(object sender, EventArgs e)
         {
-            try
-            {
-                PopulateList();
-            }
-            catch (NullReferenceException)
-            {
-                // todo
-            }
+            PopulateList();
         }
 
         private void PopulateList()
         {
-            ResetList();
             if (!Information.IsNothing(m_NameList))
             {
-
+                ResetList();
                 foreach (DictionaryEntry de in m_NameList)
                 {
                     var li = ListViewBase.Items.Add(de.Key.ToString());
@@ -180,7 +171,6 @@ namespace GenieClient
                     li.SubItems.Add(oName.ClassName);
                 }
             }
-
             PopulateClasses();
         }
 
@@ -188,8 +178,8 @@ namespace GenieClient
         {
             ComboBoxClass.Items.Clear();
             ComboBoxClass.Items.Add("(default)");
-            foreach (DictionaryEntry sl in m_NameList)
-                AddClass(((Genie.Names.Name)sl.Value).ClassName);
+            foreach (DictionaryEntry nl in m_NameList)
+                AddClass(((Genie.Names.Name)nl.Value).ClassName);
             foreach (DictionaryEntry de in Globals.ClassList)
                 AddClass(Conversions.ToString(de.Key));
         }
@@ -206,7 +196,6 @@ namespace GenieClient
                 }
             }
         }
-
         private void ResetList()
         {
             ListViewBase.Clear();
@@ -392,8 +381,8 @@ namespace GenieClient
                         li.ForeColor = LabelExampleColor.ForeColor;
                         li.BackColor = LabelExampleColor.BackColor;
                     }
-
                     string sClass = string.Empty;
+                    bool bIsActive = Globals.ClassList.GetValue(li.SubItems[2].Text);
                     if ((ComboBoxClass.Text ?? "") == "(default)")
                     {
                         sClass = "";
@@ -404,7 +393,7 @@ namespace GenieClient
                     }
                     li.SubItems[2].Text = sClass;
                     string argsKey1 = li.Text;
-                    m_NameList.Add(argsKey1, TextBoxColor.Text, sClass);
+                    m_NameList.Add(argsKey1, TextBoxColor.Text, sClass, bIsActive);
                     li.Tag = li.Text;
                 }
             }
@@ -420,16 +409,13 @@ namespace GenieClient
                 string sClass = string.Empty;
                 if ((ComboBoxClass.Text ?? "") == "(default)")
                 {
-                    sClass = "";
-                }
-                else
-                {
                     sClass = ComboBoxClass.Text;
                 }
-
+                bool bIsActive = Globals.ClassList.GetValue(sClass);
                 string argsKey2 = TextBoxName.Text;
-                m_NameList.Add(argsKey2, TextBoxColor.Text);
-                var li = ListViewBase.Items.Add(TextBoxName.Text, sClass);
+                string argsColorName3 = TextBoxColor.Text;
+                m_NameList.Add(argsKey2, argsColorName3, sClass, bIsActive);
+                var li = ListViewBase.Items.Add(TextBoxName.Text);
 
                 if ((ComboBoxClass.Text ?? "") == "(default)")
                 {
@@ -439,7 +425,6 @@ namespace GenieClient
                 {
                     li.SubItems.Add(ComboBoxClass.Text);
                 }
-
                 li.SubItems.Add(TextBoxColor.Text);
                 li.Tag = TextBoxName.Text;
                 li.ForeColor = LabelExampleColor.ForeColor;
@@ -530,16 +515,8 @@ namespace GenieClient
 
             m_NameList.Clear();
             bool bResult = m_NameList.Load();
-            try
-            {
-                PopulateList();
-            }
-            catch (NullReferenceException)
-            {
-                // todo
-            }
+            PopulateList();
             UpdateGroupBox();
-
             if (bResult == false)
             {
                 Interaction.MsgBox("Load Failed!", MsgBoxStyle.Critical);

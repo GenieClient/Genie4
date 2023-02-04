@@ -57,7 +57,7 @@ namespace GenieClient
             this._ToolStripButtonLoad = new System.Windows.Forms.ToolStripButton();
             this._ToolStripButtonSave = new System.Windows.Forms.ToolStripButton();
             this._LabelClass = new System.Windows.Forms.Label();
-            this._ComboBoxClass = new System.Windows.Forms.ComboBox();
+            this._ComboBoxClass = new System.Windows.Forms.ComboBox();																														  
             this._ContextMenuStripBase.SuspendLayout();
             this._GroupBoxBase.SuspendLayout();
             this._ToolStripMenu.SuspendLayout();
@@ -113,7 +113,7 @@ namespace GenieClient
             // 
             this._GroupBoxBase.AutoSize = true;
             this._GroupBoxBase.Controls.Add(this._LabelClass);
-            this._GroupBoxBase.Controls.Add(this._ComboBoxClass);
+            this._GroupBoxBase.Controls.Add(this._ComboBoxClass);															  												 
             this._GroupBoxBase.Controls.Add(this._ButtonColorBg);
             this._GroupBoxBase.Controls.Add(this._LabelExampleColor);
             this._GroupBoxBase.Controls.Add(this._ButtonColorFg);
@@ -129,7 +129,7 @@ namespace GenieClient
             this._GroupBoxBase.Name = "_GroupBoxBase";
             this._GroupBoxBase.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._GroupBoxBase.Size = new System.Drawing.Size(814, 126);
-            this._GroupBoxBase.TabIndex = 1;
+            this._GroupBoxBase.TabIndex = 2;
             this._GroupBoxBase.TabStop = false;
             // 
             // _ButtonColorBg
@@ -246,6 +246,7 @@ namespace GenieClient
             this._ToolStripButtonRefresh.Name = "_ToolStripButtonRefresh";
             this._ToolStripButtonRefresh.Size = new System.Drawing.Size(66, 22);
             this._ToolStripButtonRefresh.Text = "Refresh";
+            this._ToolStripButtonRefresh.Click += new System.EventHandler(this.ToolStripButtonRefresh_Click);																								 
             // 
             // _ToolStripSeparator2
             // 
@@ -312,10 +313,10 @@ namespace GenieClient
             this._ComboBoxClass.Name = "_ComboBoxClass";
             this._ComboBoxClass.Size = new System.Drawing.Size(149, 23);
             this._ComboBoxClass.TabIndex = 10;
-            this._ComboBoxClass.Text = "(default)";
+            this._ComboBoxClass.Text = "(default)";			
             // 
             // UCName
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this._ListViewBase);
@@ -658,11 +659,13 @@ namespace GenieClient
             {
                 if (_ToolStripButtonRefresh != null)
                 {
+                    _ToolStripButtonRefresh.Click -= ToolStripButtonRefresh_Click;																				  
                 }
 
                 _ToolStripButtonRefresh = value;
                 if (_ToolStripButtonRefresh != null)
                 {
+                    _ToolStripButtonRefresh.Click += ToolStripButtonRefresh_Click;																				  
                 }
             }
         }
@@ -894,7 +897,6 @@ namespace GenieClient
                 }
             }
         }
-
         private Label _LabelClass;
 
         internal Label LabelClass
@@ -941,6 +943,6 @@ namespace GenieClient
                 {
                 }
             }
-        }
+        }		
     }
 }
