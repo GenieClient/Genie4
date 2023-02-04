@@ -7243,6 +7243,7 @@ namespace GenieClient
         private void Command_EventAddWindow(string sName, int sWidth = 300, int sHeight = 200, int? sTop = 10, int? sLeft = 10)
         {
             AddWindow(sName, sWidth, sHeight, sTop, sLeft);
+            UpdateWindowMenuList();
         }
 
         private void AddWindow(string sName, int sWidth = 300, int sHeight = 200, int? sTop = 10, int? sLeft = 10)
@@ -7389,6 +7390,7 @@ namespace GenieClient
                 if ((((FormSkin)oEnumerator.Current).ID ?? "") == (sName.ToLower() ?? ""))
                 {
                     ((FormSkin)oEnumerator.Current).Hide();
+                    UpdateWindowMenuList();
                     return;
                 }
             }
