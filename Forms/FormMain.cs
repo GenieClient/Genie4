@@ -7156,6 +7156,7 @@ namespace GenieClient
             AddWindow(sName, sWidth, sHeight, sTop, sLeft);
         }
 
+        public delegate void ShowWindowDelegate();
         private void AddWindow(string sName, int sWidth = 300, int sHeight = 200, int? sTop = 10, int? sLeft = 10)
         {
             var oEnumerator = m_oFormList.GetEnumerator();
@@ -7163,7 +7164,14 @@ namespace GenieClient
             {
                 if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(((FormSkin)oEnumerator.Current).ID, sName.ToLower(), false)))
                 {
-                    ((FormSkin)oEnumerator.Current).Show();
+                    if (InvokeRequired == true)
+                    {
+                        Invoke(new ShowWindowDelegate(((FormSkin)oEnumerator.Current).Show));
+                    }
+                    else
+                    {
+                        ((FormSkin)oEnumerator.Current).Show();
+                    }
                     return;
                 }
             }
@@ -7175,9 +7183,19 @@ namespace GenieClient
             }
         }
 
+        public delegate void PositionWindowDelegate(string sName, int? sWidth = 300, int? sHeight = 200, int? sTop = 10, int? sLeft = 10);
+
         private void Command_EventPositionWindow(string sName, int? sWidth = 300, int? sHeight = 200, int? sTop = 10, int? sLeft = 10)
         {
-            PositionWindow(sName, sWidth, sHeight, sTop, sLeft);
+            if (InvokeRequired == true)
+            {
+                var parameters = new object[] { sName, sWidth, sHeight, sTop, sLeft };
+                Invoke(new PositionWindowDelegate(PositionWindow), parameters);
+            }
+            else
+            {
+                PositionWindow(sName, sWidth, sHeight, sTop, sLeft);
+            }
         }
 
         private void PositionWindow(string sName, int? sWidth = 300, int? sHeight = 200, int? sTop = 10, int? sLeft = 10)
