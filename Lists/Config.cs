@@ -57,9 +57,9 @@ namespace GenieClient.Genie
 
         public string sConnectString = "FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " /P:WIN_XP /XML";
         public int[] iPickerColors = new int[17];
-        public string RubyPath { get; set; } = @"C:\ruby4lich\bin\ruby.exe";
+        public string RubyPath { get; set; } = @"C:\ruby4lich5\bin\ruby.exe";
         public string CmdPath { get; set; } = @"C:\Windows\System32\cmd.exe";
-        public string LichPath { get; set; } = @"c:\ruby4lich\lich\lich.rbw";
+        public string LichPath { get; set; } = @"c:\ruby4lich5\lich5\lich.rbw";
         public string LichArguments { get; set; } = @"--genie --dragonrealms";
         public string LichServer { get; set; } = "localhost";
         public int LichPort { get; set; } = 11024;
@@ -68,7 +68,7 @@ namespace GenieClient.Genie
         public string ScriptExtension { get; set; } = "cmd";
 
         public string ScriptRepo { get; set; } = string.Empty;
-        
+
         public int AutoMapperAlpha
         {
             get
@@ -372,7 +372,7 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine("#config {spelltimer} {" + bShowSpellTimer + "}");
                 oStreamWriter.WriteLine("#config {autolog} {" + bAutoLog + "}");
                 oStreamWriter.WriteLine("#config {automapper} {" + bAutoMapper + "}");
-                oStreamWriter.WriteLine("#config {automapperalpha} {" + AutoMapperAlpha + "}"); 
+                oStreamWriter.WriteLine("#config {automapperalpha} {" + AutoMapperAlpha + "}");
                 oStreamWriter.WriteLine("#config {editor} {" + sEditor + "}");
                 oStreamWriter.WriteLine("#config {prompt} {" + sPrompt + "}");
                 oStreamWriter.WriteLine("#config {promptbreak} {" + PromptBreak + "}");
@@ -463,8 +463,8 @@ namespace GenieClient.Genie
 
         public List<string> SetSetting(string sKey, string sValue = "", bool bShowException = true)
         {
-            try 
-            { 
+            try
+            {
                 List<string> messages = new List<string>();
                 if (sKey.Length > 0)
                 {
@@ -790,7 +790,7 @@ namespace GenieClient.Genie
                                 ScriptDir = sValue;
                                 break;
                             }
-                        
+
                         case "scriptrepo":
                             {
 
