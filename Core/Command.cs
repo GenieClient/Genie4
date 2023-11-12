@@ -1748,8 +1748,11 @@ namespace GenieClient.Genie
                                                     default:
                                                         {
                                                             // Add
-                                                            string argsText7 = oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 1));
-                                                            if (oGlobals.GagList.Add(argsText7) == false)
+                                                            string argsText7 = oGlobals.ParseGlobalVars(oArgs[1].ToString());
+                                                            string className = oArgs.Count > 2 ? oArgs[2].ToString() : string.Empty;
+                                                            bool caseSensitive = oArgs.Count > 3 ? oArgs[3].ToString().ToUpper() == "TRUE" : false;
+
+                                                            if (oGlobals.GagList.Add(argsText7, caseSensitive, className) == false)
                                                             {
                                                                 EchoText("Invalid regexp in gag: " + oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 1)) + System.Environment.NewLine);
                                                             }
