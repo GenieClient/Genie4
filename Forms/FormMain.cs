@@ -7919,6 +7919,14 @@ namespace GenieClient
                 TextBoxInput_SendText(m_oGlobals.ParseGlobalVars(sLink));
                 TextBoxInput.Focus();
             }
+            if (link.StartsWith("http://") || link.StartsWith("https://"))
+            {
+                if (m_oGlobals.Config.bWebLinkSafety)
+                {
+                    link = "https://www.play.net/bounce/redirect.asp?URL=" + link;
+                }
+                Utility.OpenBrowser(link);
+            }
         }
 
         private void FormMain_SizeChange(object sender, EventArgs e)
