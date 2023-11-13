@@ -1189,8 +1189,8 @@ namespace GenieClient.Mapper
                             if (sArg.Length > 0)
                             {
                                 int iNodeID = 0;
-                                if (sArg.Length > 3)
-                                {
+                                if (sArg.Length > 5) //Temp fix raising to 5 to allow for all of crossing to fit on one map 
+                                {                    //A better solution is to check on arg count for cross map traveling
                                 // Other zone
                                 // - Find the destination map
                                 // - Find what path it needs to take trough the different zones
