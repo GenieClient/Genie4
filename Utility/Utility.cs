@@ -54,6 +54,7 @@ namespace GenieClient
 
         public static bool ExecuteProcess(string sFileName, string sArguments, bool closeProcess = true)
         {
+            if (!File.Exists(sFileName)) return false;
             var myProcess = new Process();
             var myProcessStartInfo = new ProcessStartInfo(sFileName);
             myProcessStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
