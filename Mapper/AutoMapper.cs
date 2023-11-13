@@ -884,6 +884,10 @@ namespace GenieClient.Mapper
                     EchoText("roomid = " + oNode.ID.ToString());
                 set_GlobalVariable("roomid", oNode.ID.ToString());
                 set_GlobalVariable("roomnote", oNode.Note.ToString());
+                string roomColor = oNode.Color.Name;
+                if (roomColor.ToUpper() == "TRANSPARENT") roomColor = m_oGlobals.PresetList["automapper.node"].BgColor.Name;
+                else if (roomColor.ToUpper().StartsWith("FF")) roomColor = $"#{roomColor.Substring(2)}";
+                set_GlobalVariable("roomcolor", roomColor);
                 if (oNode.ContainsArc(Direction.North))
                 {
                     set_GlobalVariable("northid", oNode.Arcs[Direction.North].DestinationID.ToString());
