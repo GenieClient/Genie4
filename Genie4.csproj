@@ -138,6 +138,9 @@
     <Compile Update="Forms\ConfigPanels\UCWindows.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="Forms\DialogProfileNote.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Mapper\Panels\ArcDetails.cs">
       <SubType>UserControl</SubType>
     </Compile>

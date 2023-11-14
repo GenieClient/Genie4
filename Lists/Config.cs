@@ -20,6 +20,7 @@ namespace GenieClient.Genie
         public int iBufferLineSize = 5;
         public bool bShowSpellTimer = true;
         public bool bAutoLog = true;
+        public bool bClassicConnect = true;
         public string sEditor = "notepad.exe";
         public string sPrompt = "> ";
         public string sIgnoreMonsterList = "appears dead|(dead)";
@@ -318,7 +319,8 @@ namespace GenieClient.Genie
             AutoMapper,
             LogDir,
             CheckForUpdates,
-            AutoUpdate
+            AutoUpdate,
+            ClassicConnect
         }
 
         public Font MonoFont
@@ -364,6 +366,7 @@ namespace GenieClient.Genie
                 }
 
                 var oStreamWriter = new StreamWriter(sFileName, false);
+                oStreamWriter.WriteLine("#config {classicconnect} {" + bClassicConnect + "}");
                 oStreamWriter.WriteLine("#config {scriptchar} {" + ScriptChar + "}");
                 oStreamWriter.WriteLine("#config {separatorchar} {" + cSeparatorChar + "}");
                 oStreamWriter.WriteLine("#config {commandchar} {" + cCommandChar + "}");
@@ -596,6 +599,30 @@ namespace GenieClient.Genie
                                 }
 
                                 ConfigChanged?.Invoke(ConfigFieldUpdated.Autolog);
+                                break;
+                            }
+
+                        case "classicconnect":
+                            {
+                                var switchExpr3 = sValue.ToLower();
+                                switch (switchExpr3)
+                                {
+                                    case "on":
+                                    case "true":
+                                    case "1":
+                                        {
+                                            bClassicConnect = true;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            bClassicConnect = false;
+                                            break;
+                                        }
+                                }
+
+                                ConfigChanged?.Invoke(ConfigFieldUpdated.ClassicConnect);
                                 break;
                             }
 

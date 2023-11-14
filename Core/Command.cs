@@ -2857,6 +2857,7 @@ namespace GenieClient.Genie
             EchoText("automapper=" + oGlobals.Config.bAutoMapper.ToString() + System.Environment.NewLine);
             EchoText("commandchar=" + oGlobals.Config.cCommandChar.ToString() + System.Environment.NewLine);
             EchoText("connectstring=" + oGlobals.Config.sConnectString.ToString() + System.Environment.NewLine);
+            EchoText("classicconnect=" + oGlobals.Config.bClassicConnect.ToString() + System.Environment.NewLine);
             EchoText("editor=" + oGlobals.Config.sEditor + System.Environment.NewLine);
             EchoText("ignoreclosealert=" + oGlobals.Config.bIgnoreCloseAlert.ToString() + System.Environment.NewLine);
             EchoText("ignorescriptwarnings=" + oGlobals.Config.bIgnoreScriptWarnings.ToString() + System.Environment.NewLine);

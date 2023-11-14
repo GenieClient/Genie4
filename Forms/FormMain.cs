@@ -134,7 +134,7 @@ namespace GenieClient
             this._MenuStripMain.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
             this._MenuStripMain.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
             this._MenuStripMain.Renderer = new GenieClient.Forms.Components.MenuRenderer(m_oGlobals.PresetList);
-            
+
             this._ToolStripButtons.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
             this._ToolStripButtons.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
             this._ToolStripButtons.Renderer = new GenieClient.Forms.Components.MenuRenderer(m_oGlobals.PresetList);
@@ -144,7 +144,7 @@ namespace GenieClient
 
             this._StatusStripMain.BackColor = m_oGlobals.PresetList["ui.status"].BgColor;
             this._StatusStripMain.ForeColor = m_oGlobals.PresetList["ui.status"].FgColor;
-            
+
             foreach (ToolStripMenuItem menu in _MenuStripMain.Items)
             {
                 foreach (ToolStripItem item in menu.DropDownItems)
@@ -160,7 +160,7 @@ namespace GenieClient
             }
         }
 
-        
+
 
         public void UpdateOnStartup()
         {
@@ -185,7 +185,7 @@ namespace GenieClient
 
         public void DirectConnect(string[] parameters)
         {
-            if(parameters.Length > 0)
+            if (parameters.Length > 0)
             {
                 string character = "";
                 string game = "";
@@ -220,7 +220,7 @@ namespace GenieClient
 
                     string param = parameter[0].ToString();
                     string value = parameter.Substring(1);
-                    foreach(char delimiter in "|:;-~=")
+                    foreach (char delimiter in "|:;-~=")
                     {
                         if (parameter.Contains(delimiter))
                         {
@@ -259,9 +259,9 @@ namespace GenieClient
                             break;
                     }
                 }
-                
-                
-                if(string.IsNullOrWhiteSpace(game) ||
+
+
+                if (string.IsNullOrWhiteSpace(game) ||
                     string.IsNullOrWhiteSpace(host) ||
                     string.IsNullOrWhiteSpace(character) ||
                     port <= 0)
@@ -273,7 +273,7 @@ namespace GenieClient
                 m_oGame.AccountCharacter = character;
                 m_oGame.AccountGame = game;
                 SafeLoadProfile(m_sCurrentProfileFile, false);
-                if(string.IsNullOrEmpty(key)) m_oGame.DirectConnect(character, game, host, port);
+                if (string.IsNullOrEmpty(key)) m_oGame.DirectConnect(character, game, host, port);
                 else m_oGame.DirectConnect(character, game, host, port, key);
             }
         }
@@ -378,7 +378,7 @@ namespace GenieClient
                     _m_oGame.EventStatusBarUpdate -= Game_EventStatusBarUpdate;
                     _m_oGame.EventClearSpellTime -= Game_EventClearSpellTime;
                     _m_oGame.EventSpellTime -= Game_EventSpellTime;
-                    _m_oGame.EventCastTime -= Game_EventCastTime; 
+                    _m_oGame.EventCastTime -= Game_EventCastTime;
                     _m_oGame.EventRoundTime -= Game_EventRoundtime;
                     _m_oGame.EventTriggerPrompt -= Game_EventTriggerPrompt;
                     _m_oGame.EventTriggerMove -= Game_EventTriggerMove;
@@ -681,7 +681,7 @@ namespace GenieClient
         /* TODO ERROR: Skipped RegionDirectiveTrivia */
         private int LoadPlugins()
         {
-            
+
             string sPluginPath = m_oGlobals.Config.PluginDir;
             if (m_bDebugPlugin)
             {
@@ -693,11 +693,11 @@ namespace GenieClient
                 string argsText1 = "Plugin Path Not Found! No Plugins were loaded. Please create a path at " + sPluginPath + System.Environment.NewLine;
                 Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
                 AddText(argsText1, oTargetWindow: argoTargetWindow1);
-                
+
                 return 0;
             }
-                // Get list of plugins
-                var oAvailablePlugins = PluginServices.FindPlugins(sPluginPath);
+            // Get list of plugins
+            var oAvailablePlugins = PluginServices.FindPlugins(sPluginPath);
             m_oPlugins.Clear();
             if (!Information.IsNothing(oAvailablePlugins))
             {
@@ -712,8 +712,8 @@ namespace GenieClient
 
             m_oGlobals.PluginList.Clear();
             m_oPluginNameToFile.Clear();
-            foreach(PluginServices.AvailablePlugin loadingPlugin in m_oPlugins)
-            { 
+            foreach (PluginServices.AvailablePlugin loadingPlugin in m_oPlugins)
+            {
                 switch (loadingPlugin.Interface)
                 {
                     case PluginServices.Interfaces.Legacy:
@@ -803,7 +803,7 @@ namespace GenieClient
         {
             if (!filename.Contains(@"\"))
             {
-                
+
                 string sPluginPath = m_oGlobals.Config.PluginDir;
                 if (m_bDebugPlugin)
                 {
@@ -867,14 +867,14 @@ namespace GenieClient
         {
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
                     if (((oPlugin as GeniePlugin.Interfaces.IPlugin).Name ?? "") == (name ?? ""))
                     {
                         (oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled = value;
                     }
                 }
-                else if(oPlugin is GeniePlugin.Plugins.IPlugin)
+                else if (oPlugin is GeniePlugin.Plugins.IPlugin)
                 {
                     if (((oPlugin as GeniePlugin.Plugins.IPlugin).Name ?? "") == (name ?? ""))
                     {
@@ -890,7 +890,7 @@ namespace GenieClient
             {
                 if ((kvp.Value.ToLower() ?? "") == (filename.ToLower() ?? ""))
                 {
-                    
+
                     string sPluginPath = m_oGlobals.Config.PluginDir;
                     if (m_bDebugPlugin)
                     {
@@ -916,7 +916,7 @@ namespace GenieClient
             {
                 if ((kvp.Key.ToLower() ?? "") == (name.ToLower() ?? ""))
                 {
-                    
+
                     string sPluginPath = m_oGlobals.Config.PluginDir;
                     if (m_bDebugPlugin)
                     {
@@ -955,7 +955,7 @@ namespace GenieClient
             int I = 0;
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
                     if (((oPlugin as GeniePlugin.Interfaces.IPlugin).Name ?? "") == (name ?? ""))
                     {
@@ -1001,7 +1001,7 @@ namespace GenieClient
         {
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                     (oPlugin as GeniePlugin.Interfaces.IPlugin).ParentClosing();
                 else if (oPlugin is GeniePlugin.Plugins.IPlugin)
                     (oPlugin as GeniePlugin.Plugins.IPlugin).ParentClosing();
@@ -1017,12 +1017,12 @@ namespace GenieClient
             {
                 if (!Information.IsNothing(oPlugin))
                 {
-                    if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                    if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                     {
                         AppendText(Conversions.ToString(Constants.vbTab + (oPlugin as GeniePlugin.Interfaces.IPlugin).Name + " " + (oPlugin as GeniePlugin.Interfaces.IPlugin).Version + " - " + Interaction.IIf((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled, "Enabled", "Disabled") + System.Environment.NewLine));
                         AppendText(Constants.vbTab + Constants.vbTab + m_oPluginNameToFile[(oPlugin as GeniePlugin.Interfaces.IPlugin).Name] + System.Environment.NewLine);
                     }
-                    else if(oPlugin is GeniePlugin.Plugins.IPlugin)
+                    else if (oPlugin is GeniePlugin.Plugins.IPlugin)
                     {
                         AppendText(Conversions.ToString(Constants.vbTab + (oPlugin as GeniePlugin.Plugins.IPlugin).Name + " " + (oPlugin as GeniePlugin.Plugins.IPlugin).Version + " - " + Interaction.IIf((oPlugin as GeniePlugin.Plugins.IPlugin).Enabled, "Enabled", "Disabled") + System.Environment.NewLine));
                         AppendText(Constants.vbTab + Constants.vbTab + m_oPluginNameToFile[(oPlugin as GeniePlugin.Plugins.IPlugin).Name] + System.Environment.NewLine);
@@ -1195,7 +1195,7 @@ namespace GenieClient
                         pluginDialogItem.Name = "ToolStripMenuItemPlugin" + (oPlugin as GeniePlugin.Interfaces.IPlugin).Name;
                         pluginDialogItem.Text = (oPlugin as GeniePlugin.Interfaces.IPlugin).Name;
                     }
-                    else if(oPlugin is GeniePlugin.Plugins.IPlugin)
+                    else if (oPlugin is GeniePlugin.Plugins.IPlugin)
                     {
                         pluginDialogItem.Name = "ToolStripMenuItemPlugin" + (oPlugin as GeniePlugin.Plugins.IPlugin).Name;
                         pluginDialogItem.Text = (oPlugin as GeniePlugin.Plugins.IPlugin).Name;
@@ -1290,7 +1290,7 @@ namespace GenieClient
                         /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                     }
                 }
-                else if(oPlugin is GeniePlugin.Plugins.IPlugin)
+                else if (oPlugin is GeniePlugin.Plugins.IPlugin)
                 {
                     try
                     {
@@ -1341,7 +1341,7 @@ namespace GenieClient
 
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
                     try
                     {
@@ -1473,7 +1473,7 @@ namespace GenieClient
         {
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                 {
                     try
                     {
@@ -1529,7 +1529,7 @@ namespace GenieClient
 
                 foreach (object oPlugin in m_oGlobals.PluginList)
                 {
-                    if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                    if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                     {
                         try
                         {
@@ -2710,7 +2710,7 @@ namespace GenieClient
                 SafeCreateOutputForm("room", "Room", null, 300, 200, 10, 10, false);
             }
 
-           if (Information.IsNothing(m_oOutputDebug))
+            if (Information.IsNothing(m_oOutputDebug))
             {
                 SafeCreateOutputForm("debug", "Debug", null, 300, 200, 10, 10, false);
             }
@@ -3572,7 +3572,8 @@ namespace GenieClient
                         if (fo.Visible)
                         {
                             HideForm(fo);
-                        } else
+                        }
+                        else
                         {
                             ShowForm(fo);
                         }
@@ -3778,7 +3779,7 @@ namespace GenieClient
                         oForm.UserForm = false;
                         break;
                     }
-                }
+            }
 
             if (UpdateFormList)
                 UpdateWindowMenuList();
@@ -4111,7 +4112,7 @@ namespace GenieClient
                             ClassCommand_EchoText("---------------------", "Debug");
                             ClassCommand_EchoText(ex.ToString(), "Debug");
                             ClassCommand_EchoText("---------------------", "Debug");
-                            
+
                         }
                         /* TODO ERROR: Skipped EndIfDirectiveTrivia */
                         finally
@@ -4389,7 +4390,7 @@ namespace GenieClient
                         SetBarValue(barValue, bar);
                         break;
                     }
-                
+
                 case "compass":
                 case "$north":
                 case "$northeast":
@@ -4479,9 +4480,9 @@ namespace GenieClient
                         IconBar.UpdateHidden();
                         IconBar.UpdateJoined();
                         IconBar.UpdateWebbed();
-                        if (m_oGame.IsConnectedToGame )
+                        if (m_oGame.IsConnectedToGame)
                         {
-                            if(!string.IsNullOrWhiteSpace(m_oGlobals.Config.ConnectScript)) ClassCommand_SendText(m_oGlobals.Config.ScriptChar + m_oGlobals.Config.ConnectScript, false, "Connected");
+                            if (!string.IsNullOrWhiteSpace(m_oGlobals.Config.ConnectScript)) ClassCommand_SendText(m_oGlobals.Config.ScriptChar + m_oGlobals.Config.ConnectScript, false, "Connected");
                             if (m_oGlobals.VariableList.ContainsKey("connectscript")) ClassCommand_SendText(m_oGlobals.Config.ScriptChar + m_oGlobals.Config.ConnectScript, false, "Connected");
                         }
                         SafeUpdateMainWindowTitle();
@@ -4563,7 +4564,7 @@ namespace GenieClient
                         foreach (Script oScript in m_oScriptList)
                             oScript.TriggerVariableChanged(sVariableName);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         ClassCommand_EchoText("Error in TriggerVariableChange", "Debug");
                         ClassCommand_EchoText("---------------------", "Debug");
@@ -4677,9 +4678,9 @@ namespace GenieClient
             AddText(sText, argoColor, argoBgColor, oTargetWindow, argsTargetWindow, bMono, bPrompt, bInput);
         }
 
-         private void AddText(string sText, Color oColor, Color oBgColor, FormSkin oTargetWindow, bool bNoCache = true, bool bMono = false, bool bPrompt = false, bool bInput = false)
+        private void AddText(string sText, Color oColor, Color oBgColor, FormSkin oTargetWindow, bool bNoCache = true, bool bMono = false, bool bPrompt = false, bool bInput = false)
         {
-           // bPrompt = false;
+            // bPrompt = false;
 
             if (IsDisposed)
             {
@@ -4805,7 +4806,7 @@ namespace GenieClient
                             oFormTarget = FindSkinFormByName(sTargetWindow);
                             break;
                         }
-                    
+
                     default:
                         {
                             oFormTarget = m_oOutputMain;
@@ -6219,7 +6220,7 @@ namespace GenieClient
         {
             get
             {
-                return DateTime.Now < m_oGlobals.RoundTimeEnd; 
+                return DateTime.Now < m_oGlobals.RoundTimeEnd;
             }
         }
 
@@ -6660,6 +6661,11 @@ namespace GenieClient
                         AutoLogToolStripMenuItem.Checked = m_oGlobals.Config.bAutoLog;
                         break;
                     }
+                case Genie.Config.ConfigFieldUpdated.ClassicConnect:
+                    {
+                        ClassicConnectToolStripMenuItem.Checked = m_oGlobals.Config.bClassicConnect;
+                        break;
+                    }
 
                 case Genie.Config.ConfigFieldUpdated.Reconnect:
                     {
@@ -6758,6 +6764,11 @@ namespace GenieClient
         private void AutoReconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             m_oGlobals.Config.bReconnect = AutoReconnectToolStripMenuItem.Checked;
+        }
+
+        private void ClassicConnectToolStripMenuItem_Click(global::System.Object sender, global::System.EventArgs e)
+        {
+            m_oGlobals.Config.bClassicConnect = ClassicConnectToolStripMenuItem.Checked;
         }
 
         private void TimerReconnect_Tick(object sender, EventArgs e)
@@ -7564,6 +7575,7 @@ namespace GenieClient
         private void ConnectToolStripMenuItemConnectDialog_Click(object sender, EventArgs e)
         {
             My.MyProject.Forms.DialogProfileConnect.ConfigDir = m_oGlobals.Config.ConfigDir;
+            My.MyProject.Forms.DialogProfileConnect.ClassicConnect = m_oGlobals.Config.bClassicConnect;
             if (My.MyProject.Forms.DialogProfileConnect.ShowDialog(this) == DialogResult.OK)
             {
                 m_sCurrentProfileFile = string.Empty;
@@ -8244,7 +8256,7 @@ namespace GenieClient
             if (!m_oGlobals.Config.ScriptRepo.EndsWith(".zip"))
             {
                 MessageBox.Show("You do not have a repository configured properly." + Environment.NewLine + "Please use \"#config scriptrepo {address of a zip file}\" to configure." + Environment.NewLine + "The URI must be a zip file.");
-                return; 
+                return;
             }
             DialogResult response = MessageBox.Show($"This may take a moment. Update Scripts?\r\nRepo: {m_oGlobals.Config.ScriptRepo}", "Update Scripts?", MessageBoxButtons.YesNoCancel);
             if (response == DialogResult.Yes)
@@ -8288,5 +8300,12 @@ namespace GenieClient
         {
             Interaction.Shell("explorer.exe " + m_oGlobals.Config.sLogDir, AppWinStyle.NormalFocus, false);
         }
+
+        private void toolStripMenuItemClassicConnect_Click(global::System.Object sender, global::System.EventArgs e)
+        {
+            m_oGlobals.Config.bClassicConnect = ClassicConnectToolStripMenuItem.Checked;
+        }
+
+
     }
 }

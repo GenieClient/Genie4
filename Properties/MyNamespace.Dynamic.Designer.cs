@@ -217,6 +217,29 @@ namespace GenieClient.My
             }
 
             [EditorBrowsable(EditorBrowsableState.Never)]
+            public DialogProfileNote m_DialogProfileNote;
+
+            public DialogProfileNote DialogProfileNote
+            {
+                [DebuggerHidden]
+                get
+                {
+                    m_DialogProfileNote = MyForms.Create__Instance__(m_DialogProfileNote);
+                    return m_DialogProfileNote;
+                }
+
+                [DebuggerHidden]
+                set
+                {
+                    if (value == m_DialogProfileNote)
+                        return;
+                    if (value is object)
+                        throw new ArgumentException("Property can only be set to Nothing");
+                    Dispose__Instance__(ref m_DialogProfileNote);
+                }
+            }
+
+            [EditorBrowsable(EditorBrowsableState.Never)]
             public FormConfig m_FormConfig;
 
             public FormConfig FormConfig
