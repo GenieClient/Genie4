@@ -183,6 +183,8 @@ namespace GenieClient.Genie
         private string m_sCharacterName = string.Empty;
         private string m_sGameName = string.Empty;
         private int m_iRoundTime = 0;
+        private int m_iSpellTime = 0;
+        private int m_iCastTime = 0;
         private int m_iGameTime = 0;
         private string m_sTriggerBuffer = string.Empty;
         private bool m_bLastRowWasPrompt = false;
@@ -484,6 +486,13 @@ namespace GenieClient.Genie
                 {
                     color = m_oGlobals.PresetList["inputuser"].FgColor;
                     bgcolor = m_oGlobals.PresetList["inputuser"].BgColor;
+                    if (!sText.StartsWith(Conversions.ToString(m_oGlobals.Config.cMyCommandChar))) // Skip user commands
+                    {
+                        m_oGlobals.VariableList["lastinput"] = sText;
+                        var lastinputVar = "lastinput";
+                        EventVariableChanged?.Invoke(lastinputVar);
+                    }
+
                 }
                 else
                 {
@@ -2074,7 +2083,7 @@ namespace GenieClient.Genie
                                 m_oGlobals.VariableList.Add("casttime", GetAttributeData(oXmlNode, "value"));
                             }
                             VariableChanged("$casttime");
-                            EventCastTime?.Invoke();
+                            m_iCastTime = int.Parse(GetAttributeData(oXmlNode, "value"));
                             break;
                         }
                     case "spelltime":
@@ -2240,6 +2249,7 @@ namespace GenieClient.Genie
                                     var rtString = rt.ToString();
                                     string argkey42 = "roundtime";
                                     m_oGlobals.VariableList.Add(argkey42, rtString, Globals.Variables.VariableType.Reserved);
+                                    m_iRoundTime = 0;
                                 }
                                 else
                                 {
@@ -2249,6 +2259,12 @@ namespace GenieClient.Genie
                                 }
                                 string argsVariable40 = "$roundtime";
                                 VariableChanged(argsVariable40);
+
+                                if (m_iCastTime > 0)
+                                {
+                                    EventCastTime?.Invoke();
+                                    m_iCastTime = 0;
+                                }
 
                                 if (m_oGlobals.Config.sPrompt.Length > 0 && !m_bLastRowWasPrompt)
                                 {
