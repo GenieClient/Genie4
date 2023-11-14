@@ -1327,6 +1327,8 @@ namespace GenieClient
             this._TextBoxInput.SendText += (this.TextBoxInput_SendText);
             this._TextBoxInput.PageUp += (this.TextBoxInput_PageUp);
             this._TextBoxInput.PageDown += (this.TextBoxInput_PageDown);
+            this._TextBoxInput.CtrlPageUp += new GenieClient.ComponentTextBox.CtrlPageUpEventHandler(this.TextBoxInput_CtrlPageUp);
+            this._TextBoxInput.CtrlPageDown += new GenieClient.ComponentTextBox.CtrlPageDownEventHandler(this.TextBoxInput_CtrlPageDown);
             this._TextBoxInput.KeyDown += (this.TextBoxInput_KeyDown);
             // 
             // _OpenFileDialogProfile
