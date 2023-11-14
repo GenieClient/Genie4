@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using GenieClient.Genie;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using static GenieClient.Genie.Globals;
 
 namespace GenieClient
 {
@@ -362,6 +363,7 @@ namespace GenieClient
         {
             m_oRichTextBuffer.SelectionLength = 0;
             m_oRichTextBuffer.SelectionStart = int.MaxValue;
+            int startIndex = m_oRichTextBuffer.SelectionStart;
             if (oColor != Color.Transparent & oColor != m_oEmptyColor)
             {
                 m_oRichTextBuffer.SelectionColor = oColor;
@@ -399,16 +401,24 @@ namespace GenieClient
             }
         }
 
-        private void ParseLineHighlights(string sLine)
+        private void ParseLineHighlights(int StartIndex, string Line)
         {
-            
+            if (m_oRichTextBuffer.Text.Contains("You also see") && m_oParentForm.Globals.RoomObjects.Count > 0)
+            {
+                ParseVolatileHighlights(m_oParentForm.Globals.RoomObjects);
+            }
+
+            // Presets and Bold
+            ParseVolatileHighlights(m_oParentForm.Globals.VolatileHighlights);
+
+            //RegExp
             if (m_oParentForm.Globals.HighlightRegExpList.AcquireReaderLock())
             {
                 try
                 {
                     foreach (Globals.HighlightRegExp.Highlight oHighlight in m_oParentForm.Globals.HighlightRegExpList.Values)
                     {
-                        if (oHighlight.IsActive) ParseRegExpHighlight(sLine, oHighlight);
+                        if (oHighlight.IsActive) ParseRegExpHighlight(oHighlight);
                     }
                 }
                 finally
@@ -422,42 +432,44 @@ namespace GenieClient
             }
         }
 
-        private void ParseRegExpHighlight(string sLine, Globals.HighlightRegExp.Highlight oHighlight)
+        private void ParseRegExpHighlight(int StartIndex, string Line, Globals.HighlightRegExp.Highlight Highlight)
         {
-            foreach (Match oMatch in oHighlight.HighlightRegex.Matches(sLine))
+            int iDiff = Line.Length - Line.TrimStart(Conversions.ToChar(Constants.vbCr)).Length; // RichText does not add both cr+lf
+            foreach (Match oMatch in Highlight.HighlightRegex.Matches(Line))
             {
                 if (oMatch.Groups.Count > 1)    // () highlighting
                 {
                     foreach (Group oGroup in oMatch.Groups)
                     {
-                        m_oRichTextBuffer.SelectionStart = oGroup.Index;
+                        
+                        m_oRichTextBuffer.SelectionStart = StartIndex + oGroup.Index - iDiff;
                         m_oRichTextBuffer.SelectionLength = oGroup.Length;
-                        if (oHighlight.FgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
+                        if (Highlight.FgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
                         {
-                            m_oRichTextBuffer.SelectionColor = oHighlight.FgColor;
+                            m_oRichTextBuffer.SelectionColor = Highlight.FgColor;
                         }
-                        if (oHighlight.BgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
+                        if (Highlight.BgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
                         {
-                            m_oRichTextBuffer.SelectionBackColor = oHighlight.BgColor;
+                            m_oRichTextBuffer.SelectionBackColor = Highlight.BgColor;
                         }
                     }
                 }
-                else // highlight whole line -- WHY ARE WE DOING THIS?
+                else // highlight the whole match
                 {
-                    m_oRichTextBuffer.SelectionStart = 0;
-                    m_oRichTextBuffer.SelectionLength = int.MaxValue;
-                    if (oHighlight.FgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
+                    m_oRichTextBuffer.SelectionStart = StartIndex - iDiff;
+                    m_oRichTextBuffer.SelectionLength = oMatch.Length;
+                    if (Highlight.FgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
                     {
-                        m_oRichTextBuffer.SelectionColor = oHighlight.FgColor;
+                        m_oRichTextBuffer.SelectionColor = Highlight.FgColor;
                     }
 
-                    if (oHighlight.BgColor != Color.Transparent & oHighlight.FgColor != m_oEmptyColor)
+                    if (Highlight.BgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
                     {
-                        m_oRichTextBuffer.SelectionBackColor = oHighlight.BgColor;
+                        m_oRichTextBuffer.SelectionBackColor = Highlight.BgColor;
                     }
                 }
-                if (Conversions.ToBoolean(oHighlight.SoundFile.Length > 0 && m_oParentForm.Globals.Config.bPlaySounds))
-                    Sound.PlayWaveFile(oHighlight.SoundFile);
+                if (Conversions.ToBoolean(Highlight.SoundFile.Length > 0 && m_oParentForm.Globals.Config.bPlaySounds))
+                    Sound.PlayWaveFile(Highlight.SoundFile);
             }
         }
 
@@ -469,6 +481,25 @@ namespace GenieClient
             public int Index;
             public int Length;
             public string Command;
+        }
+
+        private void ParseRegExpHighlight(HighlightRegExp.Highlight Highlight)
+        {
+            foreach (Match oMatch in Highlight.HighlightRegex.Matches(m_oRichTextBuffer.Text))
+            {
+                m_oRichTextBuffer.SelectionStart = oMatch.Groups[0].Index;
+                m_oRichTextBuffer.SelectionLength = oMatch.Groups[0].Length;
+                if (Highlight.FgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
+                {
+                    m_oRichTextBuffer.SelectionColor = Highlight.FgColor;
+                }
+
+                if (Highlight.BgColor != Color.Transparent & Highlight.FgColor != m_oEmptyColor)
+                {
+                    m_oRichTextBuffer.SelectionBackColor = Highlight.BgColor;
+                }
+            }
+            
         }
 
         private void ParseVolatileHighlights(List<VolatileHighlight> highlightList)
@@ -524,18 +555,7 @@ namespace GenieClient
         private void ParseHighlights()
         {
             MatchCollection oMatchCollection;
-
-            if (m_oRichTextBuffer.Text.Contains("You also see") && m_oParentForm.Globals.RoomObjects.Count > 0)
-            {
-                ParseVolatileHighlights(m_oParentForm.Globals.RoomObjects);
-            }
-
-            // Presets and Bold
-            ParseVolatileHighlights(m_oParentForm.Globals.VolatileHighlights);
-
-            // Regex Highlights
-            ParseLineHighlights(m_oRichTextBuffer.Text);
-
+            ParseLineHighlights(m_oRichTextBuffer.SelectionStart, m_oRichTextBuffer.Text);
             // Highlight String
             if (!Information.IsNothing(m_oParentForm.Globals.HighlightList.RegexString))
             {

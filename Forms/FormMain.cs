@@ -32,6 +32,7 @@ namespace GenieClient
             m_PluginDialog = new FormPlugins(ref _m_oGlobals.PluginList);
             // This call is required by the Windows Form Designer.
             InitializeComponent();
+            RecolorUI();
 
             // Add any initialization after the InitializeComponent() call.
             LocalDirectory.CheckUserDirectory();
@@ -127,6 +128,39 @@ namespace GenieClient
 
             UpdateMainWindowTitle();
         }
+
+        private void RecolorUI()
+        {
+            this._MenuStripMain.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+            this._MenuStripMain.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
+            this._MenuStripMain.Renderer = new GenieClient.Forms.Components.MenuRenderer(m_oGlobals.PresetList);
+            
+            this._ToolStripButtons.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+            this._ToolStripButtons.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
+            this._ToolStripButtons.Renderer = new GenieClient.Forms.Components.MenuRenderer(m_oGlobals.PresetList);
+
+            this._TextBoxInput.BackColor = m_oGlobals.PresetList["ui.textbox"].BgColor;
+            this._TextBoxInput.ForeColor = m_oGlobals.PresetList["ui.textbox"].FgColor;
+
+            this._StatusStripMain.BackColor = m_oGlobals.PresetList["ui.status"].BgColor;
+            this._StatusStripMain.ForeColor = m_oGlobals.PresetList["ui.status"].FgColor;
+            
+            foreach (ToolStripMenuItem menu in _MenuStripMain.Items)
+            {
+                foreach (ToolStripItem item in menu.DropDownItems)
+                {
+                    item.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+                    item.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
+                    if (string.IsNullOrWhiteSpace(item.Text))
+                    {
+                        item.AutoSize = false;
+                        item.Height = item.Height / 2;
+                    }
+                }
+            }
+        }
+
+        
 
         public void UpdateOnStartup()
         {
@@ -1127,6 +1161,8 @@ namespace GenieClient
             PluginsToolStripMenuItem.DropDownItems.Clear();
             ToolStripMenuItem pluginDialogItem;
             pluginDialogItem = new ToolStripMenuItem();
+            pluginDialogItem.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+            pluginDialogItem.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
             pluginDialogItem.Name = "ToolStripMenuItemPluginDialog";
             pluginDialogItem.Text = "&Plugins...";
             pluginDialogItem.Click += PluginDialogItem_Click;
@@ -1134,19 +1170,27 @@ namespace GenieClient
 
             ToolStripMenuItem pluginUpdateItem;
             pluginUpdateItem = new ToolStripMenuItem();
+            pluginUpdateItem.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+            pluginUpdateItem.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
             pluginUpdateItem.Name = "ToolStripMenuItemPluginDialog";
             pluginUpdateItem.Text = "&Update Plugins";
             pluginUpdateItem.Click += updatePluginsToolStripMenuItem_Click;
             PluginsToolStripMenuItem.DropDownItems.Add(pluginUpdateItem);
 
-            PluginsToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
+            ToolStripMenuItem pluginSeparator = new ToolStripMenuItem();
+            pluginSeparator.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+            pluginSeparator.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
+            pluginSeparator.Name = "ToolStripMenuItemPluginSeparator";
+            PluginsToolStripMenuItem.DropDownItems.Add(pluginSeparator);
             int I = 1;
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
                 if (!Information.IsNothing(oPlugin))
                 {
                     pluginDialogItem = new ToolStripMenuItem();
-                    if(oPlugin is GeniePlugin.Interfaces.IPlugin)
+                    pluginDialogItem.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+                    pluginDialogItem.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
+                    if (oPlugin is GeniePlugin.Interfaces.IPlugin)
                     {
                         pluginDialogItem.Name = "ToolStripMenuItemPlugin" + (oPlugin as GeniePlugin.Interfaces.IPlugin).Name;
                         pluginDialogItem.Text = (oPlugin as GeniePlugin.Interfaces.IPlugin).Name;
@@ -1935,6 +1979,7 @@ namespace GenieClient
             m_oGlobals.PresetList.Load(m_oGlobals.Config.ConfigDir + @"\presets.cfg");
             string argsPreset = "all";
             PresetChanged(argsPreset);
+            RecolorUI();
             AppendText("OK" + System.Environment.NewLine);
             Application.DoEvents();
             AppendText("Loading Global Variables...");
@@ -3446,6 +3491,21 @@ namespace GenieClient
             }
         }
 
+        private void HideForm(Form oForm)
+        {
+            if (oForm is null)
+            {
+                throw new ArgumentNullException("form", "Unable to hide null form.");
+            }
+            else
+            {
+                if (oForm.Visible)
+                {
+                    oForm.Hide();
+                }
+            }
+        }
+
         private void ShowForm(Form oForm)
         {
             if (oForm is null)
@@ -3467,19 +3527,33 @@ namespace GenieClient
         {
             WindowToolStripMenuItem.DropDownItems.Clear();
             var ti = new ToolStripMenuItem();
+            ti.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+            ti.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
             ti.Name = "ToolStripMenuItemWindowMain";
             ti.Text = "&1. " + m_oOutputMain.Text;
             ti.Tag = m_oOutputMain;
             ti.Click += WindowMenuItem_Click;
+            if (m_oOutputMain.Visible)
+            {
+                ti.Checked = true;
+            }
+            m_oOutputMain.WindowMenuItem = ti;
             WindowToolStripMenuItem.DropDownItems.Add(ti);
             int I = 2;
             foreach (FormSkin fo in m_oFormList)
             {
                 ti = new ToolStripMenuItem();
+                ti.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+                ti.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
                 ti.Name = "ToolStripMenuItemWindow" + fo.Text;
                 ti.Text = "&" + I.ToString() + ". " + fo.Text;
                 ti.Tag = fo;
                 ti.Click += WindowMenuItem_Click;
+                if (fo.Visible)
+                {
+                    ti.Checked = true;
+                }
+                fo.WindowMenuItem = ti;
                 WindowToolStripMenuItem.DropDownItems.Add(ti);
                 I += 1;
             }
@@ -3494,7 +3568,15 @@ namespace GenieClient
                 {
                     if (mi.Tag is FormSkin)
                     {
-                        ShowForm((FormSkin)mi.Tag);
+                        FormSkin fo = (FormSkin)mi.Tag;
+                        if (fo.Visible)
+                        {
+                            HideForm(fo);
+                        } else
+                        {
+                            ShowForm(fo);
+                        }
+                        UpdateWindowMenuList();
                     }
                 }
             }
@@ -3514,6 +3596,7 @@ namespace GenieClient
                     }
                 }
             }
+            UpdateWindowMenuList();
         }
 
         private void HideTagOutputForms()
@@ -6810,6 +6893,7 @@ namespace GenieClient
                 if (!Information.IsNothing(m_oGlobals.PresetList))
                 {
                     if (sPreset.StartsWith("automapper")) { sPreset = "automapper"; }
+                    if (sPreset.StartsWith("ui")) { sPreset = "ui"; }
                     switch (sPreset)
                     {
                         case "roundtime":
@@ -6830,6 +6914,11 @@ namespace GenieClient
                         case "automapper":
                             {
                                 m_oAutoMapper.UpdatePanelBackgroundColor();
+                                break;
+                            }
+                        case "ui":
+                            {
+                                RecolorUI();
                                 break;
                             }
                         case "health":
@@ -7154,6 +7243,7 @@ namespace GenieClient
         private void Command_EventAddWindow(string sName, int sWidth = 300, int sHeight = 200, int? sTop = 10, int? sLeft = 10)
         {
             AddWindow(sName, sWidth, sHeight, sTop, sLeft);
+            UpdateWindowMenuList();
         }
 
         public delegate void ShowWindowDelegate();
@@ -7318,6 +7408,7 @@ namespace GenieClient
                 if ((((FormSkin)oEnumerator.Current).ID ?? "") == (sName.ToLower() ?? ""))
                 {
                     ((FormSkin)oEnumerator.Current).Hide();
+                    UpdateWindowMenuList();
                     return;
                 }
             }
@@ -7830,6 +7921,14 @@ namespace GenieClient
                 TextBoxInput_SendText(m_oGlobals.ParseGlobalVars(sLink));
                 TextBoxInput.Focus();
             }
+            if (link.StartsWith("http://") || link.StartsWith("https://"))
+            {
+                if (m_oGlobals.Config.bWebLinkSafety)
+                {
+                    link = "https://www.play.net/bounce/redirect.asp?URL=" + link;
+                }
+                Utility.OpenBrowser(link);
+            }
         }
 
         private void FormMain_SizeChange(object sender, EventArgs e)
@@ -8163,6 +8262,31 @@ namespace GenieClient
                     }
                 });
             }
+        }
+
+        private void genieToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Interaction.Shell("explorer.exe " + LocalDirectory.Path, AppWinStyle.NormalFocus, false);
+        }
+
+        private void mapsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Interaction.Shell("explorer.exe " + m_oGlobals.Config.MapDir, AppWinStyle.NormalFocus, false);
+        }
+
+        private void pluginsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Interaction.Shell("explorer.exe " + m_oGlobals.Config.PluginDir, AppWinStyle.NormalFocus, false);
+        }
+
+        private void scriptsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Interaction.Shell("explorer.exe " + m_oGlobals.Config.ScriptDir, AppWinStyle.NormalFocus, false);
+        }
+
+        private void logsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Interaction.Shell("explorer.exe " + m_oGlobals.Config.sLogDir, AppWinStyle.NormalFocus, false);
         }
     }
 }

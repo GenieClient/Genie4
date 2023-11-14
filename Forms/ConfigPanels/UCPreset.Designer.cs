@@ -35,6 +35,7 @@ namespace GenieClient
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCPreset));
             this._ListViewBase = new System.Windows.Forms.ListView();
             this._GroupBoxBase = new System.Windows.Forms.GroupBox();
+            this.chkHighlightLine = new System.Windows.Forms.CheckBox();
             this._ButtonColorBg = new System.Windows.Forms.Button();
             this._LabelExampleColor = new System.Windows.Forms.Label();
             this._ButtonColorFg = new System.Windows.Forms.Button();
@@ -49,7 +50,6 @@ namespace GenieClient
             this._ToolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this._ToolStripButtonLoad = new System.Windows.Forms.ToolStripButton();
             this._ToolStripButtonSave = new System.Windows.Forms.ToolStripButton();
-            this.chkHighlightLine = new System.Windows.Forms.CheckBox();
             this._GroupBoxBase.SuspendLayout();
             this._ToolStripMenu.SuspendLayout();
             this.SuspendLayout();
@@ -69,6 +69,7 @@ namespace GenieClient
             this._ListViewBase.TabIndex = 0;
             this._ListViewBase.UseCompatibleStateImageBehavior = false;
             this._ListViewBase.View = System.Windows.Forms.View.Details;
+            this._ListViewBase.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.ListViewBase_SortColumnClick);
             this._ListViewBase.SelectedIndexChanged += new System.EventHandler(this.ListViewBase_SelectedIndexChanged);
             this._ListViewBase.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ListViewBase_KeyUp);
             this._ListViewBase.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ListViewBase_MouseUp);
@@ -94,6 +95,17 @@ namespace GenieClient
             this._GroupBoxBase.Size = new System.Drawing.Size(814, 126);
             this._GroupBoxBase.TabIndex = 2;
             this._GroupBoxBase.TabStop = false;
+            // 
+            // chkHighlightLine
+            // 
+            this.chkHighlightLine.AutoSize = true;
+            this.chkHighlightLine.Location = new System.Drawing.Point(191, 66);
+            this.chkHighlightLine.Name = "chkHighlightLine";
+            this.chkHighlightLine.Size = new System.Drawing.Size(134, 19);
+            this.chkHighlightLine.TabIndex = 13;
+            this.chkHighlightLine.Text = "Highlight Entire Line";
+            this.chkHighlightLine.UseVisualStyleBackColor = true;
+            this.chkHighlightLine.CheckedChanged += new System.EventHandler(this.chkHighlightLine_CheckedChanged);
             // 
             // _ButtonColorBg
             // 
@@ -231,17 +243,6 @@ namespace GenieClient
             this._ToolStripButtonSave.Size = new System.Drawing.Size(51, 22);
             this._ToolStripButtonSave.Text = "Save";
             this._ToolStripButtonSave.Click += new System.EventHandler(this.ToolStripButtonSave_Click);
-            // 
-            // chkHighlightLine
-            // 
-            this.chkHighlightLine.AutoSize = true;
-            this.chkHighlightLine.Location = new System.Drawing.Point(191, 66);
-            this.chkHighlightLine.Name = "chkHighlightLine";
-            this.chkHighlightLine.Size = new System.Drawing.Size(134, 19);
-            this.chkHighlightLine.TabIndex = 13;
-            this.chkHighlightLine.Text = "Highlight Entire Line";
-            this.chkHighlightLine.UseVisualStyleBackColor = true;
-            this.chkHighlightLine.CheckedChanged += new System.EventHandler(this.chkHighlightLine_CheckedChanged);
             // 
             // UCPreset
             // 

@@ -32,366 +32,396 @@ namespace GenieClient
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            _ListViewBase = new ListView();
-            _ListViewBase.KeyUp += new KeyEventHandler(ListViewBase_KeyUp);
-            _ListViewBase.MouseUp += new MouseEventHandler(ListViewBase_MouseUp);
-            _ListViewBase.SelectedIndexChanged += new EventHandler(ListViewBase_SelectedIndexChanged);
-            _ContextMenuStripBase = new ContextMenuStrip(components);
-            _AddToolStripMenuItem = new ToolStripMenuItem();
-            _AddToolStripMenuItem.Click += new EventHandler(AddToolStripMenuItem_Click);
-            _RemoveToolStripMenuItem = new ToolStripMenuItem();
-            _RemoveToolStripMenuItem.Click += new EventHandler(RemoveToolStripMenuItem_Click);
-            _ToolStripMenu = new ToolStrip();
-            _ToolStripButtonRefresh = new ToolStripButton();
-            _ToolStripButtonRefresh.Click += new EventHandler(ToolStripButtonRefresh_Click);
-            _ToolStripSeparator2 = new ToolStripSeparator();
-            _ToolStripButtonAdd = new ToolStripButton();
-            _ToolStripButtonAdd.Click += new EventHandler(ToolStripButtonAdd_Click);
-            _ToolStripButtonRemove = new ToolStripButton();
-            _ToolStripButtonRemove.Click += new EventHandler(ToolStripButtonRemove_Click);
-            _ToolStripSeparator1 = new ToolStripSeparator();
-            _ToolStripButtonLoad = new ToolStripButton();
-            _ToolStripButtonLoad.Click += new EventHandler(ToolStripButtonLoad_Click);
-            _ToolStripButtonSave = new ToolStripButton();
-            _ToolStripButtonSave.Click += new EventHandler(ToolStripButtonSave_Click);
-            _TextBoxTitle = new TextBox();
-            _TextBoxTitle.TextChanged += new EventHandler(TextBoxTitle_TextChanged);
-            _ButtonApply = new Button();
-            _ButtonApply.Click += new EventHandler(ButtonApply_Click);
-            _GroupBoxBase = new GroupBox();
-            _LabelIfClosed = new Label();
-            _ComboBoxIfClosed = new ComboBox();
-            _ButtonColorBg = new Button();
-            _ButtonColorBg.Click += new EventHandler(ButtonColorBg_Click);
-            _LabelExampleColor = new Label();
-            _ButtonColorFg = new Button();
-            _ButtonColorFg.Click += new EventHandler(ButtonColorFg_Click);
-            _LabelColor = new Label();
-            _TextBoxColor = new TextBox();
-            _TextBoxColor.TextChanged += new EventHandler(TextBoxTitle_TextChanged);
-            _TextBoxColor.KeyDown += new KeyEventHandler(TextBoxColor_KeyDown);
-            _TextBoxColor.Leave += new EventHandler(TextBoxColor_Leave);
-            _CheckBoxNameListOnly = new CheckBox();
-            _CheckBoxNameListOnly.CheckedChanged += new EventHandler(CheckBoxNameListOnly_CheckedChanged);
-            _CheckBoxTimeStamp = new CheckBox();
-            _CheckBoxTimeStamp.CheckedChanged += new EventHandler(CheckBoxTimeStamp_CheckedChanged);
-            _ButtonFont = new Button();
-            _ButtonFont.Click += new EventHandler(ButtonFont_Click);
-            _LabelFont = new Label();
-            _TextBoxFont = new TextBox();
-            _LabelTitle = new Label();
-            _FontDialogPicker = new FontDialog();
-            _ColorDialogPicker = new ColorDialog();
-            _OpenFileDialogLayout = new OpenFileDialog();
-            _SaveFileDialogLayout = new SaveFileDialog();
-            _ContextMenuStripBase.SuspendLayout();
-            _ToolStripMenu.SuspendLayout();
-            _GroupBoxBase.SuspendLayout();
-            SuspendLayout();
-            // 
-            // ListViewBase
-            // 
-            _ListViewBase.BackColor = Color.Black;
-            _ListViewBase.ContextMenuStrip = _ContextMenuStripBase;
-            _ListViewBase.Dock = DockStyle.Fill;
-            _ListViewBase.ForeColor = Color.White;
-            _ListViewBase.FullRowSelect = true;
-            _ListViewBase.HideSelection = false;
-            _ListViewBase.Location = new Point(0, 25);
-            _ListViewBase.Name = "ListViewBase";
-            _ListViewBase.ShowGroups = false;
-            _ListViewBase.Size = new Size(698, 259);
-            _ListViewBase.Sorting = SortOrder.Ascending;
-            _ListViewBase.TabIndex = 0;
-            _ListViewBase.UseCompatibleStateImageBehavior = false;
-            _ListViewBase.View = View.Details;
-            // 
-            // ContextMenuStripBase
-            // 
-            _ContextMenuStripBase.Items.AddRange(new ToolStripItem[] { _AddToolStripMenuItem, _RemoveToolStripMenuItem });
-            _ContextMenuStripBase.Name = "ContextMenuStripBase";
-            _ContextMenuStripBase.Size = new Size(118, 48);
-            // 
-            // AddToolStripMenuItem
-            // 
-            _AddToolStripMenuItem.Image = My.Resources.Resources.document_new;
-            _AddToolStripMenuItem.Name = "AddToolStripMenuItem";
-            _AddToolStripMenuItem.Size = new Size(117, 22);
-            _AddToolStripMenuItem.Text = "Add";
-            // 
-            // RemoveToolStripMenuItem
-            // 
-            _RemoveToolStripMenuItem.Enabled = false;
-            _RemoveToolStripMenuItem.Image = My.Resources.Resources.edit_clear;
-            _RemoveToolStripMenuItem.Name = "RemoveToolStripMenuItem";
-            _RemoveToolStripMenuItem.Size = new Size(117, 22);
-            _RemoveToolStripMenuItem.Text = "Remove";
-            // 
-            // ToolStripMenu
-            // 
-            _ToolStripMenu.AllowMerge = false;
-            _ToolStripMenu.GripStyle = ToolStripGripStyle.Hidden;
-            _ToolStripMenu.Items.AddRange(new ToolStripItem[] { _ToolStripButtonRefresh, _ToolStripSeparator2, _ToolStripButtonAdd, _ToolStripButtonRemove, _ToolStripSeparator1, _ToolStripButtonLoad, _ToolStripButtonSave });
-            _ToolStripMenu.Location = new Point(0, 0);
-            _ToolStripMenu.Name = "ToolStripMenu";
-            _ToolStripMenu.Size = new Size(698, 25);
-            _ToolStripMenu.TabIndex = 5;
-            // 
-            // ToolStripButtonRefresh
-            // 
-            _ToolStripButtonRefresh.Image = My.Resources.Resources.view_refresh;
-            _ToolStripButtonRefresh.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonRefresh.Name = "ToolStripButtonRefresh";
-            _ToolStripButtonRefresh.Size = new Size(66, 22);
-            _ToolStripButtonRefresh.Text = "Refresh";
-            // 
-            // ToolStripSeparator2
-            // 
-            _ToolStripSeparator2.Name = "ToolStripSeparator2";
-            _ToolStripSeparator2.Size = new Size(6, 25);
-            // 
-            // ToolStripButtonAdd
-            // 
-            _ToolStripButtonAdd.Image = My.Resources.Resources.document_new;
-            _ToolStripButtonAdd.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonAdd.Name = "ToolStripButtonAdd";
-            _ToolStripButtonAdd.Size = new Size(49, 22);
-            _ToolStripButtonAdd.Text = "Add";
-            // 
-            // ToolStripButtonRemove
-            // 
-            _ToolStripButtonRemove.Enabled = false;
-            _ToolStripButtonRemove.Image = My.Resources.Resources.edit_clear;
-            _ToolStripButtonRemove.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonRemove.Name = "ToolStripButtonRemove";
-            _ToolStripButtonRemove.Size = new Size(70, 22);
-            _ToolStripButtonRemove.Text = "Remove";
-            // 
-            // ToolStripSeparator1
-            // 
-            _ToolStripSeparator1.Name = "ToolStripSeparator1";
-            _ToolStripSeparator1.Size = new Size(6, 25);
-            // 
-            // ToolStripButtonLoad
-            // 
-            _ToolStripButtonLoad.Image = My.Resources.Resources.document_open;
-            _ToolStripButtonLoad.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonLoad.Name = "ToolStripButtonLoad";
-            _ToolStripButtonLoad.Size = new Size(62, 22);
-            _ToolStripButtonLoad.Text = "Load...";
-            // 
-            // ToolStripButtonSave
-            // 
-            _ToolStripButtonSave.Image = My.Resources.Resources.document_save;
-            _ToolStripButtonSave.ImageTransparentColor = Color.Magenta;
-            _ToolStripButtonSave.Name = "ToolStripButtonSave";
-            _ToolStripButtonSave.Size = new Size(60, 22);
-            _ToolStripButtonSave.Text = "Save...";
-            // 
-            // TextBoxTitle
-            // 
-            _TextBoxTitle.Location = new Point(6, 32);
-            _TextBoxTitle.Name = "TextBoxTitle";
-            _TextBoxTitle.Size = new Size(300, 20);
-            _TextBoxTitle.TabIndex = 6;
-            // 
-            // ButtonApply
-            // 
-            _ButtonApply.Location = new Point(6, 120);
-            _ButtonApply.Name = "ButtonApply";
-            _ButtonApply.Size = new Size(75, 23);
-            _ButtonApply.TabIndex = 7;
-            _ButtonApply.Text = "Apply";
-            _ButtonApply.UseVisualStyleBackColor = true;
-            // 
-            // GroupBoxBase
-            // 
-            _GroupBoxBase.AutoSize = true;
-            _GroupBoxBase.Controls.Add(_LabelIfClosed);
-            _GroupBoxBase.Controls.Add(_ComboBoxIfClosed);
-            _GroupBoxBase.Controls.Add(_ButtonColorBg);
-            _GroupBoxBase.Controls.Add(_LabelExampleColor);
-            _GroupBoxBase.Controls.Add(_ButtonColorFg);
-            _GroupBoxBase.Controls.Add(_LabelColor);
-            _GroupBoxBase.Controls.Add(_TextBoxColor);
-            _GroupBoxBase.Controls.Add(_CheckBoxNameListOnly);
-            _GroupBoxBase.Controls.Add(_CheckBoxTimeStamp);
-            _GroupBoxBase.Controls.Add(_ButtonFont);
-            _GroupBoxBase.Controls.Add(_LabelFont);
-            _GroupBoxBase.Controls.Add(_TextBoxFont);
-            _GroupBoxBase.Controls.Add(_LabelTitle);
-            _GroupBoxBase.Controls.Add(_ButtonApply);
-            _GroupBoxBase.Controls.Add(_TextBoxTitle);
-            _GroupBoxBase.Dock = DockStyle.Bottom;
-            _GroupBoxBase.Enabled = false;
-            _GroupBoxBase.Location = new Point(0, 284);
-            _GroupBoxBase.Name = "GroupBoxBase";
-            _GroupBoxBase.Size = new Size(698, 162);
-            _GroupBoxBase.TabIndex = 4;
-            _GroupBoxBase.TabStop = false;
-            // 
-            // LabelIfClosed
-            // 
-            _LabelIfClosed.AutoSize = true;
-            _LabelIfClosed.Location = new Point(309, 55);
-            _LabelIfClosed.Name = "LabelIfClosed";
-            _LabelIfClosed.Size = new Size(91, 13);
-            _LabelIfClosed.TabIndex = 20;
-            _LabelIfClosed.Text = "Redirect If Closed";
-            // 
-            // ComboBoxIfClosed
-            // 
-            _ComboBoxIfClosed.DropDownStyle = ComboBoxStyle.DropDownList;
-            _ComboBoxIfClosed.FormattingEnabled = true;
-            _ComboBoxIfClosed.Location = new Point(312, 70);
-            _ComboBoxIfClosed.Name = "ComboBoxIfClosed";
-            _ComboBoxIfClosed.Size = new Size(245, 21);
-            _ComboBoxIfClosed.Sorted = true;
-            _ComboBoxIfClosed.TabIndex = 19;
-            // 
-            // ButtonColorBg
-            // 
-            _ButtonColorBg.Image = My.Resources.Resources.preferences_desktop_locale;
-            _ButtonColorBg.Location = new Point(263, 70);
-            _ButtonColorBg.Name = "ButtonColorBg";
-            _ButtonColorBg.Size = new Size(23, 23);
-            _ButtonColorBg.TabIndex = 18;
-            _ButtonColorBg.UseVisualStyleBackColor = true;
-            // 
-            // LabelExampleColor
-            // 
-            _LabelExampleColor.BackColor = Color.Black;
-            _LabelExampleColor.Font = new Font("Verdana", 9.0F, FontStyle.Bold, GraphicsUnit.Point, Conversions.ToByte(0));
-            _LabelExampleColor.ForeColor = Color.Black;
-            _LabelExampleColor.Location = new Point(164, 71);
-            _LabelExampleColor.Name = "LabelExampleColor";
-            _LabelExampleColor.Size = new Size(64, 20);
-            _LabelExampleColor.TabIndex = 17;
-            _LabelExampleColor.Text = "Color";
-            _LabelExampleColor.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // ButtonColorFg
-            // 
-            _ButtonColorFg.Image = My.Resources.Resources.applications_graphics;
-            _ButtonColorFg.Location = new Point(234, 70);
-            _ButtonColorFg.Name = "ButtonColorFg";
-            _ButtonColorFg.Size = new Size(23, 23);
-            _ButtonColorFg.TabIndex = 15;
-            _ButtonColorFg.UseVisualStyleBackColor = true;
-            // 
-            // LabelColor
-            // 
-            _LabelColor.AutoSize = true;
-            _LabelColor.Location = new Point(3, 55);
-            _LabelColor.Name = "LabelColor";
-            _LabelColor.Size = new Size(73, 13);
-            _LabelColor.TabIndex = 16;
-            _LabelColor.Text = "Window Color";
-            // 
-            // TextBoxColor
-            // 
-            _TextBoxColor.Location = new Point(6, 71);
-            _TextBoxColor.Name = "TextBoxColor";
-            _TextBoxColor.Size = new Size(152, 20);
-            _TextBoxColor.TabIndex = 14;
-            // 
-            // CheckBoxNameListOnly
-            // 
-            _CheckBoxNameListOnly.AutoSize = true;
-            _CheckBoxNameListOnly.Location = new Point(145, 97);
-            _CheckBoxNameListOnly.Name = "CheckBoxNameListOnly";
-            _CheckBoxNameListOnly.Size = new Size(103, 17);
-            _CheckBoxNameListOnly.TabIndex = 13;
-            _CheckBoxNameListOnly.Text = "Name List Only?";
-            _CheckBoxNameListOnly.UseVisualStyleBackColor = true;
-            // 
-            // CheckBoxTimeStamp
-            // 
-            _CheckBoxTimeStamp.AutoSize = true;
-            _CheckBoxTimeStamp.Location = new Point(6, 97);
-            _CheckBoxTimeStamp.Name = "CheckBoxTimeStamp";
-            _CheckBoxTimeStamp.Size = new Size(123, 17);
-            _CheckBoxTimeStamp.TabIndex = 12;
-            _CheckBoxTimeStamp.Text = "Time Stamp Output?";
-            _CheckBoxTimeStamp.UseVisualStyleBackColor = true;
-            // 
-            // ButtonFont
-            // 
-            _ButtonFont.Image = My.Resources.Resources.font_x_generic;
-            _ButtonFont.ImageAlign = ContentAlignment.BottomLeft;
-            _ButtonFont.Location = new Point(482, 30);
-            _ButtonFont.Name = "ButtonFont";
-            _ButtonFont.Size = new Size(75, 23);
-            _ButtonFont.TabIndex = 11;
-            _ButtonFont.Text = "Font";
-            _ButtonFont.UseVisualStyleBackColor = true;
-            // 
-            // LabelFont
-            // 
-            _LabelFont.AutoSize = true;
-            _LabelFont.Location = new Point(309, 16);
-            _LabelFont.Name = "LabelFont";
-            _LabelFont.Size = new Size(28, 13);
-            _LabelFont.TabIndex = 10;
-            _LabelFont.Text = "Font";
-            // 
-            // TextBoxFont
-            // 
-            _TextBoxFont.Location = new Point(312, 32);
-            _TextBoxFont.Name = "TextBoxFont";
-            _TextBoxFont.ReadOnly = true;
-            _TextBoxFont.Size = new Size(168, 20);
-            _TextBoxFont.TabIndex = 9;
-            // 
-            // LabelTitle
-            // 
-            _LabelTitle.AutoSize = true;
-            _LabelTitle.Location = new Point(3, 16);
-            _LabelTitle.Name = "LabelTitle";
-            _LabelTitle.Size = new Size(27, 13);
-            _LabelTitle.TabIndex = 8;
-            _LabelTitle.Text = "Title";
-            // 
-            // FontDialogPicker
-            // 
-            _FontDialogPicker.FontMustExist = true;
-            _FontDialogPicker.ShowEffects = false;
-            // 
-            // ColorDialogPicker
-            // 
-            _ColorDialogPicker.FullOpen = true;
-            // 
-            // OpenFileDialogLayout
-            // 
-            _OpenFileDialogLayout.DefaultExt = "layout";
-            _OpenFileDialogLayout.Filter = "Genie Layout|*.layout|All files|*.*";
-            _OpenFileDialogLayout.RestoreDirectory = true;
-            _OpenFileDialogLayout.Title = "Open Layout";
-            // 
-            // SaveFileDialogLayout
-            // 
-            _SaveFileDialogLayout.DefaultExt = "layout";
-            _SaveFileDialogLayout.Filter = "Genie Layout|*.layout|All files|*.*";
-            _SaveFileDialogLayout.RestoreDirectory = true;
-            _SaveFileDialogLayout.Title = "Save Layout";
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCWindows));
+            this._ListViewBase = new System.Windows.Forms.ListView();
+            this._ContextMenuStripBase = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this._AddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._RemoveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._ToolStripMenu = new System.Windows.Forms.ToolStrip();
+            this._ToolStripButtonRefresh = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this._ToolStripButtonAdd = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripButtonRemove = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this._ToolStripButtonLoad = new System.Windows.Forms.ToolStripButton();
+            this._ToolStripButtonSave = new System.Windows.Forms.ToolStripButton();
+            this._TextBoxTitle = new System.Windows.Forms.TextBox();
+            this._ButtonApply = new System.Windows.Forms.Button();
+            this._GroupBoxBase = new System.Windows.Forms.GroupBox();
+            this._LabelIfClosed = new System.Windows.Forms.Label();
+            this._ComboBoxIfClosed = new System.Windows.Forms.ComboBox();
+            this._ButtonColorBg = new System.Windows.Forms.Button();
+            this._LabelExampleColor = new System.Windows.Forms.Label();
+            this._ButtonColorFg = new System.Windows.Forms.Button();
+            this._LabelColor = new System.Windows.Forms.Label();
+            this._TextBoxColor = new System.Windows.Forms.TextBox();
+            this._CheckBoxNameListOnly = new System.Windows.Forms.CheckBox();
+            this._CheckBoxTimeStamp = new System.Windows.Forms.CheckBox();
+            this._ButtonFont = new System.Windows.Forms.Button();
+            this._LabelFont = new System.Windows.Forms.Label();
+            this._TextBoxFont = new System.Windows.Forms.TextBox();
+            this._LabelTitle = new System.Windows.Forms.Label();
+            this._FontDialogPicker = new System.Windows.Forms.FontDialog();
+            this._ColorDialogPicker = new System.Windows.Forms.ColorDialog();
+            this._OpenFileDialogLayout = new System.Windows.Forms.OpenFileDialog();
+            this._SaveFileDialogLayout = new System.Windows.Forms.SaveFileDialog();
+            this._ContextMenuStripBase.SuspendLayout();
+            this._ToolStripMenu.SuspendLayout();
+            this._GroupBoxBase.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // _ListViewBase
+            // 
+            this._ListViewBase.BackColor = System.Drawing.Color.Black;
+            this._ListViewBase.ContextMenuStrip = this._ContextMenuStripBase;
+            this._ListViewBase.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._ListViewBase.ForeColor = System.Drawing.Color.White;
+            this._ListViewBase.FullRowSelect = true;
+            this._ListViewBase.Location = new System.Drawing.Point(0, 25);
+            this._ListViewBase.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._ListViewBase.Name = "_ListViewBase";
+            this._ListViewBase.ShowGroups = false;
+            this._ListViewBase.Size = new System.Drawing.Size(814, 303);
+            this._ListViewBase.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this._ListViewBase.TabIndex = 0;
+            this._ListViewBase.UseCompatibleStateImageBehavior = false;
+            this._ListViewBase.View = System.Windows.Forms.View.Details;
+            this._ListViewBase.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.ListViewBase_SortColumnClick);
+            this._ListViewBase.SelectedIndexChanged += new System.EventHandler(this.ListViewBase_SelectedIndexChanged);
+            this._ListViewBase.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ListViewBase_KeyUp);
+            this._ListViewBase.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ListViewBase_MouseUp);
+            // 
+            // _ContextMenuStripBase
+            // 
+            this._ContextMenuStripBase.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._AddToolStripMenuItem,
+            this._RemoveToolStripMenuItem});
+            this._ContextMenuStripBase.Name = "ContextMenuStripBase";
+            this._ContextMenuStripBase.Size = new System.Drawing.Size(118, 48);
+            // 
+            // _AddToolStripMenuItem
+            // 
+            this._AddToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_AddToolStripMenuItem.Image")));
+            this._AddToolStripMenuItem.Name = "_AddToolStripMenuItem";
+            this._AddToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this._AddToolStripMenuItem.Text = "Add";
+            this._AddToolStripMenuItem.Click += new System.EventHandler(this.AddToolStripMenuItem_Click);
+            // 
+            // _RemoveToolStripMenuItem
+            // 
+            this._RemoveToolStripMenuItem.Enabled = false;
+            this._RemoveToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_RemoveToolStripMenuItem.Image")));
+            this._RemoveToolStripMenuItem.Name = "_RemoveToolStripMenuItem";
+            this._RemoveToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this._RemoveToolStripMenuItem.Text = "Remove";
+            this._RemoveToolStripMenuItem.Click += new System.EventHandler(this.RemoveToolStripMenuItem_Click);
+            // 
+            // _ToolStripMenu
+            // 
+            this._ToolStripMenu.AllowMerge = false;
+            this._ToolStripMenu.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this._ToolStripMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._ToolStripButtonRefresh,
+            this._ToolStripSeparator2,
+            this._ToolStripButtonAdd,
+            this._ToolStripButtonRemove,
+            this._ToolStripSeparator1,
+            this._ToolStripButtonLoad,
+            this._ToolStripButtonSave});
+            this._ToolStripMenu.Location = new System.Drawing.Point(0, 0);
+            this._ToolStripMenu.Name = "_ToolStripMenu";
+            this._ToolStripMenu.Size = new System.Drawing.Size(814, 25);
+            this._ToolStripMenu.TabIndex = 5;
+            // 
+            // _ToolStripButtonRefresh
+            // 
+            this._ToolStripButtonRefresh.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonRefresh.Image")));
+            this._ToolStripButtonRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonRefresh.Name = "_ToolStripButtonRefresh";
+            this._ToolStripButtonRefresh.Size = new System.Drawing.Size(66, 22);
+            this._ToolStripButtonRefresh.Text = "Refresh";
+            this._ToolStripButtonRefresh.Click += new System.EventHandler(this.ToolStripButtonRefresh_Click);
+            // 
+            // _ToolStripSeparator2
+            // 
+            this._ToolStripSeparator2.Name = "_ToolStripSeparator2";
+            this._ToolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // _ToolStripButtonAdd
+            // 
+            this._ToolStripButtonAdd.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonAdd.Image")));
+            this._ToolStripButtonAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonAdd.Name = "_ToolStripButtonAdd";
+            this._ToolStripButtonAdd.Size = new System.Drawing.Size(49, 22);
+            this._ToolStripButtonAdd.Text = "Add";
+            this._ToolStripButtonAdd.Click += new System.EventHandler(this.ToolStripButtonAdd_Click);
+            // 
+            // _ToolStripButtonRemove
+            // 
+            this._ToolStripButtonRemove.Enabled = false;
+            this._ToolStripButtonRemove.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonRemove.Image")));
+            this._ToolStripButtonRemove.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonRemove.Name = "_ToolStripButtonRemove";
+            this._ToolStripButtonRemove.Size = new System.Drawing.Size(70, 22);
+            this._ToolStripButtonRemove.Text = "Remove";
+            this._ToolStripButtonRemove.Click += new System.EventHandler(this.ToolStripButtonRemove_Click);
+            // 
+            // _ToolStripSeparator1
+            // 
+            this._ToolStripSeparator1.Name = "_ToolStripSeparator1";
+            this._ToolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // _ToolStripButtonLoad
+            // 
+            this._ToolStripButtonLoad.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonLoad.Image")));
+            this._ToolStripButtonLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonLoad.Name = "_ToolStripButtonLoad";
+            this._ToolStripButtonLoad.Size = new System.Drawing.Size(62, 22);
+            this._ToolStripButtonLoad.Text = "Load...";
+            this._ToolStripButtonLoad.Click += new System.EventHandler(this.ToolStripButtonLoad_Click);
+            // 
+            // _ToolStripButtonSave
+            // 
+            this._ToolStripButtonSave.Image = ((System.Drawing.Image)(resources.GetObject("_ToolStripButtonSave.Image")));
+            this._ToolStripButtonSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._ToolStripButtonSave.Name = "_ToolStripButtonSave";
+            this._ToolStripButtonSave.Size = new System.Drawing.Size(60, 22);
+            this._ToolStripButtonSave.Text = "Save...";
+            this._ToolStripButtonSave.Click += new System.EventHandler(this.ToolStripButtonSave_Click);
+            // 
+            // _TextBoxTitle
+            // 
+            this._TextBoxTitle.Location = new System.Drawing.Point(7, 37);
+            this._TextBoxTitle.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._TextBoxTitle.Name = "_TextBoxTitle";
+            this._TextBoxTitle.Size = new System.Drawing.Size(349, 23);
+            this._TextBoxTitle.TabIndex = 6;
+            this._TextBoxTitle.TextChanged += new System.EventHandler(this.TextBoxTitle_TextChanged);
+            // 
+            // _ButtonApply
+            // 
+            this._ButtonApply.Location = new System.Drawing.Point(7, 138);
+            this._ButtonApply.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._ButtonApply.Name = "_ButtonApply";
+            this._ButtonApply.Size = new System.Drawing.Size(88, 27);
+            this._ButtonApply.TabIndex = 7;
+            this._ButtonApply.Text = "Apply";
+            this._ButtonApply.UseVisualStyleBackColor = true;
+            this._ButtonApply.Click += new System.EventHandler(this.ButtonApply_Click);
+            // 
+            // _GroupBoxBase
+            // 
+            this._GroupBoxBase.AutoSize = true;
+            this._GroupBoxBase.Controls.Add(this._LabelIfClosed);
+            this._GroupBoxBase.Controls.Add(this._ComboBoxIfClosed);
+            this._GroupBoxBase.Controls.Add(this._ButtonColorBg);
+            this._GroupBoxBase.Controls.Add(this._LabelExampleColor);
+            this._GroupBoxBase.Controls.Add(this._ButtonColorFg);
+            this._GroupBoxBase.Controls.Add(this._LabelColor);
+            this._GroupBoxBase.Controls.Add(this._TextBoxColor);
+            this._GroupBoxBase.Controls.Add(this._CheckBoxNameListOnly);
+            this._GroupBoxBase.Controls.Add(this._CheckBoxTimeStamp);
+            this._GroupBoxBase.Controls.Add(this._ButtonFont);
+            this._GroupBoxBase.Controls.Add(this._LabelFont);
+            this._GroupBoxBase.Controls.Add(this._TextBoxFont);
+            this._GroupBoxBase.Controls.Add(this._LabelTitle);
+            this._GroupBoxBase.Controls.Add(this._ButtonApply);
+            this._GroupBoxBase.Controls.Add(this._TextBoxTitle);
+            this._GroupBoxBase.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this._GroupBoxBase.Enabled = false;
+            this._GroupBoxBase.Location = new System.Drawing.Point(0, 328);
+            this._GroupBoxBase.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._GroupBoxBase.Name = "_GroupBoxBase";
+            this._GroupBoxBase.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._GroupBoxBase.Size = new System.Drawing.Size(814, 187);
+            this._GroupBoxBase.TabIndex = 4;
+            this._GroupBoxBase.TabStop = false;
+            // 
+            // _LabelIfClosed
+            // 
+            this._LabelIfClosed.AutoSize = true;
+            this._LabelIfClosed.Location = new System.Drawing.Point(360, 63);
+            this._LabelIfClosed.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this._LabelIfClosed.Name = "_LabelIfClosed";
+            this._LabelIfClosed.Size = new System.Drawing.Size(99, 15);
+            this._LabelIfClosed.TabIndex = 20;
+            this._LabelIfClosed.Text = "Redirect If Closed";
+            // 
+            // _ComboBoxIfClosed
+            // 
+            this._ComboBoxIfClosed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this._ComboBoxIfClosed.FormattingEnabled = true;
+            this._ComboBoxIfClosed.Location = new System.Drawing.Point(364, 81);
+            this._ComboBoxIfClosed.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._ComboBoxIfClosed.Name = "_ComboBoxIfClosed";
+            this._ComboBoxIfClosed.Size = new System.Drawing.Size(285, 23);
+            this._ComboBoxIfClosed.Sorted = true;
+            this._ComboBoxIfClosed.TabIndex = 19;
+            // 
+            // _ButtonColorBg
+            // 
+            this._ButtonColorBg.Image = ((System.Drawing.Image)(resources.GetObject("_ButtonColorBg.Image")));
+            this._ButtonColorBg.Location = new System.Drawing.Point(307, 81);
+            this._ButtonColorBg.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._ButtonColorBg.Name = "_ButtonColorBg";
+            this._ButtonColorBg.Size = new System.Drawing.Size(27, 27);
+            this._ButtonColorBg.TabIndex = 18;
+            this._ButtonColorBg.UseVisualStyleBackColor = true;
+            this._ButtonColorBg.Click += new System.EventHandler(this.ButtonColorBg_Click);
+            // 
+            // _LabelExampleColor
+            // 
+            this._LabelExampleColor.BackColor = System.Drawing.Color.Black;
+            this._LabelExampleColor.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this._LabelExampleColor.ForeColor = System.Drawing.Color.Black;
+            this._LabelExampleColor.Location = new System.Drawing.Point(191, 82);
+            this._LabelExampleColor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this._LabelExampleColor.Name = "_LabelExampleColor";
+            this._LabelExampleColor.Size = new System.Drawing.Size(75, 23);
+            this._LabelExampleColor.TabIndex = 17;
+            this._LabelExampleColor.Text = "Color";
+            this._LabelExampleColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // _ButtonColorFg
+            // 
+            this._ButtonColorFg.Image = ((System.Drawing.Image)(resources.GetObject("_ButtonColorFg.Image")));
+            this._ButtonColorFg.Location = new System.Drawing.Point(273, 81);
+            this._ButtonColorFg.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._ButtonColorFg.Name = "_ButtonColorFg";
+            this._ButtonColorFg.Size = new System.Drawing.Size(27, 27);
+            this._ButtonColorFg.TabIndex = 15;
+            this._ButtonColorFg.UseVisualStyleBackColor = true;
+            this._ButtonColorFg.Click += new System.EventHandler(this.ButtonColorFg_Click);
+            // 
+            // _LabelColor
+            // 
+            this._LabelColor.AutoSize = true;
+            this._LabelColor.Location = new System.Drawing.Point(4, 63);
+            this._LabelColor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this._LabelColor.Name = "_LabelColor";
+            this._LabelColor.Size = new System.Drawing.Size(83, 15);
+            this._LabelColor.TabIndex = 16;
+            this._LabelColor.Text = "Window Color";
+            // 
+            // _TextBoxColor
+            // 
+            this._TextBoxColor.Location = new System.Drawing.Point(7, 82);
+            this._TextBoxColor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._TextBoxColor.Name = "_TextBoxColor";
+            this._TextBoxColor.Size = new System.Drawing.Size(177, 23);
+            this._TextBoxColor.TabIndex = 14;
+            this._TextBoxColor.TextChanged += new System.EventHandler(this.TextBoxTitle_TextChanged);
+            this._TextBoxColor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxColor_KeyDown);
+            this._TextBoxColor.Leave += new System.EventHandler(this.TextBoxColor_Leave);
+            // 
+            // _CheckBoxNameListOnly
+            // 
+            this._CheckBoxNameListOnly.AutoSize = true;
+            this._CheckBoxNameListOnly.Location = new System.Drawing.Point(169, 112);
+            this._CheckBoxNameListOnly.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._CheckBoxNameListOnly.Name = "_CheckBoxNameListOnly";
+            this._CheckBoxNameListOnly.Size = new System.Drawing.Size(112, 19);
+            this._CheckBoxNameListOnly.TabIndex = 13;
+            this._CheckBoxNameListOnly.Text = "Name List Only?";
+            this._CheckBoxNameListOnly.UseVisualStyleBackColor = true;
+            this._CheckBoxNameListOnly.CheckedChanged += new System.EventHandler(this.CheckBoxNameListOnly_CheckedChanged);
+            // 
+            // _CheckBoxTimeStamp
+            // 
+            this._CheckBoxTimeStamp.AutoSize = true;
+            this._CheckBoxTimeStamp.Location = new System.Drawing.Point(7, 112);
+            this._CheckBoxTimeStamp.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._CheckBoxTimeStamp.Name = "_CheckBoxTimeStamp";
+            this._CheckBoxTimeStamp.Size = new System.Drawing.Size(135, 19);
+            this._CheckBoxTimeStamp.TabIndex = 12;
+            this._CheckBoxTimeStamp.Text = "Time Stamp Output?";
+            this._CheckBoxTimeStamp.UseVisualStyleBackColor = true;
+            this._CheckBoxTimeStamp.CheckedChanged += new System.EventHandler(this.CheckBoxTimeStamp_CheckedChanged);
+            // 
+            // _ButtonFont
+            // 
+            this._ButtonFont.Image = ((System.Drawing.Image)(resources.GetObject("_ButtonFont.Image")));
+            this._ButtonFont.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this._ButtonFont.Location = new System.Drawing.Point(562, 35);
+            this._ButtonFont.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._ButtonFont.Name = "_ButtonFont";
+            this._ButtonFont.Size = new System.Drawing.Size(88, 27);
+            this._ButtonFont.TabIndex = 11;
+            this._ButtonFont.Text = "Font";
+            this._ButtonFont.UseVisualStyleBackColor = true;
+            this._ButtonFont.Click += new System.EventHandler(this.ButtonFont_Click);
+            // 
+            // _LabelFont
+            // 
+            this._LabelFont.AutoSize = true;
+            this._LabelFont.Location = new System.Drawing.Point(360, 18);
+            this._LabelFont.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this._LabelFont.Name = "_LabelFont";
+            this._LabelFont.Size = new System.Drawing.Size(31, 15);
+            this._LabelFont.TabIndex = 10;
+            this._LabelFont.Text = "Font";
+            // 
+            // _TextBoxFont
+            // 
+            this._TextBoxFont.Location = new System.Drawing.Point(364, 37);
+            this._TextBoxFont.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._TextBoxFont.Name = "_TextBoxFont";
+            this._TextBoxFont.ReadOnly = true;
+            this._TextBoxFont.Size = new System.Drawing.Size(195, 23);
+            this._TextBoxFont.TabIndex = 9;
+            // 
+            // _LabelTitle
+            // 
+            this._LabelTitle.AutoSize = true;
+            this._LabelTitle.Location = new System.Drawing.Point(4, 18);
+            this._LabelTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this._LabelTitle.Name = "_LabelTitle";
+            this._LabelTitle.Size = new System.Drawing.Size(29, 15);
+            this._LabelTitle.TabIndex = 8;
+            this._LabelTitle.Text = "Title";
+            // 
+            // _FontDialogPicker
+            // 
+            this._FontDialogPicker.FontMustExist = true;
+            this._FontDialogPicker.ShowEffects = false;
+            // 
+            // _ColorDialogPicker
+            // 
+            this._ColorDialogPicker.FullOpen = true;
+            // 
+            // _OpenFileDialogLayout
+            // 
+            this._OpenFileDialogLayout.DefaultExt = "layout";
+            this._OpenFileDialogLayout.Filter = "Genie Layout|*.layout|All files|*.*";
+            this._OpenFileDialogLayout.RestoreDirectory = true;
+            this._OpenFileDialogLayout.Title = "Open Layout";
+            // 
+            // _SaveFileDialogLayout
+            // 
+            this._SaveFileDialogLayout.DefaultExt = "layout";
+            this._SaveFileDialogLayout.Filter = "Genie Layout|*.layout|All files|*.*";
+            this._SaveFileDialogLayout.RestoreDirectory = true;
+            this._SaveFileDialogLayout.Title = "Save Layout";
             // 
             // UCWindows
             // 
-            AutoScaleDimensions = new SizeF(6.0F, 13.0F);
-            AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(_ListViewBase);
-            Controls.Add(_ToolStripMenu);
-            Controls.Add(_GroupBoxBase);
-            Name = "UCWindows";
-            Size = new Size(698, 446);
-            _ContextMenuStripBase.ResumeLayout(false);
-            _ToolStripMenu.ResumeLayout(false);
-            _ToolStripMenu.PerformLayout();
-            _GroupBoxBase.ResumeLayout(false);
-            _GroupBoxBase.PerformLayout();
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this._ListViewBase);
+            this.Controls.Add(this._ToolStripMenu);
+            this.Controls.Add(this._GroupBoxBase);
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.Name = "UCWindows";
+            this.Size = new System.Drawing.Size(814, 515);
+            this._ContextMenuStripBase.ResumeLayout(false);
+            this._ToolStripMenu.ResumeLayout(false);
+            this._ToolStripMenu.PerformLayout();
+            this._GroupBoxBase.ResumeLayout(false);
+            this._GroupBoxBase.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         private ListView _ListViewBase;

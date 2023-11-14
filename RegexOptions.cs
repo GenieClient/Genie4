@@ -4,6 +4,6 @@ namespace GenieClient
 {
     static class MyRegexOptions
     {
-        public static RegexOptions options = RegexOptions.None;
+        public static RegexOptions options = RegexOptions.Multiline;
     }
 }

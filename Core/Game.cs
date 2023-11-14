@@ -2745,7 +2745,7 @@ namespace GenieClient.Genie
                 }
 
                 // Line contains
-                if (!Information.IsNothing(m_oGlobals.HighlightList.RegexLine))
+                if (!Information.IsNothing(m_oGlobals.HighlightList.RegexLine) && !string.IsNullOrWhiteSpace(m_oGlobals.HighlightList.RegexLine.ToString()))
                 {
                     m_oMatchCollection = m_oGlobals.HighlightList.RegexLine.Matches(sText);
                     Highlights.Highlight oHighlightString;
