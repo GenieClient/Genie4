@@ -111,6 +111,8 @@ namespace GenieClient
                     }
                 }
                 _profiles.ExpandAll();
+                if(_profiles.Nodes.Count > 0) _profiles.Nodes[0].EnsureVisible(); //this will scroll the window to the top of the list
+
             }
 
 
