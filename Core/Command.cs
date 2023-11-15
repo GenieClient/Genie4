@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -206,7 +207,7 @@ namespace GenieClient.Genie
             oGlobals = cl;
         }
 
-        public string ParseCommand(string sText, bool bSendToGame = false, bool bUserInput = false, string sOrigin = "", bool bParseQuickSend = true)
+        public async Task<string> ParseCommand(string sText, bool bSendToGame = false, bool bUserInput = false, string sOrigin = "", bool bParseQuickSend = true)
         {
             /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
             string sResult = string.Empty;
@@ -396,7 +397,7 @@ namespace GenieClient.Genie
                                                 int count = 0;
                                                 while (count < oGlobals.Config.LichStartPause)
                                                 {
-                                                    Thread.Sleep(1000);
+                                                    await Task.Delay(1000);
                                                     count++;
                                                 }
                                                 Connect(oArgs, true);
@@ -1032,29 +1033,29 @@ namespace GenieClient.Genie
                                             {
                                                 if (oArgs[1].ToString().StartsWith("#"))
                                                 {
-                                                    oArgs[1] = ParseCommand(oGlobals.ParseGlobalVars(oArgs[1].ToString()));
+                                                    oArgs[1] = await ParseCommand(oGlobals.ParseGlobalVars(oArgs[1].ToString()));
                                                 }
 
                                                 if (EvalIf(oGlobals.ParseGlobalVars(oArgs[1])) == true)
                                                 {
                                                     if (oArgs[2].ToString().StartsWith("#"))
                                                     {
-                                                        sResult = ParseCommand(oGlobals.ParseGlobalVars(oArgs[2].ToString()));
+                                                        sResult = await ParseCommand(oGlobals.ParseGlobalVars(oArgs[2].ToString()));
                                                     }
                                                     else
                                                     {
-                                                        sResult = ParseCommand(Utility.ArrayToString(oArgs, 2));
+                                                        sResult = await ParseCommand(Utility.ArrayToString(oArgs, 2));
                                                     }
                                                 }
                                                 else if (oArgs.Count > 3)
                                                 {
                                                     if (oArgs[3].ToString().StartsWith("#"))
                                                     {
-                                                        sResult = ParseCommand(oGlobals.ParseGlobalVars(oArgs[3].ToString()));
+                                                        sResult = await ParseCommand(oGlobals.ParseGlobalVars(oArgs[3].ToString()));
                                                     }
                                                     else
                                                     {
-                                                        sResult = ParseCommand(Utility.ArrayToString(oArgs, 3));
+                                                        sResult = await ParseCommand(Utility.ArrayToString(oArgs, 3));
                                                     }
                                                 }
                                             }
@@ -1404,8 +1405,8 @@ namespace GenieClient.Genie
                                         {
                                             if (oArgs.Count > 2)
                                             {
-                                                string argsValue2 = ParseCommand(oGlobals.ParseGlobalVars(oArgs[1].ToString()));
-                                                string argsValue3 = ParseCommand(oGlobals.ParseGlobalVars(oArgs[2].ToString()));
+                                                string argsValue2 = await ParseCommand(oGlobals.ParseGlobalVars(oArgs[1].ToString()));
+                                                string argsValue3 = await ParseCommand(oGlobals.ParseGlobalVars(oArgs[2].ToString()));
                                                 sResult = Utility.RandomNumber(Utility.StringToInteger(argsValue2), Utility.StringToInteger(argsValue3)).ToString();
                                             }
                                             else
@@ -2822,7 +2823,7 @@ namespace GenieClient.Genie
             {
                 if (sCommand.StartsWith(" .") == false)
                 {
-                    sResult = ParseCommand(sCommand.Substring(1), false, false, "", bParseQuickSend); // Remove first space
+                    sResult = ParseCommand(sCommand.Substring(1), false, false, "", bParseQuickSend).Result; // Remove first space
                 }
                 else
                 {
@@ -2894,6 +2895,7 @@ namespace GenieClient.Genie
             EchoText("connectscript=" + oGlobals.Config.ConnectScript.ToString() + System.Environment.NewLine);
             EchoText("checkforupdates=" + oGlobals.Config.CheckForUpdates.ToString() + System.Environment.NewLine);
             EchoText("autoupdate=" + oGlobals.Config.AutoUpdate.ToString() + System.Environment.NewLine);
+            EchoText("autoupdatelamp=" + oGlobals.Config.AutoUpdateLamp.ToString() + System.Environment.NewLine);
             EchoText("automapperalpha=" + oGlobals.Config.AutoMapperAlpha.ToString() + System.Environment.NewLine);
             EchoText("weblinksafety=" + oGlobals.Config.bWebLinkSafety.ToString() + System.Environment.NewLine);
         }

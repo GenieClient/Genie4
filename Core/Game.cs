@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -991,7 +992,7 @@ namespace GenieClient.Genie
             }
         }
 
-        private void ParseRow(string sText)
+        private async void ParseRow(string sText)
         {
             var switchExpr = m_oConnectState;
             switch (switchExpr)
@@ -1011,7 +1012,7 @@ namespace GenieClient.Genie
                 case ConnectStates.ConnectedGameHandshake:
                     {
                         m_oConnectState = ConnectStates.ConnectedGame;
-                        Thread.Sleep(1000);
+                        await Task.Delay(1000);
                         m_oSocket.Send(Constants.vbLf + Constants.vbLf);
                         break;
                     }

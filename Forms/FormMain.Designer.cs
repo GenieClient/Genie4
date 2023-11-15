@@ -127,6 +127,7 @@ namespace GenieClient
             this.loadTestClientToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
             this._ToolStripSeparator3 = (new global::System.Windows.Forms.ToolStripSeparator());
             this.autoUpdateToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
+            this.autoUpdateLampToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
             this.checkUpdatesOnStartupToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
             this._ChangelogToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
             this._ToolStripSeparator10 = (new global::System.Windows.Forms.ToolStripSeparator());
@@ -834,19 +835,19 @@ namespace GenieClient
             // _NoPluginsLoadedToolStripMenuItem
             // 
             this._NoPluginsLoadedToolStripMenuItem.Name = ("_NoPluginsLoadedToolStripMenuItem");
-            this._NoPluginsLoadedToolStripMenuItem.Size = (new global::System.Drawing.Size(171, 22));
+            this._NoPluginsLoadedToolStripMenuItem.Size = (new global::System.Drawing.Size(180, 22));
             this._NoPluginsLoadedToolStripMenuItem.Text = ("No plugins loaded");
             // 
             // updatePluginsToolStripMenuItem
             // 
             this.updatePluginsToolStripMenuItem.Name = ("updatePluginsToolStripMenuItem");
-            this.updatePluginsToolStripMenuItem.Size = (new global::System.Drawing.Size(171, 22));
+            this.updatePluginsToolStripMenuItem.Size = (new global::System.Drawing.Size(180, 22));
             this.updatePluginsToolStripMenuItem.Text = ("&Update Plugins");
             this.updatePluginsToolStripMenuItem.Click += (this.updatePluginsToolStripMenuItem_Click);
             // 
             // _HelpToolStripMenuItem
             // 
-            this._HelpToolStripMenuItem.DropDownItems.AddRange(new global::System.Windows.Forms.ToolStripItem[] { this.checkForUpdatesToolStripMenuItem, this.forceUpdateToolStripMenuItem, this.loadTestClientToolStripMenuItem, this._ToolStripSeparator3, this.autoUpdateToolStripMenuItem, this.checkUpdatesOnStartupToolStripMenuItem, this._ChangelogToolStripMenuItem, this._ToolStripSeparator10, this._OpenGenieDiscordToolStripMenuItem, this.OpenGenieGithubToolStripMenuItem, this._OpenGenieDocsToolStripMenuItem, this.toolStripSeparator1, this.toolStripMenuItem1 });
+            this._HelpToolStripMenuItem.DropDownItems.AddRange(new global::System.Windows.Forms.ToolStripItem[] { this.checkForUpdatesToolStripMenuItem, this.forceUpdateToolStripMenuItem, this.loadTestClientToolStripMenuItem, this._ToolStripSeparator3, this.autoUpdateToolStripMenuItem, this.autoUpdateLampToolStripMenuItem, this.checkUpdatesOnStartupToolStripMenuItem, this._ChangelogToolStripMenuItem, this._ToolStripSeparator10, this._OpenGenieDiscordToolStripMenuItem, this.OpenGenieGithubToolStripMenuItem, this._OpenGenieDocsToolStripMenuItem, this.toolStripSeparator1, this.toolStripMenuItem1 });
             this._HelpToolStripMenuItem.Name = ("_HelpToolStripMenuItem");
             this._HelpToolStripMenuItem.Size = (new global::System.Drawing.Size(44, 20));
             this._HelpToolStripMenuItem.Text = ("&Help");
@@ -883,6 +884,15 @@ namespace GenieClient
             this.autoUpdateToolStripMenuItem.Size = (new global::System.Drawing.Size(211, 22));
             this.autoUpdateToolStripMenuItem.Text = ("&AutoUpdate");
             this.autoUpdateToolStripMenuItem.Click += (this.autoUpdateToolStripMenuItem_Click);
+            // 
+            // autoUpdateLampToolStripMenuItem
+            // 
+            this.autoUpdateLampToolStripMenuItem.Checked = (true);
+            this.autoUpdateLampToolStripMenuItem.CheckState = (global::System.Windows.Forms.CheckState.Checked);
+            this.autoUpdateLampToolStripMenuItem.Name = ("autoUpdateLampToolStripMenuItem");
+            this.autoUpdateLampToolStripMenuItem.Size = (new global::System.Drawing.Size(211, 22));
+            this.autoUpdateLampToolStripMenuItem.Text = ("AutoUpdate Lamp");
+            this.autoUpdateLampToolStripMenuItem.Click += (this.autoUpdateLampToolStripMenuItem_Click);
             // 
             // checkUpdatesOnStartupToolStripMenuItem
             // 
@@ -4109,6 +4119,7 @@ namespace GenieClient
         private ToolStripMenuItem checkForUpdatesToolStripMenuItem;
         private ToolStripMenuItem forceUpdateToolStripMenuItem;
         private ToolStripMenuItem autoUpdateToolStripMenuItem;
+        private ToolStripMenuItem autoUpdateLampToolStripMenuItem;
         private ToolStripMenuItem checkUpdatesOnStartupToolStripMenuItem;
         private ToolStripMenuItem loadTestClientToolStripMenuItem;
         private ToolStripMenuItem updateMapsToolStripMenuItem;

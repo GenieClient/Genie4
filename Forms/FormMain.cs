@@ -162,25 +162,28 @@ namespace GenieClient
 
 
 
-        public void UpdateOnStartup()
+        public async void UpdateOnStartup()
         {
-            if (m_oGlobals.Config.CheckForUpdates || m_oGlobals.Config.AutoUpdate)
+            await Task.Run(async () =>
             {
-                if (Updater.ClientIsCurrent)
+                if (m_oGlobals.Config.CheckForUpdates || m_oGlobals.Config.AutoUpdate)
                 {
-                    AddText("You are running the latest version of Genie.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                }
-                else
-                {
-                    AddText("An Update is Available.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    if (m_oGlobals.Config.AutoUpdate)
+                    if (Updater.ClientIsCurrent)
                     {
-                        AddText("AutoUpdate is Enabled. Exiting and launching Updater.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                        Updater.RunUpdate();
-                        System.Windows.Forms.Application.Exit();
+                        AddText("You are running the latest version of Genie.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    }
+                    else
+                    {
+                        AddText("An Update is Available.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                        if (m_oGlobals.Config.AutoUpdate)
+                        {
+                            AddText("AutoUpdate is Enabled. Exiting and launching Updater.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                            Updater.RunUpdate(m_oGlobals.Config.AutoUpdateLamp);
+                            System.Windows.Forms.Application.Exit();
+                        }
                     }
                 }
-            }
+            });
         }
 
         public void DirectConnect(string[] parameters)
@@ -706,7 +709,7 @@ namespace GenieClient
 
             if (m_oPlugins.Count == 0)
             {
-                UpdatePluginsMenuList();
+                SafeUpdatePluginsMenuList();
                 return 0;
             }
 
@@ -729,7 +732,7 @@ namespace GenieClient
                 }
             }
 
-            UpdatePluginsMenuList();
+            SafeUpdatePluginsMenuList();
             return m_oGlobals.PluginList.Count;
         }
         private void LoadLegacyPlugin(GeniePlugin.Interfaces.IPlugin Plugin, string AssemblyPath, string Key)
@@ -1156,6 +1159,18 @@ namespace GenieClient
             }
         }
 
+        public delegate void UpdatePluginsMenuListDelegate();
+        public void SafeUpdatePluginsMenuList()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new UpdatePluginsMenuListDelegate(UpdatePluginsMenuList));
+            }
+            else
+            {
+                UpdatePluginsMenuList();
+            }
+        }
         public void UpdatePluginsMenuList()
         {
             PluginsToolStripMenuItem.DropDownItems.Clear();
@@ -2020,7 +2035,7 @@ namespace GenieClient
             Application.DoEvents();
             int I = LoadPlugins();
             Application.DoEvents();
-            Parallel.Invoke(UpdateOnStartup);
+            UpdateOnStartup();
             Application.DoEvents();
 
             m_oOutputMain.RichTextBoxOutput.EndTextUpdate();
@@ -2053,19 +2068,19 @@ namespace GenieClient
         private void FormPlugin_LoadPlugin(string filename)
         {
             LoadPlugin(filename.Trim());
-            UpdatePluginsMenuList();
+            SafeUpdatePluginsMenuList();
         }
 
         private void FormPlugin_UnloadPlugin(string filename)
         {
             UnloadPlugin(filename.Trim());
-            UpdatePluginsMenuList();
+            SafeUpdatePluginsMenuList();
         }
 
         private void FormPlugin_UnloadPluginByName(string name)
         {
             UnloadPluginByName(name.Trim());
-            UpdatePluginsMenuList();
+            SafeUpdatePluginsMenuList();
         }
 
         private void FormPlugin_ReloadPluginByName(string name)
@@ -2082,7 +2097,7 @@ namespace GenieClient
                 UnloadPluginByName(name.Trim());
                 string sTemp = Path.Combine(sPluginPath, sFileName);
                 LoadPlugin(sTemp);
-                UpdatePluginsMenuList();
+                SafeUpdatePluginsMenuList();
             }
         }
 
@@ -2096,13 +2111,13 @@ namespace GenieClient
         private void FormPlugin_DisablePlugin(string filename)
         {
             EnableOrDisablePluginByFilename(filename, false);
-            UpdatePluginsMenuList();
+            SafeUpdatePluginsMenuList();
         }
 
         private void FormPlugin_EnablePlugin(string filename)
         {
             EnableOrDisablePluginByFilename(filename, true);
-            UpdatePluginsMenuList();
+            SafeUpdatePluginsMenuList();
         }
 
         /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
@@ -5746,7 +5761,7 @@ namespace GenieClient
         {
             if (InvokeRequired == true)
             {
-                var parameters = new object[] { section, message, description};
+                var parameters = new object[] { section, message, description };
                 Invoke(new ShowDialogExceptionDelegate(ThreadSafeShowDialogException), parameters);
             }
             else
@@ -6707,6 +6722,11 @@ namespace GenieClient
                 case Genie.Config.ConfigFieldUpdated.AutoUpdate:
                     {
                         autoUpdateToolStripMenuItem.Checked = m_oGlobals.Config.AutoUpdate;
+                        break;
+                    }
+                case Genie.Config.ConfigFieldUpdated.AutoUpdateLamp:
+                    {
+                        autoUpdateLampToolStripMenuItem.Checked = m_oGlobals.Config.AutoUpdateLamp;
                         break;
                     }
             }
@@ -8116,15 +8136,15 @@ namespace GenieClient
             autoUpdateToolStripMenuItem.Checked = m_oGlobals.Config.AutoUpdate;
         }
 
-        private void checkUpdatesOnStartupToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void checkUpdatesOnStartupToolStripMenuItem_Click(object sender, EventArgs e)
         {
             m_oGlobals.Config.CheckForUpdates = !m_oGlobals.Config.CheckForUpdates;
             checkUpdatesOnStartupToolStripMenuItem.Checked = m_oGlobals.Config.CheckForUpdates;
         }
 
-        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Parallel.Invoke(() =>
+            await Task.Run(() =>
             {
                 if (Updater.ClientIsCurrent)
                 {
@@ -8142,7 +8162,7 @@ namespace GenieClient
                             if (response == DialogResult.Yes)
                             {
                                 AddText("Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                                Updater.RunUpdate();
+                                Updater.RunUpdate(m_oGlobals.Config.AutoUpdateLamp);
                                 m_oGame.Disconnect(true);
                                 System.Windows.Forms.Application.Exit();
                             }
@@ -8150,7 +8170,7 @@ namespace GenieClient
                         else
                         {
                             AddText("Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                            Updater.RunUpdate();
+                            Updater.RunUpdate(m_oGlobals.Config.AutoUpdateLamp);
                             System.Windows.Forms.Application.Exit();
                         }
                     }
@@ -8193,7 +8213,7 @@ namespace GenieClient
                         m_oGlobals.Config.AutoUpdate = false;
                         m_oGlobals.Config.Save(m_oGlobals.Config.ConfigDir + @"\settings.cfg");
                         AddText("Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                        Updater.UpdateToTest();
+                        Updater.UpdateToTest(m_oGlobals.Config.AutoUpdateLamp);
                         m_oGame.Disconnect(true);
                         System.Windows.Forms.Application.Exit();
                     }
@@ -8204,21 +8224,21 @@ namespace GenieClient
                     m_oGlobals.Config.AutoUpdate = false;
                     m_oGlobals.Config.Save(m_oGlobals.Config.ConfigDir + @"\settings.cfg");
                     AddText("Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    Updater.UpdateToTest();
+                    Updater.UpdateToTest(m_oGlobals.Config.AutoUpdateLamp);
                     System.Windows.Forms.Application.Exit();
                 }
             }
         }
 
-        private void updateMapsToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void updateMapsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult response = MessageBox.Show("This may take a moment. Update Maps?", "Update Maps?", MessageBoxButtons.YesNoCancel);
             if (response == DialogResult.Yes)
             {
-                Parallel.Invoke(() =>
+                await Task.Run(async () =>
                 {
                     AddText($"Updating Maps in {m_oGlobals.Config.MapDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    if (Updater.UpdateMaps(m_oGlobals.Config.MapDir))
+                    if (await Updater.UpdateMaps(m_oGlobals.Config.MapDir, m_oGlobals.Config.AutoUpdateLamp))
                     {
                         AddText("Maps Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                     }
@@ -8230,15 +8250,15 @@ namespace GenieClient
             }
         }
 
-        private void updatePluginsToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void updatePluginsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult response = MessageBox.Show("This may take a moment. Update Plugins?\r\nNote: This will only update plugins from the Genie 4 Plugins folder..", "Update Plugins?", MessageBoxButtons.YesNoCancel);
             if (response == DialogResult.Yes)
             {
-                Parallel.Invoke(() =>
+                await Task.Run(async () =>
                 {
                     AddText($"Updating Plugins in {m_oGlobals.Config.PluginDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    if (Updater.UpdatePlugins(m_oGlobals.Config.PluginDir))
+                    if (await Updater.UpdatePlugins(m_oGlobals.Config.PluginDir, m_oGlobals.Config.AutoUpdateLamp))
                     {
                         AddText("Plugins Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                         FormPlugin_ReloadPlugins();
@@ -8251,7 +8271,7 @@ namespace GenieClient
             }
         }
 
-        private void updateScriptsToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void updateScriptsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!m_oGlobals.Config.ScriptRepo.EndsWith(".zip"))
             {
@@ -8261,10 +8281,10 @@ namespace GenieClient
             DialogResult response = MessageBox.Show($"This may take a moment. Update Scripts?\r\nRepo: {m_oGlobals.Config.ScriptRepo}", "Update Scripts?", MessageBoxButtons.YesNoCancel);
             if (response == DialogResult.Yes)
             {
-                Parallel.Invoke(() =>
+                await Task.Run(async () =>
                 {
                     AddText($"Updating Scripts in {m_oGlobals.Config.ScriptDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    if (Updater.UpdateScripts(m_oGlobals.Config.ScriptDir, m_oGlobals.Config.ScriptRepo))
+                    if (await Updater.UpdateScripts(m_oGlobals.Config.ScriptDir, m_oGlobals.Config.ScriptRepo, m_oGlobals.Config.AutoUpdateLamp))
                     {
                         AddText("Scripts Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                     }
@@ -8306,6 +8326,10 @@ namespace GenieClient
             m_oGlobals.Config.bClassicConnect = ClassicConnectToolStripMenuItem.Checked;
         }
 
-
+        private void autoUpdateLampToolStripMenuItem_Click(global::System.Object sender, global::System.EventArgs e)
+        {
+            m_oGlobals.Config.AutoUpdateLamp = !m_oGlobals.Config.AutoUpdateLamp;
+            autoUpdateLampToolStripMenuItem.Checked = m_oGlobals.Config.AutoUpdateLamp;
+        }
     }
 }

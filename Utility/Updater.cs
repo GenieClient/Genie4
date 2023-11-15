@@ -79,9 +79,9 @@ namespace GenieClient
             }
         }
 
-        public static void UpdateUpdater()
+        public static async Task UpdateUpdater(bool autoUpdate)
         {
-            if (1 == 1) return;
+            if (!autoUpdate && File.Exists($@"{Environment.CurrentDirectory}\{UpdaterFilename}")) return;
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             client.DefaultRequestHeaders.Add("User-Agent", "Genie Client Updater");
@@ -95,42 +95,42 @@ namespace GenieClient
                 var response = client.GetAsync(new Uri(updaterAsset.DownloadURL)).Result;
                 using (var updaterFile = new FileStream(updaterAsset.LocalFilepath, FileMode.Create))
                 {
-                    response.Content.CopyToAsync(updaterFile);
+                    await response.Content.CopyToAsync(updaterFile);
                 }
             }
         }
 
-        public static void RunUpdate()
+        public static async void RunUpdate(bool autoUpdateLamp)
         {
-            UpdateUpdater();
-            Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a", false);
+            await UpdateUpdater(autoUpdateLamp);
+            await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a", false);
         }
 
-        public static void UpdateToTest()
+        public static async void UpdateToTest(bool autoUpdateLamp)
         {
-            UpdateUpdater();
-            Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a --t", false);
+            await UpdateUpdater(autoUpdateLamp);
+            await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a --t", false);
         }
-        public static bool UpdateMaps(string mapdir)
+        public static async Task<bool> UpdateMaps(string mapdir, bool autoUpdateLamp)
         {
-            UpdateUpdater();
-            return Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --maps|\"{mapdir}\"", true);
+            await UpdateUpdater(autoUpdateLamp);
+            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --maps|\"{mapdir}\"", true);
         }
 
-        public static bool UpdatePlugins(string plugindir)
+        public static async Task<bool> UpdatePlugins(string plugindir, bool autoUpdateLamp)
         {
-            UpdateUpdater();
-            return Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --plugins|\"{plugindir}\"", true);
+            await UpdateUpdater(autoUpdateLamp);
+            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --plugins|\"{plugindir}\"", true);
         }
-        public static bool UpdateScripts(string scriptdir, string scriptrepo)
+        public static async Task<bool> UpdateScripts(string scriptdir, string scriptrepo, bool autoUpdateLamp)
         {
-            UpdateUpdater();
-            return Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --scripts|\"{scriptdir}\"|\"{scriptrepo}\"", true);
+            await UpdateUpdater(autoUpdateLamp);
+            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --scripts|\"{scriptdir}\"|\"{scriptrepo}\"", true);
         }
-        public static void ForceUpdate()
+        public static async void ForceUpdate()
         {
-            UpdateUpdater();
-            Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a --f", false);
+            await UpdateUpdater(true);
+            await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a --f", false);
         }
         public class Release
         {

@@ -7,6 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -52,7 +53,7 @@ namespace GenieClient
             }
         }
 
-        public static bool ExecuteProcess(string sFileName, string sArguments, bool closeProcess = true)
+        public static async Task<bool> ExecuteProcess(string sFileName, string sArguments, bool closeProcess = true)
         {
             if (!File.Exists(sFileName)) return false;
             var myProcess = new Process();
@@ -66,7 +67,7 @@ namespace GenieClient
             FileInfo monitor = new FileInfo(sFileName);
             do
             {
-                Thread.Sleep(10);
+                await Task.Delay(10);
             } while (FileIsLocked(monitor));
             myProcess.Start();
             // var myStreamReader = myProcess.StandardOutput;
@@ -74,7 +75,7 @@ namespace GenieClient
             if (closeProcess)
             {
                 while (myProcess.HasExited == false)
-                    Thread.Sleep(10);
+                    await Task.Delay(10);
                 myProcess.Close();
             }
             return true;
