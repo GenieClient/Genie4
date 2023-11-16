@@ -378,7 +378,7 @@ namespace GenieClient.Genie.Script
                     case ParseType.SectionEndType:
                         {
                             ParseSection(start, j - 1);
-                            return j;
+                            break;
                         }
                 }
             }
