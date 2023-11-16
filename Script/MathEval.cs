@@ -271,12 +271,22 @@ namespace GenieClient.Genie.Script
 
                 case "max":
                     {
-                        return Math.Max(Conversions.ToDouble(args[1]), Conversions.ToDouble(args[2]));
+                        double currentMax = Conversions.ToDouble(args[1]);
+                        for (int i = 2; i <= args.Count; i++) //0 index is null, 1 index is used above
+                        {
+                            currentMax = Math.Max(currentMax, Conversions.ToDouble(args[i]));
+                        }
+                        return currentMax;
                     }
 
                 case "min":
                     {
-                        return Math.Min(Conversions.ToDouble(args[1]), Conversions.ToDouble(args[2]));
+                        double currentMin = Conversions.ToDouble(args[1]);
+                        for (int i = 2; i <= args.Count; i++) //0 index is null, 1 index is used above
+                        {
+                            currentMin = Math.Min(currentMin, Conversions.ToDouble(args[i]));
+                        }
+                        return currentMin;
                     }
 
                 case "arcsin":
