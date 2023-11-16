@@ -6557,6 +6557,36 @@ namespace GenieClient
             bSendingKey = false;
         }
 
+        private void TextBoxInput_CtrlPageUp()
+        {
+            if (bSendingKey == true)
+                return;
+            bSendingKey = true;
+            if (!Information.IsNothing(oCurrentActiveForm))
+            {
+                oCurrentActiveForm.RichTextBoxOutput.Focus();
+                oCurrentActiveForm.RichTextBoxOutput.Select(0, 0);
+                TextBoxInput.Focus();
+            }
+
+            bSendingKey = false;
+        }
+
+        private void TextBoxInput_CtrlPageDown()
+        {
+            if (bSendingKey == true)
+                return;
+            bSendingKey = true;
+            if (!Information.IsNothing(oCurrentActiveForm))
+            {
+                oCurrentActiveForm.RichTextBoxOutput.Focus();
+                oCurrentActiveForm.RichTextBoxOutput.Select(oCurrentActiveForm.RichTextBoxOutput.Text.Length, 0);
+                TextBoxInput.Focus();
+            }
+
+            bSendingKey = false;
+        }
+
         private void ToolStripMenuItemSpecialPaste_Click(object sender, EventArgs e)
         {
             TextBoxInput.Focus();
