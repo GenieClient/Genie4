@@ -338,39 +338,40 @@ namespace GenieClient
             this._OpenUserDataDirectoryToolStripMenuItem.Name = ("_OpenUserDataDirectoryToolStripMenuItem");
             this._OpenUserDataDirectoryToolStripMenuItem.Size = (new global::System.Drawing.Size(205, 22));
             this._OpenUserDataDirectoryToolStripMenuItem.Text = ("Open Directory...");
+            this._OpenUserDataDirectoryToolStripMenuItem.Click += (this.genieToolStripMenuItem_Click);
             // 
             // genieToolStripMenuItem
             // 
             this.genieToolStripMenuItem.Name = ("genieToolStripMenuItem");
-            this.genieToolStripMenuItem.Size = (new global::System.Drawing.Size(113, 22));
+            this.genieToolStripMenuItem.Size = (new global::System.Drawing.Size(180, 22));
             this.genieToolStripMenuItem.Text = ("Genie");
             this.genieToolStripMenuItem.Click += (this.genieToolStripMenuItem_Click);
             // 
             // scriptsToolStripMenuItem
             // 
             this.scriptsToolStripMenuItem.Name = ("scriptsToolStripMenuItem");
-            this.scriptsToolStripMenuItem.Size = (new global::System.Drawing.Size(113, 22));
+            this.scriptsToolStripMenuItem.Size = (new global::System.Drawing.Size(180, 22));
             this.scriptsToolStripMenuItem.Text = ("Scripts");
             this.scriptsToolStripMenuItem.Click += (this.scriptsToolStripMenuItem_Click);
             // 
             // mapsToolStripMenuItem
             // 
             this.mapsToolStripMenuItem.Name = ("mapsToolStripMenuItem");
-            this.mapsToolStripMenuItem.Size = (new global::System.Drawing.Size(113, 22));
+            this.mapsToolStripMenuItem.Size = (new global::System.Drawing.Size(180, 22));
             this.mapsToolStripMenuItem.Text = ("Maps");
             this.mapsToolStripMenuItem.Click += (this.mapsToolStripMenuItem_Click);
             // 
             // pluginsToolStripMenuItem
             // 
             this.pluginsToolStripMenuItem.Name = ("pluginsToolStripMenuItem");
-            this.pluginsToolStripMenuItem.Size = (new global::System.Drawing.Size(113, 22));
+            this.pluginsToolStripMenuItem.Size = (new global::System.Drawing.Size(180, 22));
             this.pluginsToolStripMenuItem.Text = ("Plugins");
             this.pluginsToolStripMenuItem.Click += (this.pluginsToolStripMenuItem_Click);
             // 
             // logsToolStripMenuItem
             // 
             this.logsToolStripMenuItem.Name = ("logsToolStripMenuItem");
-            this.logsToolStripMenuItem.Size = (new global::System.Drawing.Size(113, 22));
+            this.logsToolStripMenuItem.Size = (new global::System.Drawing.Size(180, 22));
             this.logsToolStripMenuItem.Text = ("Logs");
             this.logsToolStripMenuItem.Click += (this.logsToolStripMenuItem_Click);
             // 
@@ -835,13 +836,13 @@ namespace GenieClient
             // _NoPluginsLoadedToolStripMenuItem
             // 
             this._NoPluginsLoadedToolStripMenuItem.Name = ("_NoPluginsLoadedToolStripMenuItem");
-            this._NoPluginsLoadedToolStripMenuItem.Size = (new global::System.Drawing.Size(180, 22));
+            this._NoPluginsLoadedToolStripMenuItem.Size = (new global::System.Drawing.Size(171, 22));
             this._NoPluginsLoadedToolStripMenuItem.Text = ("No plugins loaded");
             // 
             // updatePluginsToolStripMenuItem
             // 
             this.updatePluginsToolStripMenuItem.Name = ("updatePluginsToolStripMenuItem");
-            this.updatePluginsToolStripMenuItem.Size = (new global::System.Drawing.Size(180, 22));
+            this.updatePluginsToolStripMenuItem.Size = (new global::System.Drawing.Size(171, 22));
             this.updatePluginsToolStripMenuItem.Text = ("&Update Plugins");
             this.updatePluginsToolStripMenuItem.Click += (this.updatePluginsToolStripMenuItem_Click);
             // 
@@ -1337,8 +1338,8 @@ namespace GenieClient
             this._TextBoxInput.SendText += (this.TextBoxInput_SendText);
             this._TextBoxInput.PageUp += (this.TextBoxInput_PageUp);
             this._TextBoxInput.PageDown += (this.TextBoxInput_PageDown);
-            this._TextBoxInput.CtrlPageUp += new GenieClient.ComponentTextBox.CtrlPageUpEventHandler(this.TextBoxInput_CtrlPageUp);
-            this._TextBoxInput.CtrlPageDown += new GenieClient.ComponentTextBox.CtrlPageDownEventHandler(this.TextBoxInput_CtrlPageDown);
+            this._TextBoxInput.CtrlPageUp += (this.TextBoxInput_CtrlPageUp);
+            this._TextBoxInput.CtrlPageDown += (this.TextBoxInput_CtrlPageDown);
             this._TextBoxInput.KeyDown += (this.TextBoxInput_KeyDown);
             // 
             // _OpenFileDialogProfile
