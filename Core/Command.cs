@@ -2909,6 +2909,8 @@ namespace GenieClient.Genie
             EchoText("reconnect=" + oGlobals.Config.bReconnect.ToString() + System.Environment.NewLine);
             EchoText("roundtimeoffset=" + oGlobals.Config.dRTOffset + System.Environment.NewLine);
             EchoText("showlinks=" + oGlobals.Config.bShowLinks.ToString() + System.Environment.NewLine);
+            EchoText("showimages=" + oGlobals.Config.bShowImages.ToString() + System.Environment.NewLine);
+            EchoText("artdir=" + oGlobals.Config.sArtDir + System.Environment.NewLine);
             EchoText("logdir=" + oGlobals.Config.sLogDir + System.Environment.NewLine);
             EchoText("configdir=" + oGlobals.Config.sConfigDir + System.Environment.NewLine);
             EchoText("plugindir=" + oGlobals.Config.sPluginDir + System.Environment.NewLine);

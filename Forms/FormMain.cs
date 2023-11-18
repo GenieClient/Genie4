@@ -176,7 +176,7 @@ namespace GenieClient
                     }
                     else
                     {
-                        
+
                         AddText("An Update is Available.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                         if (m_oGlobals.Config.AutoUpdate)
                         {
@@ -4863,7 +4863,7 @@ namespace GenieClient
 
             if (oTargetWindow.Equals(m_oOutputMain))
             {
-               
+
             }
 
             if (InvokeRequired == true)
@@ -4877,7 +4877,7 @@ namespace GenieClient
             }
         }
 
-        private void AddImage (string sImageFileName, string sTargetWindow, int width, int height)
+        private void AddImage(string sImageFileName, string sTargetWindow, int width, int height)
         {
             AddImage(sImageFileName, Genie.Game.WindowTarget.Unknown, sTargetWindow, width, height);
         }
@@ -4977,7 +4977,7 @@ namespace GenieClient
             }
         }
 
-        
+
 
         private FormSkin FindIfClosed(string IfClosed, int Depth = 0)
         {
@@ -6906,6 +6906,11 @@ namespace GenieClient
                         autoUpdateLampToolStripMenuItem.Checked = m_oGlobals.Config.AutoUpdateLamp;
                         break;
                     }
+                case Genie.Config.ConfigFieldUpdated.ImagesEnabled:
+                    {
+                        _ImagesEnabledToolStripMenuItem.Checked = m_oGlobals.Config.bShowImages;
+                        break;
+                    }
             }
         }
 
@@ -8507,6 +8512,37 @@ namespace GenieClient
         {
             m_oGlobals.Config.AutoUpdateLamp = !m_oGlobals.Config.AutoUpdateLamp;
             autoUpdateLampToolStripMenuItem.Checked = m_oGlobals.Config.AutoUpdateLamp;
+        }
+
+        private void _ImagesEnabledToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _ImagesEnabledToolStripMenuItem.Checked = !m_oGlobals.Config.bShowImages;
+            m_oGlobals.Config.bShowImages = _ImagesEnabledToolStripMenuItem.Checked;
+        }
+
+        private async void UpdateImagesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!m_oGlobals.Config.ScriptRepo.EndsWith(".zip"))
+            {
+                MessageBox.Show("You do not have a repository configured properly." + Environment.NewLine + "Please use \"#config artrepo {address of a zip file}\" to configure." + Environment.NewLine + "The URI must be a zip file.");
+                return;
+            }
+            DialogResult response = MessageBox.Show("This may take a moment. Update Images?", "Update Images?", MessageBoxButtons.YesNoCancel);
+            if (response == DialogResult.Yes)
+            {
+                await Task.Run(async () =>
+                {
+                    AddText($"Updating Art in {m_oGlobals.Config.ArtDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    if (await Updater.UpdateArt(m_oGlobals.Config.ArtDir, m_oGlobals.Config.ArtRepo, m_oGlobals.Config.AutoUpdateLamp))
+                    {
+                        AddText("Art Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    }
+                    else
+                    {
+                        AddText("Something went wrong.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    }
+                });
+            }
         }
     }
 }

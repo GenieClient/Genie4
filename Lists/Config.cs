@@ -48,7 +48,9 @@ namespace GenieClient.Genie
         public string sConfigDir = "Config";
         public string sConfigDirProfile = "Config";
         public bool bShowLinks = false;
+        public bool bShowImages = true;
         public string sLogDir = "Logs";
+        public string sArtDir = "Art";
         public bool bWebLinkSafety = true;
 
         public bool PromptBreak { get; set; } = true;
@@ -71,6 +73,7 @@ namespace GenieClient.Genie
         public string ScriptExtension { get; set; } = "cmd";
 
         public string ScriptRepo { get; set; } = string.Empty;
+        public string ArtRepo { get; set; } = string.Empty;
 
         public int AutoMapperAlpha
         {
@@ -121,7 +124,41 @@ namespace GenieClient.Genie
                 sScriptDir = value;
             }
         }
+        public string ArtDir
+        {
+            get
+            {
+                string sLocation = string.Empty;
+                if (sArtDir.Contains(":"))
+                {
+                    sLocation = sArtDir;
+                }
+                else
+                {
+                    sLocation = LocalDirectory.Path;
+                    if (sArtDir.StartsWith(@"\") || sLocation.EndsWith(@"\"))
+                    {
+                        sLocation += sArtDir;
+                    }
+                    else
+                    {
+                        sLocation += @"\" + sArtDir;
+                    }
+                }
 
+                return sLocation;
+            }
+
+            set
+            {
+                if (value.EndsWith(@"\"))
+                {
+                    value = value.Substring(0, value.Length - 1);
+                }
+
+                sArtDir = value;
+            }
+        }
         public string MapDir
         {
             get
@@ -322,7 +359,8 @@ namespace GenieClient.Genie
             CheckForUpdates,
             AutoUpdate,
             AutoUpdateLamp,
-            ClassicConnect
+            ClassicConnect,
+            ImagesEnabled
         }
 
         public Font MonoFont
@@ -389,8 +427,10 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine("#config {maxgosubdepth} {" + iMaxGoSubDepth + "}");
                 oStreamWriter.WriteLine("#config {ignorescriptwarnings} {" + bIgnoreScriptWarnings + "}");
                 oStreamWriter.WriteLine("#config {roundtimeoffset} {" + dRTOffset + "}");
-                oStreamWriter.WriteLine("#config {scriptrepo} {" + ScriptRepo + "}");
+                oStreamWriter.WriteLine("#config {artdir} {" + sArtDir + "}");
+                oStreamWriter.WriteLine("#config {artrepo} {" + ArtRepo + "}");
                 oStreamWriter.WriteLine("#config {scriptdir} {" + sScriptDir + "}");
+                oStreamWriter.WriteLine("#config {scriptrepo} {" + ScriptRepo + "}");
                 oStreamWriter.WriteLine("#config {mapdir} {" + sMapDir + "}");
                 oStreamWriter.WriteLine("#config {plugindir} {" + sPluginDir + "}");
                 oStreamWriter.WriteLine("#config {configdir} {" + sConfigDir + "}");
@@ -407,6 +447,7 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine("#config {usertimeout} {" + iUserActivityTimeout + "}");
                 oStreamWriter.WriteLine("#config {usertimeoutcommand} {" + sUserActivityCommand + "}");
                 oStreamWriter.WriteLine("#config {showlinks} {" + bShowLinks + "}");
+                oStreamWriter.WriteLine("#config {showimages} {" + bShowImages + "}");
                 oStreamWriter.WriteLine("#config {weblinksafety} {" + bWebLinkSafety + "}");
                 oStreamWriter.WriteLine($"#config {{rubypath}} {{{RubyPath}}}");
                 oStreamWriter.WriteLine($"#config {{cmdpath}} {{{CmdPath}}}");
@@ -814,6 +855,12 @@ namespace GenieClient.Genie
 
                                 break;
                             }
+                        case "artdir":
+                            {
+                                messages.Add(LocalDirectory.ValidateDirectory(sValue));
+                                ArtDir = sValue;
+                                break;
+                            }
 
                         case "scriptdir":
                             {
@@ -1206,6 +1253,30 @@ namespace GenieClient.Genie
 
                                 break;
                             }
+
+                        case "showimages":
+                            {
+                                var switchExpr13 = sValue.ToLower();
+                                switch (switchExpr13)
+                                {
+                                    case "on":
+                                    case "true":
+                                    case "1":
+                                        {
+                                            bShowImages = true;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            bShowImages = false;
+                                            break;
+                                        }
+                                }
+                                ConfigChanged?.Invoke(ConfigFieldUpdated.ImagesEnabled);
+                                break;
+                            }
+
 
                         case "weblinksafety":
                             {
