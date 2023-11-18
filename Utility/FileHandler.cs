@@ -47,11 +47,11 @@ namespace GenieClient
             }
         }
 
-        public static async Task<bool> FetchImage(string filename)
+        public static async Task<bool> FetchImage(string filename, string directory, string gamecode)
         {
-            string cachedFile = Path.Combine(LocalDirectory.Path, "Art", filename);
+            string cachedFile = Path.Combine(LocalDirectory.Path, directory, gamecode, filename);
             if (File.Exists(cachedFile)) return true;
-            using (MemoryStream imageStream = await FileHandler.DownloadToMemoryStream($@"https://www.play.net/bfe/DR-art/{filename}"))
+            using (MemoryStream imageStream = await FileHandler.DownloadToMemoryStream($@"https://www.play.net/bfe/{gamecode}-art/{filename}"))
             { 
                 if (imageStream.Length > 0)
                 {
@@ -68,10 +68,9 @@ namespace GenieClient
 
         public static async Task<Image> GetImage(string filename, int width, int height)
         {
-            string cachedFile = Path.Combine(LocalDirectory.Path, "Art", filename);
-            if (!File.Exists(cachedFile)) return null;
+            if (!File.Exists(filename)) return null;
             
-            System.Drawing.Image image = Image.FromFile(cachedFile);
+            System.Drawing.Image image = Image.FromFile(filename);
             int h = height > 0 ? height : image.Height;
             int w = width > 0 ? width : image.Width;
             image = (Image)new Bitmap(image, new Size(w, h));

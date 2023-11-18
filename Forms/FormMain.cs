@@ -5022,7 +5022,7 @@ namespace GenieClient
         {
             if (!Information.IsNothing(oTargetWindow))
             {
-                Image image = await FileHandler.GetImage(sImageFilePath, width, height);
+                Image image = await FileHandler.GetImage(Path.Combine(m_oGlobals.Config.ArtDir, sImageFilePath), width, height);
                 oTargetWindow.RichTextBoxOutput.AddImage(image);
             }
         }

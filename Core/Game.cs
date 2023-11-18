@@ -12,6 +12,7 @@ using System.Threading;
 using System.Xml;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System.IO;
 
 namespace GenieClient.Genie
 {
@@ -1334,11 +1335,14 @@ namespace GenieClient.Genie
                         }
                     case "resource":
                         {
+                            if (!m_oGlobals.Config.bShowImages) break;
                             var attribute = GetAttributeData(oXmlNode, "picture");
                             if (!string.IsNullOrEmpty(attribute) && attribute != "0") 
                             {
                                 attribute += ".jpg";
-                                if(FileHandler.FetchImage(attribute).Result) AddImage(attribute);
+                                string gamecode = "DR"; //default DR
+                                if (AccountGame.StartsWith("GS")) gamecode = "GS";
+                                if (FileHandler.FetchImage(attribute, m_oGlobals.Config.ArtDir, gamecode).Result) AddImage(Path.Combine(gamecode, attribute));
                             }
                             break;
                         }
