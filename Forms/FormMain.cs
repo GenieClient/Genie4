@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Speech.Synthesis;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -164,6 +165,7 @@ namespace GenieClient
 
         public async void UpdateOnStartup()
         {
+            AddImage("10004", Genie.Game.WindowTarget.Main, "", 0, 0);
             await Task.Run(async () =>
             {
                 if (m_oGlobals.Config.CheckForUpdates || m_oGlobals.Config.AutoUpdate)
@@ -174,6 +176,7 @@ namespace GenieClient
                     }
                     else
                     {
+                        
                         AddText("An Update is Available.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                         if (m_oGlobals.Config.AutoUpdate)
                         {
@@ -396,6 +399,7 @@ namespace GenieClient
                     _m_oGame.EventPrintError += PrintError;
                     _m_oGame.EventClearWindow += Command_EventClearWindow;
                     _m_oGame.EventPrintText += Simutronics_EventPrintText;
+                    _m_oGame.EventAddImage += AddImage;
                     _m_oGame.EventDataRecieveEnd += Simutronics_EventEndUpdate;
                     GenieError.EventGenieError += HandleGenieException;
                     GenieError.EventGeniePluginError += HandlePluginException;
@@ -432,6 +436,7 @@ namespace GenieClient
                     _m_oCommand.ReloadPlugins -= FormPlugin_ReloadPlugins;
                     _m_oCommand.DisablePlugin -= FormPlugin_DisablePlugin;
                     _m_oCommand.EnablePlugin -= FormPlugin_EnablePlugin;
+                    _m_oCommand.EventAddImage -= AddImage;
                     _m_oCommand.EventEchoText -= ClassCommand_EchoText;
                     _m_oCommand.EventLinkText -= ClassCommand_LinkText;
                     _m_oCommand.EventEchoColorText -= ClassCommand_EchoColorText;
@@ -482,6 +487,7 @@ namespace GenieClient
                     _m_oCommand.ReloadPlugins += FormPlugin_ReloadPlugins;
                     _m_oCommand.DisablePlugin += FormPlugin_DisablePlugin;
                     _m_oCommand.EnablePlugin += FormPlugin_EnablePlugin;
+                    _m_oCommand.EventAddImage += AddImage;
                     _m_oCommand.EventEchoText += ClassCommand_EchoText;
                     _m_oCommand.EventLinkText += ClassCommand_LinkText;
                     _m_oCommand.EventEchoColorText += ClassCommand_EchoColorText;
@@ -4841,6 +4847,137 @@ namespace GenieClient
                 AddText(sText, oColor, oBgColor, oFormTarget, bNoCache, bMono, bPrompt, bInput);
             }
         }
+        private void AddImage(string sImageFileName, FormSkin oTargetWindow, int width, int height)
+        {
+            // bPrompt = false;
+
+            if (IsDisposed)
+            {
+                return;
+            }
+
+            if (Information.IsNothing(oTargetWindow))
+            {
+                oTargetWindow = m_oOutputMain;
+            }
+
+            if (oTargetWindow.Equals(m_oOutputMain))
+            {
+               
+            }
+
+            if (InvokeRequired == true)
+            {
+                var parameters = new object[] { sImageFileName, oTargetWindow, width, height };
+                Invoke(new AddImageDelegate(InvokeAddImage), parameters);
+            }
+            else
+            {
+                InvokeAddImage(sImageFileName, oTargetWindow, width, height);
+            }
+        }
+
+        private void AddImage (string sImageFileName, string sTargetWindow, int width, int height)
+        {
+            AddImage(sImageFileName, Genie.Game.WindowTarget.Unknown, sTargetWindow, width, height);
+        }
+        private void AddImage(string sImageFileName, [Optional, DefaultParameterValue(Genie.Game.WindowTarget.Main)] Genie.Game.WindowTarget oTargetWindow, string sTargetWindow, int width, int height)
+        {
+            if (IsDisposed)
+            {
+                return;
+            }
+
+            FormSkin oFormTarget = null;
+            if (!Information.IsNothing(m_oOutputMain))
+            {
+                switch (oTargetWindow)
+                {
+                    case Genie.Game.WindowTarget.Death:
+                        {
+                            oFormTarget = m_oOutputDeath;
+                            break;
+                        }
+
+                    case Genie.Game.WindowTarget.Familiar:
+                        {
+                            oFormTarget = m_oOutputFamiliar;
+                            break;
+                        }
+
+                    case Genie.Game.WindowTarget.Inv:
+                        {
+                            if (!Information.IsNothing(m_oOutputInv) && m_oOutputInv.Visible == true)
+                                oFormTarget = m_oOutputInv;
+                            break;
+                        }
+
+                    case Genie.Game.WindowTarget.Log:
+                        {
+                            oFormTarget = m_oOutputLog;
+                            break;
+                        }
+
+                    case Genie.Game.WindowTarget.Logons:
+                        {
+                            oFormTarget = m_oOutputLogons;
+                            break;
+                        }
+
+                    case Genie.Game.WindowTarget.Room:
+                        {
+                            if (!Information.IsNothing(m_oOutputRoom) && m_oOutputRoom.Visible == true)
+                                oFormTarget = m_oOutputRoom;
+                            break;
+                        }
+
+                    case Genie.Game.WindowTarget.Thoughts:
+                        {
+                            oFormTarget = m_oOutputThoughts;
+                            break;
+                        }
+                    case Genie.Game.WindowTarget.Combat:
+                        {
+                            oFormTarget = m_oOutputCombat;
+                            break;
+                        }
+                    case Genie.Game.WindowTarget.ActiveSpells:
+                        {
+                            oFormTarget = m_oOutputActiveSpells;
+                            break;
+                        }
+                    case Genie.Game.WindowTarget.Debug:
+                        {
+                            oFormTarget = m_oOutputDebug;
+                            break;
+                        }
+                    case Genie.Game.WindowTarget.Other:
+                        {
+                            oFormTarget = FindSkinFormByName(sTargetWindow);
+                            break;
+                        }
+
+                    default:
+                        {
+                            oFormTarget = m_oOutputMain;
+                            break;
+                        }
+                }
+
+                if (Information.IsNothing(oFormTarget))
+                    return;
+                if (oFormTarget.Visible == false)
+                {
+                    oFormTarget = FindIfClosed(oFormTarget.IfClosed);
+                }
+
+                if (Information.IsNothing(oFormTarget))
+                    return;
+                AddImage(sImageFileName, oFormTarget, width, height);
+            }
+        }
+
+        
 
         private FormSkin FindIfClosed(string IfClosed, int Depth = 0)
         {
@@ -4877,6 +5014,16 @@ namespace GenieClient
             if (!Information.IsNothing(oTargetWindow))
             {
                 oTargetWindow.RichTextBoxOutput.AddText(sText, oColor, oBgColor, bNoCache, bMono);
+            }
+        }
+
+        public delegate void AddImageDelegate(string sImageFilePath, FormSkin oTargetWindow, int width, int height);
+        private async void InvokeAddImage(string sImageFilePath, FormSkin oTargetWindow, int width, int height)
+        {
+            if (!Information.IsNothing(oTargetWindow))
+            {
+                Image image = await FileHandler.GetImage(sImageFilePath, width, height);
+                oTargetWindow.RichTextBoxOutput.AddImage(image);
             }
         }
 

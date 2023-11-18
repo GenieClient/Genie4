@@ -28,6 +28,8 @@ namespace GenieClient.Genie
             m_oGlobals = cl;
         }
 
+        public event EventAddImageEventHandler EventAddImage;
+        public delegate void EventAddImageEventHandler(string filename, string window, int width, int height);
         public event EventPrintTextEventHandler EventPrintText;
 
         public delegate void EventPrintTextEventHandler(string text, Color color, Color bgcolor, WindowTarget targetwindow, string targetwindowstring, bool mono, bool isprompt, bool isinput);
@@ -1330,7 +1332,16 @@ namespace GenieClient.Genie
 
                             break;
                         }
-
+                    case "resource":
+                        {
+                            var attribute = GetAttributeData(oXmlNode, "picture");
+                            if (!string.IsNullOrEmpty(attribute) && attribute != "0") 
+                            {
+                                attribute += ".jpg";
+                                if(FileHandler.FetchImage(attribute).Result) AddImage(attribute);
+                            }
+                            break;
+                        }
                     case "streamWindow":	// Window Names
                         {
                             string argstrAttributeName5 = "id";
@@ -3097,6 +3108,10 @@ namespace GenieClient.Genie
             EventPrintText?.Invoke(sText, oColor, oBgColor, windowVar, emptyVar, m_bMonoOutput, falseVar, trueVar);
         }
 
+        private void AddImage(string filename, string window = "")
+        {
+            EventAddImage?.Invoke(filename, window, 0, 0);
+        }
         private void ClearWindow(string sWindow)
         {
             EventClearWindow?.Invoke(sWindow);

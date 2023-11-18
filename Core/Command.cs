@@ -31,6 +31,10 @@ namespace GenieClient.Genie
 
         public delegate void EventExitEventHandler();
 
+        public event EventAddImageHandler EventAddImage;
+
+        public delegate void EventAddImageHandler(string filename, string window, int width, int height);
+
         public event EventEchoTextEventHandler EventEchoText;
 
         public delegate void EventEchoTextEventHandler(string sText, string sWindow);
@@ -379,6 +383,30 @@ namespace GenieClient.Genie
                                         {
                                             Connect(oArgs);
                                             break;
+                                        }
+                                    case "img":
+                                    case "image":
+                                        {
+                                            string sOutputWindow = string.Empty;
+                                            string filename = string.Empty;
+                                            int width = 0;
+                                            int height = 0;
+                                            foreach(string arg in oArgs)
+                                            {
+                                                if (arg.StartsWith(">")) sOutputWindow = oGlobals.ParseGlobalVars(oArgs[1].ToString().Substring(1));
+                                                else if ((arg.Length > 2 && arg.StartsWith("w:") || (arg.Length > 6 && arg.StartsWith("width:"))))
+                                                {
+                                                    if (!int.TryParse(arg.Split(":")[1], out width)) EchoText($"Invalid Width Specified: {arg}");
+                                                }
+                                                else if ((arg.Length > 2 && arg.StartsWith("h:") || (arg.Length > 7 && arg.StartsWith("height:"))))
+                                                {
+                                                    if (!int.TryParse(arg.Split(":")[1], out height)) EchoText($"Invalid Height Specified: {arg}");
+                                                }
+                                                else filename = arg;
+                                            }
+                                            if (string.IsNullOrEmpty(filename)) EchoText("No File Name was specified for the Image Command.");
+                                            else DisplayImage(filename, sOutputWindow, width, height);
+                                            break;   
                                         }
 
                                     case "lc":
@@ -2628,6 +2656,11 @@ namespace GenieClient.Genie
         {
             string s = m_oEval.EvalString(sText, oGlobals);
             return s;
+        }
+        
+        private void DisplayImage(string filename, string window, int width, int height)
+        {
+            EventAddImage?.Invoke(filename, window, width, height);
         }
 
         private void EchoText(string sText, string sWindow = "")
