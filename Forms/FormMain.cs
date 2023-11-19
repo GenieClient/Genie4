@@ -600,6 +600,7 @@ namespace GenieClient
         private FormSkin m_oOutputDebug;
         private FormSkin m_oOutputActiveSpells;
         private FormSkin m_oOutputCombat;
+        private FormSkin m_oOutputPortrait;
         private Genie.Collections.ArrayList m_oFormList = new Genie.Collections.ArrayList();
         private string m_sConfigFile = string.Empty;
         // private string m_sUpdateVersion = string.Empty;
@@ -2760,6 +2761,16 @@ namespace GenieClient
             {
                 SafeCreateOutputForm("percWindow", "Active Spells", null, 300, 200, 10, 10, false);
             }
+
+            if (Information.IsNothing(m_oOutputCombat))
+            {
+                SafeCreateOutputForm("combat", "Combat", null, 300, 200, 10, 10, false);
+            }
+
+            if (Information.IsNothing(m_oOutputPortrait))
+            {
+                SafeCreateOutputForm("portrait", "Portrait", null, 250, 350, 10, 10, false);
+            }
         }
 
         public new object ClientSize
@@ -3800,6 +3811,13 @@ namespace GenieClient
                         oForm.UserForm = false;
                         break;
                     }
+
+                case "portrait":
+                    {
+                        m_oOutputPortrait = oForm;
+                        oForm.UserForm = false;
+                        break;
+                    }
             }
 
             if (UpdateFormList)
@@ -4812,6 +4830,11 @@ namespace GenieClient
                             oFormTarget = m_oOutputCombat;
                             break;
                         }
+                    case Genie.Game.WindowTarget.Portrait:
+                        {
+                            oFormTarget = m_oOutputPortrait;
+                            break;
+                        }
                     case Genie.Game.WindowTarget.ActiveSpells:
                         {
                             oFormTarget = m_oOutputActiveSpells;
@@ -4879,7 +4902,7 @@ namespace GenieClient
 
         private void AddImage(string sImageFileName, string sTargetWindow, int width, int height)
         {
-            AddImage(sImageFileName, Genie.Game.WindowTarget.Unknown, sTargetWindow, width, height);
+            AddImage(sImageFileName, Genie.Game.WindowTarget.Portrait, sTargetWindow, width, height);
         }
         private void AddImage(string sImageFileName, [Optional, DefaultParameterValue(Genie.Game.WindowTarget.Main)] Genie.Game.WindowTarget oTargetWindow, string sTargetWindow, int width, int height)
         {
@@ -4893,6 +4916,11 @@ namespace GenieClient
             {
                 switch (oTargetWindow)
                 {
+                    case Genie.Game.WindowTarget.Portrait:
+                        {
+                            oFormTarget = m_oOutputPortrait;
+                            break;
+                        }
                     case Genie.Game.WindowTarget.Death:
                         {
                             oFormTarget = m_oOutputDeath;
@@ -8503,6 +8531,11 @@ namespace GenieClient
             Interaction.Shell("explorer.exe " + m_oGlobals.Config.sLogDir, AppWinStyle.NormalFocus, false);
         }
 
+        private void artToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Interaction.Shell("explorer.exe " + m_oGlobals.Config.ArtDir, AppWinStyle.NormalFocus, false);
+        }
+
         private void toolStripMenuItemClassicConnect_Click(global::System.Object sender, global::System.EventArgs e)
         {
             m_oGlobals.Config.bClassicConnect = ClassicConnectToolStripMenuItem.Checked;
@@ -8544,5 +8577,7 @@ namespace GenieClient
                 });
             }
         }
+
+
     }
 }

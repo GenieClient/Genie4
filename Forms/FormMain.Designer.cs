@@ -57,6 +57,7 @@ namespace GenieClient
             mapsToolStripMenuItem = new ToolStripMenuItem();
             pluginsToolStripMenuItem = new ToolStripMenuItem();
             logsToolStripMenuItem = new ToolStripMenuItem();
+            artToolStripMenuItem = new ToolStripMenuItem();
             _ToolStripMenuItem4 = new ToolStripSeparator();
             _AutoLogToolStripMenuItem = new ToolStripMenuItem();
             _OpenLogInEditorToolStripMenuItem = new ToolStripMenuItem();
@@ -336,7 +337,7 @@ namespace GenieClient
             // 
             // _OpenUserDataDirectoryToolStripMenuItem
             // 
-            _OpenUserDataDirectoryToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { genieToolStripMenuItem, scriptsToolStripMenuItem, mapsToolStripMenuItem, pluginsToolStripMenuItem, logsToolStripMenuItem });
+            _OpenUserDataDirectoryToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { genieToolStripMenuItem, scriptsToolStripMenuItem, mapsToolStripMenuItem, pluginsToolStripMenuItem, logsToolStripMenuItem, artToolStripMenuItem });
             _OpenUserDataDirectoryToolStripMenuItem.Name = "_OpenUserDataDirectoryToolStripMenuItem";
             _OpenUserDataDirectoryToolStripMenuItem.Size = new Size(205, 22);
             _OpenUserDataDirectoryToolStripMenuItem.Text = "Open Directory...";
@@ -376,6 +377,13 @@ namespace GenieClient
             logsToolStripMenuItem.Size = new Size(113, 22);
             logsToolStripMenuItem.Text = "Logs";
             logsToolStripMenuItem.Click += logsToolStripMenuItem_Click;
+            // 
+            // artToolStripMenuItem
+            // 
+            artToolStripMenuItem.Name = "artToolStripMenuItem";
+            artToolStripMenuItem.Size = new Size(113, 22);
+            artToolStripMenuItem.Text = "Art";
+            artToolStripMenuItem.Click += artToolStripMenuItem_Click;
             // 
             // _ToolStripMenuItem4
             // 
@@ -523,26 +531,26 @@ namespace GenieClient
             // _ToolStripMenuItemSpecialPaste
             // 
             _ToolStripMenuItemSpecialPaste.Name = "_ToolStripMenuItemSpecialPaste";
-            _ToolStripMenuItemSpecialPaste.Size = new Size(180, 22);
+            _ToolStripMenuItemSpecialPaste.Size = new Size(158, 22);
             _ToolStripMenuItemSpecialPaste.Text = "Paste &Multi Line";
             _ToolStripMenuItemSpecialPaste.Click += ToolStripMenuItemSpecialPaste_Click;
             // 
             // _ToolStripSeparator6
             // 
             _ToolStripSeparator6.Name = "_ToolStripSeparator6";
-            _ToolStripSeparator6.Size = new Size(177, 6);
+            _ToolStripSeparator6.Size = new Size(155, 6);
             // 
             // _ConfigurationToolStripMenuItem
             // 
             _ConfigurationToolStripMenuItem.Name = "_ConfigurationToolStripMenuItem";
-            _ConfigurationToolStripMenuItem.Size = new Size(180, 22);
+            _ConfigurationToolStripMenuItem.Size = new Size(158, 22);
             _ConfigurationToolStripMenuItem.Text = "&Configuration...";
             _ConfigurationToolStripMenuItem.Click += ConfigurationToolStripMenuItem_Click;
             // 
             // UpdateImagesToolStripMenuItem
             // 
             UpdateImagesToolStripMenuItem.Name = "UpdateImagesToolStripMenuItem";
-            UpdateImagesToolStripMenuItem.Size = new Size(180, 22);
+            UpdateImagesToolStripMenuItem.Size = new Size(158, 22);
             UpdateImagesToolStripMenuItem.Text = "Update Images";
             UpdateImagesToolStripMenuItem.Click += UpdateImagesToolStripMenuItem_Click;
             // 
@@ -4154,6 +4162,7 @@ namespace GenieClient
         private global::System.Windows.Forms.ToolStripMenuItem ClassicConnectToolStripMenuItem;
         private ToolStripMenuItem _ImagesEnabledToolStripMenuItem;
         private ToolStripMenuItem UpdateImagesToolStripMenuItem;
+        private ToolStripMenuItem artToolStripMenuItem;
 
         internal ToolStripMenuItem SaveSizedDefaultLayoutToolStripMenuItem
         {

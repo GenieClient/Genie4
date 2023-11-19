@@ -211,6 +211,7 @@ namespace GenieClient.Genie
         {
             Unknown,
             Combat,
+            Portrait,
             Main,
             Inv,
             Familiar,
@@ -1342,7 +1343,7 @@ namespace GenieClient.Genie
                                 attribute += ".jpg";
                                 string gamecode = "DR"; //default DR
                                 if (AccountGame.StartsWith("GS")) gamecode = "GS";
-                                if (FileHandler.FetchImage(attribute, m_oGlobals.Config.ArtDir, gamecode).Result) AddImage(Path.Combine(gamecode, attribute));
+                                if (FileHandler.FetchImage(attribute, m_oGlobals.Config.ArtDir, gamecode).Result) AddImage(Path.Combine(gamecode, attribute), "portrait");
                             }
                             break;
                         }
@@ -2819,7 +2820,11 @@ namespace GenieClient.Genie
                         sTargetWindowString = "combat";
                         break;
                     }
-
+                case WindowTarget.Portrait:
+                    {
+                        sTargetWindowString = "portrait";
+                        break;
+                    }
                 case WindowTarget.Familiar:
                     {
                         sTargetWindowString = "familiar";
