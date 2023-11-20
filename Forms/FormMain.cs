@@ -5051,6 +5051,7 @@ namespace GenieClient
             if (!Information.IsNothing(oTargetWindow))
             {
                 Image image = await FileHandler.GetImage(Path.Combine(m_oGlobals.Config.ArtDir, sImageFilePath), width, height);
+                if (oTargetWindow == m_oOutputPortrait) m_oOutputPortrait.ClearWindow();
                 oTargetWindow.RichTextBoxOutput.AddImage(image);
             }
         }
