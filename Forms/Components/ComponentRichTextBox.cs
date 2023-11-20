@@ -338,11 +338,11 @@ namespace GenieClient
                 Font argoFont1 = null;
                 AddToBuffer(argsText, oColor, oBgColor, bMono, oFont: argoFont1);
             }
-            SetScrollBars();
             if (Conversions.ToBoolean(bNoCache == true | m_oRichTextBuffer.Lines.Length >= m_oParentForm.Globals.Config.iBufferLineSize))
             {
                 InvokeEndUpdate();
             }
+            SetScrollBars();
         }
         public void AddImage(Image image)
         {
@@ -997,10 +997,9 @@ namespace GenieClient
         public void SetScrollBars()
         {
             SizeF fontSize = TextRenderer.MeasureText("A", this.Font, this.Size, TextFormatFlags.WordBreak);
-            float totalLineHeight = this.Lines.Length * fontSize.Height;
-            float displayableLineHeight = this.Height / fontSize.Height;
+            float displayableLines = this.Height / fontSize.Height;
 
-            ScrollBars = totalLineHeight > displayableLineHeight ? RichTextBoxScrollBars.Vertical : RichTextBoxScrollBars.None;
+            ScrollBars = Lines.Length > displayableLines ? RichTextBoxScrollBars.Vertical : RichTextBoxScrollBars.None;
         }
     }
 }
