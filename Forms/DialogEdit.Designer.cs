@@ -91,7 +91,7 @@ namespace GenieClient
             _RichTextBoxEdit.Font = new Font("Courier New", 9.0F, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(0));
             _RichTextBoxEdit.Location = new Point(0, 0);
             _RichTextBoxEdit.Name = "RichTextBoxEdit";
-            _RichTextBoxEdit.ScrollBars = RichTextBoxScrollBars.ForcedVertical;
+            _RichTextBoxEdit.ScrollBars = RichTextBoxScrollBars.Vertical;
             _RichTextBoxEdit.Size = new Size(435, 260);
             _RichTextBoxEdit.TabIndex = 0;
             _RichTextBoxEdit.Text = "";

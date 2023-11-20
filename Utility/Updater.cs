@@ -127,6 +127,12 @@ namespace GenieClient
             await UpdateUpdater(autoUpdateLamp);
             return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --scripts|\"{scriptdir}\"|\"{scriptrepo}\"", true);
         }
+
+        public static async Task<bool> UpdateArt(string artdir, string artrepo, bool autoUpdateLamp)
+        {
+            await UpdateUpdater(autoUpdateLamp);
+            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --scripts|\"{artdir}\"|\"{artrepo}\"", true);
+        }
         public static async void ForceUpdate()
         {
             await UpdateUpdater(true);

@@ -12,6 +12,7 @@ using System.Threading;
 using System.Xml;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System.IO;
 
 namespace GenieClient.Genie
 {
@@ -28,6 +29,8 @@ namespace GenieClient.Genie
             m_oGlobals = cl;
         }
 
+        public event EventAddImageEventHandler EventAddImage;
+        public delegate void EventAddImageEventHandler(string filename, string window, int width, int height);
         public event EventPrintTextEventHandler EventPrintText;
 
         public delegate void EventPrintTextEventHandler(string text, Color color, Color bgcolor, WindowTarget targetwindow, string targetwindowstring, bool mono, bool isprompt, bool isinput);
@@ -208,6 +211,7 @@ namespace GenieClient.Genie
         {
             Unknown,
             Combat,
+            Portrait,
             Main,
             Inv,
             Familiar,
@@ -1330,7 +1334,19 @@ namespace GenieClient.Genie
 
                             break;
                         }
-
+                    case "resource":
+                        {
+                            if (!m_oGlobals.Config.bShowImages) break;
+                            var attribute = GetAttributeData(oXmlNode, "picture");
+                            if (!string.IsNullOrEmpty(attribute) && attribute != "0") 
+                            {
+                                attribute += ".jpg";
+                                string gamecode = "DR"; //default DR
+                                if (AccountGame.StartsWith("GS")) gamecode = "GS";
+                                if (FileHandler.FetchImage(attribute, m_oGlobals.Config.ArtDir, gamecode).Result) AddImage(Path.Combine(gamecode, attribute), "portrait");
+                            }
+                            break;
+                        }
                     case "streamWindow":	// Window Names
                         {
                             string argstrAttributeName5 = "id";
@@ -2804,7 +2820,11 @@ namespace GenieClient.Genie
                         sTargetWindowString = "combat";
                         break;
                     }
-
+                case WindowTarget.Portrait:
+                    {
+                        sTargetWindowString = "portrait";
+                        break;
+                    }
                 case WindowTarget.Familiar:
                     {
                         sTargetWindowString = "familiar";
@@ -3097,6 +3117,10 @@ namespace GenieClient.Genie
             EventPrintText?.Invoke(sText, oColor, oBgColor, windowVar, emptyVar, m_bMonoOutput, falseVar, trueVar);
         }
 
+        private void AddImage(string filename, string window = "")
+        {
+            EventAddImage?.Invoke(filename, window, 0, 0);
+        }
         private void ClearWindow(string sWindow)
         {
             EventClearWindow?.Invoke(sWindow);

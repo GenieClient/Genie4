@@ -32,1362 +32,1388 @@ namespace GenieClient
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
-            this.components = (new global::System.ComponentModel.Container());
-            global::System.ComponentModel.ComponentResourceManager resources = new global::System.ComponentModel.ComponentResourceManager(typeof(global::GenieClient.FormMain));
-            this._Castbar = (new global::GenieClient.ComponentRoundtime());
-            this._StatusStripMain = (new global::System.Windows.Forms.StatusStrip());
-            this._ToolStripStatusLabel1 = (new global::System.Windows.Forms.ToolStripStatusLabel());
-            this._ToolStripStatusLabel2 = (new global::System.Windows.Forms.ToolStripStatusLabel());
-            this._ToolStripStatusLabel3 = (new global::System.Windows.Forms.ToolStripStatusLabel());
-            this._ToolStripStatusLabel4 = (new global::System.Windows.Forms.ToolStripStatusLabel());
-            this._ToolStripStatusLabel5 = (new global::System.Windows.Forms.ToolStripStatusLabel());
-            this._ToolStripStatusLabel6 = (new global::System.Windows.Forms.ToolStripStatusLabel());
-            this._ToolStripStatusLabel7 = (new global::System.Windows.Forms.ToolStripStatusLabel());
-            this._ToolStripStatusLabel8 = (new global::System.Windows.Forms.ToolStripStatusLabel());
-            this._ToolStripStatusLabel9 = (new global::System.Windows.Forms.ToolStripStatusLabel());
-            this._ToolStripStatusLabel10 = (new global::System.Windows.Forms.ToolStripStatusLabel());
-            this._MenuStripMain = (new global::System.Windows.Forms.MenuStrip());
-            this._FileToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ConnectToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ConnectToolStripMenuItemConnectDialog = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripSeparator7 = (new global::System.Windows.Forms.ToolStripSeparator());
-            this._OpenUserDataDirectoryToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.genieToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.scriptsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.mapsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.pluginsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.logsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripMenuItem4 = (new global::System.Windows.Forms.ToolStripSeparator());
-            this._AutoLogToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._OpenLogInEditorToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripSeparator13 = (new global::System.Windows.Forms.ToolStripSeparator());
-            this._AutoReconnectToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.ClassicConnectToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._IgnoresEnabledToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripMenuItemTriggers = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._PluginsEnabledToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._AutoMapperEnabledToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._MuteSoundsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripSeparator8 = (new global::System.Windows.Forms.ToolStripSeparator());
-            this._ToolStripMenuItemShowXML = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripMenuItem1 = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripSeparator1 = (new global::System.Windows.Forms.ToolStripSeparator());
-            this._ExitToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._EditToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripMenuItemSpecialPaste = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripSeparator6 = (new global::System.Windows.Forms.ToolStripSeparator());
-            this._ConfigurationToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ProfileToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._LoadProfileToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._SaveProfileToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripMenuItem2 = (new global::System.Windows.Forms.ToolStripSeparator());
-            this._SavePasswordToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._LayoutToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._LoadSettingsOpenToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._LoadSettingsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripSeparator12 = (new global::System.Windows.Forms.ToolStripSeparator());
-            this._SaveSettingsToolStripMenuItem1 = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._SaveSettingsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._SaveSizedDefaultLayoutToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripSeparator5 = (new global::System.Windows.Forms.ToolStripSeparator());
-            this._BasicToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripSeparator4 = (new global::System.Windows.Forms.ToolStripSeparator());
-            this._IconBarToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._DockTopToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._DockBottomToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ShowScriptBarToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._DockTopToolStripMenuItem1 = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._DockBottomToolStripMenuItem1 = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._HealthBarToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._DockTopToolStripMenuItem2 = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._DockBottomToolStripMenuItem2 = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._MagicPanelsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._StatusBarToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._WindowToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ScriptToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ScriptExplorerToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.updateScriptsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripSeparator11 = (new global::System.Windows.Forms.ToolStripSeparator());
-            this._ListAllScriptsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._TraceAllScriptsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripSeparator9 = (new global::System.Windows.Forms.ToolStripSeparator());
-            this._PauseAllScriptsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ResumeAllScriptsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripMenuItem3 = (new global::System.Windows.Forms.ToolStripSeparator());
-            this._AbortAllScriptsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._AutoMapperToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ShowWindowToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.updateMapsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._PluginsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._NoPluginsLoadedToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.updatePluginsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._HelpToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.checkForUpdatesToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.forceUpdateToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.loadTestClientToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripSeparator3 = (new global::System.Windows.Forms.ToolStripSeparator());
-            this.autoUpdateToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.autoUpdateLampToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.checkUpdatesOnStartupToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ChangelogToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._ToolStripSeparator10 = (new global::System.Windows.Forms.ToolStripSeparator());
-            this._OpenGenieDiscordToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.OpenGenieGithubToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._OpenGenieDocsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.toolStripSeparator1 = (new global::System.Windows.Forms.ToolStripSeparator());
-            this.toolStripMenuItem1 = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.playnetToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.elanthipediaToolStripMenuItem1 = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.dRServiceToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.lichDiscordToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this.isharonsGenieSettingsToolStripMenuItem = (new global::System.Windows.Forms.ToolStripMenuItem());
-            this._LabelSpellC = (new global::System.Windows.Forms.Label());
-            this._LabelRHC = (new global::System.Windows.Forms.Label());
-            this._LabelLHC = (new global::System.Windows.Forms.Label());
-            this._LabelSpell = (new global::System.Windows.Forms.Label());
-            this._LabelRH = (new global::System.Windows.Forms.Label());
-            this._LabelLH = (new global::System.Windows.Forms.Label());
-            this._LabelRT = (new global::System.Windows.Forms.Label());
-            this._PanelBars = (new global::System.Windows.Forms.Panel());
-            this._TableLayoutPanelBars = (new global::System.Windows.Forms.TableLayoutPanel());
-            this._ComponentBarsConc = (new global::GenieClient.ComponentBars());
-            this._ComponentBarsFatigue = (new global::GenieClient.ComponentBars());
-            this._ComponentBarsMana = (new global::GenieClient.ComponentBars());
-            this._ComponentBarsSpirit = (new global::GenieClient.ComponentBars());
-            this._ComponentBarsHealth = (new global::GenieClient.ComponentBars());
-            this._PanelStatus = (new global::System.Windows.Forms.Panel());
-            this._TableLayoutPanelFlow = (new global::System.Windows.Forms.TableLayoutPanel());
-            this._PanelFixed = (new global::System.Windows.Forms.Panel());
-            this._oRTControl = (new global::GenieClient.ComponentRoundtime());
-            this._IconBar = (new global::GenieClient.ComponentIconBar());
-            this._ToolStripButtons = (new global::System.Windows.Forms.ToolStrip());
-            this._ContextMenuStripButtons = (new global::System.Windows.Forms.ContextMenuStrip(this.components));
-            this._TimerReconnect = (new global::System.Windows.Forms.Timer(this.components));
-            this._OpenFileDialogLayout = (new global::System.Windows.Forms.OpenFileDialog());
-            this._SaveFileDialogLayout = (new global::System.Windows.Forms.SaveFileDialog());
-            this._TimerBgWorker = (new global::System.Windows.Forms.Timer(this.components));
-            this._PanelInput = (new global::System.Windows.Forms.Panel());
-            this._TextBoxInput = (new global::GenieClient.ComponentTextBox());
-            this._OpenFileDialogProfile = (new global::System.Windows.Forms.OpenFileDialog());
-            this._StatusStripMain.SuspendLayout();
-            this._MenuStripMain.SuspendLayout();
-            this._PanelBars.SuspendLayout();
-            this._TableLayoutPanelBars.SuspendLayout();
-            this._PanelStatus.SuspendLayout();
-            this._TableLayoutPanelFlow.SuspendLayout();
-            this._PanelFixed.SuspendLayout();
-            this._PanelInput.SuspendLayout();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
+            _Castbar = new ComponentRoundtime();
+            _StatusStripMain = new StatusStrip();
+            _ToolStripStatusLabel1 = new ToolStripStatusLabel();
+            _ToolStripStatusLabel2 = new ToolStripStatusLabel();
+            _ToolStripStatusLabel3 = new ToolStripStatusLabel();
+            _ToolStripStatusLabel4 = new ToolStripStatusLabel();
+            _ToolStripStatusLabel5 = new ToolStripStatusLabel();
+            _ToolStripStatusLabel6 = new ToolStripStatusLabel();
+            _ToolStripStatusLabel7 = new ToolStripStatusLabel();
+            _ToolStripStatusLabel8 = new ToolStripStatusLabel();
+            _ToolStripStatusLabel9 = new ToolStripStatusLabel();
+            _ToolStripStatusLabel10 = new ToolStripStatusLabel();
+            _MenuStripMain = new MenuStrip();
+            _FileToolStripMenuItem = new ToolStripMenuItem();
+            _ConnectToolStripMenuItem = new ToolStripMenuItem();
+            _ConnectToolStripMenuItemConnectDialog = new ToolStripMenuItem();
+            _ToolStripSeparator7 = new ToolStripSeparator();
+            _OpenUserDataDirectoryToolStripMenuItem = new ToolStripMenuItem();
+            genieToolStripMenuItem = new ToolStripMenuItem();
+            scriptsToolStripMenuItem = new ToolStripMenuItem();
+            mapsToolStripMenuItem = new ToolStripMenuItem();
+            pluginsToolStripMenuItem = new ToolStripMenuItem();
+            logsToolStripMenuItem = new ToolStripMenuItem();
+            artToolStripMenuItem = new ToolStripMenuItem();
+            _ToolStripMenuItem4 = new ToolStripSeparator();
+            _AutoLogToolStripMenuItem = new ToolStripMenuItem();
+            _OpenLogInEditorToolStripMenuItem = new ToolStripMenuItem();
+            _ToolStripSeparator13 = new ToolStripSeparator();
+            _AutoReconnectToolStripMenuItem = new ToolStripMenuItem();
+            ClassicConnectToolStripMenuItem = new ToolStripMenuItem();
+            _IgnoresEnabledToolStripMenuItem = new ToolStripMenuItem();
+            _ToolStripMenuItemTriggers = new ToolStripMenuItem();
+            _PluginsEnabledToolStripMenuItem = new ToolStripMenuItem();
+            _AutoMapperEnabledToolStripMenuItem = new ToolStripMenuItem();
+            _ImagesEnabledToolStripMenuItem = new ToolStripMenuItem();
+            _MuteSoundsToolStripMenuItem = new ToolStripMenuItem();
+            _ToolStripSeparator8 = new ToolStripSeparator();
+            _ToolStripMenuItemShowXML = new ToolStripMenuItem();
+            _ToolStripMenuItem1 = new ToolStripMenuItem();
+            _ToolStripSeparator1 = new ToolStripSeparator();
+            _ExitToolStripMenuItem = new ToolStripMenuItem();
+            _EditToolStripMenuItem = new ToolStripMenuItem();
+            _ToolStripMenuItemSpecialPaste = new ToolStripMenuItem();
+            _ToolStripSeparator6 = new ToolStripSeparator();
+            _ConfigurationToolStripMenuItem = new ToolStripMenuItem();
+            UpdateImagesToolStripMenuItem = new ToolStripMenuItem();
+            _ProfileToolStripMenuItem = new ToolStripMenuItem();
+            _LoadProfileToolStripMenuItem = new ToolStripMenuItem();
+            _SaveProfileToolStripMenuItem = new ToolStripMenuItem();
+            _ToolStripMenuItem2 = new ToolStripSeparator();
+            _SavePasswordToolStripMenuItem = new ToolStripMenuItem();
+            _LayoutToolStripMenuItem = new ToolStripMenuItem();
+            _LoadSettingsOpenToolStripMenuItem = new ToolStripMenuItem();
+            _LoadSettingsToolStripMenuItem = new ToolStripMenuItem();
+            _ToolStripSeparator12 = new ToolStripSeparator();
+            _SaveSettingsToolStripMenuItem1 = new ToolStripMenuItem();
+            _SaveSettingsToolStripMenuItem = new ToolStripMenuItem();
+            _SaveSizedDefaultLayoutToolStripMenuItem = new ToolStripMenuItem();
+            _ToolStripSeparator5 = new ToolStripSeparator();
+            _BasicToolStripMenuItem = new ToolStripMenuItem();
+            _ToolStripSeparator4 = new ToolStripSeparator();
+            _IconBarToolStripMenuItem = new ToolStripMenuItem();
+            _DockTopToolStripMenuItem = new ToolStripMenuItem();
+            _DockBottomToolStripMenuItem = new ToolStripMenuItem();
+            _ShowScriptBarToolStripMenuItem = new ToolStripMenuItem();
+            _DockTopToolStripMenuItem1 = new ToolStripMenuItem();
+            _DockBottomToolStripMenuItem1 = new ToolStripMenuItem();
+            _HealthBarToolStripMenuItem = new ToolStripMenuItem();
+            _DockTopToolStripMenuItem2 = new ToolStripMenuItem();
+            _DockBottomToolStripMenuItem2 = new ToolStripMenuItem();
+            _MagicPanelsToolStripMenuItem = new ToolStripMenuItem();
+            _StatusBarToolStripMenuItem = new ToolStripMenuItem();
+            _WindowToolStripMenuItem = new ToolStripMenuItem();
+            _ScriptToolStripMenuItem = new ToolStripMenuItem();
+            _ScriptExplorerToolStripMenuItem = new ToolStripMenuItem();
+            updateScriptsToolStripMenuItem = new ToolStripMenuItem();
+            _ToolStripSeparator11 = new ToolStripSeparator();
+            _ListAllScriptsToolStripMenuItem = new ToolStripMenuItem();
+            _TraceAllScriptsToolStripMenuItem = new ToolStripMenuItem();
+            _ToolStripSeparator9 = new ToolStripSeparator();
+            _PauseAllScriptsToolStripMenuItem = new ToolStripMenuItem();
+            _ResumeAllScriptsToolStripMenuItem = new ToolStripMenuItem();
+            _ToolStripMenuItem3 = new ToolStripSeparator();
+            _AbortAllScriptsToolStripMenuItem = new ToolStripMenuItem();
+            _AutoMapperToolStripMenuItem = new ToolStripMenuItem();
+            _ShowWindowToolStripMenuItem = new ToolStripMenuItem();
+            updateMapsToolStripMenuItem = new ToolStripMenuItem();
+            _PluginsToolStripMenuItem = new ToolStripMenuItem();
+            _NoPluginsLoadedToolStripMenuItem = new ToolStripMenuItem();
+            updatePluginsToolStripMenuItem = new ToolStripMenuItem();
+            _HelpToolStripMenuItem = new ToolStripMenuItem();
+            checkForUpdatesToolStripMenuItem = new ToolStripMenuItem();
+            forceUpdateToolStripMenuItem = new ToolStripMenuItem();
+            loadTestClientToolStripMenuItem = new ToolStripMenuItem();
+            _ToolStripSeparator3 = new ToolStripSeparator();
+            autoUpdateToolStripMenuItem = new ToolStripMenuItem();
+            autoUpdateLampToolStripMenuItem = new ToolStripMenuItem();
+            checkUpdatesOnStartupToolStripMenuItem = new ToolStripMenuItem();
+            _ChangelogToolStripMenuItem = new ToolStripMenuItem();
+            _ToolStripSeparator10 = new ToolStripSeparator();
+            _OpenGenieDiscordToolStripMenuItem = new ToolStripMenuItem();
+            OpenGenieGithubToolStripMenuItem = new ToolStripMenuItem();
+            _OpenGenieDocsToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator1 = new ToolStripSeparator();
+            toolStripMenuItem1 = new ToolStripMenuItem();
+            playnetToolStripMenuItem = new ToolStripMenuItem();
+            elanthipediaToolStripMenuItem1 = new ToolStripMenuItem();
+            dRServiceToolStripMenuItem = new ToolStripMenuItem();
+            lichDiscordToolStripMenuItem = new ToolStripMenuItem();
+            isharonsGenieSettingsToolStripMenuItem = new ToolStripMenuItem();
+            _LabelSpellC = new Label();
+            _LabelRHC = new Label();
+            _LabelLHC = new Label();
+            _LabelSpell = new Label();
+            _LabelRH = new Label();
+            _LabelLH = new Label();
+            _LabelRT = new Label();
+            _PanelBars = new Panel();
+            _TableLayoutPanelBars = new TableLayoutPanel();
+            _ComponentBarsConc = new ComponentBars();
+            _ComponentBarsFatigue = new ComponentBars();
+            _ComponentBarsMana = new ComponentBars();
+            _ComponentBarsSpirit = new ComponentBars();
+            _ComponentBarsHealth = new ComponentBars();
+            _PanelStatus = new Panel();
+            _TableLayoutPanelFlow = new TableLayoutPanel();
+            _PanelFixed = new Panel();
+            _oRTControl = new ComponentRoundtime();
+            _IconBar = new ComponentIconBar();
+            _ToolStripButtons = new ToolStrip();
+            _ContextMenuStripButtons = new ContextMenuStrip(components);
+            _TimerReconnect = new Timer(components);
+            _OpenFileDialogLayout = new OpenFileDialog();
+            _SaveFileDialogLayout = new SaveFileDialog();
+            _TimerBgWorker = new Timer(components);
+            _PanelInput = new Panel();
+            _TextBoxInput = new ComponentTextBox();
+            _OpenFileDialogProfile = new OpenFileDialog();
+            _StatusStripMain.SuspendLayout();
+            _MenuStripMain.SuspendLayout();
+            _PanelBars.SuspendLayout();
+            _TableLayoutPanelBars.SuspendLayout();
+            _PanelStatus.SuspendLayout();
+            _TableLayoutPanelFlow.SuspendLayout();
+            _PanelFixed.SuspendLayout();
+            _PanelInput.SuspendLayout();
+            SuspendLayout();
             // 
             // _Castbar
             // 
-            this._Castbar.BackColor = (global::System.Drawing.Color.Black);
-            this._Castbar.BackgroundColor = (global::System.Drawing.Color.Black);
-            this._Castbar.BackgroundColorRT = (global::System.Drawing.Color.FromArgb((global::System.Int32)((global::System.Byte)(0)), (global::System.Int32)((global::System.Byte)(0)), (global::System.Int32)((global::System.Byte)(75))));
-            this._Castbar.BorderColor = (global::System.Drawing.Color.FromArgb((global::System.Int32)((global::System.Byte)(64)), (global::System.Int32)((global::System.Byte)(64)), (global::System.Int32)((global::System.Byte)(64))));
-            this._Castbar.BorderColorRT = (global::System.Drawing.Color.White);
-            this._Castbar.ForegroundColor = (global::System.Drawing.Color.Magenta);
-            this._Castbar.IsConnected = (false);
-            this._Castbar.Location = (new global::System.Drawing.Point(1172, 7));
-            this._Castbar.Margin = (new global::System.Windows.Forms.Padding(5));
-            this._Castbar.Name = ("_Castbar");
-            this._Castbar.Size = (new global::System.Drawing.Size(117, 30));
-            this._Castbar.TabIndex = (1);
+            _Castbar.BackColor = Color.Black;
+            _Castbar.BackgroundColor = Color.Black;
+            _Castbar.BackgroundColorRT = Color.FromArgb(0, 0, 75);
+            _Castbar.BorderColor = Color.FromArgb(64, 64, 64);
+            _Castbar.BorderColorRT = Color.White;
+            _Castbar.ForegroundColor = Color.Magenta;
+            _Castbar.IsConnected = false;
+            _Castbar.Location = new Point(1172, 7);
+            _Castbar.Margin = new Padding(5);
+            _Castbar.Name = "_Castbar";
+            _Castbar.Size = new Size(117, 30);
+            _Castbar.TabIndex = 1;
             // 
             // _StatusStripMain
             // 
-            this._StatusStripMain.BackColor = (global::System.Drawing.SystemColors.Control);
-            this._StatusStripMain.GripStyle = (global::System.Windows.Forms.ToolStripGripStyle.Visible);
-            this._StatusStripMain.Items.AddRange(new global::System.Windows.Forms.ToolStripItem[] { this._ToolStripStatusLabel1, this._ToolStripStatusLabel2, this._ToolStripStatusLabel3, this._ToolStripStatusLabel4, this._ToolStripStatusLabel5, this._ToolStripStatusLabel6, this._ToolStripStatusLabel7, this._ToolStripStatusLabel8, this._ToolStripStatusLabel9, this._ToolStripStatusLabel10 });
-            this._StatusStripMain.Location = (new global::System.Drawing.Point(0, 744));
-            this._StatusStripMain.Name = ("_StatusStripMain");
-            this._StatusStripMain.Padding = (new global::System.Windows.Forms.Padding(1, 0, 16, 0));
-            this._StatusStripMain.Size = (new global::System.Drawing.Size(1449, 24));
-            this._StatusStripMain.TabIndex = (2);
+            _StatusStripMain.BackColor = SystemColors.Control;
+            _StatusStripMain.GripStyle = ToolStripGripStyle.Visible;
+            _StatusStripMain.Items.AddRange(new ToolStripItem[] { _ToolStripStatusLabel1, _ToolStripStatusLabel2, _ToolStripStatusLabel3, _ToolStripStatusLabel4, _ToolStripStatusLabel5, _ToolStripStatusLabel6, _ToolStripStatusLabel7, _ToolStripStatusLabel8, _ToolStripStatusLabel9, _ToolStripStatusLabel10 });
+            _StatusStripMain.Location = new Point(0, 744);
+            _StatusStripMain.Name = "_StatusStripMain";
+            _StatusStripMain.Padding = new Padding(1, 0, 16, 0);
+            _StatusStripMain.Size = new Size(1449, 24);
+            _StatusStripMain.TabIndex = 2;
             // 
             // _ToolStripStatusLabel1
             // 
-            this._ToolStripStatusLabel1.BorderSides = ((global::System.Windows.Forms.ToolStripStatusLabelBorderSides)((((global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Left) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this._ToolStripStatusLabel1.BorderStyle = (global::System.Windows.Forms.Border3DStyle.SunkenOuter);
-            this._ToolStripStatusLabel1.Name = ("_ToolStripStatusLabel1");
-            this._ToolStripStatusLabel1.Size = (new global::System.Drawing.Size(1432, 19));
-            this._ToolStripStatusLabel1.Spring = (true);
-            this._ToolStripStatusLabel1.Text = ("Ready");
-            this._ToolStripStatusLabel1.TextAlign = (global::System.Drawing.ContentAlignment.MiddleLeft);
+            _ToolStripStatusLabel1.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            _ToolStripStatusLabel1.BorderStyle = Border3DStyle.SunkenOuter;
+            _ToolStripStatusLabel1.Name = "_ToolStripStatusLabel1";
+            _ToolStripStatusLabel1.Size = new Size(1432, 19);
+            _ToolStripStatusLabel1.Spring = true;
+            _ToolStripStatusLabel1.Text = "Ready";
+            _ToolStripStatusLabel1.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // _ToolStripStatusLabel2
             // 
-            this._ToolStripStatusLabel2.BorderSides = ((global::System.Windows.Forms.ToolStripStatusLabelBorderSides)((((global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Left) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this._ToolStripStatusLabel2.BorderStyle = (global::System.Windows.Forms.Border3DStyle.SunkenOuter);
-            this._ToolStripStatusLabel2.Name = ("_ToolStripStatusLabel2");
-            this._ToolStripStatusLabel2.Size = (new global::System.Drawing.Size(4, 19));
-            this._ToolStripStatusLabel2.TextAlign = (global::System.Drawing.ContentAlignment.MiddleLeft);
-            this._ToolStripStatusLabel2.Visible = (false);
+            _ToolStripStatusLabel2.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            _ToolStripStatusLabel2.BorderStyle = Border3DStyle.SunkenOuter;
+            _ToolStripStatusLabel2.Name = "_ToolStripStatusLabel2";
+            _ToolStripStatusLabel2.Size = new Size(4, 19);
+            _ToolStripStatusLabel2.TextAlign = ContentAlignment.MiddleLeft;
+            _ToolStripStatusLabel2.Visible = false;
             // 
             // _ToolStripStatusLabel3
             // 
-            this._ToolStripStatusLabel3.BorderSides = ((global::System.Windows.Forms.ToolStripStatusLabelBorderSides)((((global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Left) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this._ToolStripStatusLabel3.BorderStyle = (global::System.Windows.Forms.Border3DStyle.SunkenOuter);
-            this._ToolStripStatusLabel3.Name = ("_ToolStripStatusLabel3");
-            this._ToolStripStatusLabel3.Size = (new global::System.Drawing.Size(4, 19));
-            this._ToolStripStatusLabel3.TextAlign = (global::System.Drawing.ContentAlignment.MiddleLeft);
-            this._ToolStripStatusLabel3.Visible = (false);
+            _ToolStripStatusLabel3.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            _ToolStripStatusLabel3.BorderStyle = Border3DStyle.SunkenOuter;
+            _ToolStripStatusLabel3.Name = "_ToolStripStatusLabel3";
+            _ToolStripStatusLabel3.Size = new Size(4, 19);
+            _ToolStripStatusLabel3.TextAlign = ContentAlignment.MiddleLeft;
+            _ToolStripStatusLabel3.Visible = false;
             // 
             // _ToolStripStatusLabel4
             // 
-            this._ToolStripStatusLabel4.BorderSides = ((global::System.Windows.Forms.ToolStripStatusLabelBorderSides)((((global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Left) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this._ToolStripStatusLabel4.BorderStyle = (global::System.Windows.Forms.Border3DStyle.SunkenOuter);
-            this._ToolStripStatusLabel4.Name = ("_ToolStripStatusLabel4");
-            this._ToolStripStatusLabel4.Size = (new global::System.Drawing.Size(4, 19));
-            this._ToolStripStatusLabel4.TextAlign = (global::System.Drawing.ContentAlignment.MiddleLeft);
-            this._ToolStripStatusLabel4.Visible = (false);
+            _ToolStripStatusLabel4.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            _ToolStripStatusLabel4.BorderStyle = Border3DStyle.SunkenOuter;
+            _ToolStripStatusLabel4.Name = "_ToolStripStatusLabel4";
+            _ToolStripStatusLabel4.Size = new Size(4, 19);
+            _ToolStripStatusLabel4.TextAlign = ContentAlignment.MiddleLeft;
+            _ToolStripStatusLabel4.Visible = false;
             // 
             // _ToolStripStatusLabel5
             // 
-            this._ToolStripStatusLabel5.BorderSides = ((global::System.Windows.Forms.ToolStripStatusLabelBorderSides)((((global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Left) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this._ToolStripStatusLabel5.BorderStyle = (global::System.Windows.Forms.Border3DStyle.SunkenOuter);
-            this._ToolStripStatusLabel5.Name = ("_ToolStripStatusLabel5");
-            this._ToolStripStatusLabel5.Size = (new global::System.Drawing.Size(4, 19));
-            this._ToolStripStatusLabel5.TextAlign = (global::System.Drawing.ContentAlignment.MiddleLeft);
-            this._ToolStripStatusLabel5.Visible = (false);
+            _ToolStripStatusLabel5.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            _ToolStripStatusLabel5.BorderStyle = Border3DStyle.SunkenOuter;
+            _ToolStripStatusLabel5.Name = "_ToolStripStatusLabel5";
+            _ToolStripStatusLabel5.Size = new Size(4, 19);
+            _ToolStripStatusLabel5.TextAlign = ContentAlignment.MiddleLeft;
+            _ToolStripStatusLabel5.Visible = false;
             // 
             // _ToolStripStatusLabel6
             // 
-            this._ToolStripStatusLabel6.BorderSides = ((global::System.Windows.Forms.ToolStripStatusLabelBorderSides)((((global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Left) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this._ToolStripStatusLabel6.BorderStyle = (global::System.Windows.Forms.Border3DStyle.SunkenOuter);
-            this._ToolStripStatusLabel6.Name = ("_ToolStripStatusLabel6");
-            this._ToolStripStatusLabel6.Size = (new global::System.Drawing.Size(4, 19));
-            this._ToolStripStatusLabel6.TextAlign = (global::System.Drawing.ContentAlignment.MiddleLeft);
-            this._ToolStripStatusLabel6.Visible = (false);
+            _ToolStripStatusLabel6.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            _ToolStripStatusLabel6.BorderStyle = Border3DStyle.SunkenOuter;
+            _ToolStripStatusLabel6.Name = "_ToolStripStatusLabel6";
+            _ToolStripStatusLabel6.Size = new Size(4, 19);
+            _ToolStripStatusLabel6.TextAlign = ContentAlignment.MiddleLeft;
+            _ToolStripStatusLabel6.Visible = false;
             // 
             // _ToolStripStatusLabel7
             // 
-            this._ToolStripStatusLabel7.BorderSides = ((global::System.Windows.Forms.ToolStripStatusLabelBorderSides)((((global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Left) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this._ToolStripStatusLabel7.BorderStyle = (global::System.Windows.Forms.Border3DStyle.SunkenOuter);
-            this._ToolStripStatusLabel7.Name = ("_ToolStripStatusLabel7");
-            this._ToolStripStatusLabel7.Size = (new global::System.Drawing.Size(4, 19));
-            this._ToolStripStatusLabel7.TextAlign = (global::System.Drawing.ContentAlignment.MiddleLeft);
-            this._ToolStripStatusLabel7.Visible = (false);
+            _ToolStripStatusLabel7.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            _ToolStripStatusLabel7.BorderStyle = Border3DStyle.SunkenOuter;
+            _ToolStripStatusLabel7.Name = "_ToolStripStatusLabel7";
+            _ToolStripStatusLabel7.Size = new Size(4, 19);
+            _ToolStripStatusLabel7.TextAlign = ContentAlignment.MiddleLeft;
+            _ToolStripStatusLabel7.Visible = false;
             // 
             // _ToolStripStatusLabel8
             // 
-            this._ToolStripStatusLabel8.BorderSides = ((global::System.Windows.Forms.ToolStripStatusLabelBorderSides)((((global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Left) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this._ToolStripStatusLabel8.BorderStyle = (global::System.Windows.Forms.Border3DStyle.SunkenOuter);
-            this._ToolStripStatusLabel8.Name = ("_ToolStripStatusLabel8");
-            this._ToolStripStatusLabel8.Size = (new global::System.Drawing.Size(4, 19));
-            this._ToolStripStatusLabel8.TextAlign = (global::System.Drawing.ContentAlignment.MiddleLeft);
-            this._ToolStripStatusLabel8.Visible = (false);
+            _ToolStripStatusLabel8.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            _ToolStripStatusLabel8.BorderStyle = Border3DStyle.SunkenOuter;
+            _ToolStripStatusLabel8.Name = "_ToolStripStatusLabel8";
+            _ToolStripStatusLabel8.Size = new Size(4, 19);
+            _ToolStripStatusLabel8.TextAlign = ContentAlignment.MiddleLeft;
+            _ToolStripStatusLabel8.Visible = false;
             // 
             // _ToolStripStatusLabel9
             // 
-            this._ToolStripStatusLabel9.BorderSides = ((global::System.Windows.Forms.ToolStripStatusLabelBorderSides)((((global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Left) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this._ToolStripStatusLabel9.BorderStyle = (global::System.Windows.Forms.Border3DStyle.SunkenOuter);
-            this._ToolStripStatusLabel9.Name = ("_ToolStripStatusLabel9");
-            this._ToolStripStatusLabel9.Size = (new global::System.Drawing.Size(4, 19));
-            this._ToolStripStatusLabel9.TextAlign = (global::System.Drawing.ContentAlignment.MiddleLeft);
-            this._ToolStripStatusLabel9.Visible = (false);
+            _ToolStripStatusLabel9.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            _ToolStripStatusLabel9.BorderStyle = Border3DStyle.SunkenOuter;
+            _ToolStripStatusLabel9.Name = "_ToolStripStatusLabel9";
+            _ToolStripStatusLabel9.Size = new Size(4, 19);
+            _ToolStripStatusLabel9.TextAlign = ContentAlignment.MiddleLeft;
+            _ToolStripStatusLabel9.Visible = false;
             // 
             // _ToolStripStatusLabel10
             // 
-            this._ToolStripStatusLabel10.BorderSides = ((global::System.Windows.Forms.ToolStripStatusLabelBorderSides)((((global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Left) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)) | (global::System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this._ToolStripStatusLabel10.BorderStyle = (global::System.Windows.Forms.Border3DStyle.SunkenOuter);
-            this._ToolStripStatusLabel10.Name = ("_ToolStripStatusLabel10");
-            this._ToolStripStatusLabel10.Size = (new global::System.Drawing.Size(4, 19));
-            this._ToolStripStatusLabel10.TextAlign = (global::System.Drawing.ContentAlignment.MiddleLeft);
-            this._ToolStripStatusLabel10.Visible = (false);
+            _ToolStripStatusLabel10.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            _ToolStripStatusLabel10.BorderStyle = Border3DStyle.SunkenOuter;
+            _ToolStripStatusLabel10.Name = "_ToolStripStatusLabel10";
+            _ToolStripStatusLabel10.Size = new Size(4, 19);
+            _ToolStripStatusLabel10.TextAlign = ContentAlignment.MiddleLeft;
+            _ToolStripStatusLabel10.Visible = false;
             // 
             // _MenuStripMain
             // 
-            this._MenuStripMain.Items.AddRange(new global::System.Windows.Forms.ToolStripItem[] { this._FileToolStripMenuItem, this._EditToolStripMenuItem, this._ProfileToolStripMenuItem, this._LayoutToolStripMenuItem, this._WindowToolStripMenuItem, this._ScriptToolStripMenuItem, this._AutoMapperToolStripMenuItem, this._PluginsToolStripMenuItem, this._HelpToolStripMenuItem });
-            this._MenuStripMain.Location = (new global::System.Drawing.Point(0, 0));
-            this._MenuStripMain.Name = ("_MenuStripMain");
-            this._MenuStripMain.Padding = (new global::System.Windows.Forms.Padding(7, 2, 0, 2));
-            this._MenuStripMain.Size = (new global::System.Drawing.Size(1449, 24));
-            this._MenuStripMain.TabIndex = (1);
-            this._MenuStripMain.Text = ("MenuStrip1");
+            _MenuStripMain.Items.AddRange(new ToolStripItem[] { _FileToolStripMenuItem, _EditToolStripMenuItem, _ProfileToolStripMenuItem, _LayoutToolStripMenuItem, _WindowToolStripMenuItem, _ScriptToolStripMenuItem, _AutoMapperToolStripMenuItem, _PluginsToolStripMenuItem, _HelpToolStripMenuItem });
+            _MenuStripMain.Location = new Point(0, 0);
+            _MenuStripMain.Name = "_MenuStripMain";
+            _MenuStripMain.Padding = new Padding(7, 2, 0, 2);
+            _MenuStripMain.Size = new Size(1449, 24);
+            _MenuStripMain.TabIndex = 1;
+            _MenuStripMain.Text = "MenuStrip1";
             // 
             // _FileToolStripMenuItem
             // 
-            this._FileToolStripMenuItem.DropDownItems.AddRange(new global::System.Windows.Forms.ToolStripItem[] { this._ConnectToolStripMenuItem, this._ConnectToolStripMenuItemConnectDialog, this._ToolStripSeparator7, this._OpenUserDataDirectoryToolStripMenuItem, this._ToolStripMenuItem4, this._AutoLogToolStripMenuItem, this._OpenLogInEditorToolStripMenuItem, this._ToolStripSeparator13, this._AutoReconnectToolStripMenuItem, this.ClassicConnectToolStripMenuItem, this._IgnoresEnabledToolStripMenuItem, this._ToolStripMenuItemTriggers, this._PluginsEnabledToolStripMenuItem, this._AutoMapperEnabledToolStripMenuItem, this._MuteSoundsToolStripMenuItem, this._ToolStripSeparator8, this._ToolStripMenuItemShowXML, this._ToolStripMenuItem1, this._ToolStripSeparator1, this._ExitToolStripMenuItem });
-            this._FileToolStripMenuItem.Name = ("_FileToolStripMenuItem");
-            this._FileToolStripMenuItem.Size = (new global::System.Drawing.Size(37, 20));
-            this._FileToolStripMenuItem.Text = ("&File");
+            _FileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _ConnectToolStripMenuItem, _ConnectToolStripMenuItemConnectDialog, _ToolStripSeparator7, _OpenUserDataDirectoryToolStripMenuItem, _ToolStripMenuItem4, _AutoLogToolStripMenuItem, _OpenLogInEditorToolStripMenuItem, _ToolStripSeparator13, _AutoReconnectToolStripMenuItem, ClassicConnectToolStripMenuItem, _IgnoresEnabledToolStripMenuItem, _ToolStripMenuItemTriggers, _PluginsEnabledToolStripMenuItem, _AutoMapperEnabledToolStripMenuItem, _ImagesEnabledToolStripMenuItem, _MuteSoundsToolStripMenuItem, _ToolStripSeparator8, _ToolStripMenuItemShowXML, _ToolStripMenuItem1, _ToolStripSeparator1, _ExitToolStripMenuItem });
+            _FileToolStripMenuItem.Name = "_FileToolStripMenuItem";
+            _FileToolStripMenuItem.Size = new Size(37, 20);
+            _FileToolStripMenuItem.Text = "&File";
             // 
             // _ConnectToolStripMenuItem
             // 
-            this._ConnectToolStripMenuItem.Name = ("_ConnectToolStripMenuItem");
-            this._ConnectToolStripMenuItem.Size = (new global::System.Drawing.Size(205, 22));
-            this._ConnectToolStripMenuItem.Text = ("&Connect...");
-            this._ConnectToolStripMenuItem.Click += (this.ConnectToolStripMenuItem_Click);
+            _ConnectToolStripMenuItem.Name = "_ConnectToolStripMenuItem";
+            _ConnectToolStripMenuItem.Size = new Size(205, 22);
+            _ConnectToolStripMenuItem.Text = "&Connect...";
+            _ConnectToolStripMenuItem.Click += ConnectToolStripMenuItem_Click;
             // 
             // _ConnectToolStripMenuItemConnectDialog
             // 
-            this._ConnectToolStripMenuItemConnectDialog.Name = ("_ConnectToolStripMenuItemConnectDialog");
-            this._ConnectToolStripMenuItemConnectDialog.Size = (new global::System.Drawing.Size(205, 22));
-            this._ConnectToolStripMenuItemConnectDialog.Text = ("Connect &Using Profile...");
-            this._ConnectToolStripMenuItemConnectDialog.Click += (this.ConnectToolStripMenuItemConnectDialog_Click);
+            _ConnectToolStripMenuItemConnectDialog.Name = "_ConnectToolStripMenuItemConnectDialog";
+            _ConnectToolStripMenuItemConnectDialog.Size = new Size(205, 22);
+            _ConnectToolStripMenuItemConnectDialog.Text = "Connect &Using Profile...";
+            _ConnectToolStripMenuItemConnectDialog.Click += ConnectToolStripMenuItemConnectDialog_Click;
             // 
             // _ToolStripSeparator7
             // 
-            this._ToolStripSeparator7.Name = ("_ToolStripSeparator7");
-            this._ToolStripSeparator7.Size = (new global::System.Drawing.Size(202, 6));
+            _ToolStripSeparator7.Name = "_ToolStripSeparator7";
+            _ToolStripSeparator7.Size = new Size(202, 6);
             // 
             // _OpenUserDataDirectoryToolStripMenuItem
             // 
-            this._OpenUserDataDirectoryToolStripMenuItem.DropDownItems.AddRange(new global::System.Windows.Forms.ToolStripItem[] { this.genieToolStripMenuItem, this.scriptsToolStripMenuItem, this.mapsToolStripMenuItem, this.pluginsToolStripMenuItem, this.logsToolStripMenuItem });
-            this._OpenUserDataDirectoryToolStripMenuItem.Name = ("_OpenUserDataDirectoryToolStripMenuItem");
-            this._OpenUserDataDirectoryToolStripMenuItem.Size = (new global::System.Drawing.Size(205, 22));
-            this._OpenUserDataDirectoryToolStripMenuItem.Text = ("Open Directory...");
-            this._OpenUserDataDirectoryToolStripMenuItem.Click += (this.genieToolStripMenuItem_Click);
+            _OpenUserDataDirectoryToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { genieToolStripMenuItem, scriptsToolStripMenuItem, mapsToolStripMenuItem, pluginsToolStripMenuItem, logsToolStripMenuItem, artToolStripMenuItem });
+            _OpenUserDataDirectoryToolStripMenuItem.Name = "_OpenUserDataDirectoryToolStripMenuItem";
+            _OpenUserDataDirectoryToolStripMenuItem.Size = new Size(205, 22);
+            _OpenUserDataDirectoryToolStripMenuItem.Text = "Open Directory...";
+            _OpenUserDataDirectoryToolStripMenuItem.Click += genieToolStripMenuItem_Click;
             // 
             // genieToolStripMenuItem
             // 
-            this.genieToolStripMenuItem.Name = ("genieToolStripMenuItem");
-            this.genieToolStripMenuItem.Size = (new global::System.Drawing.Size(180, 22));
-            this.genieToolStripMenuItem.Text = ("Genie");
-            this.genieToolStripMenuItem.Click += (this.genieToolStripMenuItem_Click);
+            genieToolStripMenuItem.Name = "genieToolStripMenuItem";
+            genieToolStripMenuItem.Size = new Size(113, 22);
+            genieToolStripMenuItem.Text = "Genie";
+            genieToolStripMenuItem.Click += genieToolStripMenuItem_Click;
             // 
             // scriptsToolStripMenuItem
             // 
-            this.scriptsToolStripMenuItem.Name = ("scriptsToolStripMenuItem");
-            this.scriptsToolStripMenuItem.Size = (new global::System.Drawing.Size(180, 22));
-            this.scriptsToolStripMenuItem.Text = ("Scripts");
-            this.scriptsToolStripMenuItem.Click += (this.scriptsToolStripMenuItem_Click);
+            scriptsToolStripMenuItem.Name = "scriptsToolStripMenuItem";
+            scriptsToolStripMenuItem.Size = new Size(113, 22);
+            scriptsToolStripMenuItem.Text = "Scripts";
+            scriptsToolStripMenuItem.Click += scriptsToolStripMenuItem_Click;
             // 
             // mapsToolStripMenuItem
             // 
-            this.mapsToolStripMenuItem.Name = ("mapsToolStripMenuItem");
-            this.mapsToolStripMenuItem.Size = (new global::System.Drawing.Size(180, 22));
-            this.mapsToolStripMenuItem.Text = ("Maps");
-            this.mapsToolStripMenuItem.Click += (this.mapsToolStripMenuItem_Click);
+            mapsToolStripMenuItem.Name = "mapsToolStripMenuItem";
+            mapsToolStripMenuItem.Size = new Size(113, 22);
+            mapsToolStripMenuItem.Text = "Maps";
+            mapsToolStripMenuItem.Click += mapsToolStripMenuItem_Click;
             // 
             // pluginsToolStripMenuItem
             // 
-            this.pluginsToolStripMenuItem.Name = ("pluginsToolStripMenuItem");
-            this.pluginsToolStripMenuItem.Size = (new global::System.Drawing.Size(180, 22));
-            this.pluginsToolStripMenuItem.Text = ("Plugins");
-            this.pluginsToolStripMenuItem.Click += (this.pluginsToolStripMenuItem_Click);
+            pluginsToolStripMenuItem.Name = "pluginsToolStripMenuItem";
+            pluginsToolStripMenuItem.Size = new Size(113, 22);
+            pluginsToolStripMenuItem.Text = "Plugins";
+            pluginsToolStripMenuItem.Click += pluginsToolStripMenuItem_Click;
             // 
             // logsToolStripMenuItem
             // 
-            this.logsToolStripMenuItem.Name = ("logsToolStripMenuItem");
-            this.logsToolStripMenuItem.Size = (new global::System.Drawing.Size(180, 22));
-            this.logsToolStripMenuItem.Text = ("Logs");
-            this.logsToolStripMenuItem.Click += (this.logsToolStripMenuItem_Click);
+            logsToolStripMenuItem.Name = "logsToolStripMenuItem";
+            logsToolStripMenuItem.Size = new Size(113, 22);
+            logsToolStripMenuItem.Text = "Logs";
+            logsToolStripMenuItem.Click += logsToolStripMenuItem_Click;
+            // 
+            // artToolStripMenuItem
+            // 
+            artToolStripMenuItem.Name = "artToolStripMenuItem";
+            artToolStripMenuItem.Size = new Size(113, 22);
+            artToolStripMenuItem.Text = "Art";
+            artToolStripMenuItem.Click += artToolStripMenuItem_Click;
             // 
             // _ToolStripMenuItem4
             // 
-            this._ToolStripMenuItem4.Name = ("_ToolStripMenuItem4");
-            this._ToolStripMenuItem4.Size = (new global::System.Drawing.Size(202, 6));
+            _ToolStripMenuItem4.Name = "_ToolStripMenuItem4";
+            _ToolStripMenuItem4.Size = new Size(202, 6);
             // 
             // _AutoLogToolStripMenuItem
             // 
-            this._AutoLogToolStripMenuItem.Checked = (true);
-            this._AutoLogToolStripMenuItem.CheckOnClick = (true);
-            this._AutoLogToolStripMenuItem.CheckState = (global::System.Windows.Forms.CheckState.Checked);
-            this._AutoLogToolStripMenuItem.Name = ("_AutoLogToolStripMenuItem");
-            this._AutoLogToolStripMenuItem.Size = (new global::System.Drawing.Size(205, 22));
-            this._AutoLogToolStripMenuItem.Text = ("&Auto Log");
-            this._AutoLogToolStripMenuItem.Click += (this.AutoLogToolStripMenuItem_Click);
+            _AutoLogToolStripMenuItem.Checked = true;
+            _AutoLogToolStripMenuItem.CheckOnClick = true;
+            _AutoLogToolStripMenuItem.CheckState = CheckState.Checked;
+            _AutoLogToolStripMenuItem.Name = "_AutoLogToolStripMenuItem";
+            _AutoLogToolStripMenuItem.Size = new Size(205, 22);
+            _AutoLogToolStripMenuItem.Text = "&Auto Log";
+            _AutoLogToolStripMenuItem.Click += AutoLogToolStripMenuItem_Click;
             // 
             // _OpenLogInEditorToolStripMenuItem
             // 
-            this._OpenLogInEditorToolStripMenuItem.Name = ("_OpenLogInEditorToolStripMenuItem");
-            this._OpenLogInEditorToolStripMenuItem.Size = (new global::System.Drawing.Size(205, 22));
-            this._OpenLogInEditorToolStripMenuItem.Text = ("&Open Log In Editor");
-            this._OpenLogInEditorToolStripMenuItem.Click += (this.OpenLogInEditorToolStripMenuItem_Click);
+            _OpenLogInEditorToolStripMenuItem.Name = "_OpenLogInEditorToolStripMenuItem";
+            _OpenLogInEditorToolStripMenuItem.Size = new Size(205, 22);
+            _OpenLogInEditorToolStripMenuItem.Text = "&Open Log In Editor";
+            _OpenLogInEditorToolStripMenuItem.Click += OpenLogInEditorToolStripMenuItem_Click;
             // 
             // _ToolStripSeparator13
             // 
-            this._ToolStripSeparator13.Name = ("_ToolStripSeparator13");
-            this._ToolStripSeparator13.Size = (new global::System.Drawing.Size(202, 6));
+            _ToolStripSeparator13.Name = "_ToolStripSeparator13";
+            _ToolStripSeparator13.Size = new Size(202, 6);
             // 
             // _AutoReconnectToolStripMenuItem
             // 
-            this._AutoReconnectToolStripMenuItem.Checked = (true);
-            this._AutoReconnectToolStripMenuItem.CheckOnClick = (true);
-            this._AutoReconnectToolStripMenuItem.CheckState = (global::System.Windows.Forms.CheckState.Checked);
-            this._AutoReconnectToolStripMenuItem.Name = ("_AutoReconnectToolStripMenuItem");
-            this._AutoReconnectToolStripMenuItem.Size = (new global::System.Drawing.Size(205, 22));
-            this._AutoReconnectToolStripMenuItem.Text = ("Auto &Reconnect");
-            this._AutoReconnectToolStripMenuItem.Click += (this.AutoReconnectToolStripMenuItem_Click);
+            _AutoReconnectToolStripMenuItem.Checked = true;
+            _AutoReconnectToolStripMenuItem.CheckOnClick = true;
+            _AutoReconnectToolStripMenuItem.CheckState = CheckState.Checked;
+            _AutoReconnectToolStripMenuItem.Name = "_AutoReconnectToolStripMenuItem";
+            _AutoReconnectToolStripMenuItem.Size = new Size(205, 22);
+            _AutoReconnectToolStripMenuItem.Text = "Auto &Reconnect";
+            _AutoReconnectToolStripMenuItem.Click += AutoReconnectToolStripMenuItem_Click;
             // 
             // ClassicConnectToolStripMenuItem
             // 
-            this.ClassicConnectToolStripMenuItem.Checked = (true);
-            this.ClassicConnectToolStripMenuItem.CheckOnClick = (true);
-            this.ClassicConnectToolStripMenuItem.CheckState = (global::System.Windows.Forms.CheckState.Checked);
-            this.ClassicConnectToolStripMenuItem.Name = ("ClassicConnectToolStripMenuItem");
-            this.ClassicConnectToolStripMenuItem.Size = (new global::System.Drawing.Size(205, 22));
-            this.ClassicConnectToolStripMenuItem.Text = ("Classic Connect Window");
-            this.ClassicConnectToolStripMenuItem.Click += (this.ClassicConnectToolStripMenuItem_Click);
+            ClassicConnectToolStripMenuItem.Checked = true;
+            ClassicConnectToolStripMenuItem.CheckOnClick = true;
+            ClassicConnectToolStripMenuItem.CheckState = CheckState.Checked;
+            ClassicConnectToolStripMenuItem.Name = "ClassicConnectToolStripMenuItem";
+            ClassicConnectToolStripMenuItem.Size = new Size(205, 22);
+            ClassicConnectToolStripMenuItem.Text = "Classic Connect Window";
+            ClassicConnectToolStripMenuItem.Click += ClassicConnectToolStripMenuItem_Click;
             // 
             // _IgnoresEnabledToolStripMenuItem
             // 
-            this._IgnoresEnabledToolStripMenuItem.Checked = (true);
-            this._IgnoresEnabledToolStripMenuItem.CheckOnClick = (true);
-            this._IgnoresEnabledToolStripMenuItem.CheckState = (global::System.Windows.Forms.CheckState.Checked);
-            this._IgnoresEnabledToolStripMenuItem.Name = ("_IgnoresEnabledToolStripMenuItem");
-            this._IgnoresEnabledToolStripMenuItem.Size = (new global::System.Drawing.Size(205, 22));
-            this._IgnoresEnabledToolStripMenuItem.Text = ("&Ignores/Gags Enabled");
-            this._IgnoresEnabledToolStripMenuItem.Click += (this.IgnoresEnabledToolStripMenuItem_Click);
+            _IgnoresEnabledToolStripMenuItem.Checked = true;
+            _IgnoresEnabledToolStripMenuItem.CheckOnClick = true;
+            _IgnoresEnabledToolStripMenuItem.CheckState = CheckState.Checked;
+            _IgnoresEnabledToolStripMenuItem.Name = "_IgnoresEnabledToolStripMenuItem";
+            _IgnoresEnabledToolStripMenuItem.Size = new Size(205, 22);
+            _IgnoresEnabledToolStripMenuItem.Text = "&Ignores/Gags Enabled";
+            _IgnoresEnabledToolStripMenuItem.Click += IgnoresEnabledToolStripMenuItem_Click;
             // 
             // _ToolStripMenuItemTriggers
             // 
-            this._ToolStripMenuItemTriggers.Checked = (true);
-            this._ToolStripMenuItemTriggers.CheckOnClick = (true);
-            this._ToolStripMenuItemTriggers.CheckState = (global::System.Windows.Forms.CheckState.Checked);
-            this._ToolStripMenuItemTriggers.Name = ("_ToolStripMenuItemTriggers");
-            this._ToolStripMenuItemTriggers.Size = (new global::System.Drawing.Size(205, 22));
-            this._ToolStripMenuItemTriggers.Text = ("&Triggers Enabled");
-            this._ToolStripMenuItemTriggers.Click += (this.ToolStripMenuItemTriggers_Click);
+            _ToolStripMenuItemTriggers.Checked = true;
+            _ToolStripMenuItemTriggers.CheckOnClick = true;
+            _ToolStripMenuItemTriggers.CheckState = CheckState.Checked;
+            _ToolStripMenuItemTriggers.Name = "_ToolStripMenuItemTriggers";
+            _ToolStripMenuItemTriggers.Size = new Size(205, 22);
+            _ToolStripMenuItemTriggers.Text = "&Triggers Enabled";
+            _ToolStripMenuItemTriggers.Click += ToolStripMenuItemTriggers_Click;
             // 
             // _PluginsEnabledToolStripMenuItem
             // 
-            this._PluginsEnabledToolStripMenuItem.Checked = (true);
-            this._PluginsEnabledToolStripMenuItem.CheckOnClick = (true);
-            this._PluginsEnabledToolStripMenuItem.CheckState = (global::System.Windows.Forms.CheckState.Checked);
-            this._PluginsEnabledToolStripMenuItem.Name = ("_PluginsEnabledToolStripMenuItem");
-            this._PluginsEnabledToolStripMenuItem.Size = (new global::System.Drawing.Size(205, 22));
-            this._PluginsEnabledToolStripMenuItem.Text = ("&Plugins Enabled");
-            this._PluginsEnabledToolStripMenuItem.Click += (this.PluginsEnabledToolStripMenuItem_Click);
+            _PluginsEnabledToolStripMenuItem.Checked = true;
+            _PluginsEnabledToolStripMenuItem.CheckOnClick = true;
+            _PluginsEnabledToolStripMenuItem.CheckState = CheckState.Checked;
+            _PluginsEnabledToolStripMenuItem.Name = "_PluginsEnabledToolStripMenuItem";
+            _PluginsEnabledToolStripMenuItem.Size = new Size(205, 22);
+            _PluginsEnabledToolStripMenuItem.Text = "&Plugins Enabled";
+            _PluginsEnabledToolStripMenuItem.Click += PluginsEnabledToolStripMenuItem_Click;
             // 
             // _AutoMapperEnabledToolStripMenuItem
             // 
-            this._AutoMapperEnabledToolStripMenuItem.Checked = (true);
-            this._AutoMapperEnabledToolStripMenuItem.CheckState = (global::System.Windows.Forms.CheckState.Checked);
-            this._AutoMapperEnabledToolStripMenuItem.Name = ("_AutoMapperEnabledToolStripMenuItem");
-            this._AutoMapperEnabledToolStripMenuItem.Size = (new global::System.Drawing.Size(205, 22));
-            this._AutoMapperEnabledToolStripMenuItem.Text = ("Auto&Mapper Enabled");
-            this._AutoMapperEnabledToolStripMenuItem.Click += (this.AutoMapperEnabledToolStripMenuItem_Click);
+            _AutoMapperEnabledToolStripMenuItem.Checked = true;
+            _AutoMapperEnabledToolStripMenuItem.CheckState = CheckState.Checked;
+            _AutoMapperEnabledToolStripMenuItem.Name = "_AutoMapperEnabledToolStripMenuItem";
+            _AutoMapperEnabledToolStripMenuItem.Size = new Size(205, 22);
+            _AutoMapperEnabledToolStripMenuItem.Text = "Auto&Mapper Enabled";
+            _AutoMapperEnabledToolStripMenuItem.Click += AutoMapperEnabledToolStripMenuItem_Click;
+            // 
+            // _ImagesEnabledToolStripMenuItem
+            // 
+            _ImagesEnabledToolStripMenuItem.Checked = true;
+            _ImagesEnabledToolStripMenuItem.CheckState = CheckState.Checked;
+            _ImagesEnabledToolStripMenuItem.Name = "_ImagesEnabledToolStripMenuItem";
+            _ImagesEnabledToolStripMenuItem.Size = new Size(205, 22);
+            _ImagesEnabledToolStripMenuItem.Text = "Images Enabled";
+            _ImagesEnabledToolStripMenuItem.Click += _ImagesEnabledToolStripMenuItem_Click;
             // 
             // _MuteSoundsToolStripMenuItem
             // 
-            this._MuteSoundsToolStripMenuItem.CheckOnClick = (true);
-            this._MuteSoundsToolStripMenuItem.Name = ("_MuteSoundsToolStripMenuItem");
-            this._MuteSoundsToolStripMenuItem.Size = (new global::System.Drawing.Size(205, 22));
-            this._MuteSoundsToolStripMenuItem.Text = ("&Mute Sounds");
-            this._MuteSoundsToolStripMenuItem.Click += (this.MuteSoundsToolStripMenuItem_Click);
+            _MuteSoundsToolStripMenuItem.CheckOnClick = true;
+            _MuteSoundsToolStripMenuItem.Name = "_MuteSoundsToolStripMenuItem";
+            _MuteSoundsToolStripMenuItem.Size = new Size(205, 22);
+            _MuteSoundsToolStripMenuItem.Text = "&Mute Sounds";
+            _MuteSoundsToolStripMenuItem.Click += MuteSoundsToolStripMenuItem_Click;
             // 
             // _ToolStripSeparator8
             // 
-            this._ToolStripSeparator8.Name = ("_ToolStripSeparator8");
-            this._ToolStripSeparator8.Size = (new global::System.Drawing.Size(202, 6));
+            _ToolStripSeparator8.Name = "_ToolStripSeparator8";
+            _ToolStripSeparator8.Size = new Size(202, 6);
             // 
             // _ToolStripMenuItemShowXML
             // 
-            this._ToolStripMenuItemShowXML.CheckOnClick = (true);
-            this._ToolStripMenuItemShowXML.Name = ("_ToolStripMenuItemShowXML");
-            this._ToolStripMenuItemShowXML.Size = (new global::System.Drawing.Size(205, 22));
-            this._ToolStripMenuItemShowXML.Text = ("Show &Raw Data");
-            this._ToolStripMenuItemShowXML.Click += (this.ToolStripMenuItemShowXML_Click);
+            _ToolStripMenuItemShowXML.CheckOnClick = true;
+            _ToolStripMenuItemShowXML.Name = "_ToolStripMenuItemShowXML";
+            _ToolStripMenuItemShowXML.Size = new Size(205, 22);
+            _ToolStripMenuItemShowXML.Text = "Show &Raw Data";
+            _ToolStripMenuItemShowXML.Click += ToolStripMenuItemShowXML_Click;
             // 
             // _ToolStripMenuItem1
             // 
-            this._ToolStripMenuItem1.Name = ("_ToolStripMenuItem1");
-            this._ToolStripMenuItem1.Size = (new global::System.Drawing.Size(205, 22));
-            this._ToolStripMenuItem1.Text = ("P&erformace Test Parse");
-            this._ToolStripMenuItem1.Visible = (false);
-            this._ToolStripMenuItem1.Click += (this.ToolStripMenuItem1_Click);
+            _ToolStripMenuItem1.Name = "_ToolStripMenuItem1";
+            _ToolStripMenuItem1.Size = new Size(205, 22);
+            _ToolStripMenuItem1.Text = "P&erformace Test Parse";
+            _ToolStripMenuItem1.Visible = false;
+            _ToolStripMenuItem1.Click += ToolStripMenuItem1_Click;
             // 
             // _ToolStripSeparator1
             // 
-            this._ToolStripSeparator1.Name = ("_ToolStripSeparator1");
-            this._ToolStripSeparator1.Size = (new global::System.Drawing.Size(202, 6));
+            _ToolStripSeparator1.Name = "_ToolStripSeparator1";
+            _ToolStripSeparator1.Size = new Size(202, 6);
             // 
             // _ExitToolStripMenuItem
             // 
-            this._ExitToolStripMenuItem.Name = ("_ExitToolStripMenuItem");
-            this._ExitToolStripMenuItem.Size = (new global::System.Drawing.Size(205, 22));
-            this._ExitToolStripMenuItem.Text = ("E&xit");
-            this._ExitToolStripMenuItem.Click += (this.ExitToolStripMenuItem_Click);
+            _ExitToolStripMenuItem.Name = "_ExitToolStripMenuItem";
+            _ExitToolStripMenuItem.Size = new Size(205, 22);
+            _ExitToolStripMenuItem.Text = "E&xit";
+            _ExitToolStripMenuItem.Click += ExitToolStripMenuItem_Click;
             // 
             // _EditToolStripMenuItem
             // 
-            this._EditToolStripMenuItem.DropDownItems.AddRange(new global::System.Windows.Forms.ToolStripItem[] { this._ToolStripMenuItemSpecialPaste, this._ToolStripSeparator6, this._ConfigurationToolStripMenuItem });
-            this._EditToolStripMenuItem.Name = ("_EditToolStripMenuItem");
-            this._EditToolStripMenuItem.Size = (new global::System.Drawing.Size(39, 20));
-            this._EditToolStripMenuItem.Text = ("&Edit");
+            _EditToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _ToolStripMenuItemSpecialPaste, _ToolStripSeparator6, _ConfigurationToolStripMenuItem, UpdateImagesToolStripMenuItem });
+            _EditToolStripMenuItem.Name = "_EditToolStripMenuItem";
+            _EditToolStripMenuItem.Size = new Size(39, 20);
+            _EditToolStripMenuItem.Text = "&Edit";
             // 
             // _ToolStripMenuItemSpecialPaste
             // 
-            this._ToolStripMenuItemSpecialPaste.Name = ("_ToolStripMenuItemSpecialPaste");
-            this._ToolStripMenuItemSpecialPaste.Size = (new global::System.Drawing.Size(158, 22));
-            this._ToolStripMenuItemSpecialPaste.Text = ("Paste &Multi Line");
-            this._ToolStripMenuItemSpecialPaste.Click += (this.ToolStripMenuItemSpecialPaste_Click);
+            _ToolStripMenuItemSpecialPaste.Name = "_ToolStripMenuItemSpecialPaste";
+            _ToolStripMenuItemSpecialPaste.Size = new Size(158, 22);
+            _ToolStripMenuItemSpecialPaste.Text = "Paste &Multi Line";
+            _ToolStripMenuItemSpecialPaste.Click += ToolStripMenuItemSpecialPaste_Click;
             // 
             // _ToolStripSeparator6
             // 
-            this._ToolStripSeparator6.Name = ("_ToolStripSeparator6");
-            this._ToolStripSeparator6.Size = (new global::System.Drawing.Size(155, 6));
+            _ToolStripSeparator6.Name = "_ToolStripSeparator6";
+            _ToolStripSeparator6.Size = new Size(155, 6);
             // 
             // _ConfigurationToolStripMenuItem
             // 
-            this._ConfigurationToolStripMenuItem.Name = ("_ConfigurationToolStripMenuItem");
-            this._ConfigurationToolStripMenuItem.Size = (new global::System.Drawing.Size(158, 22));
-            this._ConfigurationToolStripMenuItem.Text = ("&Configuration...");
-            this._ConfigurationToolStripMenuItem.Click += (this.ConfigurationToolStripMenuItem_Click);
+            _ConfigurationToolStripMenuItem.Name = "_ConfigurationToolStripMenuItem";
+            _ConfigurationToolStripMenuItem.Size = new Size(158, 22);
+            _ConfigurationToolStripMenuItem.Text = "&Configuration...";
+            _ConfigurationToolStripMenuItem.Click += ConfigurationToolStripMenuItem_Click;
+            // 
+            // UpdateImagesToolStripMenuItem
+            // 
+            UpdateImagesToolStripMenuItem.Name = "UpdateImagesToolStripMenuItem";
+            UpdateImagesToolStripMenuItem.Size = new Size(158, 22);
+            UpdateImagesToolStripMenuItem.Text = "Update Images";
+            UpdateImagesToolStripMenuItem.Click += UpdateImagesToolStripMenuItem_Click;
             // 
             // _ProfileToolStripMenuItem
             // 
-            this._ProfileToolStripMenuItem.DropDownItems.AddRange(new global::System.Windows.Forms.ToolStripItem[] { this._LoadProfileToolStripMenuItem, this._SaveProfileToolStripMenuItem, this._ToolStripMenuItem2, this._SavePasswordToolStripMenuItem });
-            this._ProfileToolStripMenuItem.Name = ("_ProfileToolStripMenuItem");
-            this._ProfileToolStripMenuItem.Size = (new global::System.Drawing.Size(53, 20));
-            this._ProfileToolStripMenuItem.Text = ("&Profile");
+            _ProfileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _LoadProfileToolStripMenuItem, _SaveProfileToolStripMenuItem, _ToolStripMenuItem2, _SavePasswordToolStripMenuItem });
+            _ProfileToolStripMenuItem.Name = "_ProfileToolStripMenuItem";
+            _ProfileToolStripMenuItem.Size = new Size(53, 20);
+            _ProfileToolStripMenuItem.Text = "&Profile";
             // 
             // _LoadProfileToolStripMenuItem
             // 
-            this._LoadProfileToolStripMenuItem.Name = ("_LoadProfileToolStripMenuItem");
-            this._LoadProfileToolStripMenuItem.Size = (new global::System.Drawing.Size(216, 22));
-            this._LoadProfileToolStripMenuItem.Text = ("&Load Profile...");
-            this._LoadProfileToolStripMenuItem.Click += (this.LoadProfileToolStripMenuItem_Click);
+            _LoadProfileToolStripMenuItem.Name = "_LoadProfileToolStripMenuItem";
+            _LoadProfileToolStripMenuItem.Size = new Size(216, 22);
+            _LoadProfileToolStripMenuItem.Text = "&Load Profile...";
+            _LoadProfileToolStripMenuItem.Click += LoadProfileToolStripMenuItem_Click;
             // 
             // _SaveProfileToolStripMenuItem
             // 
-            this._SaveProfileToolStripMenuItem.Name = ("_SaveProfileToolStripMenuItem");
-            this._SaveProfileToolStripMenuItem.Size = (new global::System.Drawing.Size(216, 22));
-            this._SaveProfileToolStripMenuItem.Text = ("&Save Profile");
-            this._SaveProfileToolStripMenuItem.Click += (this.SaveProfileToolStripMenuItem_Click);
+            _SaveProfileToolStripMenuItem.Name = "_SaveProfileToolStripMenuItem";
+            _SaveProfileToolStripMenuItem.Size = new Size(216, 22);
+            _SaveProfileToolStripMenuItem.Text = "&Save Profile";
+            _SaveProfileToolStripMenuItem.Click += SaveProfileToolStripMenuItem_Click;
             // 
             // _ToolStripMenuItem2
             // 
-            this._ToolStripMenuItem2.Name = ("_ToolStripMenuItem2");
-            this._ToolStripMenuItem2.Size = (new global::System.Drawing.Size(213, 6));
+            _ToolStripMenuItem2.Name = "_ToolStripMenuItem2";
+            _ToolStripMenuItem2.Size = new Size(213, 6);
             // 
             // _SavePasswordToolStripMenuItem
             // 
-            this._SavePasswordToolStripMenuItem.CheckOnClick = (true);
-            this._SavePasswordToolStripMenuItem.Name = ("_SavePasswordToolStripMenuItem");
-            this._SavePasswordToolStripMenuItem.Size = (new global::System.Drawing.Size(216, 22));
-            this._SavePasswordToolStripMenuItem.Text = ("Include &Password In Profile");
-            this._SavePasswordToolStripMenuItem.Click += (this.SavePasswordToolStripMenuItem_Click);
+            _SavePasswordToolStripMenuItem.CheckOnClick = true;
+            _SavePasswordToolStripMenuItem.Name = "_SavePasswordToolStripMenuItem";
+            _SavePasswordToolStripMenuItem.Size = new Size(216, 22);
+            _SavePasswordToolStripMenuItem.Text = "Include &Password In Profile";
+            _SavePasswordToolStripMenuItem.Click += SavePasswordToolStripMenuItem_Click;
             // 
             // _LayoutToolStripMenuItem
             // 
-            this._LayoutToolStripMenuItem.DropDownItems.AddRange(new global::System.Windows.Forms.ToolStripItem[] { this._LoadSettingsOpenToolStripMenuItem, this._LoadSettingsToolStripMenuItem, this._ToolStripSeparator12, this._SaveSettingsToolStripMenuItem1, this._SaveSettingsToolStripMenuItem, this._SaveSizedDefaultLayoutToolStripMenuItem, this._ToolStripSeparator5, this._BasicToolStripMenuItem, this._ToolStripSeparator4, this._IconBarToolStripMenuItem, this._ShowScriptBarToolStripMenuItem, this._HealthBarToolStripMenuItem, this._MagicPanelsToolStripMenuItem, this._StatusBarToolStripMenuItem });
-            this._LayoutToolStripMenuItem.Name = ("_LayoutToolStripMenuItem");
-            this._LayoutToolStripMenuItem.Size = (new global::System.Drawing.Size(55, 20));
-            this._LayoutToolStripMenuItem.Text = ("&Layout");
+            _LayoutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _LoadSettingsOpenToolStripMenuItem, _LoadSettingsToolStripMenuItem, _ToolStripSeparator12, _SaveSettingsToolStripMenuItem1, _SaveSettingsToolStripMenuItem, _SaveSizedDefaultLayoutToolStripMenuItem, _ToolStripSeparator5, _BasicToolStripMenuItem, _ToolStripSeparator4, _IconBarToolStripMenuItem, _ShowScriptBarToolStripMenuItem, _HealthBarToolStripMenuItem, _MagicPanelsToolStripMenuItem, _StatusBarToolStripMenuItem });
+            _LayoutToolStripMenuItem.Name = "_LayoutToolStripMenuItem";
+            _LayoutToolStripMenuItem.Size = new Size(55, 20);
+            _LayoutToolStripMenuItem.Text = "&Layout";
             // 
             // _LoadSettingsOpenToolStripMenuItem
             // 
-            this._LoadSettingsOpenToolStripMenuItem.Name = ("_LoadSettingsOpenToolStripMenuItem");
-            this._LoadSettingsOpenToolStripMenuItem.Size = (new global::System.Drawing.Size(208, 22));
-            this._LoadSettingsOpenToolStripMenuItem.Text = ("Load Layout...");
-            this._LoadSettingsOpenToolStripMenuItem.Click += (this.LoadSettingsOpenToolStripMenuItem_Click);
+            _LoadSettingsOpenToolStripMenuItem.Name = "_LoadSettingsOpenToolStripMenuItem";
+            _LoadSettingsOpenToolStripMenuItem.Size = new Size(208, 22);
+            _LoadSettingsOpenToolStripMenuItem.Text = "Load Layout...";
+            _LoadSettingsOpenToolStripMenuItem.Click += LoadSettingsOpenToolStripMenuItem_Click;
             // 
             // _LoadSettingsToolStripMenuItem
             // 
-            this._LoadSettingsToolStripMenuItem.Name = ("_LoadSettingsToolStripMenuItem");
-            this._LoadSettingsToolStripMenuItem.Size = (new global::System.Drawing.Size(208, 22));
-            this._LoadSettingsToolStripMenuItem.Text = ("Load Default Layout");
-            this._LoadSettingsToolStripMenuItem.Click += (this.LoadSettingsToolStripMenuItem_Click);
+            _LoadSettingsToolStripMenuItem.Name = "_LoadSettingsToolStripMenuItem";
+            _LoadSettingsToolStripMenuItem.Size = new Size(208, 22);
+            _LoadSettingsToolStripMenuItem.Text = "Load Default Layout";
+            _LoadSettingsToolStripMenuItem.Click += LoadSettingsToolStripMenuItem_Click;
             // 
             // _ToolStripSeparator12
             // 
-            this._ToolStripSeparator12.Name = ("_ToolStripSeparator12");
-            this._ToolStripSeparator12.Size = (new global::System.Drawing.Size(205, 6));
+            _ToolStripSeparator12.Name = "_ToolStripSeparator12";
+            _ToolStripSeparator12.Size = new Size(205, 6);
             // 
             // _SaveSettingsToolStripMenuItem1
             // 
-            this._SaveSettingsToolStripMenuItem1.Name = ("_SaveSettingsToolStripMenuItem1");
-            this._SaveSettingsToolStripMenuItem1.Size = (new global::System.Drawing.Size(208, 22));
-            this._SaveSettingsToolStripMenuItem1.Text = ("Save Layout As...");
-            this._SaveSettingsToolStripMenuItem1.Click += (this.SaveSettingsToolStripMenuItem1_Click);
+            _SaveSettingsToolStripMenuItem1.Name = "_SaveSettingsToolStripMenuItem1";
+            _SaveSettingsToolStripMenuItem1.Size = new Size(208, 22);
+            _SaveSettingsToolStripMenuItem1.Text = "Save Layout As...";
+            _SaveSettingsToolStripMenuItem1.Click += SaveSettingsToolStripMenuItem1_Click;
             // 
             // _SaveSettingsToolStripMenuItem
             // 
-            this._SaveSettingsToolStripMenuItem.Name = ("_SaveSettingsToolStripMenuItem");
-            this._SaveSettingsToolStripMenuItem.Size = (new global::System.Drawing.Size(208, 22));
-            this._SaveSettingsToolStripMenuItem.Text = ("Save Default Layout");
-            this._SaveSettingsToolStripMenuItem.Click += (this.SaveSettingsToolStripMenuItem_Click);
+            _SaveSettingsToolStripMenuItem.Name = "_SaveSettingsToolStripMenuItem";
+            _SaveSettingsToolStripMenuItem.Size = new Size(208, 22);
+            _SaveSettingsToolStripMenuItem.Text = "Save Default Layout";
+            _SaveSettingsToolStripMenuItem.Click += SaveSettingsToolStripMenuItem_Click;
             // 
             // _SaveSizedDefaultLayoutToolStripMenuItem
             // 
-            this._SaveSizedDefaultLayoutToolStripMenuItem.Name = ("_SaveSizedDefaultLayoutToolStripMenuItem");
-            this._SaveSizedDefaultLayoutToolStripMenuItem.Size = (new global::System.Drawing.Size(208, 22));
-            this._SaveSizedDefaultLayoutToolStripMenuItem.Text = ("Save Sized Default Layout");
-            this._SaveSizedDefaultLayoutToolStripMenuItem.Click += (this.SaveSizedDefaultLayoutToolStripMenuItem_Click);
+            _SaveSizedDefaultLayoutToolStripMenuItem.Name = "_SaveSizedDefaultLayoutToolStripMenuItem";
+            _SaveSizedDefaultLayoutToolStripMenuItem.Size = new Size(208, 22);
+            _SaveSizedDefaultLayoutToolStripMenuItem.Text = "Save Sized Default Layout";
+            _SaveSizedDefaultLayoutToolStripMenuItem.Click += SaveSizedDefaultLayoutToolStripMenuItem_Click;
             // 
             // _ToolStripSeparator5
             // 
-            this._ToolStripSeparator5.Name = ("_ToolStripSeparator5");
-            this._ToolStripSeparator5.Size = (new global::System.Drawing.Size(205, 6));
+            _ToolStripSeparator5.Name = "_ToolStripSeparator5";
+            _ToolStripSeparator5.Size = new Size(205, 6);
             // 
             // _BasicToolStripMenuItem
             // 
-            this._BasicToolStripMenuItem.Name = ("_BasicToolStripMenuItem");
-            this._BasicToolStripMenuItem.Size = (new global::System.Drawing.Size(208, 22));
-            this._BasicToolStripMenuItem.Text = ("Basic Layout");
-            this._BasicToolStripMenuItem.Click += (this.BasicToolStripMenuItem_Click);
+            _BasicToolStripMenuItem.Name = "_BasicToolStripMenuItem";
+            _BasicToolStripMenuItem.Size = new Size(208, 22);
+            _BasicToolStripMenuItem.Text = "Basic Layout";
+            _BasicToolStripMenuItem.Click += BasicToolStripMenuItem_Click;
             // 
             // _ToolStripSeparator4
             // 
-            this._ToolStripSeparator4.Name = ("_ToolStripSeparator4");
-            this._ToolStripSeparator4.Size = (new global::System.Drawing.Size(205, 6));
+            _ToolStripSeparator4.Name = "_ToolStripSeparator4";
+            _ToolStripSeparator4.Size = new Size(205, 6);
             // 
             // _IconBarToolStripMenuItem
             // 
-            this._IconBarToolStripMenuItem.Checked = (true);
-            this._IconBarToolStripMenuItem.CheckOnClick = (true);
-            this._IconBarToolStripMenuItem.CheckState = (global::System.Windows.Forms.CheckState.Checked);
-            this._IconBarToolStripMenuItem.DropDownItems.AddRange(new global::System.Windows.Forms.ToolStripItem[] { this._DockTopToolStripMenuItem, this._DockBottomToolStripMenuItem });
-            this._IconBarToolStripMenuItem.Name = ("_IconBarToolStripMenuItem");
-            this._IconBarToolStripMenuItem.Size = (new global::System.Drawing.Size(208, 22));
-            this._IconBarToolStripMenuItem.Text = ("Icon Bar");
-            this._IconBarToolStripMenuItem.Click += (this.IconBarToolStripMenuItem_Click);
+            _IconBarToolStripMenuItem.Checked = true;
+            _IconBarToolStripMenuItem.CheckOnClick = true;
+            _IconBarToolStripMenuItem.CheckState = CheckState.Checked;
+            _IconBarToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _DockTopToolStripMenuItem, _DockBottomToolStripMenuItem });
+            _IconBarToolStripMenuItem.Name = "_IconBarToolStripMenuItem";
+            _IconBarToolStripMenuItem.Size = new Size(208, 22);
+            _IconBarToolStripMenuItem.Text = "Icon Bar";
+            _IconBarToolStripMenuItem.Click += IconBarToolStripMenuItem_Click;
             // 
             // _DockTopToolStripMenuItem
             // 
-            this._DockTopToolStripMenuItem.Name = ("_DockTopToolStripMenuItem");
-            this._DockTopToolStripMenuItem.Size = (new global::System.Drawing.Size(144, 22));
-            this._DockTopToolStripMenuItem.Text = ("Dock Top");
-            this._DockTopToolStripMenuItem.Click += (this.DockTopToolStripMenuItem_Click);
+            _DockTopToolStripMenuItem.Name = "_DockTopToolStripMenuItem";
+            _DockTopToolStripMenuItem.Size = new Size(144, 22);
+            _DockTopToolStripMenuItem.Text = "Dock Top";
+            _DockTopToolStripMenuItem.Click += DockTopToolStripMenuItem_Click;
             // 
             // _DockBottomToolStripMenuItem
             // 
-            this._DockBottomToolStripMenuItem.Checked = (true);
-            this._DockBottomToolStripMenuItem.CheckState = (global::System.Windows.Forms.CheckState.Checked);
-            this._DockBottomToolStripMenuItem.Name = ("_DockBottomToolStripMenuItem");
-            this._DockBottomToolStripMenuItem.Size = (new global::System.Drawing.Size(144, 22));
-            this._DockBottomToolStripMenuItem.Text = ("Dock Bottom");
-            this._DockBottomToolStripMenuItem.Click += (this.DockBottomToolStripMenuItem_Click);
+            _DockBottomToolStripMenuItem.Checked = true;
+            _DockBottomToolStripMenuItem.CheckState = CheckState.Checked;
+            _DockBottomToolStripMenuItem.Name = "_DockBottomToolStripMenuItem";
+            _DockBottomToolStripMenuItem.Size = new Size(144, 22);
+            _DockBottomToolStripMenuItem.Text = "Dock Bottom";
+            _DockBottomToolStripMenuItem.Click += DockBottomToolStripMenuItem_Click;
             // 
             // _ShowScriptBarToolStripMenuItem
             // 
-            this._ShowScriptBarToolStripMenuItem.Checked = (true);
-            this._ShowScriptBarToolStripMenuItem.CheckOnClick = (true);
-            this._ShowScriptBarToolStripMenuItem.CheckState = (global::System.Windows.Forms.CheckState.Checked);
-            this._ShowScriptBarToolStripMenuItem.DropDownItems.AddRange(new global::System.Windows.Forms.ToolStripItem[] { this._DockTopToolStripMenuItem1, this._DockBottomToolStripMenuItem1 });
-            this._ShowScriptBarToolStripMenuItem.Name = ("_ShowScriptBarToolStripMenuItem");
-            this._ShowScriptBarToolStripMenuItem.Size = (new global::System.Drawing.Size(208, 22));
-            this._ShowScriptBarToolStripMenuItem.Text = ("Script Bar");
-            this._ShowScriptBarToolStripMenuItem.Click += (this.ShowScriptBarToolStripMenuItem_Click);
+            _ShowScriptBarToolStripMenuItem.Checked = true;
+            _ShowScriptBarToolStripMenuItem.CheckOnClick = true;
+            _ShowScriptBarToolStripMenuItem.CheckState = CheckState.Checked;
+            _ShowScriptBarToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _DockTopToolStripMenuItem1, _DockBottomToolStripMenuItem1 });
+            _ShowScriptBarToolStripMenuItem.Name = "_ShowScriptBarToolStripMenuItem";
+            _ShowScriptBarToolStripMenuItem.Size = new Size(208, 22);
+            _ShowScriptBarToolStripMenuItem.Text = "Script Bar";
+            _ShowScriptBarToolStripMenuItem.Click += ShowScriptBarToolStripMenuItem_Click;
             // 
             // _DockTopToolStripMenuItem1
             // 
-            this._DockTopToolStripMenuItem1.Name = ("_DockTopToolStripMenuItem1");
-            this._DockTopToolStripMenuItem1.Size = (new global::System.Drawing.Size(144, 22));
-            this._DockTopToolStripMenuItem1.Text = ("Dock Top");
-            this._DockTopToolStripMenuItem1.Click += (this.DockTopToolStripMenuItem1_Click);
+            _DockTopToolStripMenuItem1.Name = "_DockTopToolStripMenuItem1";
+            _DockTopToolStripMenuItem1.Size = new Size(144, 22);
+            _DockTopToolStripMenuItem1.Text = "Dock Top";
+            _DockTopToolStripMenuItem1.Click += DockTopToolStripMenuItem1_Click;
             // 
             // _DockBottomToolStripMenuItem1
             // 
-            this._DockBottomToolStripMenuItem1.Checked = (true);
-            this._DockBottomToolStripMenuItem1.CheckState = (global::System.Windows.Forms.CheckState.Checked);
-            this._DockBottomToolStripMenuItem1.Name = ("_DockBottomToolStripMenuItem1");
-            this._DockBottomToolStripMenuItem1.Size = (new global::System.Drawing.Size(144, 22));
-            this._DockBottomToolStripMenuItem1.Text = ("Dock Bottom");
-            this._DockBottomToolStripMenuItem1.Click += (this.DockBottomToolStripMenuItem1_Click);
+            _DockBottomToolStripMenuItem1.Checked = true;
+            _DockBottomToolStripMenuItem1.CheckState = CheckState.Checked;
+            _DockBottomToolStripMenuItem1.Name = "_DockBottomToolStripMenuItem1";
+            _DockBottomToolStripMenuItem1.Size = new Size(144, 22);
+            _DockBottomToolStripMenuItem1.Text = "Dock Bottom";
+            _DockBottomToolStripMenuItem1.Click += DockBottomToolStripMenuItem1_Click;
             // 
             // _HealthBarToolStripMenuItem
             // 
-            this._HealthBarToolStripMenuItem.Checked = (true);
-            this._HealthBarToolStripMenuItem.CheckOnClick = (true);
-            this._HealthBarToolStripMenuItem.CheckState = (global::System.Windows.Forms.CheckState.Checked);
-            this._HealthBarToolStripMenuItem.DropDownItems.AddRange(new global::System.Windows.Forms.ToolStripItem[] { this._DockTopToolStripMenuItem2, this._DockBottomToolStripMenuItem2 });
-            this._HealthBarToolStripMenuItem.Name = ("_HealthBarToolStripMenuItem");
-            this._HealthBarToolStripMenuItem.Size = (new global::System.Drawing.Size(208, 22));
-            this._HealthBarToolStripMenuItem.Text = ("Health Bar");
-            this._HealthBarToolStripMenuItem.Click += (this.HealthBarToolStripMenuItem_Click);
+            _HealthBarToolStripMenuItem.Checked = true;
+            _HealthBarToolStripMenuItem.CheckOnClick = true;
+            _HealthBarToolStripMenuItem.CheckState = CheckState.Checked;
+            _HealthBarToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _DockTopToolStripMenuItem2, _DockBottomToolStripMenuItem2 });
+            _HealthBarToolStripMenuItem.Name = "_HealthBarToolStripMenuItem";
+            _HealthBarToolStripMenuItem.Size = new Size(208, 22);
+            _HealthBarToolStripMenuItem.Text = "Health Bar";
+            _HealthBarToolStripMenuItem.Click += HealthBarToolStripMenuItem_Click;
             // 
             // _DockTopToolStripMenuItem2
             // 
-            this._DockTopToolStripMenuItem2.Name = ("_DockTopToolStripMenuItem2");
-            this._DockTopToolStripMenuItem2.Size = (new global::System.Drawing.Size(144, 22));
-            this._DockTopToolStripMenuItem2.Text = ("Dock Top");
-            this._DockTopToolStripMenuItem2.Click += (this.DockTopToolStripMenuItem2_Click);
+            _DockTopToolStripMenuItem2.Name = "_DockTopToolStripMenuItem2";
+            _DockTopToolStripMenuItem2.Size = new Size(144, 22);
+            _DockTopToolStripMenuItem2.Text = "Dock Top";
+            _DockTopToolStripMenuItem2.Click += DockTopToolStripMenuItem2_Click;
             // 
             // _DockBottomToolStripMenuItem2
             // 
-            this._DockBottomToolStripMenuItem2.Checked = (true);
-            this._DockBottomToolStripMenuItem2.CheckState = (global::System.Windows.Forms.CheckState.Checked);
-            this._DockBottomToolStripMenuItem2.Name = ("_DockBottomToolStripMenuItem2");
-            this._DockBottomToolStripMenuItem2.Size = (new global::System.Drawing.Size(144, 22));
-            this._DockBottomToolStripMenuItem2.Text = ("Dock Bottom");
-            this._DockBottomToolStripMenuItem2.Click += (this.DockBottomToolStripMenuItem2_Click);
+            _DockBottomToolStripMenuItem2.Checked = true;
+            _DockBottomToolStripMenuItem2.CheckState = CheckState.Checked;
+            _DockBottomToolStripMenuItem2.Name = "_DockBottomToolStripMenuItem2";
+            _DockBottomToolStripMenuItem2.Size = new Size(144, 22);
+            _DockBottomToolStripMenuItem2.Text = "Dock Bottom";
+            _DockBottomToolStripMenuItem2.Click += DockBottomToolStripMenuItem2_Click;
             // 
             // _MagicPanelsToolStripMenuItem
             // 
-            this._MagicPanelsToolStripMenuItem.Checked = (true);
-            this._MagicPanelsToolStripMenuItem.CheckOnClick = (true);
-            this._MagicPanelsToolStripMenuItem.CheckState = (global::System.Windows.Forms.CheckState.Checked);
-            this._MagicPanelsToolStripMenuItem.Name = ("_MagicPanelsToolStripMenuItem");
-            this._MagicPanelsToolStripMenuItem.Size = (new global::System.Drawing.Size(208, 22));
-            this._MagicPanelsToolStripMenuItem.Text = ("Magic Panels");
-            this._MagicPanelsToolStripMenuItem.Click += (this.MagicPanelsToolStripMenuItem_Click);
+            _MagicPanelsToolStripMenuItem.Checked = true;
+            _MagicPanelsToolStripMenuItem.CheckOnClick = true;
+            _MagicPanelsToolStripMenuItem.CheckState = CheckState.Checked;
+            _MagicPanelsToolStripMenuItem.Name = "_MagicPanelsToolStripMenuItem";
+            _MagicPanelsToolStripMenuItem.Size = new Size(208, 22);
+            _MagicPanelsToolStripMenuItem.Text = "Magic Panels";
+            _MagicPanelsToolStripMenuItem.Click += MagicPanelsToolStripMenuItem_Click;
             // 
             // _StatusBarToolStripMenuItem
             // 
-            this._StatusBarToolStripMenuItem.Checked = (true);
-            this._StatusBarToolStripMenuItem.CheckOnClick = (true);
-            this._StatusBarToolStripMenuItem.CheckState = (global::System.Windows.Forms.CheckState.Checked);
-            this._StatusBarToolStripMenuItem.Name = ("_StatusBarToolStripMenuItem");
-            this._StatusBarToolStripMenuItem.Size = (new global::System.Drawing.Size(208, 22));
-            this._StatusBarToolStripMenuItem.Text = ("Status Bar");
-            this._StatusBarToolStripMenuItem.Click += (this.StatusBarToolStripMenuItem_Click);
+            _StatusBarToolStripMenuItem.Checked = true;
+            _StatusBarToolStripMenuItem.CheckOnClick = true;
+            _StatusBarToolStripMenuItem.CheckState = CheckState.Checked;
+            _StatusBarToolStripMenuItem.Name = "_StatusBarToolStripMenuItem";
+            _StatusBarToolStripMenuItem.Size = new Size(208, 22);
+            _StatusBarToolStripMenuItem.Text = "Status Bar";
+            _StatusBarToolStripMenuItem.Click += StatusBarToolStripMenuItem_Click;
             // 
             // _WindowToolStripMenuItem
             // 
-            this._WindowToolStripMenuItem.Name = ("_WindowToolStripMenuItem");
-            this._WindowToolStripMenuItem.Size = (new global::System.Drawing.Size(68, 20));
-            this._WindowToolStripMenuItem.Text = ("&Windows");
+            _WindowToolStripMenuItem.Name = "_WindowToolStripMenuItem";
+            _WindowToolStripMenuItem.Size = new Size(68, 20);
+            _WindowToolStripMenuItem.Text = "&Windows";
             // 
             // _ScriptToolStripMenuItem
             // 
-            this._ScriptToolStripMenuItem.DropDownItems.AddRange(new global::System.Windows.Forms.ToolStripItem[] { this._ScriptExplorerToolStripMenuItem, this.updateScriptsToolStripMenuItem, this._ToolStripSeparator11, this._ListAllScriptsToolStripMenuItem, this._TraceAllScriptsToolStripMenuItem, this._ToolStripSeparator9, this._PauseAllScriptsToolStripMenuItem, this._ResumeAllScriptsToolStripMenuItem, this._ToolStripMenuItem3, this._AbortAllScriptsToolStripMenuItem });
-            this._ScriptToolStripMenuItem.Name = ("_ScriptToolStripMenuItem");
-            this._ScriptToolStripMenuItem.Size = (new global::System.Drawing.Size(49, 20));
-            this._ScriptToolStripMenuItem.Text = ("&Script");
+            _ScriptToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _ScriptExplorerToolStripMenuItem, updateScriptsToolStripMenuItem, _ToolStripSeparator11, _ListAllScriptsToolStripMenuItem, _TraceAllScriptsToolStripMenuItem, _ToolStripSeparator9, _PauseAllScriptsToolStripMenuItem, _ResumeAllScriptsToolStripMenuItem, _ToolStripMenuItem3, _AbortAllScriptsToolStripMenuItem });
+            _ScriptToolStripMenuItem.Name = "_ScriptToolStripMenuItem";
+            _ScriptToolStripMenuItem.Size = new Size(49, 20);
+            _ScriptToolStripMenuItem.Text = "&Script";
             // 
             // _ScriptExplorerToolStripMenuItem
             // 
-            this._ScriptExplorerToolStripMenuItem.Name = ("_ScriptExplorerToolStripMenuItem");
-            this._ScriptExplorerToolStripMenuItem.Size = (new global::System.Drawing.Size(177, 22));
-            this._ScriptExplorerToolStripMenuItem.Text = ("Script &Explorer...");
-            this._ScriptExplorerToolStripMenuItem.Click += (this.ScriptExplorerToolStripMenuItem_Click);
+            _ScriptExplorerToolStripMenuItem.Name = "_ScriptExplorerToolStripMenuItem";
+            _ScriptExplorerToolStripMenuItem.Size = new Size(177, 22);
+            _ScriptExplorerToolStripMenuItem.Text = "Script &Explorer...";
+            _ScriptExplorerToolStripMenuItem.Click += ScriptExplorerToolStripMenuItem_Click;
             // 
             // updateScriptsToolStripMenuItem
             // 
-            this.updateScriptsToolStripMenuItem.Name = ("updateScriptsToolStripMenuItem");
-            this.updateScriptsToolStripMenuItem.Size = (new global::System.Drawing.Size(177, 22));
-            this.updateScriptsToolStripMenuItem.Text = ("&Update Scripts");
-            this.updateScriptsToolStripMenuItem.Click += (this.updateScriptsToolStripMenuItem_Click);
+            updateScriptsToolStripMenuItem.Name = "updateScriptsToolStripMenuItem";
+            updateScriptsToolStripMenuItem.Size = new Size(177, 22);
+            updateScriptsToolStripMenuItem.Text = "&Update Scripts";
+            updateScriptsToolStripMenuItem.Click += updateScriptsToolStripMenuItem_Click;
             // 
             // _ToolStripSeparator11
             // 
-            this._ToolStripSeparator11.Name = ("_ToolStripSeparator11");
-            this._ToolStripSeparator11.Size = (new global::System.Drawing.Size(174, 6));
+            _ToolStripSeparator11.Name = "_ToolStripSeparator11";
+            _ToolStripSeparator11.Size = new Size(174, 6);
             // 
             // _ListAllScriptsToolStripMenuItem
             // 
-            this._ListAllScriptsToolStripMenuItem.Name = ("_ListAllScriptsToolStripMenuItem");
-            this._ListAllScriptsToolStripMenuItem.Size = (new global::System.Drawing.Size(177, 22));
-            this._ListAllScriptsToolStripMenuItem.Text = ("&Show Active Scripts");
-            this._ListAllScriptsToolStripMenuItem.Click += (this.ListAllScriptsToolStripMenuItem_Click);
+            _ListAllScriptsToolStripMenuItem.Name = "_ListAllScriptsToolStripMenuItem";
+            _ListAllScriptsToolStripMenuItem.Size = new Size(177, 22);
+            _ListAllScriptsToolStripMenuItem.Text = "&Show Active Scripts";
+            _ListAllScriptsToolStripMenuItem.Click += ListAllScriptsToolStripMenuItem_Click;
             // 
             // _TraceAllScriptsToolStripMenuItem
             // 
-            this._TraceAllScriptsToolStripMenuItem.Name = ("_TraceAllScriptsToolStripMenuItem");
-            this._TraceAllScriptsToolStripMenuItem.Size = (new global::System.Drawing.Size(177, 22));
-            this._TraceAllScriptsToolStripMenuItem.Text = ("&Trace Active Scripts");
-            this._TraceAllScriptsToolStripMenuItem.Click += (this.TraceAllScriptsToolStripMenuItem_Click);
+            _TraceAllScriptsToolStripMenuItem.Name = "_TraceAllScriptsToolStripMenuItem";
+            _TraceAllScriptsToolStripMenuItem.Size = new Size(177, 22);
+            _TraceAllScriptsToolStripMenuItem.Text = "&Trace Active Scripts";
+            _TraceAllScriptsToolStripMenuItem.Click += TraceAllScriptsToolStripMenuItem_Click;
             // 
             // _ToolStripSeparator9
             // 
-            this._ToolStripSeparator9.Name = ("_ToolStripSeparator9");
-            this._ToolStripSeparator9.Size = (new global::System.Drawing.Size(174, 6));
+            _ToolStripSeparator9.Name = "_ToolStripSeparator9";
+            _ToolStripSeparator9.Size = new Size(174, 6);
             // 
             // _PauseAllScriptsToolStripMenuItem
             // 
-            this._PauseAllScriptsToolStripMenuItem.Name = ("_PauseAllScriptsToolStripMenuItem");
-            this._PauseAllScriptsToolStripMenuItem.Size = (new global::System.Drawing.Size(177, 22));
-            this._PauseAllScriptsToolStripMenuItem.Text = ("&Pause All Scripts");
-            this._PauseAllScriptsToolStripMenuItem.Click += (this.PauseAllScriptsToolStripMenuItem_Click);
+            _PauseAllScriptsToolStripMenuItem.Name = "_PauseAllScriptsToolStripMenuItem";
+            _PauseAllScriptsToolStripMenuItem.Size = new Size(177, 22);
+            _PauseAllScriptsToolStripMenuItem.Text = "&Pause All Scripts";
+            _PauseAllScriptsToolStripMenuItem.Click += PauseAllScriptsToolStripMenuItem_Click;
             // 
             // _ResumeAllScriptsToolStripMenuItem
             // 
-            this._ResumeAllScriptsToolStripMenuItem.Name = ("_ResumeAllScriptsToolStripMenuItem");
-            this._ResumeAllScriptsToolStripMenuItem.Size = (new global::System.Drawing.Size(177, 22));
-            this._ResumeAllScriptsToolStripMenuItem.Text = ("&Resume All Scripts");
-            this._ResumeAllScriptsToolStripMenuItem.Click += (this.ResumeAllScriptsToolStripMenuItem_Click);
+            _ResumeAllScriptsToolStripMenuItem.Name = "_ResumeAllScriptsToolStripMenuItem";
+            _ResumeAllScriptsToolStripMenuItem.Size = new Size(177, 22);
+            _ResumeAllScriptsToolStripMenuItem.Text = "&Resume All Scripts";
+            _ResumeAllScriptsToolStripMenuItem.Click += ResumeAllScriptsToolStripMenuItem_Click;
             // 
             // _ToolStripMenuItem3
             // 
-            this._ToolStripMenuItem3.Name = ("_ToolStripMenuItem3");
-            this._ToolStripMenuItem3.Size = (new global::System.Drawing.Size(174, 6));
+            _ToolStripMenuItem3.Name = "_ToolStripMenuItem3";
+            _ToolStripMenuItem3.Size = new Size(174, 6);
             // 
             // _AbortAllScriptsToolStripMenuItem
             // 
-            this._AbortAllScriptsToolStripMenuItem.Name = ("_AbortAllScriptsToolStripMenuItem");
-            this._AbortAllScriptsToolStripMenuItem.ShortcutKeyDisplayString = ("");
-            this._AbortAllScriptsToolStripMenuItem.Size = (new global::System.Drawing.Size(177, 22));
-            this._AbortAllScriptsToolStripMenuItem.Text = ("&Abort All Scripts");
-            this._AbortAllScriptsToolStripMenuItem.Click += (this.AbortAllScriptsToolStripMenuItem_Click);
+            _AbortAllScriptsToolStripMenuItem.Name = "_AbortAllScriptsToolStripMenuItem";
+            _AbortAllScriptsToolStripMenuItem.ShortcutKeyDisplayString = "";
+            _AbortAllScriptsToolStripMenuItem.Size = new Size(177, 22);
+            _AbortAllScriptsToolStripMenuItem.Text = "&Abort All Scripts";
+            _AbortAllScriptsToolStripMenuItem.Click += AbortAllScriptsToolStripMenuItem_Click;
             // 
             // _AutoMapperToolStripMenuItem
             // 
-            this._AutoMapperToolStripMenuItem.DropDownItems.AddRange(new global::System.Windows.Forms.ToolStripItem[] { this._ShowWindowToolStripMenuItem, this.updateMapsToolStripMenuItem });
-            this._AutoMapperToolStripMenuItem.Name = ("_AutoMapperToolStripMenuItem");
-            this._AutoMapperToolStripMenuItem.Size = (new global::System.Drawing.Size(86, 20));
-            this._AutoMapperToolStripMenuItem.Text = ("&AutoMapper");
+            _AutoMapperToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _ShowWindowToolStripMenuItem, updateMapsToolStripMenuItem });
+            _AutoMapperToolStripMenuItem.Name = "_AutoMapperToolStripMenuItem";
+            _AutoMapperToolStripMenuItem.Size = new Size(86, 20);
+            _AutoMapperToolStripMenuItem.Text = "&AutoMapper";
             // 
             // _ShowWindowToolStripMenuItem
             // 
-            this._ShowWindowToolStripMenuItem.Name = ("_ShowWindowToolStripMenuItem");
-            this._ShowWindowToolStripMenuItem.Size = (new global::System.Drawing.Size(150, 22));
-            this._ShowWindowToolStripMenuItem.Text = ("&Show Window");
-            this._ShowWindowToolStripMenuItem.Click += (this.ShowWindowToolStripMenuItem_Click);
+            _ShowWindowToolStripMenuItem.Name = "_ShowWindowToolStripMenuItem";
+            _ShowWindowToolStripMenuItem.Size = new Size(150, 22);
+            _ShowWindowToolStripMenuItem.Text = "&Show Window";
+            _ShowWindowToolStripMenuItem.Click += ShowWindowToolStripMenuItem_Click;
             // 
             // updateMapsToolStripMenuItem
             // 
-            this.updateMapsToolStripMenuItem.Name = ("updateMapsToolStripMenuItem");
-            this.updateMapsToolStripMenuItem.Size = (new global::System.Drawing.Size(150, 22));
-            this.updateMapsToolStripMenuItem.Text = ("&Update Maps");
-            this.updateMapsToolStripMenuItem.Click += (this.updateMapsToolStripMenuItem_Click);
+            updateMapsToolStripMenuItem.Name = "updateMapsToolStripMenuItem";
+            updateMapsToolStripMenuItem.Size = new Size(150, 22);
+            updateMapsToolStripMenuItem.Text = "&Update Maps";
+            updateMapsToolStripMenuItem.Click += updateMapsToolStripMenuItem_Click;
             // 
             // _PluginsToolStripMenuItem
             // 
-            this._PluginsToolStripMenuItem.DropDownItems.AddRange(new global::System.Windows.Forms.ToolStripItem[] { this._NoPluginsLoadedToolStripMenuItem, this.updatePluginsToolStripMenuItem });
-            this._PluginsToolStripMenuItem.Name = ("_PluginsToolStripMenuItem");
-            this._PluginsToolStripMenuItem.Size = (new global::System.Drawing.Size(58, 20));
-            this._PluginsToolStripMenuItem.Text = ("Pl&ugins");
+            _PluginsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _NoPluginsLoadedToolStripMenuItem, updatePluginsToolStripMenuItem });
+            _PluginsToolStripMenuItem.Name = "_PluginsToolStripMenuItem";
+            _PluginsToolStripMenuItem.Size = new Size(58, 20);
+            _PluginsToolStripMenuItem.Text = "Pl&ugins";
             // 
             // _NoPluginsLoadedToolStripMenuItem
             // 
-            this._NoPluginsLoadedToolStripMenuItem.Name = ("_NoPluginsLoadedToolStripMenuItem");
-            this._NoPluginsLoadedToolStripMenuItem.Size = (new global::System.Drawing.Size(171, 22));
-            this._NoPluginsLoadedToolStripMenuItem.Text = ("No plugins loaded");
+            _NoPluginsLoadedToolStripMenuItem.Name = "_NoPluginsLoadedToolStripMenuItem";
+            _NoPluginsLoadedToolStripMenuItem.Size = new Size(171, 22);
+            _NoPluginsLoadedToolStripMenuItem.Text = "No plugins loaded";
             // 
             // updatePluginsToolStripMenuItem
             // 
-            this.updatePluginsToolStripMenuItem.Name = ("updatePluginsToolStripMenuItem");
-            this.updatePluginsToolStripMenuItem.Size = (new global::System.Drawing.Size(171, 22));
-            this.updatePluginsToolStripMenuItem.Text = ("&Update Plugins");
-            this.updatePluginsToolStripMenuItem.Click += (this.updatePluginsToolStripMenuItem_Click);
+            updatePluginsToolStripMenuItem.Name = "updatePluginsToolStripMenuItem";
+            updatePluginsToolStripMenuItem.Size = new Size(171, 22);
+            updatePluginsToolStripMenuItem.Text = "&Update Plugins";
+            updatePluginsToolStripMenuItem.Click += updatePluginsToolStripMenuItem_Click;
             // 
             // _HelpToolStripMenuItem
             // 
-            this._HelpToolStripMenuItem.DropDownItems.AddRange(new global::System.Windows.Forms.ToolStripItem[] { this.checkForUpdatesToolStripMenuItem, this.forceUpdateToolStripMenuItem, this.loadTestClientToolStripMenuItem, this._ToolStripSeparator3, this.autoUpdateToolStripMenuItem, this.autoUpdateLampToolStripMenuItem, this.checkUpdatesOnStartupToolStripMenuItem, this._ChangelogToolStripMenuItem, this._ToolStripSeparator10, this._OpenGenieDiscordToolStripMenuItem, this.OpenGenieGithubToolStripMenuItem, this._OpenGenieDocsToolStripMenuItem, this.toolStripSeparator1, this.toolStripMenuItem1 });
-            this._HelpToolStripMenuItem.Name = ("_HelpToolStripMenuItem");
-            this._HelpToolStripMenuItem.Size = (new global::System.Drawing.Size(44, 20));
-            this._HelpToolStripMenuItem.Text = ("&Help");
+            _HelpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { checkForUpdatesToolStripMenuItem, forceUpdateToolStripMenuItem, loadTestClientToolStripMenuItem, _ToolStripSeparator3, autoUpdateToolStripMenuItem, autoUpdateLampToolStripMenuItem, checkUpdatesOnStartupToolStripMenuItem, _ChangelogToolStripMenuItem, _ToolStripSeparator10, _OpenGenieDiscordToolStripMenuItem, OpenGenieGithubToolStripMenuItem, _OpenGenieDocsToolStripMenuItem, toolStripSeparator1, toolStripMenuItem1 });
+            _HelpToolStripMenuItem.Name = "_HelpToolStripMenuItem";
+            _HelpToolStripMenuItem.Size = new Size(44, 20);
+            _HelpToolStripMenuItem.Text = "&Help";
             // 
             // checkForUpdatesToolStripMenuItem
             // 
-            this.checkForUpdatesToolStripMenuItem.Name = ("checkForUpdatesToolStripMenuItem");
-            this.checkForUpdatesToolStripMenuItem.Size = (new global::System.Drawing.Size(211, 22));
-            this.checkForUpdatesToolStripMenuItem.Text = ("Check For &Updates");
-            this.checkForUpdatesToolStripMenuItem.Click += (this.checkForUpdatesToolStripMenuItem_Click);
+            checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
+            checkForUpdatesToolStripMenuItem.Size = new Size(211, 22);
+            checkForUpdatesToolStripMenuItem.Text = "Check For &Updates";
+            checkForUpdatesToolStripMenuItem.Click += checkForUpdatesToolStripMenuItem_Click;
             // 
             // forceUpdateToolStripMenuItem
             // 
-            this.forceUpdateToolStripMenuItem.Name = ("forceUpdateToolStripMenuItem");
-            this.forceUpdateToolStripMenuItem.Size = (new global::System.Drawing.Size(211, 22));
-            this.forceUpdateToolStripMenuItem.Text = ("&Force Update");
-            this.forceUpdateToolStripMenuItem.Click += (this.forceUpdateToolStripMenuItem_Click);
+            forceUpdateToolStripMenuItem.Name = "forceUpdateToolStripMenuItem";
+            forceUpdateToolStripMenuItem.Size = new Size(211, 22);
+            forceUpdateToolStripMenuItem.Text = "&Force Update";
+            forceUpdateToolStripMenuItem.Click += forceUpdateToolStripMenuItem_Click;
             // 
             // loadTestClientToolStripMenuItem
             // 
-            this.loadTestClientToolStripMenuItem.Name = ("loadTestClientToolStripMenuItem");
-            this.loadTestClientToolStripMenuItem.Size = (new global::System.Drawing.Size(211, 22));
-            this.loadTestClientToolStripMenuItem.Text = ("Load Test Client");
-            this.loadTestClientToolStripMenuItem.Click += (this.loadTestClientToolStripMenuItem_Click);
+            loadTestClientToolStripMenuItem.Name = "loadTestClientToolStripMenuItem";
+            loadTestClientToolStripMenuItem.Size = new Size(211, 22);
+            loadTestClientToolStripMenuItem.Text = "Load Test Client";
+            loadTestClientToolStripMenuItem.Click += loadTestClientToolStripMenuItem_Click;
             // 
             // _ToolStripSeparator3
             // 
-            this._ToolStripSeparator3.Name = ("_ToolStripSeparator3");
-            this._ToolStripSeparator3.Size = (new global::System.Drawing.Size(208, 6));
+            _ToolStripSeparator3.Name = "_ToolStripSeparator3";
+            _ToolStripSeparator3.Size = new Size(208, 6);
             // 
             // autoUpdateToolStripMenuItem
             // 
-            this.autoUpdateToolStripMenuItem.Name = ("autoUpdateToolStripMenuItem");
-            this.autoUpdateToolStripMenuItem.Size = (new global::System.Drawing.Size(211, 22));
-            this.autoUpdateToolStripMenuItem.Text = ("&AutoUpdate");
-            this.autoUpdateToolStripMenuItem.Click += (this.autoUpdateToolStripMenuItem_Click);
+            autoUpdateToolStripMenuItem.Name = "autoUpdateToolStripMenuItem";
+            autoUpdateToolStripMenuItem.Size = new Size(211, 22);
+            autoUpdateToolStripMenuItem.Text = "&AutoUpdate";
+            autoUpdateToolStripMenuItem.Click += autoUpdateToolStripMenuItem_Click;
             // 
             // autoUpdateLampToolStripMenuItem
             // 
-            this.autoUpdateLampToolStripMenuItem.Checked = (true);
-            this.autoUpdateLampToolStripMenuItem.CheckState = (global::System.Windows.Forms.CheckState.Checked);
-            this.autoUpdateLampToolStripMenuItem.Name = ("autoUpdateLampToolStripMenuItem");
-            this.autoUpdateLampToolStripMenuItem.Size = (new global::System.Drawing.Size(211, 22));
-            this.autoUpdateLampToolStripMenuItem.Text = ("AutoUpdate Lamp");
-            this.autoUpdateLampToolStripMenuItem.Click += (this.autoUpdateLampToolStripMenuItem_Click);
+            autoUpdateLampToolStripMenuItem.Checked = true;
+            autoUpdateLampToolStripMenuItem.CheckState = CheckState.Checked;
+            autoUpdateLampToolStripMenuItem.Name = "autoUpdateLampToolStripMenuItem";
+            autoUpdateLampToolStripMenuItem.Size = new Size(211, 22);
+            autoUpdateLampToolStripMenuItem.Text = "AutoUpdate Lamp";
+            autoUpdateLampToolStripMenuItem.Click += autoUpdateLampToolStripMenuItem_Click;
             // 
             // checkUpdatesOnStartupToolStripMenuItem
             // 
-            this.checkUpdatesOnStartupToolStripMenuItem.Checked = (true);
-            this.checkUpdatesOnStartupToolStripMenuItem.CheckState = (global::System.Windows.Forms.CheckState.Checked);
-            this.checkUpdatesOnStartupToolStripMenuItem.Name = ("checkUpdatesOnStartupToolStripMenuItem");
-            this.checkUpdatesOnStartupToolStripMenuItem.Size = (new global::System.Drawing.Size(211, 22));
-            this.checkUpdatesOnStartupToolStripMenuItem.Text = ("&Check Updates on Startup");
-            this.checkUpdatesOnStartupToolStripMenuItem.Click += (this.checkUpdatesOnStartupToolStripMenuItem_Click);
+            checkUpdatesOnStartupToolStripMenuItem.Checked = true;
+            checkUpdatesOnStartupToolStripMenuItem.CheckState = CheckState.Checked;
+            checkUpdatesOnStartupToolStripMenuItem.Name = "checkUpdatesOnStartupToolStripMenuItem";
+            checkUpdatesOnStartupToolStripMenuItem.Size = new Size(211, 22);
+            checkUpdatesOnStartupToolStripMenuItem.Text = "&Check Updates on Startup";
+            checkUpdatesOnStartupToolStripMenuItem.Click += checkUpdatesOnStartupToolStripMenuItem_Click;
             // 
             // _ChangelogToolStripMenuItem
             // 
-            this._ChangelogToolStripMenuItem.Name = ("_ChangelogToolStripMenuItem");
-            this._ChangelogToolStripMenuItem.Size = (new global::System.Drawing.Size(211, 22));
-            this._ChangelogToolStripMenuItem.Text = ("&Latest Release Page");
-            this._ChangelogToolStripMenuItem.Click += (this.ChangelogToolStripMenuItem_Click);
+            _ChangelogToolStripMenuItem.Name = "_ChangelogToolStripMenuItem";
+            _ChangelogToolStripMenuItem.Size = new Size(211, 22);
+            _ChangelogToolStripMenuItem.Text = "&Latest Release Page";
+            _ChangelogToolStripMenuItem.Click += ChangelogToolStripMenuItem_Click;
             // 
             // _ToolStripSeparator10
             // 
-            this._ToolStripSeparator10.Name = ("_ToolStripSeparator10");
-            this._ToolStripSeparator10.Size = (new global::System.Drawing.Size(208, 6));
+            _ToolStripSeparator10.Name = "_ToolStripSeparator10";
+            _ToolStripSeparator10.Size = new Size(208, 6);
             // 
             // _OpenGenieDiscordToolStripMenuItem
             // 
-            this._OpenGenieDiscordToolStripMenuItem.Name = ("_OpenGenieDiscordToolStripMenuItem");
-            this._OpenGenieDiscordToolStripMenuItem.Size = (new global::System.Drawing.Size(211, 22));
-            this._OpenGenieDiscordToolStripMenuItem.Text = ("&Discord");
-            this._OpenGenieDiscordToolStripMenuItem.Click += (this.OpenGenieDiscordToolStripMenuItem_Click);
+            _OpenGenieDiscordToolStripMenuItem.Name = "_OpenGenieDiscordToolStripMenuItem";
+            _OpenGenieDiscordToolStripMenuItem.Size = new Size(211, 22);
+            _OpenGenieDiscordToolStripMenuItem.Text = "&Discord";
+            _OpenGenieDiscordToolStripMenuItem.Click += OpenGenieDiscordToolStripMenuItem_Click;
             // 
             // OpenGenieGithubToolStripMenuItem
             // 
-            this.OpenGenieGithubToolStripMenuItem.Name = ("OpenGenieGithubToolStripMenuItem");
-            this.OpenGenieGithubToolStripMenuItem.Size = (new global::System.Drawing.Size(211, 22));
-            this.OpenGenieGithubToolStripMenuItem.Text = ("GitHub");
-            this.OpenGenieGithubToolStripMenuItem.Click += (this.OpenGenieGithubToolStripMenuItem_Click);
+            OpenGenieGithubToolStripMenuItem.Name = "OpenGenieGithubToolStripMenuItem";
+            OpenGenieGithubToolStripMenuItem.Size = new Size(211, 22);
+            OpenGenieGithubToolStripMenuItem.Text = "GitHub";
+            OpenGenieGithubToolStripMenuItem.Click += OpenGenieGithubToolStripMenuItem_Click;
             // 
             // _OpenGenieDocsToolStripMenuItem
             // 
-            this._OpenGenieDocsToolStripMenuItem.Name = ("_OpenGenieDocsToolStripMenuItem");
-            this._OpenGenieDocsToolStripMenuItem.Size = (new global::System.Drawing.Size(211, 22));
-            this._OpenGenieDocsToolStripMenuItem.Text = ("&Wiki");
-            this._OpenGenieDocsToolStripMenuItem.Click += (this.OpenGenieWikiToolStripMenuItem_Click);
+            _OpenGenieDocsToolStripMenuItem.Name = "_OpenGenieDocsToolStripMenuItem";
+            _OpenGenieDocsToolStripMenuItem.Size = new Size(211, 22);
+            _OpenGenieDocsToolStripMenuItem.Text = "&Wiki";
+            _OpenGenieDocsToolStripMenuItem.Click += OpenGenieWikiToolStripMenuItem_Click;
             // 
             // toolStripSeparator1
             // 
-            this.toolStripSeparator1.Name = ("toolStripSeparator1");
-            this.toolStripSeparator1.Size = (new global::System.Drawing.Size(208, 6));
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(208, 6);
             // 
             // toolStripMenuItem1
             // 
-            this.toolStripMenuItem1.DropDownItems.AddRange(new global::System.Windows.Forms.ToolStripItem[] { this.playnetToolStripMenuItem, this.elanthipediaToolStripMenuItem1, this.dRServiceToolStripMenuItem, this.lichDiscordToolStripMenuItem, this.isharonsGenieSettingsToolStripMenuItem });
-            this.toolStripMenuItem1.Name = ("toolStripMenuItem1");
-            this.toolStripMenuItem1.Size = (new global::System.Drawing.Size(211, 22));
-            this.toolStripMenuItem1.Text = ("Community Links");
+            toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { playnetToolStripMenuItem, elanthipediaToolStripMenuItem1, dRServiceToolStripMenuItem, lichDiscordToolStripMenuItem, isharonsGenieSettingsToolStripMenuItem });
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(211, 22);
+            toolStripMenuItem1.Text = "Community Links";
             // 
             // playnetToolStripMenuItem
             // 
-            this.playnetToolStripMenuItem.Name = ("playnetToolStripMenuItem");
-            this.playnetToolStripMenuItem.Size = (new global::System.Drawing.Size(199, 22));
-            this.playnetToolStripMenuItem.Text = ("Play.net");
-            this.playnetToolStripMenuItem.Click += (this.playnetToolStripMenuItem_Click);
+            playnetToolStripMenuItem.Name = "playnetToolStripMenuItem";
+            playnetToolStripMenuItem.Size = new Size(199, 22);
+            playnetToolStripMenuItem.Text = "Play.net";
+            playnetToolStripMenuItem.Click += playnetToolStripMenuItem_Click;
             // 
             // elanthipediaToolStripMenuItem1
             // 
-            this.elanthipediaToolStripMenuItem1.Name = ("elanthipediaToolStripMenuItem1");
-            this.elanthipediaToolStripMenuItem1.Size = (new global::System.Drawing.Size(199, 22));
-            this.elanthipediaToolStripMenuItem1.Text = ("Elanthipedia");
-            this.elanthipediaToolStripMenuItem1.Click += (this.elanthipediaToolStripMenuItem1_Click);
+            elanthipediaToolStripMenuItem1.Name = "elanthipediaToolStripMenuItem1";
+            elanthipediaToolStripMenuItem1.Size = new Size(199, 22);
+            elanthipediaToolStripMenuItem1.Text = "Elanthipedia";
+            elanthipediaToolStripMenuItem1.Click += elanthipediaToolStripMenuItem1_Click;
             // 
             // dRServiceToolStripMenuItem
             // 
-            this.dRServiceToolStripMenuItem.Name = ("dRServiceToolStripMenuItem");
-            this.dRServiceToolStripMenuItem.Size = (new global::System.Drawing.Size(199, 22));
-            this.dRServiceToolStripMenuItem.Text = ("DR Service");
-            this.dRServiceToolStripMenuItem.Click += (this.dRServiceToolStripMenuItem_Click);
+            dRServiceToolStripMenuItem.Name = "dRServiceToolStripMenuItem";
+            dRServiceToolStripMenuItem.Size = new Size(199, 22);
+            dRServiceToolStripMenuItem.Text = "DR Service";
+            dRServiceToolStripMenuItem.Click += dRServiceToolStripMenuItem_Click;
             // 
             // lichDiscordToolStripMenuItem
             // 
-            this.lichDiscordToolStripMenuItem.Name = ("lichDiscordToolStripMenuItem");
-            this.lichDiscordToolStripMenuItem.Size = (new global::System.Drawing.Size(199, 22));
-            this.lichDiscordToolStripMenuItem.Text = ("Lich Discord");
-            this.lichDiscordToolStripMenuItem.Click += (this.lichDiscordToolStripMenuItem_Click);
+            lichDiscordToolStripMenuItem.Name = "lichDiscordToolStripMenuItem";
+            lichDiscordToolStripMenuItem.Size = new Size(199, 22);
+            lichDiscordToolStripMenuItem.Text = "Lich Discord";
+            lichDiscordToolStripMenuItem.Click += lichDiscordToolStripMenuItem_Click;
             // 
             // isharonsGenieSettingsToolStripMenuItem
             // 
-            this.isharonsGenieSettingsToolStripMenuItem.Name = ("isharonsGenieSettingsToolStripMenuItem");
-            this.isharonsGenieSettingsToolStripMenuItem.Size = (new global::System.Drawing.Size(199, 22));
-            this.isharonsGenieSettingsToolStripMenuItem.Text = ("Isharon's Genie Settings");
-            this.isharonsGenieSettingsToolStripMenuItem.Click += (this.isharonsGenieSettingsToolStripMenuItem_Click);
+            isharonsGenieSettingsToolStripMenuItem.Name = "isharonsGenieSettingsToolStripMenuItem";
+            isharonsGenieSettingsToolStripMenuItem.Size = new Size(199, 22);
+            isharonsGenieSettingsToolStripMenuItem.Text = "Isharon's Genie Settings";
+            isharonsGenieSettingsToolStripMenuItem.Click += isharonsGenieSettingsToolStripMenuItem_Click;
             // 
             // _LabelSpellC
             // 
-            this._LabelSpellC.Dock = (global::System.Windows.Forms.DockStyle.Fill);
-            this._LabelSpellC.ForeColor = (global::System.Drawing.Color.White);
-            this._LabelSpellC.Location = (new global::System.Drawing.Point(925, 0));
-            this._LabelSpellC.Margin = (new global::System.Windows.Forms.Padding(0));
-            this._LabelSpellC.Name = ("_LabelSpellC");
-            this._LabelSpellC.Size = (new global::System.Drawing.Size(242, 43));
-            this._LabelSpellC.TabIndex = (12);
-            this._LabelSpellC.Text = ("None");
-            this._LabelSpellC.TextAlign = (global::System.Drawing.ContentAlignment.MiddleLeft);
+            _LabelSpellC.Dock = DockStyle.Fill;
+            _LabelSpellC.ForeColor = Color.White;
+            _LabelSpellC.Location = new Point(925, 0);
+            _LabelSpellC.Margin = new Padding(0);
+            _LabelSpellC.Name = "_LabelSpellC";
+            _LabelSpellC.Size = new Size(242, 43);
+            _LabelSpellC.TabIndex = 12;
+            _LabelSpellC.Text = "None";
+            _LabelSpellC.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // _LabelRHC
             // 
-            this._LabelRHC.Dock = (global::System.Windows.Forms.DockStyle.Fill);
-            this._LabelRHC.ForeColor = (global::System.Drawing.Color.White);
-            this._LabelRHC.Location = (new global::System.Drawing.Point(673, 0));
-            this._LabelRHC.Margin = (new global::System.Windows.Forms.Padding(0));
-            this._LabelRHC.Name = ("_LabelRHC");
-            this._LabelRHC.Size = (new global::System.Drawing.Size(240, 43));
-            this._LabelRHC.TabIndex = (11);
-            this._LabelRHC.Text = ("Empty");
-            this._LabelRHC.TextAlign = (global::System.Drawing.ContentAlignment.MiddleLeft);
+            _LabelRHC.Dock = DockStyle.Fill;
+            _LabelRHC.ForeColor = Color.White;
+            _LabelRHC.Location = new Point(673, 0);
+            _LabelRHC.Margin = new Padding(0);
+            _LabelRHC.Name = "_LabelRHC";
+            _LabelRHC.Size = new Size(240, 43);
+            _LabelRHC.TabIndex = 11;
+            _LabelRHC.Text = "Empty";
+            _LabelRHC.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // _LabelLHC
             // 
-            this._LabelLHC.Dock = (global::System.Windows.Forms.DockStyle.Fill);
-            this._LabelLHC.ForeColor = (global::System.Drawing.Color.White);
-            this._LabelLHC.Location = (new global::System.Drawing.Point(420, 0));
-            this._LabelLHC.Margin = (new global::System.Windows.Forms.Padding(0));
-            this._LabelLHC.Name = ("_LabelLHC");
-            this._LabelLHC.Size = (new global::System.Drawing.Size(241, 43));
-            this._LabelLHC.TabIndex = (10);
-            this._LabelLHC.Text = ("Empty");
-            this._LabelLHC.TextAlign = (global::System.Drawing.ContentAlignment.MiddleLeft);
+            _LabelLHC.Dock = DockStyle.Fill;
+            _LabelLHC.ForeColor = Color.White;
+            _LabelLHC.Location = new Point(420, 0);
+            _LabelLHC.Margin = new Padding(0);
+            _LabelLHC.Name = "_LabelLHC";
+            _LabelLHC.Size = new Size(241, 43);
+            _LabelLHC.TabIndex = 10;
+            _LabelLHC.Text = "Empty";
+            _LabelLHC.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // _LabelSpell
             // 
-            this._LabelSpell.Dock = (global::System.Windows.Forms.DockStyle.Fill);
-            this._LabelSpell.Font = (new global::System.Drawing.Font("Microsoft Sans Serif", 8.25F, global::System.Drawing.FontStyle.Bold, global::System.Drawing.GraphicsUnit.Point));
-            this._LabelSpell.ForeColor = (global::System.Drawing.Color.DimGray);
-            this._LabelSpell.Location = (new global::System.Drawing.Point(913, 0));
-            this._LabelSpell.Margin = (new global::System.Windows.Forms.Padding(0));
-            this._LabelSpell.Name = ("_LabelSpell");
-            this._LabelSpell.Size = (new global::System.Drawing.Size(12, 43));
-            this._LabelSpell.TabIndex = (9);
-            this._LabelSpell.Text = ("S");
-            this._LabelSpell.TextAlign = (global::System.Drawing.ContentAlignment.MiddleCenter);
+            _LabelSpell.Dock = DockStyle.Fill;
+            _LabelSpell.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+            _LabelSpell.ForeColor = Color.DimGray;
+            _LabelSpell.Location = new Point(913, 0);
+            _LabelSpell.Margin = new Padding(0);
+            _LabelSpell.Name = "_LabelSpell";
+            _LabelSpell.Size = new Size(12, 43);
+            _LabelSpell.TabIndex = 9;
+            _LabelSpell.Text = "S";
+            _LabelSpell.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // _LabelRH
             // 
-            this._LabelRH.Dock = (global::System.Windows.Forms.DockStyle.Fill);
-            this._LabelRH.Font = (new global::System.Drawing.Font("Microsoft Sans Serif", 8.25F, global::System.Drawing.FontStyle.Bold, global::System.Drawing.GraphicsUnit.Point));
-            this._LabelRH.ForeColor = (global::System.Drawing.Color.DimGray);
-            this._LabelRH.Location = (new global::System.Drawing.Point(661, 0));
-            this._LabelRH.Margin = (new global::System.Windows.Forms.Padding(0));
-            this._LabelRH.Name = ("_LabelRH");
-            this._LabelRH.Size = (new global::System.Drawing.Size(12, 43));
-            this._LabelRH.TabIndex = (8);
-            this._LabelRH.Text = ("R");
-            this._LabelRH.TextAlign = (global::System.Drawing.ContentAlignment.MiddleCenter);
+            _LabelRH.Dock = DockStyle.Fill;
+            _LabelRH.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+            _LabelRH.ForeColor = Color.DimGray;
+            _LabelRH.Location = new Point(661, 0);
+            _LabelRH.Margin = new Padding(0);
+            _LabelRH.Name = "_LabelRH";
+            _LabelRH.Size = new Size(12, 43);
+            _LabelRH.TabIndex = 8;
+            _LabelRH.Text = "R";
+            _LabelRH.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // _LabelLH
             // 
-            this._LabelLH.Dock = (global::System.Windows.Forms.DockStyle.Fill);
-            this._LabelLH.Font = (new global::System.Drawing.Font("Microsoft Sans Serif", 8.25F, global::System.Drawing.FontStyle.Bold, global::System.Drawing.GraphicsUnit.Point));
-            this._LabelLH.ForeColor = (global::System.Drawing.Color.DimGray);
-            this._LabelLH.Location = (new global::System.Drawing.Point(408, 0));
-            this._LabelLH.Margin = (new global::System.Windows.Forms.Padding(0));
-            this._LabelLH.Name = ("_LabelLH");
-            this._LabelLH.Size = (new global::System.Drawing.Size(12, 43));
-            this._LabelLH.TabIndex = (7);
-            this._LabelLH.Text = ("L");
-            this._LabelLH.TextAlign = (global::System.Drawing.ContentAlignment.MiddleCenter);
+            _LabelLH.Dock = DockStyle.Fill;
+            _LabelLH.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+            _LabelLH.ForeColor = Color.DimGray;
+            _LabelLH.Location = new Point(408, 0);
+            _LabelLH.Margin = new Padding(0);
+            _LabelLH.Name = "_LabelLH";
+            _LabelLH.Size = new Size(12, 43);
+            _LabelLH.TabIndex = 7;
+            _LabelLH.Text = "L";
+            _LabelLH.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // _LabelRT
             // 
-            this._LabelRT.Font = (new global::System.Drawing.Font("Microsoft Sans Serif", 8.25F, global::System.Drawing.FontStyle.Bold, global::System.Drawing.GraphicsUnit.Point));
-            this._LabelRT.ForeColor = (global::System.Drawing.Color.DimGray);
-            this._LabelRT.Location = (new global::System.Drawing.Point(1, 0));
-            this._LabelRT.Margin = (new global::System.Windows.Forms.Padding(4, 0, 4, 0));
-            this._LabelRT.Name = ("_LabelRT");
-            this._LabelRT.Size = (new global::System.Drawing.Size(12, 37));
-            this._LabelRT.TabIndex = (6);
-            this._LabelRT.Text = ("RT");
-            this._LabelRT.TextAlign = (global::System.Drawing.ContentAlignment.MiddleCenter);
+            _LabelRT.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+            _LabelRT.ForeColor = Color.DimGray;
+            _LabelRT.Location = new Point(1, 0);
+            _LabelRT.Margin = new Padding(4, 0, 4, 0);
+            _LabelRT.Name = "_LabelRT";
+            _LabelRT.Size = new Size(12, 37);
+            _LabelRT.TabIndex = 6;
+            _LabelRT.Text = "RT";
+            _LabelRT.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // _PanelBars
             // 
-            this._PanelBars.BackColor = (global::System.Drawing.Color.Black);
-            this._PanelBars.Controls.Add(this._TableLayoutPanelBars);
-            this._PanelBars.Dock = (global::System.Windows.Forms.DockStyle.Bottom);
-            this._PanelBars.Location = (new global::System.Drawing.Point(0, 724));
-            this._PanelBars.Margin = (new global::System.Windows.Forms.Padding(4, 3, 4, 3));
-            this._PanelBars.Name = ("_PanelBars");
-            this._PanelBars.Size = (new global::System.Drawing.Size(1449, 20));
-            this._PanelBars.TabIndex = (10);
+            _PanelBars.BackColor = Color.Black;
+            _PanelBars.Controls.Add(_TableLayoutPanelBars);
+            _PanelBars.Dock = DockStyle.Bottom;
+            _PanelBars.Location = new Point(0, 724);
+            _PanelBars.Margin = new Padding(4, 3, 4, 3);
+            _PanelBars.Name = "_PanelBars";
+            _PanelBars.Size = new Size(1449, 20);
+            _PanelBars.TabIndex = 10;
             // 
             // _TableLayoutPanelBars
             // 
-            this._TableLayoutPanelBars.ColumnCount = (5);
-            this._TableLayoutPanelBars.ColumnStyles.Add(new global::System.Windows.Forms.ColumnStyle(global::System.Windows.Forms.SizeType.Percent, 20F));
-            this._TableLayoutPanelBars.ColumnStyles.Add(new global::System.Windows.Forms.ColumnStyle(global::System.Windows.Forms.SizeType.Percent, 20F));
-            this._TableLayoutPanelBars.ColumnStyles.Add(new global::System.Windows.Forms.ColumnStyle(global::System.Windows.Forms.SizeType.Percent, 20F));
-            this._TableLayoutPanelBars.ColumnStyles.Add(new global::System.Windows.Forms.ColumnStyle(global::System.Windows.Forms.SizeType.Percent, 20F));
-            this._TableLayoutPanelBars.ColumnStyles.Add(new global::System.Windows.Forms.ColumnStyle(global::System.Windows.Forms.SizeType.Percent, 20F));
-            this._TableLayoutPanelBars.Controls.Add(this._ComponentBarsConc, 1, 0);
-            this._TableLayoutPanelBars.Controls.Add(this._ComponentBarsFatigue, 2, 0);
-            this._TableLayoutPanelBars.Controls.Add(this._ComponentBarsMana, 0, 0);
-            this._TableLayoutPanelBars.Controls.Add(this._ComponentBarsSpirit, 3, 0);
-            this._TableLayoutPanelBars.Controls.Add(this._ComponentBarsHealth, 0, 0);
-            this._TableLayoutPanelBars.Dock = (global::System.Windows.Forms.DockStyle.Fill);
-            this._TableLayoutPanelBars.Location = (new global::System.Drawing.Point(0, 0));
-            this._TableLayoutPanelBars.Margin = (new global::System.Windows.Forms.Padding(0));
-            this._TableLayoutPanelBars.Name = ("_TableLayoutPanelBars");
-            this._TableLayoutPanelBars.RowCount = (1);
-            this._TableLayoutPanelBars.RowStyles.Add(new global::System.Windows.Forms.RowStyle(global::System.Windows.Forms.SizeType.Percent, 100F));
-            this._TableLayoutPanelBars.Size = (new global::System.Drawing.Size(1449, 20));
-            this._TableLayoutPanelBars.TabIndex = (0);
+            _TableLayoutPanelBars.ColumnCount = 5;
+            _TableLayoutPanelBars.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            _TableLayoutPanelBars.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            _TableLayoutPanelBars.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            _TableLayoutPanelBars.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            _TableLayoutPanelBars.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            _TableLayoutPanelBars.Controls.Add(_ComponentBarsConc, 1, 0);
+            _TableLayoutPanelBars.Controls.Add(_ComponentBarsFatigue, 2, 0);
+            _TableLayoutPanelBars.Controls.Add(_ComponentBarsMana, 0, 0);
+            _TableLayoutPanelBars.Controls.Add(_ComponentBarsSpirit, 3, 0);
+            _TableLayoutPanelBars.Controls.Add(_ComponentBarsHealth, 0, 0);
+            _TableLayoutPanelBars.Dock = DockStyle.Fill;
+            _TableLayoutPanelBars.Location = new Point(0, 0);
+            _TableLayoutPanelBars.Margin = new Padding(0);
+            _TableLayoutPanelBars.Name = "_TableLayoutPanelBars";
+            _TableLayoutPanelBars.RowCount = 1;
+            _TableLayoutPanelBars.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            _TableLayoutPanelBars.Size = new Size(1449, 20);
+            _TableLayoutPanelBars.TabIndex = 0;
             // 
             // _ComponentBarsConc
             // 
-            this._ComponentBarsConc.BackColor = (global::System.Drawing.Color.Black);
-            this._ComponentBarsConc.BackgroundColor = (global::System.Drawing.Color.FromArgb((global::System.Int32)((global::System.Byte)(0)), (global::System.Int32)((global::System.Byte)(64)), (global::System.Int32)((global::System.Byte)(64))));
-            this._ComponentBarsConc.BarText = ("Concentration");
-            this._ComponentBarsConc.BorderColor = (global::System.Drawing.Color.FromArgb((global::System.Int32)((global::System.Byte)(0)), (global::System.Int32)((global::System.Byte)(64)), (global::System.Int32)((global::System.Byte)(64))));
-            this._ComponentBarsConc.Dock = (global::System.Windows.Forms.DockStyle.Fill);
-            this._ComponentBarsConc.ForegroundColor = (global::System.Drawing.Color.Teal);
-            this._ComponentBarsConc.IsConnected = (false);
-            this._ComponentBarsConc.Location = (new global::System.Drawing.Point(578, 0));
-            this._ComponentBarsConc.Margin = (new global::System.Windows.Forms.Padding(0));
-            this._ComponentBarsConc.Name = ("_ComponentBarsConc");
-            this._ComponentBarsConc.Size = (new global::System.Drawing.Size(289, 20));
-            this._ComponentBarsConc.TabIndex = (20);
-            this._ComponentBarsConc.Value = (100);
+            _ComponentBarsConc.BackColor = Color.Black;
+            _ComponentBarsConc.BackgroundColor = Color.FromArgb(0, 64, 64);
+            _ComponentBarsConc.BarText = "Concentration";
+            _ComponentBarsConc.BorderColor = Color.FromArgb(0, 64, 64);
+            _ComponentBarsConc.Dock = DockStyle.Fill;
+            _ComponentBarsConc.ForegroundColor = Color.Teal;
+            _ComponentBarsConc.IsConnected = false;
+            _ComponentBarsConc.Location = new Point(578, 0);
+            _ComponentBarsConc.Margin = new Padding(0);
+            _ComponentBarsConc.Name = "_ComponentBarsConc";
+            _ComponentBarsConc.Size = new Size(289, 20);
+            _ComponentBarsConc.TabIndex = 20;
+            _ComponentBarsConc.Value = 100;
             // 
             // _ComponentBarsFatigue
             // 
-            this._ComponentBarsFatigue.BackColor = (global::System.Drawing.Color.Black);
-            this._ComponentBarsFatigue.BackgroundColor = (global::System.Drawing.Color.FromArgb((global::System.Int32)((global::System.Byte)(0)), (global::System.Int32)((global::System.Byte)(64)), (global::System.Int32)((global::System.Byte)(0))));
-            this._ComponentBarsFatigue.BarText = ("Stamina");
-            this._ComponentBarsFatigue.BorderColor = (global::System.Drawing.Color.FromArgb((global::System.Int32)((global::System.Byte)(0)), (global::System.Int32)((global::System.Byte)(64)), (global::System.Int32)((global::System.Byte)(0))));
-            this._ComponentBarsFatigue.Dock = (global::System.Windows.Forms.DockStyle.Fill);
-            this._ComponentBarsFatigue.ForegroundColor = (global::System.Drawing.Color.Green);
-            this._ComponentBarsFatigue.IsConnected = (false);
-            this._ComponentBarsFatigue.Location = (new global::System.Drawing.Point(867, 0));
-            this._ComponentBarsFatigue.Margin = (new global::System.Windows.Forms.Padding(0));
-            this._ComponentBarsFatigue.Name = ("_ComponentBarsFatigue");
-            this._ComponentBarsFatigue.Size = (new global::System.Drawing.Size(289, 20));
-            this._ComponentBarsFatigue.TabIndex = (17);
-            this._ComponentBarsFatigue.Value = (100);
+            _ComponentBarsFatigue.BackColor = Color.Black;
+            _ComponentBarsFatigue.BackgroundColor = Color.FromArgb(0, 64, 0);
+            _ComponentBarsFatigue.BarText = "Stamina";
+            _ComponentBarsFatigue.BorderColor = Color.FromArgb(0, 64, 0);
+            _ComponentBarsFatigue.Dock = DockStyle.Fill;
+            _ComponentBarsFatigue.ForegroundColor = Color.Green;
+            _ComponentBarsFatigue.IsConnected = false;
+            _ComponentBarsFatigue.Location = new Point(867, 0);
+            _ComponentBarsFatigue.Margin = new Padding(0);
+            _ComponentBarsFatigue.Name = "_ComponentBarsFatigue";
+            _ComponentBarsFatigue.Size = new Size(289, 20);
+            _ComponentBarsFatigue.TabIndex = 17;
+            _ComponentBarsFatigue.Value = 100;
             // 
             // _ComponentBarsMana
             // 
-            this._ComponentBarsMana.BackColor = (global::System.Drawing.Color.Black);
-            this._ComponentBarsMana.BackgroundColor = (global::System.Drawing.Color.FromArgb((global::System.Int32)((global::System.Byte)(0)), (global::System.Int32)((global::System.Byte)(0)), (global::System.Int32)((global::System.Byte)(64))));
-            this._ComponentBarsMana.BarText = ("Mana");
-            this._ComponentBarsMana.BorderColor = (global::System.Drawing.Color.FromArgb((global::System.Int32)((global::System.Byte)(0)), (global::System.Int32)((global::System.Byte)(0)), (global::System.Int32)((global::System.Byte)(64))));
-            this._ComponentBarsMana.Dock = (global::System.Windows.Forms.DockStyle.Fill);
-            this._ComponentBarsMana.ForegroundColor = (global::System.Drawing.Color.Navy);
-            this._ComponentBarsMana.IsConnected = (false);
-            this._ComponentBarsMana.Location = (new global::System.Drawing.Point(289, 0));
-            this._ComponentBarsMana.Margin = (new global::System.Windows.Forms.Padding(0));
-            this._ComponentBarsMana.Name = ("_ComponentBarsMana");
-            this._ComponentBarsMana.Size = (new global::System.Drawing.Size(289, 20));
-            this._ComponentBarsMana.TabIndex = (19);
-            this._ComponentBarsMana.Value = (100);
+            _ComponentBarsMana.BackColor = Color.Black;
+            _ComponentBarsMana.BackgroundColor = Color.FromArgb(0, 0, 64);
+            _ComponentBarsMana.BarText = "Mana";
+            _ComponentBarsMana.BorderColor = Color.FromArgb(0, 0, 64);
+            _ComponentBarsMana.Dock = DockStyle.Fill;
+            _ComponentBarsMana.ForegroundColor = Color.Navy;
+            _ComponentBarsMana.IsConnected = false;
+            _ComponentBarsMana.Location = new Point(289, 0);
+            _ComponentBarsMana.Margin = new Padding(0);
+            _ComponentBarsMana.Name = "_ComponentBarsMana";
+            _ComponentBarsMana.Size = new Size(289, 20);
+            _ComponentBarsMana.TabIndex = 19;
+            _ComponentBarsMana.Value = 100;
             // 
             // _ComponentBarsSpirit
             // 
-            this._ComponentBarsSpirit.BackColor = (global::System.Drawing.Color.Black);
-            this._ComponentBarsSpirit.BackgroundColor = (global::System.Drawing.Color.FromArgb((global::System.Int32)((global::System.Byte)(64)), (global::System.Int32)((global::System.Byte)(0)), (global::System.Int32)((global::System.Byte)(64))));
-            this._ComponentBarsSpirit.BarText = ("Spirit");
-            this._ComponentBarsSpirit.BorderColor = (global::System.Drawing.Color.FromArgb((global::System.Int32)((global::System.Byte)(64)), (global::System.Int32)((global::System.Byte)(0)), (global::System.Int32)((global::System.Byte)(64))));
-            this._ComponentBarsSpirit.Dock = (global::System.Windows.Forms.DockStyle.Fill);
-            this._ComponentBarsSpirit.ForegroundColor = (global::System.Drawing.Color.Purple);
-            this._ComponentBarsSpirit.IsConnected = (false);
-            this._ComponentBarsSpirit.Location = (new global::System.Drawing.Point(1156, 0));
-            this._ComponentBarsSpirit.Margin = (new global::System.Windows.Forms.Padding(0));
-            this._ComponentBarsSpirit.Name = ("_ComponentBarsSpirit");
-            this._ComponentBarsSpirit.Size = (new global::System.Drawing.Size(293, 20));
-            this._ComponentBarsSpirit.TabIndex = (18);
-            this._ComponentBarsSpirit.Value = (100);
+            _ComponentBarsSpirit.BackColor = Color.Black;
+            _ComponentBarsSpirit.BackgroundColor = Color.FromArgb(64, 0, 64);
+            _ComponentBarsSpirit.BarText = "Spirit";
+            _ComponentBarsSpirit.BorderColor = Color.FromArgb(64, 0, 64);
+            _ComponentBarsSpirit.Dock = DockStyle.Fill;
+            _ComponentBarsSpirit.ForegroundColor = Color.Purple;
+            _ComponentBarsSpirit.IsConnected = false;
+            _ComponentBarsSpirit.Location = new Point(1156, 0);
+            _ComponentBarsSpirit.Margin = new Padding(0);
+            _ComponentBarsSpirit.Name = "_ComponentBarsSpirit";
+            _ComponentBarsSpirit.Size = new Size(293, 20);
+            _ComponentBarsSpirit.TabIndex = 18;
+            _ComponentBarsSpirit.Value = 100;
             // 
             // _ComponentBarsHealth
             // 
-            this._ComponentBarsHealth.BackColor = (global::System.Drawing.Color.Black);
-            this._ComponentBarsHealth.BackgroundColor = (global::System.Drawing.Color.FromArgb((global::System.Int32)((global::System.Byte)(64)), (global::System.Int32)((global::System.Byte)(0)), (global::System.Int32)((global::System.Byte)(0))));
-            this._ComponentBarsHealth.BarText = ("Health");
-            this._ComponentBarsHealth.BorderColor = (global::System.Drawing.Color.FromArgb((global::System.Int32)((global::System.Byte)(64)), (global::System.Int32)((global::System.Byte)(0)), (global::System.Int32)((global::System.Byte)(0))));
-            this._ComponentBarsHealth.Dock = (global::System.Windows.Forms.DockStyle.Fill);
-            this._ComponentBarsHealth.ForegroundColor = (global::System.Drawing.Color.Maroon);
-            this._ComponentBarsHealth.IsConnected = (false);
-            this._ComponentBarsHealth.Location = (new global::System.Drawing.Point(0, 0));
-            this._ComponentBarsHealth.Margin = (new global::System.Windows.Forms.Padding(0));
-            this._ComponentBarsHealth.Name = ("_ComponentBarsHealth");
-            this._ComponentBarsHealth.Size = (new global::System.Drawing.Size(289, 20));
-            this._ComponentBarsHealth.TabIndex = (0);
-            this._ComponentBarsHealth.Value = (100);
+            _ComponentBarsHealth.BackColor = Color.Black;
+            _ComponentBarsHealth.BackgroundColor = Color.FromArgb(64, 0, 0);
+            _ComponentBarsHealth.BarText = "Health";
+            _ComponentBarsHealth.BorderColor = Color.FromArgb(64, 0, 0);
+            _ComponentBarsHealth.Dock = DockStyle.Fill;
+            _ComponentBarsHealth.ForegroundColor = Color.Maroon;
+            _ComponentBarsHealth.IsConnected = false;
+            _ComponentBarsHealth.Location = new Point(0, 0);
+            _ComponentBarsHealth.Margin = new Padding(0);
+            _ComponentBarsHealth.Name = "_ComponentBarsHealth";
+            _ComponentBarsHealth.Size = new Size(289, 20);
+            _ComponentBarsHealth.TabIndex = 0;
+            _ComponentBarsHealth.Value = 100;
             // 
             // _PanelStatus
             // 
-            this._PanelStatus.BackColor = (global::System.Drawing.Color.Black);
-            this._PanelStatus.Controls.Add(this._Castbar);
-            this._PanelStatus.Controls.Add(this._TableLayoutPanelFlow);
-            this._PanelStatus.Dock = (global::System.Windows.Forms.DockStyle.Bottom);
-            this._PanelStatus.Location = (new global::System.Drawing.Point(0, 658));
-            this._PanelStatus.Margin = (new global::System.Windows.Forms.Padding(0));
-            this._PanelStatus.Name = ("_PanelStatus");
-            this._PanelStatus.Size = (new global::System.Drawing.Size(1449, 43));
-            this._PanelStatus.TabIndex = (12);
-            this._PanelStatus.Visible = (false);
+            _PanelStatus.BackColor = Color.Black;
+            _PanelStatus.Controls.Add(_Castbar);
+            _PanelStatus.Controls.Add(_TableLayoutPanelFlow);
+            _PanelStatus.Dock = DockStyle.Bottom;
+            _PanelStatus.Location = new Point(0, 658);
+            _PanelStatus.Margin = new Padding(0);
+            _PanelStatus.Name = "_PanelStatus";
+            _PanelStatus.Size = new Size(1449, 43);
+            _PanelStatus.TabIndex = 12;
+            _PanelStatus.Visible = false;
             // 
             // _TableLayoutPanelFlow
             // 
-            this._TableLayoutPanelFlow.BackColor = (global::System.Drawing.Color.Transparent);
-            this._TableLayoutPanelFlow.ColumnCount = (7);
-            this._TableLayoutPanelFlow.ColumnStyles.Add(new global::System.Windows.Forms.ColumnStyle(global::System.Windows.Forms.SizeType.Absolute, 408F));
-            this._TableLayoutPanelFlow.ColumnStyles.Add(new global::System.Windows.Forms.ColumnStyle(global::System.Windows.Forms.SizeType.Absolute, 12F));
-            this._TableLayoutPanelFlow.ColumnStyles.Add(new global::System.Windows.Forms.ColumnStyle(global::System.Windows.Forms.SizeType.Percent, 33.33334F));
-            this._TableLayoutPanelFlow.ColumnStyles.Add(new global::System.Windows.Forms.ColumnStyle(global::System.Windows.Forms.SizeType.Absolute, 12F));
-            this._TableLayoutPanelFlow.ColumnStyles.Add(new global::System.Windows.Forms.ColumnStyle(global::System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this._TableLayoutPanelFlow.ColumnStyles.Add(new global::System.Windows.Forms.ColumnStyle(global::System.Windows.Forms.SizeType.Absolute, 12F));
-            this._TableLayoutPanelFlow.ColumnStyles.Add(new global::System.Windows.Forms.ColumnStyle(global::System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this._TableLayoutPanelFlow.Controls.Add(this._LabelSpellC, 6, 0);
-            this._TableLayoutPanelFlow.Controls.Add(this._PanelFixed, 0, 0);
-            this._TableLayoutPanelFlow.Controls.Add(this._LabelSpell, 5, 0);
-            this._TableLayoutPanelFlow.Controls.Add(this._LabelRHC, 4, 0);
-            this._TableLayoutPanelFlow.Controls.Add(this._LabelLH, 1, 0);
-            this._TableLayoutPanelFlow.Controls.Add(this._LabelLHC, 2, 0);
-            this._TableLayoutPanelFlow.Controls.Add(this._LabelRH, 3, 0);
-            this._TableLayoutPanelFlow.Dock = (global::System.Windows.Forms.DockStyle.Fill);
-            this._TableLayoutPanelFlow.Location = (new global::System.Drawing.Point(0, 0));
-            this._TableLayoutPanelFlow.Margin = (new global::System.Windows.Forms.Padding(0));
-            this._TableLayoutPanelFlow.MaximumSize = (new global::System.Drawing.Size(1167, 115));
-            this._TableLayoutPanelFlow.Name = ("_TableLayoutPanelFlow");
-            this._TableLayoutPanelFlow.RowCount = (1);
-            this._TableLayoutPanelFlow.RowStyles.Add(new global::System.Windows.Forms.RowStyle(global::System.Windows.Forms.SizeType.Percent, 100F));
-            this._TableLayoutPanelFlow.RowStyles.Add(new global::System.Windows.Forms.RowStyle(global::System.Windows.Forms.SizeType.Absolute, 20F));
-            this._TableLayoutPanelFlow.Size = (new global::System.Drawing.Size(1167, 43));
-            this._TableLayoutPanelFlow.TabIndex = (0);
+            _TableLayoutPanelFlow.BackColor = Color.Transparent;
+            _TableLayoutPanelFlow.ColumnCount = 7;
+            _TableLayoutPanelFlow.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 408F));
+            _TableLayoutPanelFlow.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 12F));
+            _TableLayoutPanelFlow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33334F));
+            _TableLayoutPanelFlow.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 12F));
+            _TableLayoutPanelFlow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            _TableLayoutPanelFlow.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 12F));
+            _TableLayoutPanelFlow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            _TableLayoutPanelFlow.Controls.Add(_LabelSpellC, 6, 0);
+            _TableLayoutPanelFlow.Controls.Add(_PanelFixed, 0, 0);
+            _TableLayoutPanelFlow.Controls.Add(_LabelSpell, 5, 0);
+            _TableLayoutPanelFlow.Controls.Add(_LabelRHC, 4, 0);
+            _TableLayoutPanelFlow.Controls.Add(_LabelLH, 1, 0);
+            _TableLayoutPanelFlow.Controls.Add(_LabelLHC, 2, 0);
+            _TableLayoutPanelFlow.Controls.Add(_LabelRH, 3, 0);
+            _TableLayoutPanelFlow.Dock = DockStyle.Fill;
+            _TableLayoutPanelFlow.Location = new Point(0, 0);
+            _TableLayoutPanelFlow.Margin = new Padding(0);
+            _TableLayoutPanelFlow.MaximumSize = new Size(1167, 115);
+            _TableLayoutPanelFlow.Name = "_TableLayoutPanelFlow";
+            _TableLayoutPanelFlow.RowCount = 1;
+            _TableLayoutPanelFlow.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            _TableLayoutPanelFlow.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            _TableLayoutPanelFlow.Size = new Size(1167, 43);
+            _TableLayoutPanelFlow.TabIndex = 0;
             // 
             // _PanelFixed
             // 
-            this._PanelFixed.BackColor = (global::System.Drawing.Color.Black);
-            this._PanelFixed.Controls.Add(this._oRTControl);
-            this._PanelFixed.Controls.Add(this._IconBar);
-            this._PanelFixed.Controls.Add(this._LabelRT);
-            this._PanelFixed.Dock = (global::System.Windows.Forms.DockStyle.Fill);
-            this._PanelFixed.Location = (new global::System.Drawing.Point(2, 2));
-            this._PanelFixed.Margin = (new global::System.Windows.Forms.Padding(2));
-            this._PanelFixed.Name = ("_PanelFixed");
-            this._PanelFixed.Size = (new global::System.Drawing.Size(404, 39));
-            this._PanelFixed.TabIndex = (13);
+            _PanelFixed.BackColor = Color.Black;
+            _PanelFixed.Controls.Add(_oRTControl);
+            _PanelFixed.Controls.Add(_IconBar);
+            _PanelFixed.Controls.Add(_LabelRT);
+            _PanelFixed.Dock = DockStyle.Fill;
+            _PanelFixed.Location = new Point(2, 2);
+            _PanelFixed.Margin = new Padding(2);
+            _PanelFixed.Name = "_PanelFixed";
+            _PanelFixed.Size = new Size(404, 39);
+            _PanelFixed.TabIndex = 13;
             // 
             // _oRTControl
             // 
-            this._oRTControl.BackColor = (global::System.Drawing.Color.Black);
-            this._oRTControl.BackgroundColor = (global::System.Drawing.Color.Black);
-            this._oRTControl.BackgroundColorRT = (global::System.Drawing.Color.FromArgb((global::System.Int32)((global::System.Byte)(0)), (global::System.Int32)((global::System.Byte)(0)), (global::System.Int32)((global::System.Byte)(75))));
-            this._oRTControl.BorderColor = (global::System.Drawing.Color.FromArgb((global::System.Int32)((global::System.Byte)(64)), (global::System.Int32)((global::System.Byte)(64)), (global::System.Int32)((global::System.Byte)(64))));
-            this._oRTControl.BorderColorRT = (global::System.Drawing.Color.White);
-            this._oRTControl.ForegroundColor = (global::System.Drawing.Color.MediumBlue);
-            this._oRTControl.IsConnected = (false);
-            this._oRTControl.Location = (new global::System.Drawing.Point(16, 3));
-            this._oRTControl.Margin = (new global::System.Windows.Forms.Padding(5));
-            this._oRTControl.Name = ("_oRTControl");
-            this._oRTControl.Size = (new global::System.Drawing.Size(117, 30));
-            this._oRTControl.TabIndex = (0);
+            _oRTControl.BackColor = Color.Black;
+            _oRTControl.BackgroundColor = Color.Black;
+            _oRTControl.BackgroundColorRT = Color.FromArgb(0, 0, 75);
+            _oRTControl.BorderColor = Color.FromArgb(64, 64, 64);
+            _oRTControl.BorderColorRT = Color.White;
+            _oRTControl.ForegroundColor = Color.MediumBlue;
+            _oRTControl.IsConnected = false;
+            _oRTControl.Location = new Point(16, 3);
+            _oRTControl.Margin = new Padding(5);
+            _oRTControl.Name = "_oRTControl";
+            _oRTControl.Size = new Size(117, 30);
+            _oRTControl.TabIndex = 0;
             // 
             // _IconBar
             // 
-            this._IconBar.BackColor = (global::System.Drawing.Color.Transparent);
-            this._IconBar.Globals = (null);
-            this._IconBar.IsConnected = (false);
-            this._IconBar.Location = (new global::System.Drawing.Point(136, 0));
-            this._IconBar.Margin = (new global::System.Windows.Forms.Padding(0));
-            this._IconBar.Name = ("_IconBar");
-            this._IconBar.Size = (new global::System.Drawing.Size(262, 37));
-            this._IconBar.TabIndex = (0);
+            _IconBar.BackColor = Color.Transparent;
+            _IconBar.Globals = null;
+            _IconBar.IsConnected = false;
+            _IconBar.Location = new Point(136, 0);
+            _IconBar.Margin = new Padding(0);
+            _IconBar.Name = "_IconBar";
+            _IconBar.Size = new Size(262, 37);
+            _IconBar.TabIndex = 0;
             // 
             // _ToolStripButtons
             // 
-            this._ToolStripButtons.BackColor = (global::System.Drawing.SystemColors.Control);
-            this._ToolStripButtons.ContextMenuStrip = (this._ContextMenuStripButtons);
-            this._ToolStripButtons.GripStyle = (global::System.Windows.Forms.ToolStripGripStyle.Hidden);
-            this._ToolStripButtons.Location = (new global::System.Drawing.Point(0, 24));
-            this._ToolStripButtons.Name = ("_ToolStripButtons");
-            this._ToolStripButtons.RenderMode = (global::System.Windows.Forms.ToolStripRenderMode.System);
-            this._ToolStripButtons.Size = (new global::System.Drawing.Size(1449, 25));
-            this._ToolStripButtons.TabIndex = (14);
-            this._ToolStripButtons.VisibleChanged += (this.ToolStripButtons_VisibleChanged);
+            _ToolStripButtons.BackColor = SystemColors.Control;
+            _ToolStripButtons.ContextMenuStrip = _ContextMenuStripButtons;
+            _ToolStripButtons.GripStyle = ToolStripGripStyle.Hidden;
+            _ToolStripButtons.Location = new Point(0, 24);
+            _ToolStripButtons.Name = "_ToolStripButtons";
+            _ToolStripButtons.RenderMode = ToolStripRenderMode.System;
+            _ToolStripButtons.Size = new Size(1449, 25);
+            _ToolStripButtons.TabIndex = 14;
+            _ToolStripButtons.VisibleChanged += ToolStripButtons_VisibleChanged;
             // 
             // _ContextMenuStripButtons
             // 
-            this._ContextMenuStripButtons.Name = ("ContextMenuStripButtons");
-            this._ContextMenuStripButtons.Size = (new global::System.Drawing.Size(61, 4));
+            _ContextMenuStripButtons.Name = "ContextMenuStripButtons";
+            _ContextMenuStripButtons.Size = new Size(61, 4);
             // 
             // _TimerReconnect
             // 
-            this._TimerReconnect.Enabled = (true);
-            this._TimerReconnect.Interval = (1000);
-            this._TimerReconnect.Tick += (this.TimerReconnect_Tick);
+            _TimerReconnect.Enabled = true;
+            _TimerReconnect.Interval = 1000;
+            _TimerReconnect.Tick += TimerReconnect_Tick;
             // 
             // _OpenFileDialogLayout
             // 
-            this._OpenFileDialogLayout.DefaultExt = ("layout");
-            this._OpenFileDialogLayout.Filter = ("Genie Layout|*.layout|All files|*.*");
-            this._OpenFileDialogLayout.RestoreDirectory = (true);
-            this._OpenFileDialogLayout.Title = ("Open Layout");
+            _OpenFileDialogLayout.DefaultExt = "layout";
+            _OpenFileDialogLayout.Filter = "Genie Layout|*.layout|All files|*.*";
+            _OpenFileDialogLayout.RestoreDirectory = true;
+            _OpenFileDialogLayout.Title = "Open Layout";
             // 
             // _SaveFileDialogLayout
             // 
-            this._SaveFileDialogLayout.DefaultExt = ("layout");
-            this._SaveFileDialogLayout.Filter = ("Genie Layout|*.layout|All files|*.*");
-            this._SaveFileDialogLayout.RestoreDirectory = (true);
-            this._SaveFileDialogLayout.Title = ("Save Layout");
+            _SaveFileDialogLayout.DefaultExt = "layout";
+            _SaveFileDialogLayout.Filter = "Genie Layout|*.layout|All files|*.*";
+            _SaveFileDialogLayout.RestoreDirectory = true;
+            _SaveFileDialogLayout.Title = "Save Layout";
             // 
             // _TimerBgWorker
             // 
-            this._TimerBgWorker.Interval = (10);
-            this._TimerBgWorker.Tick += (this.TimerBgWorker_Tick);
+            _TimerBgWorker.Interval = 10;
+            _TimerBgWorker.Tick += TimerBgWorker_Tick;
             // 
             // _PanelInput
             // 
-            this._PanelInput.BackColor = (global::System.Drawing.Color.White);
-            this._PanelInput.Controls.Add(this._TextBoxInput);
-            this._PanelInput.Dock = (global::System.Windows.Forms.DockStyle.Bottom);
-            this._PanelInput.Location = (new global::System.Drawing.Point(0, 701));
-            this._PanelInput.Margin = (new global::System.Windows.Forms.Padding(0));
-            this._PanelInput.Name = ("_PanelInput");
-            this._PanelInput.Padding = (new global::System.Windows.Forms.Padding(4, 2, 0, 0));
-            this._PanelInput.Size = (new global::System.Drawing.Size(1449, 23));
-            this._PanelInput.TabIndex = (0);
+            _PanelInput.BackColor = Color.White;
+            _PanelInput.Controls.Add(_TextBoxInput);
+            _PanelInput.Dock = DockStyle.Bottom;
+            _PanelInput.Location = new Point(0, 701);
+            _PanelInput.Margin = new Padding(0);
+            _PanelInput.Name = "_PanelInput";
+            _PanelInput.Padding = new Padding(4, 2, 0, 0);
+            _PanelInput.Size = new Size(1449, 23);
+            _PanelInput.TabIndex = 0;
             // 
             // _TextBoxInput
             // 
-            this._TextBoxInput.AcceptsTab = (true);
-            this._TextBoxInput.BackColor = (global::System.Drawing.Color.White);
-            this._TextBoxInput.BorderStyle = (global::System.Windows.Forms.BorderStyle.None);
-            this._TextBoxInput.Dock = (global::System.Windows.Forms.DockStyle.Fill);
-            this._TextBoxInput.Font = (new global::System.Drawing.Font("Courier New", 9F, global::System.Drawing.FontStyle.Regular, global::System.Drawing.GraphicsUnit.Point));
-            this._TextBoxInput.HideSelection = (false);
-            this._TextBoxInput.KeepInput = (false);
-            this._TextBoxInput.Location = (new global::System.Drawing.Point(4, 2));
-            this._TextBoxInput.Margin = (new global::System.Windows.Forms.Padding(4, 3, 4, 3));
-            this._TextBoxInput.Multiline = (true);
-            this._TextBoxInput.Name = ("_TextBoxInput");
-            this._TextBoxInput.Size = (new global::System.Drawing.Size(1445, 21));
-            this._TextBoxInput.TabIndex = (0);
-            this._TextBoxInput.WordWrap = (false);
-            this._TextBoxInput.SendText += (this.TextBoxInput_SendText);
-            this._TextBoxInput.PageUp += (this.TextBoxInput_PageUp);
-            this._TextBoxInput.PageDown += (this.TextBoxInput_PageDown);
-            this._TextBoxInput.CtrlPageUp += (this.TextBoxInput_CtrlPageUp);
-            this._TextBoxInput.CtrlPageDown += (this.TextBoxInput_CtrlPageDown);
-            this._TextBoxInput.KeyDown += (this.TextBoxInput_KeyDown);
+            _TextBoxInput.AcceptsTab = true;
+            _TextBoxInput.BackColor = Color.White;
+            _TextBoxInput.BorderStyle = BorderStyle.None;
+            _TextBoxInput.Dock = DockStyle.Fill;
+            _TextBoxInput.Font = new Font("Courier New", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            _TextBoxInput.HideSelection = false;
+            _TextBoxInput.KeepInput = false;
+            _TextBoxInput.Location = new Point(4, 2);
+            _TextBoxInput.Margin = new Padding(4, 3, 4, 3);
+            _TextBoxInput.Multiline = true;
+            _TextBoxInput.Name = "_TextBoxInput";
+            _TextBoxInput.Size = new Size(1445, 21);
+            _TextBoxInput.TabIndex = 0;
+            _TextBoxInput.WordWrap = false;
+            _TextBoxInput.SendText += TextBoxInput_SendText;
+            _TextBoxInput.PageUp += TextBoxInput_PageUp;
+            _TextBoxInput.PageDown += TextBoxInput_PageDown;
+            _TextBoxInput.CtrlPageUp += TextBoxInput_CtrlPageUp;
+            _TextBoxInput.CtrlPageDown += TextBoxInput_CtrlPageDown;
+            _TextBoxInput.KeyDown += TextBoxInput_KeyDown;
             // 
             // _OpenFileDialogProfile
             // 
-            this._OpenFileDialogProfile.DefaultExt = ("layout");
-            this._OpenFileDialogProfile.Filter = ("Genie Profile|*.xml|All files|*.*");
-            this._OpenFileDialogProfile.RestoreDirectory = (true);
-            this._OpenFileDialogProfile.Title = ("Open Profile");
+            _OpenFileDialogProfile.DefaultExt = "layout";
+            _OpenFileDialogProfile.Filter = "Genie Profile|*.xml|All files|*.*";
+            _OpenFileDialogProfile.RestoreDirectory = true;
+            _OpenFileDialogProfile.Title = "Open Profile";
             // 
             // FormMain
             // 
-            this.AutoScaleDimensions = (new global::System.Drawing.SizeF(7F, 15F));
-            this.AutoScaleMode = (global::System.Windows.Forms.AutoScaleMode.Font);
-            this.BackColor = (global::System.Drawing.SystemColors.ControlDarkDark);
-            this.ClientSize = (new global::System.Drawing.Size(1449, 768));
-            this.Controls.Add(this._PanelStatus);
-            this.Controls.Add(this._PanelInput);
-            this.Controls.Add(this._PanelBars);
-            this.Controls.Add(this._ToolStripButtons);
-            this.Controls.Add(this._StatusStripMain);
-            this.Controls.Add(this._MenuStripMain);
-            this.Icon = ((global::System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.IsMdiContainer = (true);
-            this.KeyPreview = (true);
-            this.MainMenuStrip = (this._MenuStripMain);
-            this.Margin = (new global::System.Windows.Forms.Padding(4, 3, 4, 3));
-            this.Name = ("FormMain");
-            this.Text = ("Genie");
-            this.WindowState = (global::System.Windows.Forms.FormWindowState.Maximized);
-            this.Activated += (this.FormMain_Activated);
-            this.FormClosing += (this.FormMain_FormClosing);
-            this.Load += (this.FormMain_Load);
-            this.ResizeEnd += (this.FormMain_SizeChange);
-            this.KeyDown += (this.FormMain_KeyDown);
-            this.Resize += (this.FormMain_SizeChange);
-            this._StatusStripMain.ResumeLayout(false);
-            this._StatusStripMain.PerformLayout();
-            this._MenuStripMain.ResumeLayout(false);
-            this._MenuStripMain.PerformLayout();
-            this._PanelBars.ResumeLayout(false);
-            this._TableLayoutPanelBars.ResumeLayout(false);
-            this._PanelStatus.ResumeLayout(false);
-            this._TableLayoutPanelFlow.ResumeLayout(false);
-            this._PanelFixed.ResumeLayout(false);
-            this._PanelInput.ResumeLayout(false);
-            this._PanelInput.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ControlDarkDark;
+            ClientSize = new Size(1449, 768);
+            Controls.Add(_PanelStatus);
+            Controls.Add(_PanelInput);
+            Controls.Add(_PanelBars);
+            Controls.Add(_ToolStripButtons);
+            Controls.Add(_StatusStripMain);
+            Controls.Add(_MenuStripMain);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            IsMdiContainer = true;
+            KeyPreview = true;
+            MainMenuStrip = _MenuStripMain;
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "FormMain";
+            Text = "Genie";
+            WindowState = FormWindowState.Maximized;
+            Activated += FormMain_Activated;
+            FormClosing += FormMain_FormClosing;
+            Load += FormMain_Load;
+            ResizeEnd += FormMain_SizeChange;
+            KeyDown += FormMain_KeyDown;
+            Resize += FormMain_SizeChange;
+            _StatusStripMain.ResumeLayout(false);
+            _StatusStripMain.PerformLayout();
+            _MenuStripMain.ResumeLayout(false);
+            _MenuStripMain.PerformLayout();
+            _PanelBars.ResumeLayout(false);
+            _TableLayoutPanelBars.ResumeLayout(false);
+            _PanelStatus.ResumeLayout(false);
+            _TableLayoutPanelFlow.ResumeLayout(false);
+            _PanelFixed.ResumeLayout(false);
+            _PanelInput.ResumeLayout(false);
+            _PanelInput.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         private ComponentTextBox _TextBoxInput;
@@ -4134,6 +4160,9 @@ namespace GenieClient
         private ToolStripMenuItem pluginsToolStripMenuItem;
         private ToolStripMenuItem logsToolStripMenuItem;
         private global::System.Windows.Forms.ToolStripMenuItem ClassicConnectToolStripMenuItem;
+        private ToolStripMenuItem _ImagesEnabledToolStripMenuItem;
+        private ToolStripMenuItem UpdateImagesToolStripMenuItem;
+        private ToolStripMenuItem artToolStripMenuItem;
 
         internal ToolStripMenuItem SaveSizedDefaultLayoutToolStripMenuItem
         {

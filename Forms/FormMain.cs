@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Speech.Synthesis;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -174,6 +175,7 @@ namespace GenieClient
                     }
                     else
                     {
+
                         AddText("An Update is Available.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                         if (m_oGlobals.Config.AutoUpdate)
                         {
@@ -396,6 +398,7 @@ namespace GenieClient
                     _m_oGame.EventPrintError += PrintError;
                     _m_oGame.EventClearWindow += Command_EventClearWindow;
                     _m_oGame.EventPrintText += Simutronics_EventPrintText;
+                    _m_oGame.EventAddImage += AddImage;
                     _m_oGame.EventDataRecieveEnd += Simutronics_EventEndUpdate;
                     GenieError.EventGenieError += HandleGenieException;
                     GenieError.EventGeniePluginError += HandlePluginException;
@@ -432,6 +435,7 @@ namespace GenieClient
                     _m_oCommand.ReloadPlugins -= FormPlugin_ReloadPlugins;
                     _m_oCommand.DisablePlugin -= FormPlugin_DisablePlugin;
                     _m_oCommand.EnablePlugin -= FormPlugin_EnablePlugin;
+                    _m_oCommand.EventAddImage -= AddImage;
                     _m_oCommand.EventEchoText -= ClassCommand_EchoText;
                     _m_oCommand.EventLinkText -= ClassCommand_LinkText;
                     _m_oCommand.EventEchoColorText -= ClassCommand_EchoColorText;
@@ -482,6 +486,7 @@ namespace GenieClient
                     _m_oCommand.ReloadPlugins += FormPlugin_ReloadPlugins;
                     _m_oCommand.DisablePlugin += FormPlugin_DisablePlugin;
                     _m_oCommand.EnablePlugin += FormPlugin_EnablePlugin;
+                    _m_oCommand.EventAddImage += AddImage;
                     _m_oCommand.EventEchoText += ClassCommand_EchoText;
                     _m_oCommand.EventLinkText += ClassCommand_LinkText;
                     _m_oCommand.EventEchoColorText += ClassCommand_EchoColorText;
@@ -594,6 +599,7 @@ namespace GenieClient
         private FormSkin m_oOutputDebug;
         private FormSkin m_oOutputActiveSpells;
         private FormSkin m_oOutputCombat;
+        private FormSkin m_oOutputPortrait;
         private Genie.Collections.ArrayList m_oFormList = new Genie.Collections.ArrayList();
         private string m_sConfigFile = string.Empty;
         // private string m_sUpdateVersion = string.Empty;
@@ -2754,6 +2760,16 @@ namespace GenieClient
             {
                 SafeCreateOutputForm("percWindow", "Active Spells", null, 300, 200, 10, 10, false);
             }
+
+            if (Information.IsNothing(m_oOutputCombat))
+            {
+                SafeCreateOutputForm("combat", "Combat", null, 300, 200, 10, 10, false);
+            }
+
+            if (Information.IsNothing(m_oOutputPortrait))
+            {
+                SafeCreateOutputForm("portrait", "Portrait", null, 250, 350, 10, 10, false);
+            }
         }
 
         public new object ClientSize
@@ -3794,6 +3810,13 @@ namespace GenieClient
                         oForm.UserForm = false;
                         break;
                     }
+
+                case "portrait":
+                    {
+                        m_oOutputPortrait = oForm;
+                        oForm.UserForm = false;
+                        break;
+                    }
             }
 
             if (UpdateFormList)
@@ -4806,6 +4829,11 @@ namespace GenieClient
                             oFormTarget = m_oOutputCombat;
                             break;
                         }
+                    case Genie.Game.WindowTarget.Portrait:
+                        {
+                            oFormTarget = m_oOutputPortrait;
+                            break;
+                        }
                     case Genie.Game.WindowTarget.ActiveSpells:
                         {
                             oFormTarget = m_oOutputActiveSpells;
@@ -4841,6 +4869,143 @@ namespace GenieClient
                 AddText(sText, oColor, oBgColor, oFormTarget, bNoCache, bMono, bPrompt, bInput);
             }
         }
+        private void AddImage(string sImageFileName, FormSkin oTargetWindow, int width, int height)
+        {
+            // bPrompt = false;
+
+            if (IsDisposed)
+            {
+                return;
+            }
+
+            if (Information.IsNothing(oTargetWindow))
+            {
+                oTargetWindow = m_oOutputMain;
+            }
+
+            if (oTargetWindow.Equals(m_oOutputMain))
+            {
+
+            }
+
+            if (InvokeRequired == true)
+            {
+                var parameters = new object[] { sImageFileName, oTargetWindow, width, height };
+                Invoke(new AddImageDelegate(InvokeAddImage), parameters);
+            }
+            else
+            {
+                InvokeAddImage(sImageFileName, oTargetWindow, width, height);
+            }
+        }
+
+        private void AddImage(string sImageFileName, string sTargetWindow, int width, int height)
+        {
+            Genie.Game.WindowTarget targetWindow = string.IsNullOrEmpty(sTargetWindow) ? Genie.Game.WindowTarget.Portrait : Genie.Game.WindowTarget.Other;
+            AddImage(sImageFileName, targetWindow, sTargetWindow, width, height);
+        }
+        private void AddImage(string sImageFileName, Genie.Game.WindowTarget oTargetWindow, string sTargetWindow, int width, int height)
+        {
+            if (IsDisposed)
+            {
+                return;
+            }
+
+            FormSkin oFormTarget = null;
+            if (!Information.IsNothing(m_oOutputMain))
+            {
+                switch (oTargetWindow)
+                {
+                    case Genie.Game.WindowTarget.Portrait:
+                        {
+                            oFormTarget = m_oOutputPortrait;
+                            break;
+                        }
+                    case Genie.Game.WindowTarget.Death:
+                        {
+                            oFormTarget = m_oOutputDeath;
+                            break;
+                        }
+
+                    case Genie.Game.WindowTarget.Familiar:
+                        {
+                            oFormTarget = m_oOutputFamiliar;
+                            break;
+                        }
+
+                    case Genie.Game.WindowTarget.Inv:
+                        {
+                            if (!Information.IsNothing(m_oOutputInv) && m_oOutputInv.Visible == true)
+                                oFormTarget = m_oOutputInv;
+                            break;
+                        }
+
+                    case Genie.Game.WindowTarget.Log:
+                        {
+                            oFormTarget = m_oOutputLog;
+                            break;
+                        }
+
+                    case Genie.Game.WindowTarget.Logons:
+                        {
+                            oFormTarget = m_oOutputLogons;
+                            break;
+                        }
+
+                    case Genie.Game.WindowTarget.Room:
+                        {
+                            if (!Information.IsNothing(m_oOutputRoom) && m_oOutputRoom.Visible == true)
+                                oFormTarget = m_oOutputRoom;
+                            break;
+                        }
+
+                    case Genie.Game.WindowTarget.Thoughts:
+                        {
+                            oFormTarget = m_oOutputThoughts;
+                            break;
+                        }
+                    case Genie.Game.WindowTarget.Combat:
+                        {
+                            oFormTarget = m_oOutputCombat;
+                            break;
+                        }
+                    case Genie.Game.WindowTarget.ActiveSpells:
+                        {
+                            oFormTarget = m_oOutputActiveSpells;
+                            break;
+                        }
+                    case Genie.Game.WindowTarget.Debug:
+                        {
+                            oFormTarget = m_oOutputDebug;
+                            break;
+                        }
+                    case Genie.Game.WindowTarget.Other:
+                        {
+                            oFormTarget = FindSkinFormByName(sTargetWindow);
+                            break;
+                        }
+
+                    default:
+                        {
+                            oFormTarget = m_oOutputMain;
+                            break;
+                        }
+                }
+
+                if (Information.IsNothing(oFormTarget))
+                    return;
+                if (oFormTarget.Visible == false)
+                {
+                    oFormTarget = FindIfClosed(oFormTarget.IfClosed);
+                }
+
+                if (Information.IsNothing(oFormTarget))
+                    return;
+                AddImage(sImageFileName, oFormTarget, width, height);
+            }
+        }
+
+
 
         private FormSkin FindIfClosed(string IfClosed, int Depth = 0)
         {
@@ -4877,6 +5042,17 @@ namespace GenieClient
             if (!Information.IsNothing(oTargetWindow))
             {
                 oTargetWindow.RichTextBoxOutput.AddText(sText, oColor, oBgColor, bNoCache, bMono);
+            }
+        }
+
+        public delegate void AddImageDelegate(string sImageFilePath, FormSkin oTargetWindow, int width, int height);
+        private async void InvokeAddImage(string sImageFilePath, FormSkin oTargetWindow, int width, int height)
+        {
+            if (!Information.IsNothing(oTargetWindow))
+            {
+                Image image = await FileHandler.GetImage(Path.Combine(m_oGlobals.Config.ArtDir, sImageFilePath), width, height);
+                if (oTargetWindow == m_oOutputPortrait) m_oOutputPortrait.ClearWindow();
+                oTargetWindow.RichTextBoxOutput.AddImage(image);
             }
         }
 
@@ -6759,6 +6935,11 @@ namespace GenieClient
                         autoUpdateLampToolStripMenuItem.Checked = m_oGlobals.Config.AutoUpdateLamp;
                         break;
                     }
+                case Genie.Config.ConfigFieldUpdated.ImagesEnabled:
+                    {
+                        _ImagesEnabledToolStripMenuItem.Checked = m_oGlobals.Config.bShowImages;
+                        break;
+                    }
             }
         }
 
@@ -8351,6 +8532,11 @@ namespace GenieClient
             Interaction.Shell("explorer.exe " + m_oGlobals.Config.sLogDir, AppWinStyle.NormalFocus, false);
         }
 
+        private void artToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Interaction.Shell("explorer.exe " + m_oGlobals.Config.ArtDir, AppWinStyle.NormalFocus, false);
+        }
+
         private void toolStripMenuItemClassicConnect_Click(global::System.Object sender, global::System.EventArgs e)
         {
             m_oGlobals.Config.bClassicConnect = ClassicConnectToolStripMenuItem.Checked;
@@ -8361,5 +8547,38 @@ namespace GenieClient
             m_oGlobals.Config.AutoUpdateLamp = !m_oGlobals.Config.AutoUpdateLamp;
             autoUpdateLampToolStripMenuItem.Checked = m_oGlobals.Config.AutoUpdateLamp;
         }
+
+        private void _ImagesEnabledToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _ImagesEnabledToolStripMenuItem.Checked = !m_oGlobals.Config.bShowImages;
+            m_oGlobals.Config.bShowImages = _ImagesEnabledToolStripMenuItem.Checked;
+        }
+
+        private async void UpdateImagesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!m_oGlobals.Config.ScriptRepo.EndsWith(".zip"))
+            {
+                MessageBox.Show("You do not have a repository configured properly." + Environment.NewLine + "Please use \"#config artrepo {address of a zip file}\" to configure." + Environment.NewLine + "The URI must be a zip file.");
+                return;
+            }
+            DialogResult response = MessageBox.Show("This may take a moment. Update Images?", "Update Images?", MessageBoxButtons.YesNoCancel);
+            if (response == DialogResult.Yes)
+            {
+                await Task.Run(async () =>
+                {
+                    AddText($"Updating Art in {m_oGlobals.Config.ArtDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    if (await Updater.UpdateArt(m_oGlobals.Config.ArtDir, m_oGlobals.Config.ArtRepo, m_oGlobals.Config.AutoUpdateLamp))
+                    {
+                        AddText("Art Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    }
+                    else
+                    {
+                        AddText("Something went wrong.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    }
+                });
+            }
+        }
+
+
     }
 }

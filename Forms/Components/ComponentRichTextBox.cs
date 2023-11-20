@@ -2,10 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using GenieClient.Genie;
+using Jint.Debugger;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using static GenieClient.Genie.Globals;
@@ -266,7 +272,7 @@ namespace GenieClient
 
         private bool m_bSuspended = false;
         private bool m_bPendingNewLine = false;
-
+        public delegate void AddImageDelegate(Image image);
         public delegate void AddTextDelegate(string sText, Color oColor, Color oBgColor, bool bNoCache, bool bMono);
 
         private void InvokeAddText(string sText, Color oColor, Color oBgColor, bool bNoCache, bool bMono)
@@ -332,13 +338,41 @@ namespace GenieClient
                 Font argoFont1 = null;
                 AddToBuffer(argsText, oColor, oBgColor, bMono, oFont: argoFont1);
             }
-
+            SetScrollBars();
             if (Conversions.ToBoolean(bNoCache == true | m_oRichTextBuffer.Lines.Length >= m_oParentForm.Globals.Config.iBufferLineSize))
             {
                 InvokeEndUpdate();
             }
         }
+        public void AddImage(Image image)
+        {
+            if (IsDisposed || image == null)
+            {
+                return;
+            }
+            if (InvokeRequired == true)
+            {
+                var parameters = new object[] { image };
+                Invoke(new AddImageDelegate(InvokeAddImage), parameters);
+            }
+            else
+            {
+                InvokeAddImage(image);
+            }
+        }
 
+        private void InvokeAddImage(Image image)
+        {
+            IDataObject obj = Clipboard.GetDataObject();
+            Clipboard.Clear();
+            Clipboard.SetDataObject(image);
+            this.ReadOnly = false;
+            this.Select(this.TextLength,0);
+            this.Paste(DataFormats.GetFormat(DataFormats.Bitmap));
+            this.ReadOnly = true;
+            Clipboard.Clear();
+            Clipboard.SetDataObject(obj);
+        }
         public void AddText(string sText, Color oColor, Color oBgColor, bool bNoCache = true, bool bMono = false)
         {
             if (IsDisposed)
@@ -901,7 +935,6 @@ namespace GenieClient
                 m_bMouseDown = false;
             }
         }
-
         public void InsertLink(string text, string hyperlink)
         {
             text = text.Replace(@"\", @"\\");
@@ -916,7 +949,7 @@ namespace GenieClient
             {
                 throw new ArgumentOutOfRangeException("position");
             }
-
+            
             SelectionStart = position;
             SelectedRtf = @"{\rtf1\ansi " + text + @"\v #" + hyperlink + @"!#\v0}";
             Select(position, text.Length + hyperlink.Length + 1);
@@ -959,6 +992,15 @@ namespace GenieClient
             Marshal.StructureToPtr(cf, lpar, false);
             var res = SendMessage(handle, EM_SETCHARFORMAT, wpar, lpar);
             Marshal.FreeCoTaskMem(lpar);
+        }
+
+        public void SetScrollBars()
+        {
+            SizeF fontSize = TextRenderer.MeasureText("A", this.Font, this.Size, TextFormatFlags.WordBreak);
+            float totalLineHeight = this.Lines.Length * fontSize.Height;
+            float displayableLineHeight = this.Height / fontSize.Height;
+
+            ScrollBars = totalLineHeight > displayableLineHeight ? RichTextBoxScrollBars.Vertical : RichTextBoxScrollBars.None;
         }
     }
 }
