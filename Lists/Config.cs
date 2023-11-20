@@ -53,6 +53,7 @@ namespace GenieClient.Genie
         public string sArtDir = "Art";
         public bool bWebLinkSafety = true;
 
+        public bool SizeInputToGame { get; set; } = false;
         public bool PromptBreak { get; set; } = true;
         public bool PromptForce { get; set; } = true;
         public bool Condensed { get; set; } = false;
@@ -360,7 +361,8 @@ namespace GenieClient.Genie
             AutoUpdate,
             AutoUpdateLamp,
             ClassicConnect,
-            ImagesEnabled
+            ImagesEnabled,
+            SizeInputToGame
         }
 
         public Font MonoFont
@@ -438,6 +440,7 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine("#config {reconnect} {" + bReconnect + "}");
                 oStreamWriter.WriteLine("#config {ignoreclosealert} {" + bIgnoreCloseAlert + "}");
                 oStreamWriter.WriteLine("#config {keepinputtext} {" + bKeepInput + "}");
+                oStreamWriter.WriteLine("#config {sizeinputtogame} {" + SizeInputToGame + "}");
                 oStreamWriter.WriteLine("#config {muted} {" + !bPlaySounds + "}");
                 oStreamWriter.WriteLine("#config {abortdupescript} {" + bAbortDupeScript + "}");
                 oStreamWriter.WriteLine("#config {parsegameonly} {" + bParseGameOnly + "}");
@@ -1277,6 +1280,28 @@ namespace GenieClient.Genie
                                 break;
                             }
 
+                        case "sizeinputtogame":
+                            {
+                                var switchExpr13 = sValue.ToLower();
+                                switch (switchExpr13)
+                                {
+                                    case "on":
+                                    case "true":
+                                    case "1":
+                                        {
+                                            SizeInputToGame = true;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            SizeInputToGame = false;
+                                            break;
+                                        }
+                                }
+                                ConfigChanged?.Invoke(ConfigFieldUpdated.SizeInputToGame);
+                                break;
+                            }
 
                         case "weblinksafety":
                             {

@@ -6940,6 +6940,11 @@ namespace GenieClient
                         _ImagesEnabledToolStripMenuItem.Checked = m_oGlobals.Config.bShowImages;
                         break;
                     }
+                case Genie.Config.ConfigFieldUpdated.SizeInputToGame:
+                    {
+                        alignInputToGameWindowToolStripMenuItem.Checked = m_oGlobals.Config.SizeInputToGame;
+                        break;
+                    }
             }
         }
 
@@ -8579,6 +8584,31 @@ namespace GenieClient
             }
         }
 
+        private void alignInputToGameWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void ResizeInputBar(object sender, EventArgs e)
+        {
+            _TextBoxInput.Left = m_oOutputMain.Left;
+            _TextBoxInput.Width = m_oOutputMain.Width;
+        }
+
+        private void alignInputToGameWindowToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            m_oGlobals.Config.SizeInputToGame = alignInputToGameWindowToolStripMenuItem.Checked;
+            if (alignInputToGameWindowToolStripMenuItem.Checked)
+            {
+                _TextBoxInput.Dock = DockStyle.None;
+                m_oOutputMain.RichTextBoxOutput.Resize += ResizeInputBar;
+                ResizeInputBar(sender, e);
+            }
+            else
+            {
+                _TextBoxInput.Dock = DockStyle.Fill;
+                m_oOutputMain.RichTextBoxOutput.Resize -= ResizeInputBar;
+            }
+        }
     }
 }

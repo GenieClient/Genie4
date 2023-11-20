@@ -2897,6 +2897,7 @@ namespace GenieClient.Genie
             EchoText("ignoreclosealert=" + oGlobals.Config.bIgnoreCloseAlert.ToString() + System.Environment.NewLine);
             EchoText("ignorescriptwarnings=" + oGlobals.Config.bIgnoreScriptWarnings.ToString() + System.Environment.NewLine);
             EchoText("keepinputtext=" + oGlobals.Config.bKeepInput.ToString() + System.Environment.NewLine);
+            EchoText("sizeinputtogame=" + oGlobals.Config.SizeInputToGame.ToString() + System.Environment.NewLine);
             EchoText("maxgosubdepth=" + oGlobals.Config.iMaxGoSubDepth + System.Environment.NewLine);
             EchoText("maxrowbuffer=" + oGlobals.Config.iBufferLineSize.ToString() + System.Environment.NewLine);
             EchoText("monstercountignorelist=" + oGlobals.Config.sIgnoreMonsterList + System.Environment.NewLine);

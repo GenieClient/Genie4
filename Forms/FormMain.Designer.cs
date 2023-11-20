@@ -106,6 +106,7 @@ namespace GenieClient
             _DockBottomToolStripMenuItem2 = new ToolStripMenuItem();
             _MagicPanelsToolStripMenuItem = new ToolStripMenuItem();
             _StatusBarToolStripMenuItem = new ToolStripMenuItem();
+            alignInputToGameWindowToolStripMenuItem = new ToolStripMenuItem();
             _WindowToolStripMenuItem = new ToolStripMenuItem();
             _ScriptToolStripMenuItem = new ToolStripMenuItem();
             _ScriptExplorerToolStripMenuItem = new ToolStripMenuItem();
@@ -590,7 +591,7 @@ namespace GenieClient
             // 
             // _LayoutToolStripMenuItem
             // 
-            _LayoutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _LoadSettingsOpenToolStripMenuItem, _LoadSettingsToolStripMenuItem, _ToolStripSeparator12, _SaveSettingsToolStripMenuItem1, _SaveSettingsToolStripMenuItem, _SaveSizedDefaultLayoutToolStripMenuItem, _ToolStripSeparator5, _BasicToolStripMenuItem, _ToolStripSeparator4, _IconBarToolStripMenuItem, _ShowScriptBarToolStripMenuItem, _HealthBarToolStripMenuItem, _MagicPanelsToolStripMenuItem, _StatusBarToolStripMenuItem });
+            _LayoutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _LoadSettingsOpenToolStripMenuItem, _LoadSettingsToolStripMenuItem, _ToolStripSeparator12, _SaveSettingsToolStripMenuItem1, _SaveSettingsToolStripMenuItem, _SaveSizedDefaultLayoutToolStripMenuItem, _ToolStripSeparator5, _BasicToolStripMenuItem, _ToolStripSeparator4, _IconBarToolStripMenuItem, _ShowScriptBarToolStripMenuItem, _HealthBarToolStripMenuItem, _MagicPanelsToolStripMenuItem, _StatusBarToolStripMenuItem, alignInputToGameWindowToolStripMenuItem });
             _LayoutToolStripMenuItem.Name = "_LayoutToolStripMenuItem";
             _LayoutToolStripMenuItem.Size = new Size(55, 20);
             _LayoutToolStripMenuItem.Text = "&Layout";
@@ -598,59 +599,59 @@ namespace GenieClient
             // _LoadSettingsOpenToolStripMenuItem
             // 
             _LoadSettingsOpenToolStripMenuItem.Name = "_LoadSettingsOpenToolStripMenuItem";
-            _LoadSettingsOpenToolStripMenuItem.Size = new Size(208, 22);
+            _LoadSettingsOpenToolStripMenuItem.Size = new Size(228, 22);
             _LoadSettingsOpenToolStripMenuItem.Text = "Load Layout...";
             _LoadSettingsOpenToolStripMenuItem.Click += LoadSettingsOpenToolStripMenuItem_Click;
             // 
             // _LoadSettingsToolStripMenuItem
             // 
             _LoadSettingsToolStripMenuItem.Name = "_LoadSettingsToolStripMenuItem";
-            _LoadSettingsToolStripMenuItem.Size = new Size(208, 22);
+            _LoadSettingsToolStripMenuItem.Size = new Size(228, 22);
             _LoadSettingsToolStripMenuItem.Text = "Load Default Layout";
             _LoadSettingsToolStripMenuItem.Click += LoadSettingsToolStripMenuItem_Click;
             // 
             // _ToolStripSeparator12
             // 
             _ToolStripSeparator12.Name = "_ToolStripSeparator12";
-            _ToolStripSeparator12.Size = new Size(205, 6);
+            _ToolStripSeparator12.Size = new Size(225, 6);
             // 
             // _SaveSettingsToolStripMenuItem1
             // 
             _SaveSettingsToolStripMenuItem1.Name = "_SaveSettingsToolStripMenuItem1";
-            _SaveSettingsToolStripMenuItem1.Size = new Size(208, 22);
+            _SaveSettingsToolStripMenuItem1.Size = new Size(228, 22);
             _SaveSettingsToolStripMenuItem1.Text = "Save Layout As...";
             _SaveSettingsToolStripMenuItem1.Click += SaveSettingsToolStripMenuItem1_Click;
             // 
             // _SaveSettingsToolStripMenuItem
             // 
             _SaveSettingsToolStripMenuItem.Name = "_SaveSettingsToolStripMenuItem";
-            _SaveSettingsToolStripMenuItem.Size = new Size(208, 22);
+            _SaveSettingsToolStripMenuItem.Size = new Size(228, 22);
             _SaveSettingsToolStripMenuItem.Text = "Save Default Layout";
             _SaveSettingsToolStripMenuItem.Click += SaveSettingsToolStripMenuItem_Click;
             // 
             // _SaveSizedDefaultLayoutToolStripMenuItem
             // 
             _SaveSizedDefaultLayoutToolStripMenuItem.Name = "_SaveSizedDefaultLayoutToolStripMenuItem";
-            _SaveSizedDefaultLayoutToolStripMenuItem.Size = new Size(208, 22);
+            _SaveSizedDefaultLayoutToolStripMenuItem.Size = new Size(228, 22);
             _SaveSizedDefaultLayoutToolStripMenuItem.Text = "Save Sized Default Layout";
             _SaveSizedDefaultLayoutToolStripMenuItem.Click += SaveSizedDefaultLayoutToolStripMenuItem_Click;
             // 
             // _ToolStripSeparator5
             // 
             _ToolStripSeparator5.Name = "_ToolStripSeparator5";
-            _ToolStripSeparator5.Size = new Size(205, 6);
+            _ToolStripSeparator5.Size = new Size(225, 6);
             // 
             // _BasicToolStripMenuItem
             // 
             _BasicToolStripMenuItem.Name = "_BasicToolStripMenuItem";
-            _BasicToolStripMenuItem.Size = new Size(208, 22);
+            _BasicToolStripMenuItem.Size = new Size(228, 22);
             _BasicToolStripMenuItem.Text = "Basic Layout";
             _BasicToolStripMenuItem.Click += BasicToolStripMenuItem_Click;
             // 
             // _ToolStripSeparator4
             // 
             _ToolStripSeparator4.Name = "_ToolStripSeparator4";
-            _ToolStripSeparator4.Size = new Size(205, 6);
+            _ToolStripSeparator4.Size = new Size(225, 6);
             // 
             // _IconBarToolStripMenuItem
             // 
@@ -659,7 +660,7 @@ namespace GenieClient
             _IconBarToolStripMenuItem.CheckState = CheckState.Checked;
             _IconBarToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _DockTopToolStripMenuItem, _DockBottomToolStripMenuItem });
             _IconBarToolStripMenuItem.Name = "_IconBarToolStripMenuItem";
-            _IconBarToolStripMenuItem.Size = new Size(208, 22);
+            _IconBarToolStripMenuItem.Size = new Size(228, 22);
             _IconBarToolStripMenuItem.Text = "Icon Bar";
             _IconBarToolStripMenuItem.Click += IconBarToolStripMenuItem_Click;
             // 
@@ -686,7 +687,7 @@ namespace GenieClient
             _ShowScriptBarToolStripMenuItem.CheckState = CheckState.Checked;
             _ShowScriptBarToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _DockTopToolStripMenuItem1, _DockBottomToolStripMenuItem1 });
             _ShowScriptBarToolStripMenuItem.Name = "_ShowScriptBarToolStripMenuItem";
-            _ShowScriptBarToolStripMenuItem.Size = new Size(208, 22);
+            _ShowScriptBarToolStripMenuItem.Size = new Size(228, 22);
             _ShowScriptBarToolStripMenuItem.Text = "Script Bar";
             _ShowScriptBarToolStripMenuItem.Click += ShowScriptBarToolStripMenuItem_Click;
             // 
@@ -713,7 +714,7 @@ namespace GenieClient
             _HealthBarToolStripMenuItem.CheckState = CheckState.Checked;
             _HealthBarToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _DockTopToolStripMenuItem2, _DockBottomToolStripMenuItem2 });
             _HealthBarToolStripMenuItem.Name = "_HealthBarToolStripMenuItem";
-            _HealthBarToolStripMenuItem.Size = new Size(208, 22);
+            _HealthBarToolStripMenuItem.Size = new Size(228, 22);
             _HealthBarToolStripMenuItem.Text = "Health Bar";
             _HealthBarToolStripMenuItem.Click += HealthBarToolStripMenuItem_Click;
             // 
@@ -739,7 +740,7 @@ namespace GenieClient
             _MagicPanelsToolStripMenuItem.CheckOnClick = true;
             _MagicPanelsToolStripMenuItem.CheckState = CheckState.Checked;
             _MagicPanelsToolStripMenuItem.Name = "_MagicPanelsToolStripMenuItem";
-            _MagicPanelsToolStripMenuItem.Size = new Size(208, 22);
+            _MagicPanelsToolStripMenuItem.Size = new Size(228, 22);
             _MagicPanelsToolStripMenuItem.Text = "Magic Panels";
             _MagicPanelsToolStripMenuItem.Click += MagicPanelsToolStripMenuItem_Click;
             // 
@@ -749,9 +750,17 @@ namespace GenieClient
             _StatusBarToolStripMenuItem.CheckOnClick = true;
             _StatusBarToolStripMenuItem.CheckState = CheckState.Checked;
             _StatusBarToolStripMenuItem.Name = "_StatusBarToolStripMenuItem";
-            _StatusBarToolStripMenuItem.Size = new Size(208, 22);
+            _StatusBarToolStripMenuItem.Size = new Size(228, 22);
             _StatusBarToolStripMenuItem.Text = "Status Bar";
             _StatusBarToolStripMenuItem.Click += StatusBarToolStripMenuItem_Click;
+            // 
+            // alignInputToGameWindowToolStripMenuItem
+            // 
+            alignInputToGameWindowToolStripMenuItem.CheckOnClick = true;
+            alignInputToGameWindowToolStripMenuItem.Name = "alignInputToGameWindowToolStripMenuItem";
+            alignInputToGameWindowToolStripMenuItem.Size = new Size(228, 22);
+            alignInputToGameWindowToolStripMenuItem.Text = "Align Input to Game Window";
+            alignInputToGameWindowToolStripMenuItem.CheckedChanged += alignInputToGameWindowToolStripMenuItem_CheckedChanged;
             // 
             // _WindowToolStripMenuItem
             // 
@@ -1335,7 +1344,7 @@ namespace GenieClient
             // 
             // _PanelInput
             // 
-            _PanelInput.BackColor = Color.White;
+            _PanelInput.BackColor = Color.Transparent;
             _PanelInput.Controls.Add(_TextBoxInput);
             _PanelInput.Dock = DockStyle.Bottom;
             _PanelInput.Location = new Point(0, 701);
@@ -4163,6 +4172,7 @@ namespace GenieClient
         private ToolStripMenuItem _ImagesEnabledToolStripMenuItem;
         private ToolStripMenuItem UpdateImagesToolStripMenuItem;
         private ToolStripMenuItem artToolStripMenuItem;
+        private ToolStripMenuItem alignInputToGameWindowToolStripMenuItem;
 
         internal ToolStripMenuItem SaveSizedDefaultLayoutToolStripMenuItem
         {
