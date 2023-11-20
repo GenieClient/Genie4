@@ -165,7 +165,6 @@ namespace GenieClient
 
         public async void UpdateOnStartup()
         {
-            AddImage("10004", Genie.Game.WindowTarget.Main, "", 0, 0);
             await Task.Run(async () =>
             {
                 if (m_oGlobals.Config.CheckForUpdates || m_oGlobals.Config.AutoUpdate)
@@ -4902,9 +4901,10 @@ namespace GenieClient
 
         private void AddImage(string sImageFileName, string sTargetWindow, int width, int height)
         {
-            AddImage(sImageFileName, Genie.Game.WindowTarget.Portrait, sTargetWindow, width, height);
+            Genie.Game.WindowTarget targetWindow = string.IsNullOrEmpty(sTargetWindow) ? Genie.Game.WindowTarget.Portrait : Genie.Game.WindowTarget.Other;
+            AddImage(sImageFileName, targetWindow, sTargetWindow, width, height);
         }
-        private void AddImage(string sImageFileName, [Optional, DefaultParameterValue(Genie.Game.WindowTarget.Main)] Genie.Game.WindowTarget oTargetWindow, string sTargetWindow, int width, int height)
+        private void AddImage(string sImageFileName, Genie.Game.WindowTarget oTargetWindow, string sTargetWindow, int width, int height)
         {
             if (IsDisposed)
             {

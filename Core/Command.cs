@@ -393,7 +393,8 @@ namespace GenieClient.Genie
                                             int height = 0;
                                             foreach(string arg in oArgs)
                                             {
-                                                if (arg.StartsWith(">")) sOutputWindow = oGlobals.ParseGlobalVars(oArgs[1].ToString().Substring(1));
+                                                if (arg.StartsWith("#")) continue;
+                                                else if (arg.StartsWith(">")) sOutputWindow = arg.Substring(1);
                                                 else if ((arg.Length > 2 && arg.StartsWith("w:") || (arg.Length > 6 && arg.StartsWith("width:"))))
                                                 {
                                                     if (!int.TryParse(arg.Split(":")[1], out width)) EchoText($"Invalid Width Specified: {arg}");
