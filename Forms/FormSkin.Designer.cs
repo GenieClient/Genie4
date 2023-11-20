@@ -77,7 +77,7 @@ namespace GenieClient
             this._RichTextBoxOutput.Name = "_RichTextBoxOutput";
             this._RichTextBoxOutput.NameListOnly = false;
             this._RichTextBoxOutput.ReadOnly = true;
-            this._RichTextBoxOutput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this._RichTextBoxOutput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this._RichTextBoxOutput.ShowSelectionMargin = true;
             this._RichTextBoxOutput.Size = new System.Drawing.Size(500, 385);
             this._RichTextBoxOutput.TabIndex = 7;

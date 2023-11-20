@@ -3722,7 +3722,6 @@ namespace GenieClient
             oForm.Top = iTop;
             oForm.Left = iLeft;
             oForm.Tag = bIsVisible;
-            oForm.RichTextBoxOutput.ScrollBars = RichTextBoxScrollBars.Both;
             if (sColorName.Length > 0)
             {
                 if (sColorName.Contains(",") == true && sColorName.EndsWith(",") == false)

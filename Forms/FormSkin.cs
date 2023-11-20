@@ -362,6 +362,7 @@ namespace GenieClient
             Region = oRegion;
             Invalidate();
             RichTextBoxOutput.Invalidate();
+
         }
 
         private void GetMinMaxInfoHelper(Message m)
@@ -560,7 +561,6 @@ namespace GenieClient
                 oDragType = DragType.Move;
                 Win32Utility.SendMessage(Handle, Win32Utility.WM_NCLBUTTONDOWN, Win32Utility.HTCAPTION, 0);
             }
-
             // Update layout 
             Invalidate();
             RichTextBoxOutput.Invalidate();
@@ -611,6 +611,7 @@ namespace GenieClient
         private void FormSkin_Resize(object sender, EventArgs e)
         {
             SetRegion();
+            RichTextBoxOutput.SetScrollBars();
         }
 
         // Private Sub Resized()
