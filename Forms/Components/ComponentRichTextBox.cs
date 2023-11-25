@@ -521,7 +521,7 @@ namespace GenieClient
         {
             foreach (Match oMatch in Highlight.HighlightRegex.Matches(m_oRichTextBuffer.Text))
             {
-                for (i=1; i < oMatch.Groups.Count; i++)
+                for (int i = 1; i < oMatch.Groups.Count; i++)
                 {
                     m_oRichTextBuffer.SelectionStart = oMatch.Groups[i].Index;
                     m_oRichTextBuffer.SelectionLength = oMatch.Groups[i].Length;
