@@ -91,6 +91,7 @@ namespace GenieClient
             this._RichTextBoxOutput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._RichTextBoxOutput_KeyPress);
             this._RichTextBoxOutput.MouseUp += new System.Windows.Forms.MouseEventHandler(this._RichTextBoxOutput_MouseUp);
             this._RichTextBoxOutput.MouseDown += new System.Windows.Forms.MouseEventHandler(_RichTextBoxOutput_MouseDown);
+            this._RichTextBoxOutput.VScroll += new System.EventHandler(_RichTextBoxOutput_VScroll);
 
             // 
             // _ContextMenuStripOutput

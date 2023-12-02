@@ -342,7 +342,7 @@ namespace GenieClient
             {
                 InvokeEndUpdate();
             }
-            SetScrollBars();
+            
         }
         public void AddImage(Image image)
         {
@@ -766,7 +766,7 @@ namespace GenieClient
                 SelectionLength = iRemoveSize;
                 SelectedText = " ";
             }
-
+            
             SelectionStart = int.MaxValue;
             SelectionLength = 0;
 
@@ -881,7 +881,6 @@ namespace GenieClient
         }
 
         public event EventKeyDownEventHandler EventKeyDown;
-
         public delegate void EventKeyDownEventHandler(KeyEventArgs e);
 
         public void ComponentRichTextBox_KeyDown(object sender, KeyEventArgs e)
@@ -997,12 +996,32 @@ namespace GenieClient
             Marshal.FreeCoTaskMem(lpar);
         }
 
+        public void AddScrollBar()
+        {
+            ScrollBars = RichTextBoxScrollBars.ForcedVertical;
+            Invalidate();
+        }
+
+        private void VScrollEvent(object sender, EventArgs e)
+        {
+            AddScrollBar();
+            VScroll -= VScrollEvent;
+        }
+
         public void SetScrollBars()
         {
-            SizeF fontSize = TextRenderer.MeasureText("A", this.Font, this.Size, TextFormatFlags.WordBreak);
-            float displayableLines = this.Height / fontSize.Height;
 
-            ScrollBars = Lines.Length > displayableLines ? RichTextBoxScrollBars.Vertical : RichTextBoxScrollBars.None;
+            if (Win32Utility.GetFirstLineVisible((IntPtr)Handle.ToInt32()) > 0)
+            {
+                ScrollBars = RichTextBoxScrollBars.ForcedVertical;
+            }
+            else
+            {
+                ScrollBars = RichTextBoxScrollBars.None;
+                VScroll += VScrollEvent;
+            }
+            
         }
+
     }
 }
