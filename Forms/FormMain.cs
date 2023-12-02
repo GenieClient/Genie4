@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Accessibility;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
@@ -5042,6 +5043,8 @@ namespace GenieClient
             if (!Information.IsNothing(oTargetWindow))
             {
                 oTargetWindow.RichTextBoxOutput.AddText(sText, oColor, oBgColor, bNoCache, bMono);
+                
+                oTargetWindow.RichTextBoxOutput.Invalidate();
             }
         }
 
@@ -6945,6 +6948,11 @@ namespace GenieClient
                         alignInputToGameWindowToolStripMenuItem.Checked = m_oGlobals.Config.SizeInputToGame;
                         break;
                     }
+                case Genie.Config.ConfigFieldUpdated.AlwaysOnTop:
+                    {
+                        alwaysOnTopToolStripMenuItem.Checked = m_oGlobals.Config.AlwaysOnTop;
+                        break;
+                    }
             }
         }
 
@@ -8584,11 +8592,6 @@ namespace GenieClient
             }
         }
 
-        private void alignInputToGameWindowToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void ResizeInputBar(object sender, EventArgs e)
         {
             _TextBoxInput.Left = m_oOutputMain.Left;
@@ -8609,6 +8612,12 @@ namespace GenieClient
                 _TextBoxInput.Dock = DockStyle.Fill;
                 m_oOutputMain.RichTextBoxOutput.Resize -= ResizeInputBar;
             }
+        }
+
+        private void alwaysOnTopToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            m_oGlobals.Config.AlwaysOnTop = alwaysOnTopToolStripMenuItem.Checked;
+            this.TopMost = m_oGlobals.Config.AlwaysOnTop;
         }
     }
 }

@@ -54,6 +54,7 @@ namespace GenieClient.Genie
         public bool bWebLinkSafety = true;
 
         public bool SizeInputToGame { get; set; } = false;
+        public bool AlwaysOnTop { get; set; } = false;
         public bool PromptBreak { get; set; } = true;
         public bool PromptForce { get; set; } = true;
         public bool Condensed { get; set; } = false;
@@ -362,7 +363,8 @@ namespace GenieClient.Genie
             AutoUpdateLamp,
             ClassicConnect,
             ImagesEnabled,
-            SizeInputToGame
+            SizeInputToGame,
+            AlwaysOnTop
         }
 
         public Font MonoFont
@@ -408,6 +410,7 @@ namespace GenieClient.Genie
                 }
 
                 var oStreamWriter = new StreamWriter(sFileName, false);
+                oStreamWriter.WriteLine("#config {alwaysontop} {" + AlwaysOnTop + "}");
                 oStreamWriter.WriteLine("#config {classicconnect} {" + bClassicConnect + "}");
                 oStreamWriter.WriteLine("#config {scriptchar} {" + ScriptChar + "}");
                 oStreamWriter.WriteLine("#config {separatorchar} {" + cSeparatorChar + "}");
@@ -1300,6 +1303,29 @@ namespace GenieClient.Genie
                                         }
                                 }
                                 ConfigChanged?.Invoke(ConfigFieldUpdated.SizeInputToGame);
+                                break;
+                            }
+
+                        case "alwaysontop":
+                            {
+                                var switchExpr13 = sValue.ToLower();
+                                switch (switchExpr13)
+                                {
+                                    case "on":
+                                    case "true":
+                                    case "1":
+                                        {
+                                            AlwaysOnTop = true;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            AlwaysOnTop = false;
+                                            break;
+                                        }
+                                }
+                                ConfigChanged?.Invoke(ConfigFieldUpdated.AlwaysOnTop);
                                 break;
                             }
 

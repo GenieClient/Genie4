@@ -2887,6 +2887,7 @@ namespace GenieClient.Genie
         private void ListSettings()
         {
             EchoText(System.Environment.NewLine + "Active settings: " + System.Environment.NewLine);
+            EchoText("alwaysontop=" + oGlobals.Config.AlwaysOnTop.ToString() + System.Environment.NewLine);
             EchoText("abortdupescript=" + oGlobals.Config.bAbortDupeScript.ToString() + System.Environment.NewLine);
             EchoText("autolog=" + oGlobals.Config.bAutoLog.ToString() + System.Environment.NewLine);
             EchoText("automapper=" + oGlobals.Config.bAutoMapper.ToString() + System.Environment.NewLine);

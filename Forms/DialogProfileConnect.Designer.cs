@@ -168,6 +168,7 @@ namespace GenieClient
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Profile Connect";
+            TopMost = true;
             VisibleChanged += DialogProfileConnect_VisibleChanged;
             _GroupBox1.ResumeLayout(false);
             _TableLayoutPanel1.ResumeLayout(false);

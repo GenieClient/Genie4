@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using GenieClient.Genie;
 using Microsoft.VisualBasic;
 
 namespace GenieClient

@@ -173,6 +173,7 @@ namespace GenieClient
             _PanelInput = new Panel();
             _TextBoxInput = new ComponentTextBox();
             _OpenFileDialogProfile = new OpenFileDialog();
+            alwaysOnTopToolStripMenuItem = new ToolStripMenuItem();
             _StatusStripMain.SuspendLayout();
             _MenuStripMain.SuspendLayout();
             _PanelBars.SuspendLayout();
@@ -591,7 +592,7 @@ namespace GenieClient
             // 
             // _LayoutToolStripMenuItem
             // 
-            _LayoutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _LoadSettingsOpenToolStripMenuItem, _LoadSettingsToolStripMenuItem, _ToolStripSeparator12, _SaveSettingsToolStripMenuItem1, _SaveSettingsToolStripMenuItem, _SaveSizedDefaultLayoutToolStripMenuItem, _ToolStripSeparator5, _BasicToolStripMenuItem, _ToolStripSeparator4, _IconBarToolStripMenuItem, _ShowScriptBarToolStripMenuItem, _HealthBarToolStripMenuItem, _MagicPanelsToolStripMenuItem, _StatusBarToolStripMenuItem, alignInputToGameWindowToolStripMenuItem });
+            _LayoutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _LoadSettingsOpenToolStripMenuItem, _LoadSettingsToolStripMenuItem, _ToolStripSeparator12, _SaveSettingsToolStripMenuItem1, _SaveSettingsToolStripMenuItem, _SaveSizedDefaultLayoutToolStripMenuItem, _ToolStripSeparator5, _BasicToolStripMenuItem, _ToolStripSeparator4, _IconBarToolStripMenuItem, _ShowScriptBarToolStripMenuItem, _HealthBarToolStripMenuItem, _MagicPanelsToolStripMenuItem, _StatusBarToolStripMenuItem, alignInputToGameWindowToolStripMenuItem, alwaysOnTopToolStripMenuItem });
             _LayoutToolStripMenuItem.Name = "_LayoutToolStripMenuItem";
             _LayoutToolStripMenuItem.Size = new Size(55, 20);
             _LayoutToolStripMenuItem.Text = "&Layout";
@@ -871,13 +872,13 @@ namespace GenieClient
             // _NoPluginsLoadedToolStripMenuItem
             // 
             _NoPluginsLoadedToolStripMenuItem.Name = "_NoPluginsLoadedToolStripMenuItem";
-            _NoPluginsLoadedToolStripMenuItem.Size = new Size(171, 22);
+            _NoPluginsLoadedToolStripMenuItem.Size = new Size(180, 22);
             _NoPluginsLoadedToolStripMenuItem.Text = "No plugins loaded";
             // 
             // updatePluginsToolStripMenuItem
             // 
             updatePluginsToolStripMenuItem.Name = "updatePluginsToolStripMenuItem";
-            updatePluginsToolStripMenuItem.Size = new Size(171, 22);
+            updatePluginsToolStripMenuItem.Size = new Size(180, 22);
             updatePluginsToolStripMenuItem.Text = "&Update Plugins";
             updatePluginsToolStripMenuItem.Click += updatePluginsToolStripMenuItem_Click;
             // 
@@ -1383,6 +1384,14 @@ namespace GenieClient
             _OpenFileDialogProfile.Filter = "Genie Profile|*.xml|All files|*.*";
             _OpenFileDialogProfile.RestoreDirectory = true;
             _OpenFileDialogProfile.Title = "Open Profile";
+            // 
+            // alwaysOnTopToolStripMenuItem
+            // 
+            alwaysOnTopToolStripMenuItem.CheckOnClick = true;
+            alwaysOnTopToolStripMenuItem.Name = "alwaysOnTopToolStripMenuItem";
+            alwaysOnTopToolStripMenuItem.Size = new Size(228, 22);
+            alwaysOnTopToolStripMenuItem.Text = "Always On Top";
+            alwaysOnTopToolStripMenuItem.CheckedChanged += alwaysOnTopToolStripMenuItem_CheckedChanged;
             // 
             // FormMain
             // 
@@ -4173,6 +4182,7 @@ namespace GenieClient
         private ToolStripMenuItem UpdateImagesToolStripMenuItem;
         private ToolStripMenuItem artToolStripMenuItem;
         private ToolStripMenuItem alignInputToGameWindowToolStripMenuItem;
+        private ToolStripMenuItem alwaysOnTopToolStripMenuItem;
 
         internal ToolStripMenuItem SaveSizedDefaultLayoutToolStripMenuItem
         {
