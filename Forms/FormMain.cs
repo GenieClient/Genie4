@@ -4187,7 +4187,7 @@ namespace GenieClient
                             {
                                 if (sScriptList.Length > 0)
                                     sScriptList += "|";
-                                sScriptList += oScript.FileName;
+                                sScriptList += Path.GetFileNameWithoutExtension(oScript.FileName);
                                 Debug.Print(oScript.FileName);
                             }
                         }
