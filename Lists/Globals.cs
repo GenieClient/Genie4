@@ -838,10 +838,10 @@ namespace GenieClient.Genie
                 Add("stamina", "100", VariableType.Reserved);
                 
                 Add("charactername", "", VariableType.Reserved);
+                Add("account", "", VariableType.Reserved);
                 Add("gamename", "", VariableType.Reserved);
                 Add("gamehost", "eaccess.play.net", VariableType.Reserved);
                 Add("gameport", "7910", VariableType.Reserved);
-
 
                 Add("kneeling", "0", VariableType.Reserved);
                 Add("prone", "0", VariableType.Reserved);
@@ -886,6 +886,7 @@ namespace GenieClient.Genie
                 Add("zonename", "0", VariableType.Reserved);
                 Add("scriptlist", "none", VariableType.Reserved);
                 Add("repeatregex", @"^\.\.\.wait|^Sorry\, you may only type ahead|^You are still stunned|^You can\'t do that while|^You don\'t seem to be able", VariableType.Reserved);
+
             }
         }
 

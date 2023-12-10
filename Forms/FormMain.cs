@@ -7909,6 +7909,7 @@ namespace GenieClient
                 m_oGlobals.Config.sConfigDirProfile = m_oGlobals.Config.ConfigDir + @"\Profiles\" + sProfile;
                 LoadProfileSettings();
                 string sAccount = m_oProfile.GetValue("Genie/Profile", "Account", string.Empty);
+                
                 string sPassword = m_oProfile.GetValue("Genie/Profile", "Password", string.Empty);
                 if (sPassword.Length > 0)
                 {
@@ -7943,6 +7944,10 @@ namespace GenieClient
                             SavePasswordToolStripMenuItem.Checked = My.MyProject.Forms.DialogConnect.CheckBoxSavePassword.Checked;
                         }
                     }
+                }
+                else
+                {
+                    m_oGlobals.VariableList["account"] = sAccount;
                 }
 
                 m_sCurrentProfileFile = FileName;
@@ -8104,6 +8109,7 @@ namespace GenieClient
             }
 
             m_oProfile.SetValue("Genie/Profile", "Account", m_oGame.AccountName);
+            m_oGlobals.VariableList["account"] = m_oGame.AccountName;
             if (SavePasswordToolStripMenuItem.Checked == true)
             {
                 string argsPassword = "G3" + m_oGame.AccountName.ToUpper();

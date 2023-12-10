@@ -398,6 +398,7 @@ namespace GenieClient.Genie
 
             m_oGlobals.VariableList["charactername"] = sCharacter;
             m_oGlobals.VariableList["game"] = sGame;
+            m_oGlobals.VariableList["account"] = sAccountName;
 
             DoConnect("eaccess.play.net", 7910);
         }
@@ -412,6 +413,7 @@ namespace GenieClient.Genie
             m_oLastUserActivity = DateTime.Now;
             m_oGlobals.VariableList["charactername"] = Character;
             m_oGlobals.VariableList["game"] = Game;
+            m_oGlobals.VariableList["account"] = "Unknown";
 
             m_sEncryptionKey = string.Empty;
             m_oConnectState = ConnectStates.ConnectingGameServer;
@@ -3190,10 +3192,10 @@ namespace GenieClient.Genie
                         m_oReconnectTime = default;
                         m_oSocket.Send(m_sConnectKey + Constants.vbLf + "FE:WRAYTH /VERSION:1.0.1.22 /P:WIN_UNKNOWN /XML" + Constants.vbLf);    // TEMP
                         string argkey = "connected";
-                        string argvalue = m_oSocket.IsConnected ? "1" : "0";
-                        m_oGlobals.VariableList.Add(argkey, argvalue, Globals.Variables.VariableType.Reserved);
-                        string argsVariable = "$connected";
-                        VariableChanged(argsVariable);
+                        m_oGlobals.VariableList["connected"] = m_oSocket.IsConnected ? "1" : "0";
+                        VariableChanged("$connected");
+                        m_oGlobals.VariableList["account"] = AccountName;
+                        VariableChanged("$account");
                         m_bStatusPromptEnabled = false;                        
                         break;
                     }
