@@ -2498,7 +2498,6 @@ namespace GenieClient
                         m_oTraceList.Add("passing label " + sLabelName, GetFileName(oLine.iFileId), oLine.iFileRow);
                         int argiLevel6 = 1;
                         string argsText6 = "passing label: " + sLabelName;
-                        iRowIndex = HotReload(sLabelName, oLine);
                         PrintDebug(argiLevel6, argsText6, oLine.iFileId, oLine.iFileRow);
                         if (m_oCurrentLine.BlockCount > 1)
                         {
