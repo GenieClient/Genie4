@@ -455,6 +455,7 @@ namespace GenieClient
                     _m_oCommand.EventScriptAbort -= Command_ScriptAbort;
                     _m_oCommand.EventScriptPause -= Command_ScriptPause;
                     _m_oCommand.EventScriptPauseOrResume -= Command_ScriptPauseOrResume;
+                    _m_oCommand.EventScriptReload -= Command_ScriptReload;
                     _m_oCommand.EventScriptResume -= Command_ScriptResume;
                     _m_oCommand.EventScriptDebug -= Command_ScriptDebugLevel;
                     _m_oCommand.EventStatusBar -= Command_StatusBar;
@@ -506,6 +507,7 @@ namespace GenieClient
                     _m_oCommand.EventScriptAbort += Command_ScriptAbort;
                     _m_oCommand.EventScriptPause += Command_ScriptPause;
                     _m_oCommand.EventScriptPauseOrResume += Command_ScriptPauseOrResume;
+                    _m_oCommand.EventScriptReload += Command_ScriptReload;
                     _m_oCommand.EventScriptResume += Command_ScriptResume;
                     _m_oCommand.EventScriptDebug += Command_ScriptDebugLevel;
                     _m_oCommand.EventStatusBar += Command_StatusBar;
@@ -5472,7 +5474,7 @@ namespace GenieClient
                 /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
             }
         }
-
+        
         private void Command_ScriptPause(string sScript)
         {
             try
@@ -5601,7 +5603,55 @@ namespace GenieClient
                 /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
             }
         }
+        private void Command_ScriptReload(string sScript)
+        {
+            try
+            {
+                sScript += " ";
+                if (sScript.ToLower().StartsWith("all "))
+                {
+                    sScript = string.Empty;
+                }
+                else
+                {
+                    sScript = sScript.Trim();
+                }
 
+                // Scripts
+                if (m_oScriptList.AcquireReaderLock())
+                {
+                    Debug.Print("ScriptList Lock aquired by ScriptReload()");
+                    try
+                    {
+                        foreach (Script oScript in m_oScriptList)
+                        {
+                            if (oScript.ScriptName.Length > 0)
+                            {
+                                if (sScript.Length == 0 | (oScript.ScriptName ?? "") == (sScript ?? ""))
+                                {
+                                    oScript.ReloadScript();
+                                }
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        m_oScriptList.ReleaseReaderLock();
+                        Debug.Print("ScriptList Lock released by ScriptReload()");
+                    }
+                }
+                else
+                {
+                    ShowDialogException("ScriptReload", "Unable to acquire reader lock.");
+                }
+            }
+            /* TODO ERROR: Skipped IfDirectiveTrivia */
+            catch (Exception ex)
+            {
+                HandleGenieException("ScriptPause", ex.Message, ex.ToString());
+                /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
+            }
+        }
         private void Command_ScriptResume(string sScript)
         {
             try

@@ -6,6 +6,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
 using Jint;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -686,6 +687,7 @@ namespace GenieClient
         private int m_iDebugLevel = 0; // High number = More messages
         private bool m_bBufferEnd = true;
         private JintEngine m_JintEngine = null;
+        private bool _pendingReload = false;
 
         // Allocating and unallocating is slow.
         private Match m_oRegMatch;
@@ -1047,6 +1049,33 @@ namespace GenieClient
             }
         }
 
+        public void ReloadScript()
+        {
+            if (Monitor.TryEnter(m_oThreadLock, m_iDefaultTimeout))
+            {
+                try
+                {
+                    if (_pendingReload)
+                    {
+                        PrintText($"[Script [{m_sFileName}] is already pending reload at the next label.");
+                    }
+                    else
+                    {
+                        _pendingReload = true;
+                        PrintText($"[Script [{m_sFileName}] will be reloaded at the next label.");
+                    }
+                }
+                finally
+                {
+                    Monitor.Exit(m_oThreadLock);
+                }
+            }
+            else
+            {
+                // GenieError("Unable to aquire script thread lock.")
+            }
+        }
+    
         public void PauseScript()
         {
             if (Monitor.TryEnter(m_oThreadLock, m_iDefaultTimeout))
@@ -1904,6 +1933,41 @@ namespace GenieClient
             PrintText(TraceList);
         }
 
+        private int HotReload(string label, ScriptLine line)
+        {
+            if (!_pendingReload) return (int)m_oScriptLabels[label];
+            m_CurrentState = ScriptState.pausing;
+            ClassVariableList localVars = new ClassVariableList();
+            foreach (DictionaryEntry kvp in m_oLocalVarList) localVars.Add(kvp.Key, kvp.Value);
+            ClassActionList actions = new ClassActionList();
+            foreach (DictionaryEntry kvp in m_oActions) actions.Add(kvp.Key, kvp.Value);
+            Genie.Script.Trace trace = m_oTraceList;
+            CurrentLine oldCurrentLine = m_oCurrentLine;
+            if (LoadFile(FileName))
+            {
+                m_oLocalVarList = localVars;
+                m_oActions = actions;
+                trace = m_oTraceList;
+                if (m_oScriptLabels.Contains(label))
+                {
+                    oldCurrentLine.LineValue = (int)m_oScriptLabels[label];
+                    m_oCurrentLine = oldCurrentLine;
+                    _pendingReload = false;
+                    return (int)m_oScriptLabels[label];
+                }
+                PrintError("Hot Reload Failed at: " + label, line.iFileId, line.iFileRow);
+                AbortOnScriptError();
+                return default;
+            }
+            else
+            {
+                    PrintError("Hot Reload Failed at: " + label, line.iFileId, line.iFileRow);
+                    AbortOnScriptError();
+                    return default;
+            }
+            
+        }
+
         public bool LoadFile(string sFile, bool bClear = true)
         {
             if (Monitor.TryEnter(m_oThreadLock, m_iDefaultTimeout))
@@ -1921,7 +1985,7 @@ namespace GenieClient
                         m_sFileName = sFile;
                         if (m_sFileName.ToLower().EndsWith($".{m_oGlobals.Config.ScriptExtension}"))
                         {
-                            m_oLocalVarList["scriptname"] = m_sFileName.Substring(0, m_sFileName.Length - 4);
+                            m_oLocalVarList["scriptname"] = m_sFileName.Substring(0, m_sFileName.Length - 1 - m_oGlobals.Config.ScriptExtension.Length);
                         }
                         else
                         {
@@ -2344,9 +2408,14 @@ namespace GenieClient
                         string argsText1 = "goto " + Utility.GetArgumentString(ParsedLine);
                         PrintDebug(argiLevel1, argsText1, oLine.iFileId, oLine.iFileRow);
                         string strLabel = Utility.GetArgumentString(ParsedLine).ToLower();
+                        if (_pendingReload)
+                        {
+                            iRowIndex = HotReload(strLabel, oLine);
+
+                        }
                         if (m_oScriptLabels.ContainsKey(strLabel))
                         {
-                            iRowIndex = Conversions.ToInteger(m_oScriptLabels[strLabel]);
+                            iRowIndex = HotReload(strLabel, oLine);
                             m_oLocalVarList.Add("lastlabel", strLabel);
                             TriggerVariableChanged("%lastlabel");
                             m_oCurrentLine.ClearBlocks(); // Remove all {} depth on goto
@@ -2386,8 +2455,7 @@ namespace GenieClient
                                 AbortOnScriptError();
                                 return default;
                             }
-
-                            iRowIndex = Conversions.ToInteger(m_oScriptLabels[strLabel]);
+                            iRowIndex = HotReload(strLabel, oLine);
                         }
                         else
                         {
@@ -2430,6 +2498,7 @@ namespace GenieClient
                         m_oTraceList.Add("passing label " + sLabelName, GetFileName(oLine.iFileId), oLine.iFileRow);
                         int argiLevel6 = 1;
                         string argsText6 = "passing label: " + sLabelName;
+                        iRowIndex = HotReload(sLabelName, oLine);
                         PrintDebug(argiLevel6, argsText6, oLine.iFileId, oLine.iFileRow);
                         if (m_oCurrentLine.BlockCount > 1)
                         {

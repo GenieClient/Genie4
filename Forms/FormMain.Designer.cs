@@ -107,6 +107,7 @@ namespace GenieClient
             _MagicPanelsToolStripMenuItem = new ToolStripMenuItem();
             _StatusBarToolStripMenuItem = new ToolStripMenuItem();
             alignInputToGameWindowToolStripMenuItem = new ToolStripMenuItem();
+            alwaysOnTopToolStripMenuItem = new ToolStripMenuItem();
             _WindowToolStripMenuItem = new ToolStripMenuItem();
             _ScriptToolStripMenuItem = new ToolStripMenuItem();
             _ScriptExplorerToolStripMenuItem = new ToolStripMenuItem();
@@ -173,7 +174,6 @@ namespace GenieClient
             _PanelInput = new Panel();
             _TextBoxInput = new ComponentTextBox();
             _OpenFileDialogProfile = new OpenFileDialog();
-            alwaysOnTopToolStripMenuItem = new ToolStripMenuItem();
             _StatusStripMain.SuspendLayout();
             _MenuStripMain.SuspendLayout();
             _PanelBars.SuspendLayout();
@@ -763,6 +763,14 @@ namespace GenieClient
             alignInputToGameWindowToolStripMenuItem.Text = "Align Input to Game Window";
             alignInputToGameWindowToolStripMenuItem.CheckedChanged += alignInputToGameWindowToolStripMenuItem_CheckedChanged;
             // 
+            // alwaysOnTopToolStripMenuItem
+            // 
+            alwaysOnTopToolStripMenuItem.CheckOnClick = true;
+            alwaysOnTopToolStripMenuItem.Name = "alwaysOnTopToolStripMenuItem";
+            alwaysOnTopToolStripMenuItem.Size = new Size(228, 22);
+            alwaysOnTopToolStripMenuItem.Text = "Always On Top";
+            alwaysOnTopToolStripMenuItem.CheckedChanged += alwaysOnTopToolStripMenuItem_CheckedChanged;
+            // 
             // _WindowToolStripMenuItem
             // 
             _WindowToolStripMenuItem.Name = "_WindowToolStripMenuItem";
@@ -872,13 +880,13 @@ namespace GenieClient
             // _NoPluginsLoadedToolStripMenuItem
             // 
             _NoPluginsLoadedToolStripMenuItem.Name = "_NoPluginsLoadedToolStripMenuItem";
-            _NoPluginsLoadedToolStripMenuItem.Size = new Size(180, 22);
+            _NoPluginsLoadedToolStripMenuItem.Size = new Size(171, 22);
             _NoPluginsLoadedToolStripMenuItem.Text = "No plugins loaded";
             // 
             // updatePluginsToolStripMenuItem
             // 
             updatePluginsToolStripMenuItem.Name = "updatePluginsToolStripMenuItem";
-            updatePluginsToolStripMenuItem.Size = new Size(180, 22);
+            updatePluginsToolStripMenuItem.Size = new Size(171, 22);
             updatePluginsToolStripMenuItem.Text = "&Update Plugins";
             updatePluginsToolStripMenuItem.Click += updatePluginsToolStripMenuItem_Click;
             // 
@@ -1384,14 +1392,6 @@ namespace GenieClient
             _OpenFileDialogProfile.Filter = "Genie Profile|*.xml|All files|*.*";
             _OpenFileDialogProfile.RestoreDirectory = true;
             _OpenFileDialogProfile.Title = "Open Profile";
-            // 
-            // alwaysOnTopToolStripMenuItem
-            // 
-            alwaysOnTopToolStripMenuItem.CheckOnClick = true;
-            alwaysOnTopToolStripMenuItem.Name = "alwaysOnTopToolStripMenuItem";
-            alwaysOnTopToolStripMenuItem.Size = new Size(228, 22);
-            alwaysOnTopToolStripMenuItem.Text = "Always On Top";
-            alwaysOnTopToolStripMenuItem.CheckedChanged += alwaysOnTopToolStripMenuItem_CheckedChanged;
             // 
             // FormMain
             // 

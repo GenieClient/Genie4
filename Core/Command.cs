@@ -95,6 +95,10 @@ namespace GenieClient.Genie
 
         public delegate void EventScriptPauseOrResumeEventHandler(string sScript);
 
+        public event EventScriptResumeEventHandler EventScriptReload;
+
+        public delegate void EventScriptReloadEventHandler(string sScript);
+
         public event EventScriptResumeEventHandler EventScriptResume;
 
         public delegate void EventScriptResumeEventHandler(string sScript);
@@ -2179,6 +2183,12 @@ namespace GenieClient.Genie
                                                     case "pauseorresume":
                                                         {
                                                             EventScriptPauseOrResume?.Invoke(oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 2)));
+                                                            break;
+                                                        }
+
+                                                    case "reload":
+                                                        {
+                                                            EventScriptReload?.Invoke(oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 2)));
                                                             break;
                                                         }
 
