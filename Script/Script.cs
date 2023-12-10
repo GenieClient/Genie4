@@ -1937,27 +1937,34 @@ namespace GenieClient
         {
             if (!_pendingReload) return (int)m_oScriptLabels[label];
             m_CurrentState = ScriptState.pausing;
+            //save what we want to preserve
             ClassVariableList localVars = new ClassVariableList();
-            foreach (DictionaryEntry kvp in m_oLocalVarList) localVars.Add(kvp.Key, kvp.Value);
             ClassActionList actions = new ClassActionList();
+            ClassMatchList matchList = new ClassMatchList();
+            foreach (DictionaryEntry kvp in m_oLocalVarList) localVars.Add(kvp.Key, kvp.Value);
             foreach (DictionaryEntry kvp in m_oActions) actions.Add(kvp.Key, kvp.Value);
+            foreach (Match match in MatchList) matchList.Add(match);
             Genie.Script.Trace trace = m_oTraceList;
+            DateTime timerStart = m_oTimerStart;
+            double timerLastTime = m_dTimerLastTime;
+            bool waitForEvent = m_bWaitForEvent;
             CurrentLine oldCurrentLine = m_oCurrentLine;
-            if (LoadFile(FileName))
+
+            if (LoadFile(FileName) && m_oScriptLabels.Contains(label))
             {
+                //now load what we've saved over the initial values
                 m_oLocalVarList = localVars;
                 m_oActions = actions;
-                trace = m_oTraceList;
-                if (m_oScriptLabels.Contains(label))
-                {
-                    oldCurrentLine.LineValue = (int)m_oScriptLabels[label];
-                    m_oCurrentLine = oldCurrentLine;
-                    _pendingReload = false;
-                    return (int)m_oScriptLabels[label];
-                }
-                PrintError("Hot Reload Failed at: " + label, line.iFileId, line.iFileRow);
-                AbortOnScriptError();
-                return default;
+                MatchList = matchList;
+                m_oTraceList = trace;
+                m_oTimerStart = timerStart;
+                m_dTimerLastTime = timerLastTime;
+                m_bWaitForEvent = waitForEvent;
+                
+                oldCurrentLine.LineValue = (int)m_oScriptLabels[label];
+                m_oCurrentLine = oldCurrentLine;
+                _pendingReload = false;
+                return (int)m_oScriptLabels[label];
             }
             else
             {
