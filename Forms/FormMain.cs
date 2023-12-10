@@ -181,8 +181,10 @@ namespace GenieClient
                         if (m_oGlobals.Config.AutoUpdate)
                         {
                             AddText("AutoUpdate is Enabled. Exiting and launching Updater.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                            Updater.RunUpdate(m_oGlobals.Config.AutoUpdateLamp);
-                            System.Windows.Forms.Application.Exit();
+                            if (await Updater.RunUpdate(m_oGlobals.Config.AutoUpdateLamp))
+                            {
+                                System.Windows.Forms.Application.Exit();
+                            }
                         }
                     }
                 }
@@ -5043,8 +5045,7 @@ namespace GenieClient
             if (!Information.IsNothing(oTargetWindow))
             {
                 oTargetWindow.RichTextBoxOutput.AddText(sText, oColor, oBgColor, bNoCache, bMono);
-                
-                oTargetWindow.RichTextBoxOutput.Invalidate();
+                oTargetWindow.RichTextBoxOutput.TryInvalidate();
             }
         }
 
@@ -8368,7 +8369,7 @@ namespace GenieClient
 
         private async void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 if (Updater.ClientIsCurrent)
                 {
@@ -8386,23 +8387,28 @@ namespace GenieClient
                             if (response == DialogResult.Yes)
                             {
                                 AddText("Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                                Updater.RunUpdate(m_oGlobals.Config.AutoUpdateLamp);
-                                m_oGame.Disconnect(true);
-                                System.Windows.Forms.Application.Exit();
+                                if(await Updater.RunUpdate(m_oGlobals.Config.AutoUpdateLamp))
+                                {
+                                    m_oGame.Disconnect(true);
+                                    System.Windows.Forms.Application.Exit();
+                                }
                             }
                         }
                         else
                         {
                             AddText("Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                            Updater.RunUpdate(m_oGlobals.Config.AutoUpdateLamp);
-                            System.Windows.Forms.Application.Exit();
+                            if(await Updater.RunUpdate(m_oGlobals.Config.AutoUpdateLamp))
+                            {
+                                System.Windows.Forms.Application.Exit();
+                            }
+                            
                         }
                     }
                 }
             });
         }
 
-        private void forceUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void forceUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (m_oGame.IsConnectedToGame)
             {
@@ -8410,20 +8416,24 @@ namespace GenieClient
                 if (response == DialogResult.Yes)
                 {
                     AddText("Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    Updater.ForceUpdate();
-                    m_oGame.Disconnect(true);
-                    System.Windows.Forms.Application.Exit();
+                    if(await Updater.ForceUpdate())
+                    {
+                        m_oGame.Disconnect(true);
+                        System.Windows.Forms.Application.Exit();
+                    }
                 }
             }
             else
             {
                 AddText("Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                Updater.ForceUpdate();
-                System.Windows.Forms.Application.Exit();
+                if(await Updater.ForceUpdate())
+                {
+                    System.Windows.Forms.Application.Exit();
+                }
             }
         }
 
-        private void loadTestClientToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void loadTestClientToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult response = MessageBox.Show("This will force your client to the Test Release Version. Test is not considered stable and may introduce bugs. If Autoupdate is enabled it will be disabled. Checking for Updates will restore you to the Latest build. Are you sure?", "Load Test Client?", MessageBoxButtons.YesNoCancel);
             if (response == DialogResult.Yes)
@@ -8437,9 +8447,11 @@ namespace GenieClient
                         m_oGlobals.Config.AutoUpdate = false;
                         m_oGlobals.Config.Save(m_oGlobals.Config.ConfigDir + @"\settings.cfg");
                         AddText("Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                        Updater.UpdateToTest(m_oGlobals.Config.AutoUpdateLamp);
-                        m_oGame.Disconnect(true);
-                        System.Windows.Forms.Application.Exit();
+                        if(await Updater.UpdateToTest(m_oGlobals.Config.AutoUpdateLamp))
+                        {
+                            m_oGame.Disconnect(true);
+                            System.Windows.Forms.Application.Exit();
+                        }
                     }
                 }
                 else
@@ -8448,8 +8460,10 @@ namespace GenieClient
                     m_oGlobals.Config.AutoUpdate = false;
                     m_oGlobals.Config.Save(m_oGlobals.Config.ConfigDir + @"\settings.cfg");
                     AddText("Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    Updater.UpdateToTest(m_oGlobals.Config.AutoUpdateLamp);
-                    System.Windows.Forms.Application.Exit();
+                    if(await Updater.UpdateToTest(m_oGlobals.Config.AutoUpdateLamp))
+                    {
+                        System.Windows.Forms.Application.Exit();
+                    }
                 }
             }
         }

@@ -53,13 +53,13 @@ namespace GenieClient
             }
         }
 
-        public static async Task<bool> ExecuteProcess(string sFileName, string sArguments, bool closeProcess = true)
+        public static async Task<bool> ExecuteProcess(string sFileName, string sArguments, bool closeProcess, bool showWindow)
         {
             if (!File.Exists(sFileName)) return false;
             var myProcess = new Process();
             var myProcessStartInfo = new ProcessStartInfo(sFileName);
-            myProcessStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            myProcessStartInfo.CreateNoWindow = true;
+            myProcessStartInfo.WindowStyle = showWindow ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Normal;
+            myProcessStartInfo.CreateNoWindow = !showWindow;
             myProcessStartInfo.UseShellExecute = true;
             myProcessStartInfo.RedirectStandardOutput = false;
             myProcessStartInfo.Arguments = sArguments;
@@ -69,7 +69,14 @@ namespace GenieClient
             {
                 await Task.Delay(10);
             } while (FileIsLocked(monitor));
-            myProcess.Start();
+            try
+            {
+                myProcess.Start();
+            }catch(Exception ex)
+            {
+                GenieError.Error("Utility", $"Error Starting {sFileName}", ex.Message);
+                return false;
+            }
             // var myStreamReader = myProcess.StandardOutput;
             // Read the standard output of the spawned process.
             if (closeProcess)
