@@ -100,16 +100,16 @@ namespace GenieClient
             }
         }
 
-        public static async Task RunUpdate(bool autoUpdateLamp)
+        public static async Task<bool> RunUpdate(bool autoUpdateLamp)
         {
             await UpdateUpdater(autoUpdateLamp);
-            await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a", false, true);
+            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a", false, true);
         }
 
-        public static async Task UpdateToTest(bool autoUpdateLamp)
+        public static async Task<bool> UpdateToTest(bool autoUpdateLamp)
         {
             await UpdateUpdater(autoUpdateLamp);
-            await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a --t", false, true);
+            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a --t", false, true);
         }
         public static async Task<bool> UpdateMaps(string mapdir, bool autoUpdateLamp)
         {
@@ -133,10 +133,10 @@ namespace GenieClient
             await UpdateUpdater(autoUpdateLamp);
             return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --scripts|\"{artdir}\"|\"{artrepo}\"", true, false);
         }
-        public static async Task ForceUpdate()
+        public static async Task<bool> ForceUpdate()
         {
             await UpdateUpdater(true);
-            await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a --f", false, true);
+            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a --f", false, true);
         }
         public class Release
         {
