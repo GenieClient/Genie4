@@ -342,7 +342,6 @@ namespace GenieClient
             {
                 InvokeEndUpdate();
             }
-            
         }
         public void AddImage(Image image)
         {
@@ -372,6 +371,15 @@ namespace GenieClient
             this.ReadOnly = true;
             Clipboard.Clear();
             Clipboard.SetDataObject(obj);
+        }
+        public void TryInvalidate()
+        {
+            if (m_oRichTextBuffer.TextLength == 0)
+            {
+                Rectangle rc = new Rectangle(this.Location.X, this.Location.Y, this.Margin.Left * 3, this.Height);
+                Invalidate(rc, true);
+                
+            }
         }
         public void AddText(string sText, Color oColor, Color oBgColor, bool bNoCache = true, bool bMono = false)
         {
@@ -999,13 +1007,13 @@ namespace GenieClient
         public void AddScrollBar()
         {
             ScrollBars = RichTextBoxScrollBars.ForcedVertical;
-            Invalidate();
         }
 
         private void VScrollEvent(object sender, EventArgs e)
         {
             AddScrollBar();
             VScroll -= VScrollEvent;
+
         }
 
         public void SetScrollBars()
@@ -1020,8 +1028,6 @@ namespace GenieClient
                 ScrollBars = RichTextBoxScrollBars.None;
                 VScroll += VScrollEvent;
             }
-            
         }
-
     }
 }
