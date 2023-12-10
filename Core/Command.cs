@@ -422,7 +422,7 @@ namespace GenieClient.Genie
                                             {
                                                 EchoText("Starting Lich Server\n");
                                                 string lichLaunch = $"/C {oGlobals.Config.RubyPath} {oGlobals.Config.LichPath} {oGlobals.Config.LichArguments}";
-                                                Utility.ExecuteProcess(oGlobals.Config.CmdPath, lichLaunch, false);
+                                                await Utility.ExecuteProcess(oGlobals.Config.CmdPath, lichLaunch, false, false);
                                                 int count = 0;
                                                 while (count < oGlobals.Config.LichStartPause)
                                                 {
