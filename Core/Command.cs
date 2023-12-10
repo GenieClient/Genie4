@@ -2166,31 +2166,31 @@ namespace GenieClient.Genie
                                                 {
                                                     case "abort":
                                                         {
-                                                            EventScriptAbort?.Invoke(Utility.ArrayToString(oArgs, 2));
+                                                            EventScriptAbort?.Invoke(oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 2)));
                                                             break;
                                                         }
 
                                                     case "pause":
                                                         {
-                                                            EventScriptPause?.Invoke(Utility.ArrayToString(oArgs, 2));
+                                                            EventScriptPause?.Invoke(oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 2)));
                                                             break;
                                                         }
 
                                                     case "pauseorresume":
                                                         {
-                                                            EventScriptPauseOrResume?.Invoke(Utility.ArrayToString(oArgs, 2));
+                                                            EventScriptPauseOrResume?.Invoke(oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 2)));
                                                             break;
                                                         }
 
                                                     case "resume":
                                                         {
-                                                            EventScriptResume?.Invoke(Utility.ArrayToString(oArgs, 2));
+                                                            EventScriptResume?.Invoke(oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 2)));
                                                             break;
                                                         }
 
                                                     case "trace":
                                                         {
-                                                            EventScriptTrace?.Invoke(Utility.ArrayToString(oArgs, 2));
+                                                            EventScriptTrace?.Invoke(oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 2)));
                                                             break;
                                                         }
 
@@ -2199,7 +2199,7 @@ namespace GenieClient.Genie
                                                         {
                                                             if (oArgs.Count > 3)
                                                             {
-                                                                EventScriptVariables?.Invoke(oArgs[2].ToString(), oArgs[3].ToString());
+                                                                EventScriptVariables?.Invoke(oArgs[2].ToString(), oGlobals.ParseGlobalVars(oArgs[3].ToString()));
                                                             }
                                                             else if (oArgs.Count > 2)
                                                             {
@@ -2218,7 +2218,7 @@ namespace GenieClient.Genie
                                                         {
                                                             if (oArgs.Count > 2)
                                                             {
-                                                                EventScriptDebug?.Invoke(Conversions.ToInteger(Utility.StringToDouble(oArgs[2].ToString())), Utility.ArrayToString(oArgs, 3));
+                                                                EventScriptDebug?.Invoke(Conversions.ToInteger(Utility.StringToDouble(oArgs[2].ToString())), oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 3)));
                                                             }
 
                                                             break;
@@ -2232,7 +2232,7 @@ namespace GenieClient.Genie
 
                                                     default:
                                                         {
-                                                            EventListScripts?.Invoke(Utility.ArrayToString(oArgs, 2));
+                                                            EventListScripts?.Invoke(oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 2)));
                                                             break;
                                                         }
                                                 }
