@@ -41,7 +41,7 @@ namespace GenieClient
                 public bool bLastRowWasEvaluation = false;
             }
 
-            private Genie.Collections.ArrayList oLineList = new Genie.Collections.ArrayList();
+            public Genie.Collections.ArrayList oLineList = new Genie.Collections.ArrayList();
 
             public enum BlockState
             {
@@ -1941,6 +1941,7 @@ namespace GenieClient
             ClassVariableList localVars = new ClassVariableList();
             ClassActionList actions = new ClassActionList();
             ClassMatchList matchList = new ClassMatchList();
+            
             foreach (DictionaryEntry kvp in m_oLocalVarList) localVars.Add(kvp.Key, kvp.Value);
             foreach (DictionaryEntry kvp in m_oActions) actions.Add(kvp.Key, kvp.Value);
             foreach (Match match in MatchList) matchList.Add(match);
