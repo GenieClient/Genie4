@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Accessibility;
+using GenieClient.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
@@ -35,6 +36,9 @@ namespace GenieClient
             // This call is required by the Windows Form Designer.
             InitializeComponent();
             RecolorUI();
+            MapperSettings = new FormMapperSettings(ref _m_oGlobals) { MdiParent = this };
+            MapperSettings.EventVariableChanged += ClassCommand_EventVariableChanged;
+            MapperSettings.EventClassChange += Command_EventClassChange;
 
             // Add any initialization after the InitializeComponent() call.
             LocalDirectory.CheckUserDirectory();
@@ -534,6 +538,8 @@ namespace GenieClient
                 }
             }
         }
+
+        private FormMapperSettings MapperSettings { get; set; }
 
         private Mapper.AutoMapper _m_oAutoMapper;
 
@@ -1436,7 +1442,11 @@ namespace GenieClient
             try
             {
                 if (m_oGlobals.Config.bAutoMapper)
+                { 
                     m_oAutoMapper.VariableChanged(sVar);
+                    MapperSettings.VariableChanged(sVar);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -5474,7 +5484,7 @@ namespace GenieClient
                 /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
             }
         }
-        
+
         private void Command_ScriptPause(string sScript)
         {
             try
@@ -7042,6 +7052,9 @@ namespace GenieClient
 
                         // Gags
                         m_oGlobals.GagList.ToggleClass(key, bState);
+
+                        //Automapper
+                        MapperSettings.ToggleClass(key, bState);
                     }
                 }
             }
@@ -7959,7 +7972,7 @@ namespace GenieClient
                 m_oGlobals.Config.sConfigDirProfile = m_oGlobals.Config.ConfigDir + @"\Profiles\" + sProfile;
                 LoadProfileSettings();
                 string sAccount = m_oProfile.GetValue("Genie/Profile", "Account", string.Empty);
-                
+
                 string sPassword = m_oProfile.GetValue("Genie/Profile", "Password", string.Empty);
                 if (sPassword.Length > 0)
                 {
@@ -8443,7 +8456,7 @@ namespace GenieClient
                             if (response == DialogResult.Yes)
                             {
                                 AddText("Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                                if(await Updater.RunUpdate(m_oGlobals.Config.AutoUpdateLamp))
+                                if (await Updater.RunUpdate(m_oGlobals.Config.AutoUpdateLamp))
                                 {
                                     m_oGame.Disconnect(true);
                                     System.Windows.Forms.Application.Exit();
@@ -8453,11 +8466,11 @@ namespace GenieClient
                         else
                         {
                             AddText("Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                            if(await Updater.RunUpdate(m_oGlobals.Config.AutoUpdateLamp))
+                            if (await Updater.RunUpdate(m_oGlobals.Config.AutoUpdateLamp))
                             {
                                 System.Windows.Forms.Application.Exit();
                             }
-                            
+
                         }
                     }
                 }
@@ -8472,7 +8485,7 @@ namespace GenieClient
                 if (response == DialogResult.Yes)
                 {
                     AddText("Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    if(await Updater.ForceUpdate())
+                    if (await Updater.ForceUpdate())
                     {
                         m_oGame.Disconnect(true);
                         System.Windows.Forms.Application.Exit();
@@ -8482,7 +8495,7 @@ namespace GenieClient
             else
             {
                 AddText("Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                if(await Updater.ForceUpdate())
+                if (await Updater.ForceUpdate())
                 {
                     System.Windows.Forms.Application.Exit();
                 }
@@ -8503,7 +8516,7 @@ namespace GenieClient
                         m_oGlobals.Config.AutoUpdate = false;
                         m_oGlobals.Config.Save(m_oGlobals.Config.ConfigDir + @"\settings.cfg");
                         AddText("Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                        if(await Updater.UpdateToTest(m_oGlobals.Config.AutoUpdateLamp))
+                        if (await Updater.UpdateToTest(m_oGlobals.Config.AutoUpdateLamp))
                         {
                             m_oGame.Disconnect(true);
                             System.Windows.Forms.Application.Exit();
@@ -8516,7 +8529,7 @@ namespace GenieClient
                     m_oGlobals.Config.AutoUpdate = false;
                     m_oGlobals.Config.Save(m_oGlobals.Config.ConfigDir + @"\settings.cfg");
                     AddText("Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    if(await Updater.UpdateToTest(m_oGlobals.Config.AutoUpdateLamp))
+                    if (await Updater.UpdateToTest(m_oGlobals.Config.AutoUpdateLamp))
                     {
                         System.Windows.Forms.Application.Exit();
                     }
@@ -8688,6 +8701,12 @@ namespace GenieClient
         {
             m_oGlobals.Config.AlwaysOnTop = alwaysOnTopToolStripMenuItem.Checked;
             this.TopMost = m_oGlobals.Config.AlwaysOnTop;
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MapperSettings.Visible = true;
+            MapperSettings.BringToFront();
         }
     }
 }

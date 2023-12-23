@@ -123,6 +123,7 @@ namespace GenieClient
             _AutoMapperToolStripMenuItem = new ToolStripMenuItem();
             _ShowWindowToolStripMenuItem = new ToolStripMenuItem();
             updateMapsToolStripMenuItem = new ToolStripMenuItem();
+            settingsToolStripMenuItem = new ToolStripMenuItem();
             _PluginsToolStripMenuItem = new ToolStripMenuItem();
             _NoPluginsLoadedToolStripMenuItem = new ToolStripMenuItem();
             updatePluginsToolStripMenuItem = new ToolStripMenuItem();
@@ -851,7 +852,7 @@ namespace GenieClient
             // 
             // _AutoMapperToolStripMenuItem
             // 
-            _AutoMapperToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _ShowWindowToolStripMenuItem, updateMapsToolStripMenuItem });
+            _AutoMapperToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _ShowWindowToolStripMenuItem, updateMapsToolStripMenuItem, settingsToolStripMenuItem });
             _AutoMapperToolStripMenuItem.Name = "_AutoMapperToolStripMenuItem";
             _AutoMapperToolStripMenuItem.Size = new Size(86, 20);
             _AutoMapperToolStripMenuItem.Text = "&AutoMapper";
@@ -869,6 +870,13 @@ namespace GenieClient
             updateMapsToolStripMenuItem.Size = new Size(150, 22);
             updateMapsToolStripMenuItem.Text = "&Update Maps";
             updateMapsToolStripMenuItem.Click += updateMapsToolStripMenuItem_Click;
+            // 
+            // settingsToolStripMenuItem
+            // 
+            settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            settingsToolStripMenuItem.Size = new Size(150, 22);
+            settingsToolStripMenuItem.Text = "Settings";
+            settingsToolStripMenuItem.Click += settingsToolStripMenuItem_Click;
             // 
             // _PluginsToolStripMenuItem
             // 
@@ -4183,6 +4191,7 @@ namespace GenieClient
         private ToolStripMenuItem artToolStripMenuItem;
         private ToolStripMenuItem alignInputToGameWindowToolStripMenuItem;
         private ToolStripMenuItem alwaysOnTopToolStripMenuItem;
+        private ToolStripMenuItem settingsToolStripMenuItem;
 
         internal ToolStripMenuItem SaveSizedDefaultLayoutToolStripMenuItem
         {
