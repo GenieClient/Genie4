@@ -7052,9 +7052,6 @@ namespace GenieClient
 
                         // Gags
                         m_oGlobals.GagList.ToggleClass(key, bState);
-
-                        //Automapper
-                        MapperSettings.ToggleClass(key, bState);
                     }
                 }
             }

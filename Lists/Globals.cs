@@ -528,6 +528,7 @@ namespace GenieClient.Genie
                 Add("ui.window", "Black, #EEEEEE");
                 Add("ui.status", "Black, #EEEEEE");
                 Add("ui.textbox", "Black, White");
+                Add("ui.button", "Black, Silver");
                 Add("whispers", "Magenta");
             }
 
