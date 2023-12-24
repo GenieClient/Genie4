@@ -556,6 +556,10 @@ namespace GenieClient
                 foreach (string line in m_oRichTextBuffer.Text.Split('\n'))
                 {
                     int timestampOffset = 0;
+                    if (line.Length >= highlight.EndIndex + timestampOffset)
+                    {
+                        string sample = line.Substring(highlight.StartIndex + timestampOffset, highlight.Length);
+                    }
                     if (m_bTimeStamp)
                     {
                         timestampOffset += GetTimeString(line).Length;
