@@ -787,8 +787,9 @@ namespace GenieClient.Genie
                 }
                 else if (!string.IsNullOrWhiteSpace(sBoldBuffer))
                 {
+                    if (sBoldBuffer.EndsWith("\r\n")) sBoldBuffer = sBoldBuffer.Substring(0, sBoldBuffer.Length - "\r\n".Length);
                     sBoldBuffer = ParseSubstitutions(sBoldBuffer);
-                    m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(sBoldBuffer.Trim(), "creatures", iBoldIndex)); //trim because excessive whitespace seems to be breaking this
+                    m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(sBoldBuffer, "creatures", iBoldIndex)); //trim because excessive whitespace seems to be breaking this
                     sBoldBuffer = string.Empty;
                 }
 

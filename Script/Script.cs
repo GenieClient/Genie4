@@ -21,7 +21,7 @@ namespace GenieClient
         //private static readonly Regex PARAMETER_REGEX = new Regex(@"\{.*?\}"); //for script commands to receive data as {string of text} {parameters as a string}
 
         /* TODO ERROR: Skipped RegionDirectiveTrivia */
-        private class ScriptLine
+        public class ScriptLine
         {
             public int iFileId = 0;
             public int iFileRow = 0;
@@ -29,17 +29,18 @@ namespace GenieClient
             public ScriptFunctions oFunction = ScriptFunctions.empty;
         }
 
+        public class Line
+        {
+            public int iIndex = 0;
+            public bool bSkipBlock = false;
+            public int iBlockDepth = 0;
+            public Genie.Collections.ArrayList oBlockList = new Genie.Collections.ArrayList();
+            public Genie.Collections.ArrayList oArgList = new Genie.Collections.ArrayList();
+            public bool bLastRowWasEvaluation = false;
+        }
         private class CurrentLine
         {
-            private class Line
-            {
-                public int iIndex = 0;
-                public bool bSkipBlock = false;
-                public int iBlockDepth = 0;
-                public Genie.Collections.ArrayList oBlockList = new Genie.Collections.ArrayList();
-                public Genie.Collections.ArrayList oArgList = new Genie.Collections.ArrayList();
-                public bool bLastRowWasEvaluation = false;
-            }
+
 
             public Genie.Collections.ArrayList oLineList = new Genie.Collections.ArrayList();
 
@@ -551,7 +552,7 @@ namespace GenieClient
         }
         /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
         /* TODO ERROR: Skipped RegionDirectiveTrivia */
-        private enum ScriptFunctions
+        public enum ScriptFunctions
         {
             action,
             blockend,
@@ -979,7 +980,7 @@ namespace GenieClient
         {
             m_oGlobals = cl;
             ScriptID = Guid.NewGuid().ToString();
-            
+
             ScriptInternalLabels = new Dictionary<string, Func<bool>>();
             LoadInternalLabels();
         }
@@ -1075,7 +1076,7 @@ namespace GenieClient
                 // GenieError("Unable to aquire script thread lock.")
             }
         }
-    
+
         public void PauseScript()
         {
             if (Monitor.TryEnter(m_oThreadLock, m_iDefaultTimeout))
@@ -1651,7 +1652,7 @@ namespace GenieClient
                             {
                                 ScriptInternalLabels[m_sWaitForMatchLabel]();
                             }
-                            else 
+                            else
                             {
                                 int argiFileId4 = 0;
                                 int argiFileRow4 = 0;
@@ -1941,7 +1942,7 @@ namespace GenieClient
             ClassVariableList localVars = new ClassVariableList();
             ClassActionList actions = new ClassActionList();
             ClassMatchList matchList = new ClassMatchList();
-            
+
             foreach (DictionaryEntry kvp in m_oLocalVarList) localVars.Add(kvp.Key, kvp.Value);
             foreach (DictionaryEntry kvp in m_oActions) actions.Add(kvp.Key, kvp.Value);
             foreach (Match match in MatchList) matchList.Add(match);
@@ -1950,8 +1951,10 @@ namespace GenieClient
             double timerLastTime = m_dTimerLastTime;
             bool waitForEvent = m_bWaitForEvent;
             CurrentLine oldCurrentLine = m_oCurrentLine;
-
-            if (LoadFile(FileName) && m_oScriptLabels.Contains(label))
+            ScriptLine oldCurrentScriptLine = m_oScript.get_Item(oldCurrentLine.LineValue) as ScriptLine;
+            Dictionary<Line, ScriptLine> oldScriptLines = new Dictionary<Line, ScriptLine> ();
+            foreach (Line jump in oldCurrentLine.oLineList) if (!oldScriptLines.ContainsKey(jump)) oldScriptLines.Add(jump, m_oScript.get_Item(jump.iIndex) as ScriptLine);
+            if (ReloadFile(FileName) && m_oScriptLabels.Contains(label))
             {
                 //now load what we've saved over the initial values
                 m_oLocalVarList = localVars;
@@ -1961,19 +1964,38 @@ namespace GenieClient
                 m_oTimerStart = timerStart;
                 m_dTimerLastTime = timerLastTime;
                 m_bWaitForEvent = waitForEvent;
-                
-                oldCurrentLine.LineValue = (int)m_oScriptLabels[label];
+                foreach (Line jump in oldCurrentLine.oLineList)
+                {
+                    jump.iIndex = FindNewJumpLineIndex(oldScriptLines[jump]);
+                }
+                oldCurrentLine.LineValue = FindNewJumpLineIndex(oldCurrentScriptLine);
                 m_oCurrentLine = oldCurrentLine;
                 _pendingReload = false;
                 return (int)m_oScriptLabels[label];
             }
             else
             {
-                    PrintError("Hot Reload Failed at: " + label, line.iFileId, line.iFileRow);
-                    AbortOnScriptError();
-                    return default;
+                PrintError("Hot Reload Failed at: " + label, line.iFileId, line.iFileRow);
+                AbortOnScriptError();
+                return default;
             }
-            
+
+        }
+
+        public int FindNewJumpLineIndex(ScriptLine jump)
+        {
+            if (jump.iFileRow == 0) return 0;
+            int nearestMatch = 0;
+            for(int i = 0;i < m_oScript.Count;i++)
+            {
+                ScriptLine line = m_oScript[i] as ScriptLine;
+                if (jump.sRowContent == line.sRowContent && jump.iFileId == line.iFileId)
+                {
+                    if (nearestMatch == 0) nearestMatch = i;
+                    else if(Math.Abs(jump.iFileRow - line.iFileRow) < nearestMatch) nearestMatch = i;
+                }
+            }
+            return nearestMatch;
         }
 
         public bool LoadFile(string sFile, bool bClear = true)
@@ -2012,6 +2034,52 @@ namespace GenieClient
                 }
                 finally
                 {
+                    Monitor.Exit(m_oThreadLock);
+                }
+            }
+            else
+            {
+                // GenieError("Unable to aquire script thread lock.")
+            }
+
+            return default;
+        }
+
+        public bool ReloadFile(string sFile)
+        {
+            if (Monitor.TryEnter(m_oThreadLock, m_iDefaultTimeout))
+            {
+                try
+                {
+                    m_CurrentState = ScriptState.pausing;
+                    m_oScript.Clear();
+                    m_oScriptLabels.Clear();
+                    m_oScriptFiles.Clear();
+
+                    m_sFileName = "";
+                    if (AppendFile(sFile))
+                    {
+                        m_sFileName = sFile;
+                        if (m_sFileName.ToLower().EndsWith($".{m_oGlobals.Config.ScriptExtension}"))
+                        {
+                            m_oLocalVarList["scriptname"] = m_sFileName.Substring(0, m_sFileName.Length - 1 - m_oGlobals.Config.ScriptExtension.Length);
+                        }
+                        else
+                        {
+                            m_oLocalVarList["scriptname"] = m_sFileName;
+                        }
+
+                        PrintText("[Script Reloaded: " + m_sFileName + "]");
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                finally
+                {
+                    m_CurrentState = ScriptState.pausing;
                     Monitor.Exit(m_oThreadLock);
                 }
             }
