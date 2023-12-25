@@ -73,7 +73,6 @@ namespace GenieClient.Genie
         public int LichStartPause { get; set; } = 5;
         public string ConnectScript { get; set; } = string.Empty;
         public string ScriptExtension { get; set; } = "cmd";
-
         public string ScriptRepo { get; set; } = string.Empty;
         public string ArtRepo { get; set; } = string.Empty;
 
