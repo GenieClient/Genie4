@@ -884,6 +884,10 @@ namespace GenieClient.Mapper
                     EchoText("roomid = " + oNode.ID.ToString());
                 set_GlobalVariable("roomid", oNode.ID.ToString());
                 set_GlobalVariable("roomnote", oNode.Note.ToString());
+                string roomColor = oNode.Color.Name;
+                if (roomColor.ToUpper() == "TRANSPARENT") roomColor = m_oGlobals.PresetList["automapper.node"].BgColor.Name;
+                else if (roomColor.ToUpper().StartsWith("FF")) roomColor = $"#{roomColor.Substring(2)}";
+                set_GlobalVariable("roomcolor", roomColor);
                 if (oNode.ContainsArc(Direction.North))
                 {
                     set_GlobalVariable("northid", oNode.Arcs[Direction.North].DestinationID.ToString());
@@ -1190,8 +1194,8 @@ namespace GenieClient.Mapper
                             if (sArg.Length > 0)
                             {
                                 int iNodeID = 0;
-                                if (sArg.Length > 3)
-                                {
+                                if (sArg.Length > 5) //Temp fix raising to 5 to allow for all of crossing to fit on one map 
+                                {                    //A better solution is to check on arg count for cross map traveling
                                 // Other zone
                                 // - Find the destination map
                                 // - Find what path it needs to take trough the different zones

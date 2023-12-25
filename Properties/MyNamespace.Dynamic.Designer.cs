@@ -217,6 +217,121 @@ namespace GenieClient.My
             }
 
             [EditorBrowsable(EditorBrowsableState.Never)]
+            public DialogProfileNote m_DialogProfileNote;
+
+            public DialogProfileNote DialogProfileNote
+            {
+                [DebuggerHidden]
+                get
+                {
+                    m_DialogProfileNote = MyForms.Create__Instance__(m_DialogProfileNote);
+                    return m_DialogProfileNote;
+                }
+
+                [DebuggerHidden]
+                set
+                {
+                    if (value == m_DialogProfileNote)
+                        return;
+                    if (value is object)
+                        throw new ArgumentException("Property can only be set to Nothing");
+                    Dispose__Instance__(ref m_DialogProfileNote);
+                }
+            }
+
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            public DialogSetClasses m_DialogSetClasses;
+
+            public DialogSetClasses DialogSetClasses
+            {
+                [DebuggerHidden]
+                get
+                {
+                    m_DialogSetClasses = MyForms.Create__Instance__(m_DialogSetClasses);
+                    return m_DialogSetClasses;
+                }
+
+                [DebuggerHidden]
+                set
+                {
+                    if (value == m_DialogSetClasses)
+                        return;
+                    if (value is object)
+                        throw new ArgumentException("Property can only be set to Nothing");
+                    Dispose__Instance__(ref m_DialogSetClasses);
+                }
+            }
+
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            public DialogDragTarget m_DialogDragTarget;
+
+            public DialogDragTarget DialogDragTarget
+            {
+                [DebuggerHidden]
+                get
+                {
+                    m_DialogDragTarget = MyForms.Create__Instance__(m_DialogDragTarget);
+                    return m_DialogDragTarget;
+                }
+
+                [DebuggerHidden]
+                set
+                {
+                    if (value == m_DialogDragTarget)
+                        return;
+                    if (value is object)
+                        throw new ArgumentException("Property can only be set to Nothing");
+                    Dispose__Instance__(ref m_DialogDragTarget);
+                }
+            }
+
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            public DialogUserWalk m_DialogUserWalk;
+
+            public DialogUserWalk DialogUserWalk
+            {
+                [DebuggerHidden]
+                get
+                {
+                    m_DialogUserWalk = MyForms.Create__Instance__(m_DialogUserWalk);
+                    return m_DialogUserWalk;
+                }
+
+                [DebuggerHidden]
+                set
+                {
+                    if (value == m_DialogUserWalk)
+                        return;
+                    if (value is object)
+                        throw new ArgumentException("Property can only be set to Nothing");
+                    Dispose__Instance__(ref m_DialogUserWalk);
+                }
+            }
+
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            public DialogSetTypeahead m_DialogSetTypeahead;
+
+            public DialogSetTypeahead DialogSetTypeahead
+            {
+                [DebuggerHidden]
+                get
+                {
+                    m_DialogSetTypeahead = MyForms.Create__Instance__(m_DialogSetTypeahead);
+                    return m_DialogSetTypeahead;
+                }
+
+                [DebuggerHidden]
+                set
+                {
+                    if (value == m_DialogSetTypeahead)
+                        return;
+                    if (value is object)
+                        throw new ArgumentException("Property can only be set to Nothing");
+                    Dispose__Instance__(ref m_DialogSetTypeahead);
+                }
+            }
+
+            [EditorBrowsable(EditorBrowsableState.Never)]
             public FormConfig m_FormConfig;
 
             public FormConfig FormConfig

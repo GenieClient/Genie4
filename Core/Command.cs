@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -29,6 +30,10 @@ namespace GenieClient.Genie
         public event EventExitEventHandler EventExit;
 
         public delegate void EventExitEventHandler();
+
+        public event EventAddImageHandler EventAddImage;
+
+        public delegate void EventAddImageHandler(string filename, string window, int width, int height);
 
         public event EventEchoTextEventHandler EventEchoText;
 
@@ -89,6 +94,10 @@ namespace GenieClient.Genie
         public event EventScriptPauseOrResumeEventHandler EventScriptPauseOrResume;
 
         public delegate void EventScriptPauseOrResumeEventHandler(string sScript);
+
+        public event EventScriptResumeEventHandler EventScriptReload;
+
+        public delegate void EventScriptReloadEventHandler(string sScript);
 
         public event EventScriptResumeEventHandler EventScriptResume;
 
@@ -206,7 +215,7 @@ namespace GenieClient.Genie
             oGlobals = cl;
         }
 
-        public string ParseCommand(string sText, bool bSendToGame = false, bool bUserInput = false, string sOrigin = "", bool bParseQuickSend = true)
+        public async Task<string> ParseCommand(string sText, bool bSendToGame = false, bool bUserInput = false, string sOrigin = "", bool bParseQuickSend = true)
         {
             /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
             string sResult = string.Empty;
@@ -379,6 +388,31 @@ namespace GenieClient.Genie
                                             Connect(oArgs);
                                             break;
                                         }
+                                    case "img":
+                                    case "image":
+                                        {
+                                            string sOutputWindow = string.Empty;
+                                            string filename = string.Empty;
+                                            int width = 0;
+                                            int height = 0;
+                                            foreach(string arg in oArgs)
+                                            {
+                                                if (arg.StartsWith("#")) continue;
+                                                else if (arg.StartsWith(">")) sOutputWindow = arg.Substring(1);
+                                                else if ((arg.Length > 2 && arg.StartsWith("w:") || (arg.Length > 6 && arg.StartsWith("width:"))))
+                                                {
+                                                    if (!int.TryParse(arg.Split(":")[1], out width)) EchoText($"Invalid Width Specified: {arg}");
+                                                }
+                                                else if ((arg.Length > 2 && arg.StartsWith("h:") || (arg.Length > 7 && arg.StartsWith("height:"))))
+                                                {
+                                                    if (!int.TryParse(arg.Split(":")[1], out height)) EchoText($"Invalid Height Specified: {arg}");
+                                                }
+                                                else filename = arg;
+                                            }
+                                            if (string.IsNullOrEmpty(filename)) EchoText("No File Name was specified for the Image Command.");
+                                            else DisplayImage(filename, sOutputWindow, width, height);
+                                            break;   
+                                        }
 
                                     case "lc":
                                     case "lconnect":
@@ -392,11 +426,11 @@ namespace GenieClient.Genie
                                             {
                                                 EchoText("Starting Lich Server\n");
                                                 string lichLaunch = $"/C {oGlobals.Config.RubyPath} {oGlobals.Config.LichPath} {oGlobals.Config.LichArguments}";
-                                                Utility.ExecuteProcess(oGlobals.Config.CmdPath, lichLaunch, false);
+                                                await Utility.ExecuteProcess(oGlobals.Config.CmdPath, lichLaunch, false, false);
                                                 int count = 0;
                                                 while (count < oGlobals.Config.LichStartPause)
                                                 {
-                                                    Thread.Sleep(1000);
+                                                    await Task.Delay(1000);
                                                     count++;
                                                 }
                                                 Connect(oArgs, true);
@@ -1032,29 +1066,29 @@ namespace GenieClient.Genie
                                             {
                                                 if (oArgs[1].ToString().StartsWith("#"))
                                                 {
-                                                    oArgs[1] = ParseCommand(oGlobals.ParseGlobalVars(oArgs[1].ToString()));
+                                                    oArgs[1] = await ParseCommand(oGlobals.ParseGlobalVars(oArgs[1].ToString()));
                                                 }
 
                                                 if (EvalIf(oGlobals.ParseGlobalVars(oArgs[1])) == true)
                                                 {
                                                     if (oArgs[2].ToString().StartsWith("#"))
                                                     {
-                                                        sResult = ParseCommand(oGlobals.ParseGlobalVars(oArgs[2].ToString()));
+                                                        sResult = await ParseCommand(oGlobals.ParseGlobalVars(oArgs[2].ToString()));
                                                     }
                                                     else
                                                     {
-                                                        sResult = ParseCommand(Utility.ArrayToString(oArgs, 2));
+                                                        sResult = await ParseCommand(Utility.ArrayToString(oArgs, 2));
                                                     }
                                                 }
                                                 else if (oArgs.Count > 3)
                                                 {
                                                     if (oArgs[3].ToString().StartsWith("#"))
                                                     {
-                                                        sResult = ParseCommand(oGlobals.ParseGlobalVars(oArgs[3].ToString()));
+                                                        sResult = await ParseCommand(oGlobals.ParseGlobalVars(oArgs[3].ToString()));
                                                     }
                                                     else
                                                     {
-                                                        sResult = ParseCommand(Utility.ArrayToString(oArgs, 3));
+                                                        sResult = await ParseCommand(Utility.ArrayToString(oArgs, 3));
                                                     }
                                                 }
                                             }
@@ -1404,8 +1438,8 @@ namespace GenieClient.Genie
                                         {
                                             if (oArgs.Count > 2)
                                             {
-                                                string argsValue2 = ParseCommand(oGlobals.ParseGlobalVars(oArgs[1].ToString()));
-                                                string argsValue3 = ParseCommand(oGlobals.ParseGlobalVars(oArgs[2].ToString()));
+                                                string argsValue2 = await ParseCommand(oGlobals.ParseGlobalVars(oArgs[1].ToString()));
+                                                string argsValue3 = await ParseCommand(oGlobals.ParseGlobalVars(oArgs[2].ToString()));
                                                 sResult = Utility.RandomNumber(Utility.StringToInteger(argsValue2), Utility.StringToInteger(argsValue3)).ToString();
                                             }
                                             else
@@ -1748,8 +1782,11 @@ namespace GenieClient.Genie
                                                     default:
                                                         {
                                                             // Add
-                                                            string argsText7 = oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 1));
-                                                            if (oGlobals.GagList.Add(argsText7) == false)
+                                                            string argsText7 = oGlobals.ParseGlobalVars(oArgs[1].ToString());
+                                                            string className = oArgs.Count > 2 ? oArgs[2].ToString() : string.Empty;
+                                                            bool caseSensitive = oArgs.Count > 3 ? oArgs[3].ToString().ToUpper() == "TRUE" : false;
+
+                                                            if (oGlobals.GagList.Add(argsText7, caseSensitive, className) == false)
                                                             {
                                                                 EchoText("Invalid regexp in gag: " + oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 1)) + System.Environment.NewLine);
                                                             }
@@ -2133,31 +2170,37 @@ namespace GenieClient.Genie
                                                 {
                                                     case "abort":
                                                         {
-                                                            EventScriptAbort?.Invoke(Utility.ArrayToString(oArgs, 2));
+                                                            EventScriptAbort?.Invoke(oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 2)));
                                                             break;
                                                         }
 
                                                     case "pause":
                                                         {
-                                                            EventScriptPause?.Invoke(Utility.ArrayToString(oArgs, 2));
+                                                            EventScriptPause?.Invoke(oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 2)));
                                                             break;
                                                         }
 
                                                     case "pauseorresume":
                                                         {
-                                                            EventScriptPauseOrResume?.Invoke(Utility.ArrayToString(oArgs, 2));
+                                                            EventScriptPauseOrResume?.Invoke(oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 2)));
+                                                            break;
+                                                        }
+
+                                                    case "reload":
+                                                        {
+                                                            EventScriptReload?.Invoke(oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 2)));
                                                             break;
                                                         }
 
                                                     case "resume":
                                                         {
-                                                            EventScriptResume?.Invoke(Utility.ArrayToString(oArgs, 2));
+                                                            EventScriptResume?.Invoke(oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 2)));
                                                             break;
                                                         }
 
                                                     case "trace":
                                                         {
-                                                            EventScriptTrace?.Invoke(Utility.ArrayToString(oArgs, 2));
+                                                            EventScriptTrace?.Invoke(oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 2)));
                                                             break;
                                                         }
 
@@ -2166,7 +2209,7 @@ namespace GenieClient.Genie
                                                         {
                                                             if (oArgs.Count > 3)
                                                             {
-                                                                EventScriptVariables?.Invoke(oArgs[2].ToString(), oArgs[3].ToString());
+                                                                EventScriptVariables?.Invoke(oArgs[2].ToString(), oGlobals.ParseGlobalVars(oArgs[3].ToString()));
                                                             }
                                                             else if (oArgs.Count > 2)
                                                             {
@@ -2185,7 +2228,7 @@ namespace GenieClient.Genie
                                                         {
                                                             if (oArgs.Count > 2)
                                                             {
-                                                                EventScriptDebug?.Invoke(Conversions.ToInteger(Utility.StringToDouble(oArgs[2].ToString())), Utility.ArrayToString(oArgs, 3));
+                                                                EventScriptDebug?.Invoke(Conversions.ToInteger(Utility.StringToDouble(oArgs[2].ToString())), oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 3)));
                                                             }
 
                                                             break;
@@ -2199,7 +2242,7 @@ namespace GenieClient.Genie
 
                                                     default:
                                                         {
-                                                            EventListScripts?.Invoke(Utility.ArrayToString(oArgs, 2));
+                                                            EventListScripts?.Invoke(oGlobals.ParseGlobalVars(Utility.ArrayToString(oArgs, 2)));
                                                             break;
                                                         }
                                                 }
@@ -2625,6 +2668,11 @@ namespace GenieClient.Genie
             string s = m_oEval.EvalString(sText, oGlobals);
             return s;
         }
+        
+        private void DisplayImage(string filename, string window, int width, int height)
+        {
+            EventAddImage?.Invoke(filename, window, width, height);
+        }
 
         private void EchoText(string sText, string sWindow = "")
         {
@@ -2819,7 +2867,7 @@ namespace GenieClient.Genie
             {
                 if (sCommand.StartsWith(" .") == false)
                 {
-                    sResult = ParseCommand(sCommand.Substring(1), false, false, "", bParseQuickSend); // Remove first space
+                    sResult = ParseCommand(sCommand.Substring(1), false, false, "", bParseQuickSend).Result; // Remove first space
                 }
                 else
                 {
@@ -2849,15 +2897,18 @@ namespace GenieClient.Genie
         private void ListSettings()
         {
             EchoText(System.Environment.NewLine + "Active settings: " + System.Environment.NewLine);
+            EchoText("alwaysontop=" + oGlobals.Config.AlwaysOnTop.ToString() + System.Environment.NewLine);
             EchoText("abortdupescript=" + oGlobals.Config.bAbortDupeScript.ToString() + System.Environment.NewLine);
             EchoText("autolog=" + oGlobals.Config.bAutoLog.ToString() + System.Environment.NewLine);
             EchoText("automapper=" + oGlobals.Config.bAutoMapper.ToString() + System.Environment.NewLine);
             EchoText("commandchar=" + oGlobals.Config.cCommandChar.ToString() + System.Environment.NewLine);
             EchoText("connectstring=" + oGlobals.Config.sConnectString.ToString() + System.Environment.NewLine);
+            EchoText("classicconnect=" + oGlobals.Config.bClassicConnect.ToString() + System.Environment.NewLine);
             EchoText("editor=" + oGlobals.Config.sEditor + System.Environment.NewLine);
             EchoText("ignoreclosealert=" + oGlobals.Config.bIgnoreCloseAlert.ToString() + System.Environment.NewLine);
             EchoText("ignorescriptwarnings=" + oGlobals.Config.bIgnoreScriptWarnings.ToString() + System.Environment.NewLine);
             EchoText("keepinputtext=" + oGlobals.Config.bKeepInput.ToString() + System.Environment.NewLine);
+            EchoText("sizeinputtogame=" + oGlobals.Config.SizeInputToGame.ToString() + System.Environment.NewLine);
             EchoText("maxgosubdepth=" + oGlobals.Config.iMaxGoSubDepth + System.Environment.NewLine);
             EchoText("maxrowbuffer=" + oGlobals.Config.iBufferLineSize.ToString() + System.Environment.NewLine);
             EchoText("monstercountignorelist=" + oGlobals.Config.sIgnoreMonsterList + System.Environment.NewLine);
@@ -2871,6 +2922,8 @@ namespace GenieClient.Genie
             EchoText("reconnect=" + oGlobals.Config.bReconnect.ToString() + System.Environment.NewLine);
             EchoText("roundtimeoffset=" + oGlobals.Config.dRTOffset + System.Environment.NewLine);
             EchoText("showlinks=" + oGlobals.Config.bShowLinks.ToString() + System.Environment.NewLine);
+            EchoText("showimages=" + oGlobals.Config.bShowImages.ToString() + System.Environment.NewLine);
+            EchoText("artdir=" + oGlobals.Config.sArtDir + System.Environment.NewLine);
             EchoText("logdir=" + oGlobals.Config.sLogDir + System.Environment.NewLine);
             EchoText("configdir=" + oGlobals.Config.sConfigDir + System.Environment.NewLine);
             EchoText("plugindir=" + oGlobals.Config.sPluginDir + System.Environment.NewLine);
@@ -2890,7 +2943,9 @@ namespace GenieClient.Genie
             EchoText("connectscript=" + oGlobals.Config.ConnectScript.ToString() + System.Environment.NewLine);
             EchoText("checkforupdates=" + oGlobals.Config.CheckForUpdates.ToString() + System.Environment.NewLine);
             EchoText("autoupdate=" + oGlobals.Config.AutoUpdate.ToString() + System.Environment.NewLine);
+            EchoText("autoupdatelamp=" + oGlobals.Config.AutoUpdateLamp.ToString() + System.Environment.NewLine);
             EchoText("automapperalpha=" + oGlobals.Config.AutoMapperAlpha.ToString() + System.Environment.NewLine);
+            EchoText("weblinksafety=" + oGlobals.Config.bWebLinkSafety.ToString() + System.Environment.NewLine);
         }
 
         private void ListColors()

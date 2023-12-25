@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -12,9 +13,9 @@ namespace GenieClient
             InitializeComponent();
         }
 
+        const string _whathappened = "There was an unexpected error in Genie. This may be due to a programming bug.";
         public void Show(IWin32Window owner, string details, string whathappened = null, string howaffected = null, string usercando = null)
         {
-            const string _whathappened = "There was an unexpected error in Genie. This may be due to a programming bug.";
             const string _howaffected = "Restart Genie, and try repeating your last action. Try alternative methods of performing the same action.";
             const string _usercando = "The action you requested was not performed.";
             ErrorBox.Clear();
@@ -26,8 +27,20 @@ namespace GenieClient
             txtMore.Clear();
             txtMore.AppendText(SysInfoToString());
             if (!Information.IsNothing(details))
+            {
                 txtMore.AppendText(details);
+                LogToSystemEventLog(details);
+            }
             Show(owner);
+        }
+
+        private void LogToSystemEventLog(string details)
+        {
+            EventLog eventLog = new EventLog();
+            //The source was not found, but some or all event logs could not be searched
+            eventLog.Source = ".NET Runtime";
+            string message = _whathappened + "\r\n\r\n----------------------------\r\n\r\n" + details;
+            eventLog.WriteEntry(message, EventLogEntryType.Error, 1000);
         }
 
         private void OK_Button_Click(object sender, EventArgs e)

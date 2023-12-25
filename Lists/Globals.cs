@@ -222,9 +222,20 @@ namespace GenieClient.Genie
             }
             
             sText = sText.Replace("@time@", DateTime.Now.ToString("hh:mm:ss tt").Trim());
+            sText = sText.Replace("@time24@", DateTime.Now.ToString("HH:mm:ss tt").Trim());
             sText = sText.Replace("@date@", DateTime.Now.ToString("M/d/yyyy").Trim());
             sText = sText.Replace("@datetime@", DateTime.Now.ToString("M/d/yyyy hh:mm:ss tt").Trim());
+            sText = sText.Replace("@datetime24@", DateTime.Now.ToString("M/d/yyyy HH:mm:ss tt").Trim());
+            sText = sText.Replace("@militarytime@", DateTime.Now.ToString("HHmm").Trim());
             sText = sText.Replace("@unixtime@", DateTimeOffset.Now.ToUnixTimeSeconds().ToString());
+
+            sText = sText.Replace("@year@", DateTime.Now.ToString("yyyy").Trim());
+            sText = sText.Replace("@month@", DateTime.Now.ToString("mm").Trim());
+            sText = sText.Replace("@dayofmonth@", DateTime.Now.ToString("dd").Trim());
+            sText = sText.Replace("@dayofyear@", DateTime.Now.DayOfYear.ToString().Trim());
+            
+            
+
             return sText;
         }
 
@@ -517,6 +528,7 @@ namespace GenieClient.Genie
                 Add("ui.window", "Black, #EEEEEE");
                 Add("ui.status", "Black, #EEEEEE");
                 Add("ui.textbox", "Black, White");
+                Add("ui.button", "Black, Silver");
                 Add("whispers", "Magenta");
             }
 
@@ -838,10 +850,10 @@ namespace GenieClient.Genie
                 Add("stamina", "100", VariableType.Reserved);
                 
                 Add("charactername", "", VariableType.Reserved);
+                Add("account", "", VariableType.Reserved);
                 Add("gamename", "", VariableType.Reserved);
                 Add("gamehost", "eaccess.play.net", VariableType.Reserved);
                 Add("gameport", "7910", VariableType.Reserved);
-
 
                 Add("kneeling", "0", VariableType.Reserved);
                 Add("prone", "0", VariableType.Reserved);
@@ -870,13 +882,20 @@ namespace GenieClient.Genie
                 Add("client", My.MyProject.Application.Info.ProductName.ToString(), VariableType.Reserved);
                 Add("version", My.MyProject.Application.Info.Version.ToString(), VariableType.Reserved);
                 Add("time", "@time@", VariableType.Reserved);
+                Add("time24", "@time24@", VariableType.Reserved);
+                Add("militarytime", "@militarytime@", VariableType.Reserved);
                 Add("date", "@date@", VariableType.Reserved);
+                Add("year", "@year@", VariableType.Reserved);
+                Add("month", "@month@", VariableType.Reserved);
+                Add("dayofmonth", "@dayofmonth@", VariableType.Reserved);
+                Add("dayofyear", "@dayofyear@", VariableType.Reserved);
                 Add("datetime", "@datetime@", VariableType.Reserved);
+                Add("datetime24", "@datetime24@", VariableType.Reserved);
+                Add("unixtime", "@unixtime@", VariableType.Reserved);
                 Add("spelltime", "@spelltime@", VariableType.Reserved);
                 Add("spellpreptime", "@spellpreptime@", VariableType.Reserved);
                 Add("spellstarttime", "0", VariableType.Reserved);
                 Add("casttime", "0", VariableType.Reserved);
-                Add("unixtime", "@unixtime@", VariableType.Reserved);
                 Add("casttimeremaining", "@casttimeremaining@", VariableType.Reserved);
                 Add("monstercount", "0", VariableType.Reserved);
                 Add("monsterlist", "", VariableType.Reserved);
@@ -886,6 +905,7 @@ namespace GenieClient.Genie
                 Add("zonename", "0", VariableType.Reserved);
                 Add("scriptlist", "none", VariableType.Reserved);
                 Add("repeatregex", @"^\.\.\.wait|^Sorry\, you may only type ahead|^You are still stunned|^You can\'t do that while|^You don\'t seem to be able", VariableType.Reserved);
+
             }
         }
 

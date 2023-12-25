@@ -224,6 +224,7 @@ namespace GenieClient
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Genie has encountered a problem";
+            TopMost = true;
             _TableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)_PictureBox1).EndInit();
             ResumeLayout(false);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -11,6 +12,7 @@ using System.Threading;
 using System.Xml;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System.IO;
 
 namespace GenieClient.Genie
 {
@@ -27,6 +29,8 @@ namespace GenieClient.Genie
             m_oGlobals = cl;
         }
 
+        public event EventAddImageEventHandler EventAddImage;
+        public delegate void EventAddImageEventHandler(string filename, string window, int width, int height);
         public event EventPrintTextEventHandler EventPrintText;
 
         public delegate void EventPrintTextEventHandler(string text, Color color, Color bgcolor, WindowTarget targetwindow, string targetwindowstring, bool mono, bool isprompt, bool isinput);
@@ -183,6 +187,8 @@ namespace GenieClient.Genie
         private string m_sCharacterName = string.Empty;
         private string m_sGameName = string.Empty;
         private int m_iRoundTime = 0;
+        private int m_iSpellTime = 0;
+        private int m_iCastTime = 0;
         private int m_iGameTime = 0;
         private string m_sTriggerBuffer = string.Empty;
         private bool m_bLastRowWasPrompt = false;
@@ -205,6 +211,7 @@ namespace GenieClient.Genie
         {
             Unknown,
             Combat,
+            Portrait,
             Main,
             Inv,
             Familiar,
@@ -391,6 +398,7 @@ namespace GenieClient.Genie
 
             m_oGlobals.VariableList["charactername"] = sCharacter;
             m_oGlobals.VariableList["game"] = sGame;
+            m_oGlobals.VariableList["account"] = sAccountName;
 
             DoConnect("eaccess.play.net", 7910);
         }
@@ -405,6 +413,7 @@ namespace GenieClient.Genie
             m_oLastUserActivity = DateTime.Now;
             m_oGlobals.VariableList["charactername"] = Character;
             m_oGlobals.VariableList["game"] = Game;
+            m_oGlobals.VariableList["account"] = "Unknown";
 
             m_sEncryptionKey = string.Empty;
             m_oConnectState = ConnectStates.ConnectingGameServer;
@@ -484,6 +493,13 @@ namespace GenieClient.Genie
                 {
                     color = m_oGlobals.PresetList["inputuser"].FgColor;
                     bgcolor = m_oGlobals.PresetList["inputuser"].BgColor;
+                    if (!sText.StartsWith(Conversions.ToString(m_oGlobals.Config.cMyCommandChar))) // Skip user commands
+                    {
+                        m_oGlobals.VariableList["lastinput"] = sText;
+                        var lastinputVar = "lastinput";
+                        EventVariableChanged?.Invoke(lastinputVar);
+                    }
+
                 }
                 else
                 {
@@ -771,8 +787,9 @@ namespace GenieClient.Genie
                 }
                 else if (!string.IsNullOrWhiteSpace(sBoldBuffer))
                 {
+                    if (sBoldBuffer.EndsWith("\r\n")) sBoldBuffer = sBoldBuffer.Substring(0, sBoldBuffer.Length - "\r\n".Length);
                     sBoldBuffer = ParseSubstitutions(sBoldBuffer);
-                    m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(sBoldBuffer.Trim(), "creatures", iBoldIndex)); //trim because excessive whitespace seems to be breaking this
+                    m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(sBoldBuffer, "creatures", iBoldIndex)); //trim because excessive whitespace seems to be breaking this
                     sBoldBuffer = string.Empty;
                 }
 
@@ -982,7 +999,7 @@ namespace GenieClient.Genie
             }
         }
 
-        private void ParseRow(string sText)
+        private async void ParseRow(string sText)
         {
             var switchExpr = m_oConnectState;
             switch (switchExpr)
@@ -1002,7 +1019,7 @@ namespace GenieClient.Genie
                 case ConnectStates.ConnectedGameHandshake:
                     {
                         m_oConnectState = ConnectStates.ConnectedGame;
-                        Thread.Sleep(1000);
+                        await Task.Delay(1000);
                         m_oSocket.Send(Constants.vbLf + Constants.vbLf);
                         break;
                     }
@@ -1320,7 +1337,19 @@ namespace GenieClient.Genie
 
                             break;
                         }
-
+                    case "resource":
+                        {
+                            if (!m_oGlobals.Config.bShowImages) break;
+                            var attribute = GetAttributeData(oXmlNode, "picture");
+                            if (!string.IsNullOrEmpty(attribute) && attribute != "0") 
+                            {
+                                attribute += ".jpg";
+                                string gamecode = "DR"; //default DR
+                                if (AccountGame.StartsWith("GS")) gamecode = "GS";
+                                if (FileHandler.FetchImage(attribute, m_oGlobals.Config.ArtDir, gamecode).Result) AddImage(Path.Combine(gamecode, attribute), "portrait");
+                            }
+                            break;
+                        }
                     case "streamWindow":	// Window Names
                         {
                             string argstrAttributeName5 = "id";
@@ -2074,7 +2103,7 @@ namespace GenieClient.Genie
                                 m_oGlobals.VariableList.Add("casttime", GetAttributeData(oXmlNode, "value"));
                             }
                             VariableChanged("$casttime");
-                            EventCastTime?.Invoke();
+                            m_iCastTime = int.Parse(GetAttributeData(oXmlNode, "value"));
                             break;
                         }
                     case "spelltime":
@@ -2240,6 +2269,7 @@ namespace GenieClient.Genie
                                     var rtString = rt.ToString();
                                     string argkey42 = "roundtime";
                                     m_oGlobals.VariableList.Add(argkey42, rtString, Globals.Variables.VariableType.Reserved);
+                                    m_iRoundTime = 0;
                                 }
                                 else
                                 {
@@ -2249,6 +2279,12 @@ namespace GenieClient.Genie
                                 }
                                 string argsVariable40 = "$roundtime";
                                 VariableChanged(argsVariable40);
+
+                                if (m_iCastTime > 0)
+                                {
+                                    EventCastTime?.Invoke();
+                                    m_iCastTime = 0;
+                                }
 
                                 if (m_oGlobals.Config.sPrompt.Length > 0 && !m_bLastRowWasPrompt)
                                 {
@@ -2787,7 +2823,11 @@ namespace GenieClient.Genie
                         sTargetWindowString = "combat";
                         break;
                     }
-
+                case WindowTarget.Portrait:
+                    {
+                        sTargetWindowString = "portrait";
+                        break;
+                    }
                 case WindowTarget.Familiar:
                     {
                         sTargetWindowString = "familiar";
@@ -3080,6 +3120,10 @@ namespace GenieClient.Genie
             EventPrintText?.Invoke(sText, oColor, oBgColor, windowVar, emptyVar, m_bMonoOutput, falseVar, trueVar);
         }
 
+        private void AddImage(string filename, string window = "")
+        {
+            EventAddImage?.Invoke(filename, window, 0, 0);
+        }
         private void ClearWindow(string sWindow)
         {
             EventClearWindow?.Invoke(sWindow);
@@ -3149,10 +3193,10 @@ namespace GenieClient.Genie
                         m_oReconnectTime = default;
                         m_oSocket.Send(m_sConnectKey + Constants.vbLf + "FE:WRAYTH /VERSION:1.0.1.22 /P:WIN_UNKNOWN /XML" + Constants.vbLf);    // TEMP
                         string argkey = "connected";
-                        string argvalue = m_oSocket.IsConnected ? "1" : "0";
-                        m_oGlobals.VariableList.Add(argkey, argvalue, Globals.Variables.VariableType.Reserved);
-                        string argsVariable = "$connected";
-                        VariableChanged(argsVariable);
+                        m_oGlobals.VariableList["connected"] = m_oSocket.IsConnected ? "1" : "0";
+                        VariableChanged("$connected");
+                        m_oGlobals.VariableList["account"] = AccountName;
+                        VariableChanged("$account");
                         m_bStatusPromptEnabled = false;                        
                         break;
                     }

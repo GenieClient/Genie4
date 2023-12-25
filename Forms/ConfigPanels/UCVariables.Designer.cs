@@ -207,7 +207,7 @@ namespace GenieClient
             _LabelAction.Name = "LabelAction";
             _LabelAction.Size = new Size(37, 13);
             _LabelAction.TabIndex = 10;
-            _LabelAction.Text = "Action";
+            _LabelAction.Text = "Value";
             // 
             // TextBoxVariable
             // 

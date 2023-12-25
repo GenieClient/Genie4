@@ -8,30 +8,25 @@ using Microsoft.VisualBasic.CompilerServices;
 namespace GenieClient
 {
     [DesignerGenerated()]
-    public partial class DialogEdit : Form
+    public partial class DialogProfileNote : Form
     {
 
         // Form overrides dispose to clean up the component list.
         [DebuggerNonUserCode()]
         protected override void Dispose(bool disposing)
         {
-            try
+            if (disposing && components is object)
             {
-                if (disposing && components is object)
-                {
-                    components.Dispose();
-                }
+                components.Dispose();
             }
-            finally
-            {
-                base.Dispose(disposing);
-            }
+
+            base.Dispose(disposing);
         }
 
         // Required by the Windows Form Designer
-        #pragma warning disable 0649
+#pragma warning disable 0649
         private System.ComponentModel.IContainer components;
-        #pragma warning restore 0649
+#pragma warning restore 0649
 
         // NOTE: The following procedure is required by the Windows Form Designer
         // It can be modified using the Windows Form Designer.  
@@ -41,89 +36,90 @@ namespace GenieClient
         {
             _TableLayoutPanel1 = new TableLayoutPanel();
             _OK_Button = new Button();
-            _OK_Button.Click += new EventHandler(OK_Button_Click);
             _Cancel_Button = new Button();
-            _Cancel_Button.Click += new EventHandler(Cancel_Button_Click);
-            _RichTextBoxEdit = new RichTextBox();
-            _Panel1 = new Panel();
+            _TextBoxNote = new TextBox();
+            _LabelName = new Label();
             _TableLayoutPanel1.SuspendLayout();
-            _Panel1.SuspendLayout();
             SuspendLayout();
             // 
-            // TableLayoutPanel1
+            // _TableLayoutPanel1
             // 
             _TableLayoutPanel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             _TableLayoutPanel1.ColumnCount = 2;
-            _TableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50.0F));
-            _TableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50.0F));
+            _TableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            _TableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             _TableLayoutPanel1.Controls.Add(_OK_Button, 0, 0);
             _TableLayoutPanel1.Controls.Add(_Cancel_Button, 1, 0);
-            _TableLayoutPanel1.Location = new Point(277, 14);
-            _TableLayoutPanel1.Name = "TableLayoutPanel1";
+            _TableLayoutPanel1.Location = new Point(237, 67);
+            _TableLayoutPanel1.Margin = new Padding(4, 3, 4, 3);
+            _TableLayoutPanel1.Name = "_TableLayoutPanel1";
             _TableLayoutPanel1.RowCount = 1;
-            _TableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50.0F));
-            _TableLayoutPanel1.Size = new Size(146, 29);
+            _TableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            _TableLayoutPanel1.Size = new Size(170, 33);
             _TableLayoutPanel1.TabIndex = 0;
             // 
-            // OK_Button
+            // _OK_Button
             // 
             _OK_Button.Anchor = AnchorStyles.None;
-            _OK_Button.Location = new Point(3, 3);
-            _OK_Button.Name = "OK_Button";
-            _OK_Button.Size = new Size(67, 23);
+            _OK_Button.Location = new Point(4, 3);
+            _OK_Button.Margin = new Padding(4, 3, 4, 3);
+            _OK_Button.Name = "_OK_Button";
+            _OK_Button.Size = new Size(77, 27);
             _OK_Button.TabIndex = 0;
             _OK_Button.Text = "OK";
+            _OK_Button.Click += OK_Button_Click;
             // 
-            // Cancel_Button
+            // _Cancel_Button
             // 
             _Cancel_Button.Anchor = AnchorStyles.None;
             _Cancel_Button.DialogResult = DialogResult.Cancel;
-            _Cancel_Button.Location = new Point(76, 3);
-            _Cancel_Button.Name = "Cancel_Button";
-            _Cancel_Button.Size = new Size(67, 23);
+            _Cancel_Button.Location = new Point(89, 3);
+            _Cancel_Button.Margin = new Padding(4, 3, 4, 3);
+            _Cancel_Button.Name = "_Cancel_Button";
+            _Cancel_Button.Size = new Size(77, 27);
             _Cancel_Button.TabIndex = 1;
             _Cancel_Button.Text = "Cancel";
+            _Cancel_Button.Click += Cancel_Button_Click;
             // 
-            // RichTextBoxEdit
+            // _TextBoxName
             // 
-            _RichTextBoxEdit.DetectUrls = false;
-            _RichTextBoxEdit.Dock = DockStyle.Fill;
-            _RichTextBoxEdit.Font = new Font("Courier New", 9.0F, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(0));
-            _RichTextBoxEdit.Location = new Point(0, 0);
-            _RichTextBoxEdit.Name = "RichTextBoxEdit";
-            _RichTextBoxEdit.ScrollBars = RichTextBoxScrollBars.Vertical;
-            _RichTextBoxEdit.Size = new Size(435, 260);
-            _RichTextBoxEdit.TabIndex = 0;
-            _RichTextBoxEdit.Text = "";
-            _RichTextBoxEdit.WordWrap = false;
+            _TextBoxNote.Location = new Point(18, 29);
+            _TextBoxNote.Margin = new Padding(4, 3, 4, 3);
+            _TextBoxNote.Name = "_TextBoxName";
+            _TextBoxNote.Size = new Size(387, 23);
+            _TextBoxNote.TabIndex = 0;
             // 
-            // Panel1
+            // _LabelName
             // 
-            _Panel1.Controls.Add(_TableLayoutPanel1);
-            _Panel1.Dock = DockStyle.Bottom;
-            _Panel1.Location = new Point(0, 260);
-            _Panel1.Name = "Panel1";
-            _Panel1.Size = new Size(435, 55);
-            _Panel1.TabIndex = 2;
+            _LabelName.AutoSize = true;
+            _LabelName.Location = new Point(14, 10);
+            _LabelName.Margin = new Padding(4, 0, 4, 0);
+            _LabelName.Name = "_LabelName";
+            _LabelName.Size = new Size(33, 15);
+            _LabelName.TabIndex = 2;
+            _LabelName.Text = "Note";
             // 
-            // DialogEdit
+            // DialogProfileNote
             // 
-            AutoScaleDimensions = new SizeF(6.0F, 13.0F);
+            AcceptButton = _OK_Button;
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = _Cancel_Button;
-            ClientSize = new Size(435, 315);
-            Controls.Add(_RichTextBoxEdit);
-            Controls.Add(_Panel1);
+            ClientSize = new Size(421, 114);
+            Controls.Add(_LabelName);
+            Controls.Add(_TextBoxNote);
+            Controls.Add(_TableLayoutPanel1);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Margin = new Padding(4, 3, 4, 3);
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "DialogEdit";
-            ShowIcon = false;
+            Name = "DialogProfileNote";
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Edit";
+            Text = "Profile Note";
             _TableLayoutPanel1.ResumeLayout(false);
-            _Panel1.ResumeLayout(false);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         private TableLayoutPanel _TableLayoutPanel1;
@@ -202,49 +198,49 @@ namespace GenieClient
             }
         }
 
-        private RichTextBox _RichTextBoxEdit;
+        private TextBox _TextBoxNote;
 
-        internal RichTextBox RichTextBoxEdit
+        internal TextBox TextBoxNote
         {
             [MethodImpl(MethodImplOptions.Synchronized)]
             get
             {
-                return _RichTextBoxEdit;
+                return _TextBoxNote;
             }
 
             [MethodImpl(MethodImplOptions.Synchronized)]
             set
             {
-                if (_RichTextBoxEdit != null)
+                if (_TextBoxNote != null)
                 {
                 }
 
-                _RichTextBoxEdit = value;
-                if (_RichTextBoxEdit != null)
+                _TextBoxNote = value;
+                if (_TextBoxNote != null)
                 {
                 }
             }
         }
 
-        private Panel _Panel1;
+        private Label _LabelName;
 
-        internal Panel Panel1
+        internal Label LabelName
         {
             [MethodImpl(MethodImplOptions.Synchronized)]
             get
             {
-                return _Panel1;
+                return _LabelName;
             }
 
             [MethodImpl(MethodImplOptions.Synchronized)]
             set
             {
-                if (_Panel1 != null)
+                if (_LabelName != null)
                 {
                 }
 
-                _Panel1 = value;
-                if (_Panel1 != null)
+                _LabelName = value;
+                if (_LabelName != null)
                 {
                 }
             }

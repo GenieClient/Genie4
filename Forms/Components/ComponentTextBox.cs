@@ -25,6 +25,14 @@ namespace GenieClient
 
         public delegate void PageDownEventHandler();
 
+        public event CtrlPageUpEventHandler CtrlPageUp;
+
+        public delegate void CtrlPageUpEventHandler();
+
+        public event CtrlPageDownEventHandler CtrlPageDown;
+
+        public delegate void CtrlPageDownEventHandler();
+
         private Genie.Collections.ArrayList HistoryArray = new Genie.Collections.ArrayList();
         private int HistoryPos = -1;
         private int HistorySize = 20;
@@ -236,14 +244,28 @@ namespace GenieClient
 
                 case Keys.PageUp:
                     {
-                        PageUp?.Invoke();
+                        if (e.Control)
+                        {
+                            CtrlPageUp?.Invoke();
+                        }
+                        else
+                        {
+                            PageUp?.Invoke();
+                        }
                         e.Handled = true;
                         break;
                     }
 
                 case Keys.PageDown:
                     {
-                        PageDown?.Invoke();
+                        if (e.Control)
+                        {
+                            CtrlPageDown?.Invoke();
+                        }
+                        else
+                        {
+                            PageDown?.Invoke();
+                        }
                         e.Handled = true;
                         break;
                     }

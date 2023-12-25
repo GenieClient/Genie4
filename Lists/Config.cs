@@ -20,6 +20,7 @@ namespace GenieClient.Genie
         public int iBufferLineSize = 5;
         public bool bShowSpellTimer = true;
         public bool bAutoLog = true;
+        public bool bClassicConnect = true;
         public string sEditor = "notepad.exe";
         public string sPrompt = "> ";
         public string sIgnoreMonsterList = "appears dead|(dead)";
@@ -47,13 +48,19 @@ namespace GenieClient.Genie
         public string sConfigDir = "Config";
         public string sConfigDirProfile = "Config";
         public bool bShowLinks = false;
+        public bool bShowImages = true;
         public string sLogDir = "Logs";
+        public string sArtDir = "Art";
+        public bool bWebLinkSafety = true;
 
+        public bool SizeInputToGame { get; set; } = false;
+        public bool AlwaysOnTop { get; set; } = false;
         public bool PromptBreak { get; set; } = true;
         public bool PromptForce { get; set; } = true;
         public bool Condensed { get; set; } = false;
         public bool CheckForUpdates { get; set; } = true;
         public bool AutoUpdate { get; set; } = false;
+        public bool AutoUpdateLamp { get; set; } = true;
 
         public string sConnectString = "FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " /P:WIN_XP /XML";
         public int[] iPickerColors = new int[17];
@@ -66,8 +73,8 @@ namespace GenieClient.Genie
         public int LichStartPause { get; set; } = 5;
         public string ConnectScript { get; set; } = string.Empty;
         public string ScriptExtension { get; set; } = "cmd";
-
         public string ScriptRepo { get; set; } = string.Empty;
+        public string ArtRepo { get; set; } = string.Empty;
 
         public int AutoMapperAlpha
         {
@@ -118,7 +125,41 @@ namespace GenieClient.Genie
                 sScriptDir = value;
             }
         }
+        public string ArtDir
+        {
+            get
+            {
+                string sLocation = string.Empty;
+                if (sArtDir.Contains(":"))
+                {
+                    sLocation = sArtDir;
+                }
+                else
+                {
+                    sLocation = LocalDirectory.Path;
+                    if (sArtDir.StartsWith(@"\") || sLocation.EndsWith(@"\"))
+                    {
+                        sLocation += sArtDir;
+                    }
+                    else
+                    {
+                        sLocation += @"\" + sArtDir;
+                    }
+                }
 
+                return sLocation;
+            }
+
+            set
+            {
+                if (value.EndsWith(@"\"))
+                {
+                    value = value.Substring(0, value.Length - 1);
+                }
+
+                sArtDir = value;
+            }
+        }
         public string MapDir
         {
             get
@@ -317,7 +358,12 @@ namespace GenieClient.Genie
             AutoMapper,
             LogDir,
             CheckForUpdates,
-            AutoUpdate
+            AutoUpdate,
+            AutoUpdateLamp,
+            ClassicConnect,
+            ImagesEnabled,
+            SizeInputToGame,
+            AlwaysOnTop
         }
 
         public Font MonoFont
@@ -363,6 +409,8 @@ namespace GenieClient.Genie
                 }
 
                 var oStreamWriter = new StreamWriter(sFileName, false);
+                oStreamWriter.WriteLine("#config {alwaysontop} {" + AlwaysOnTop + "}");
+                oStreamWriter.WriteLine("#config {classicconnect} {" + bClassicConnect + "}");
                 oStreamWriter.WriteLine("#config {scriptchar} {" + ScriptChar + "}");
                 oStreamWriter.WriteLine("#config {separatorchar} {" + cSeparatorChar + "}");
                 oStreamWriter.WriteLine("#config {commandchar} {" + cCommandChar + "}");
@@ -383,8 +431,10 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine("#config {maxgosubdepth} {" + iMaxGoSubDepth + "}");
                 oStreamWriter.WriteLine("#config {ignorescriptwarnings} {" + bIgnoreScriptWarnings + "}");
                 oStreamWriter.WriteLine("#config {roundtimeoffset} {" + dRTOffset + "}");
-                oStreamWriter.WriteLine("#config {scriptrepo} {" + ScriptRepo + "}");
+                oStreamWriter.WriteLine("#config {artdir} {" + sArtDir + "}");
+                oStreamWriter.WriteLine("#config {artrepo} {" + ArtRepo + "}");
                 oStreamWriter.WriteLine("#config {scriptdir} {" + sScriptDir + "}");
+                oStreamWriter.WriteLine("#config {scriptrepo} {" + ScriptRepo + "}");
                 oStreamWriter.WriteLine("#config {mapdir} {" + sMapDir + "}");
                 oStreamWriter.WriteLine("#config {plugindir} {" + sPluginDir + "}");
                 oStreamWriter.WriteLine("#config {configdir} {" + sConfigDir + "}");
@@ -392,6 +442,7 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine("#config {reconnect} {" + bReconnect + "}");
                 oStreamWriter.WriteLine("#config {ignoreclosealert} {" + bIgnoreCloseAlert + "}");
                 oStreamWriter.WriteLine("#config {keepinputtext} {" + bKeepInput + "}");
+                oStreamWriter.WriteLine("#config {sizeinputtogame} {" + SizeInputToGame + "}");
                 oStreamWriter.WriteLine("#config {muted} {" + !bPlaySounds + "}");
                 oStreamWriter.WriteLine("#config {abortdupescript} {" + bAbortDupeScript + "}");
                 oStreamWriter.WriteLine("#config {parsegameonly} {" + bParseGameOnly + "}");
@@ -401,6 +452,8 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine("#config {usertimeout} {" + iUserActivityTimeout + "}");
                 oStreamWriter.WriteLine("#config {usertimeoutcommand} {" + sUserActivityCommand + "}");
                 oStreamWriter.WriteLine("#config {showlinks} {" + bShowLinks + "}");
+                oStreamWriter.WriteLine("#config {showimages} {" + bShowImages + "}");
+                oStreamWriter.WriteLine("#config {weblinksafety} {" + bWebLinkSafety + "}");
                 oStreamWriter.WriteLine($"#config {{rubypath}} {{{RubyPath}}}");
                 oStreamWriter.WriteLine($"#config {{cmdpath}} {{{CmdPath}}}");
                 oStreamWriter.WriteLine($"#config {{lichpath}} {{{LichPath}}}");
@@ -410,6 +463,7 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine($"#config {{lichstartpause}} {{{LichStartPause}}}");
                 oStreamWriter.WriteLine($"#config {{connectscript}} {{{ConnectScript}}}");
                 oStreamWriter.WriteLine($"#config {{autoupdate}} {{{AutoUpdate}}}");
+                oStreamWriter.WriteLine($"#config {{autoupdatelamp}} {{{AutoUpdateLamp}}}");
                 oStreamWriter.WriteLine($"#config {{checkforupdates}} {{{CheckForUpdates}}}");
                 oStreamWriter.WriteLine($"#config {{scriptextension}} {{{ScriptExtension}}}");
                 oStreamWriter.Close();
@@ -597,6 +651,30 @@ namespace GenieClient.Genie
                                 break;
                             }
 
+                        case "classicconnect":
+                            {
+                                var switchExpr3 = sValue.ToLower();
+                                switch (switchExpr3)
+                                {
+                                    case "on":
+                                    case "true":
+                                    case "1":
+                                        {
+                                            bClassicConnect = true;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            bClassicConnect = false;
+                                            break;
+                                        }
+                                }
+
+                                ConfigChanged?.Invoke(ConfigFieldUpdated.ClassicConnect);
+                                break;
+                            }
+
                         case "editor":
                             {
                                 if (File.Exists(sValue) == true)
@@ -780,6 +858,12 @@ namespace GenieClient.Genie
                                     dRTOffset = Utility.StringToDouble(sValue);
                                 }
 
+                                break;
+                            }
+                        case "artdir":
+                            {
+                                messages.Add(LocalDirectory.ValidateDirectory(sValue));
+                                ArtDir = sValue;
                                 break;
                             }
 
@@ -1015,6 +1099,29 @@ namespace GenieClient.Genie
                                 break;
                             }
 
+                        case "autoupdatelamp":
+                            {
+                                var expression = sValue.ToLower();
+                                switch (expression)
+                                {
+                                    case "on":
+                                    case "true":
+                                    case "1":
+                                        {
+                                            AutoUpdateLamp = true;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            AutoUpdateLamp = false;
+                                            break;
+                                        }
+                                }
+                                ConfigChanged?.Invoke(ConfigFieldUpdated.AutoUpdateLamp);
+                                break;
+                            }
+
                         case "checkforupdates":
                             {
                                 var expression = sValue.ToLower();
@@ -1151,6 +1258,99 @@ namespace GenieClient.Genie
 
                                 break;
                             }
+
+                        case "showimages":
+                            {
+                                var switchExpr13 = sValue.ToLower();
+                                switch (switchExpr13)
+                                {
+                                    case "on":
+                                    case "true":
+                                    case "1":
+                                        {
+                                            bShowImages = true;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            bShowImages = false;
+                                            break;
+                                        }
+                                }
+                                ConfigChanged?.Invoke(ConfigFieldUpdated.ImagesEnabled);
+                                break;
+                            }
+
+                        case "sizeinputtogame":
+                            {
+                                var switchExpr13 = sValue.ToLower();
+                                switch (switchExpr13)
+                                {
+                                    case "on":
+                                    case "true":
+                                    case "1":
+                                        {
+                                            SizeInputToGame = true;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            SizeInputToGame = false;
+                                            break;
+                                        }
+                                }
+                                ConfigChanged?.Invoke(ConfigFieldUpdated.SizeInputToGame);
+                                break;
+                            }
+
+                        case "alwaysontop":
+                            {
+                                var switchExpr13 = sValue.ToLower();
+                                switch (switchExpr13)
+                                {
+                                    case "on":
+                                    case "true":
+                                    case "1":
+                                        {
+                                            AlwaysOnTop = true;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            AlwaysOnTop = false;
+                                            break;
+                                        }
+                                }
+                                ConfigChanged?.Invoke(ConfigFieldUpdated.AlwaysOnTop);
+                                break;
+                            }
+
+                        case "weblinksafety":
+                            {
+                                var switchExpr13 = sValue.ToLower();
+                                switch (switchExpr13)
+                                {
+                                    case "on":
+                                    case "true":
+                                    case "1":
+                                        {
+                                            bWebLinkSafety = true;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            bWebLinkSafety = false;
+                                            break;
+                                        }
+                                }
+
+                                break;
+                            }
+
                         default:
                             throw new Exception($"Config {switchExpr} was not recognized.");
                     }

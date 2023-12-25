@@ -44,6 +44,8 @@ namespace GenieClient
         private Bitmap oBottomLeft;
         private Bitmap oBottomRight;
 
+        public ToolStripMenuItem WindowMenuItem = null;
+
         // int windowCloseX, windowCloseY, windowCloseWidth, windowCloseHeight; 
 
         private Font oTitleFont = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(0));
@@ -360,6 +362,7 @@ namespace GenieClient
             Region = oRegion;
             Invalidate();
             RichTextBoxOutput.Invalidate();
+
         }
 
         private void GetMinMaxInfoHelper(Message m)
@@ -558,7 +561,6 @@ namespace GenieClient
                 oDragType = DragType.Move;
                 Win32Utility.SendMessage(Handle, Win32Utility.WM_NCLBUTTONDOWN, Win32Utility.HTCAPTION, 0);
             }
-
             // Update layout 
             Invalidate();
             RichTextBoxOutput.Invalidate();
@@ -609,6 +611,7 @@ namespace GenieClient
         private void FormSkin_Resize(object sender, EventArgs e)
         {
             SetRegion();
+            _RichTextBoxOutput.SetScrollBars();
         }
 
         // Private Sub Resized()
@@ -787,6 +790,10 @@ namespace GenieClient
         {
             RichTextBoxOutput.Visible = false;
             Visible = false;
+            if (WindowMenuItem is ToolStripMenuItem)
+            {
+                WindowMenuItem.Checked = false;
+            }
         }
 
         private void RichTextBoxOutput_LinkClicked(object sender, LinkClickedEventArgs e)
@@ -806,7 +813,7 @@ namespace GenieClient
                     LText = "#" + e.LinkText;
                 }
             }
-            EventLinkClicked?.Invoke(LText,e);
+            EventLinkClicked?.Invoke(LText, e);
         }
 
         private void _RichTextBoxOutput_KeyDown(object sender, KeyEventArgs e)
@@ -827,6 +834,12 @@ namespace GenieClient
         private void _RichTextBoxOutput_MouseDown(object sender, MouseEventArgs e)
         {
             this._RichTextBoxOutput.ComponentRichTextBox_MouseDown(sender, e);
+        }
+
+        private void _RichTextBoxOutput_VScroll(object sender, EventArgs e)
+        {
+            this._RichTextBoxOutput.AddScrollBar();
+            this._RichTextBoxOutput.VScroll -= _RichTextBoxOutput_VScroll;
         }
     }
 }
