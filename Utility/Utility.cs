@@ -58,7 +58,7 @@ namespace GenieClient
             if (!File.Exists(sFileName)) return false;
             var myProcess = new Process();
             var myProcessStartInfo = new ProcessStartInfo(sFileName);
-            myProcessStartInfo.WindowStyle = showWindow ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Normal;
+            myProcessStartInfo.WindowStyle = showWindow ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
             myProcessStartInfo.CreateNoWindow = !showWindow;
             myProcessStartInfo.UseShellExecute = true;
             myProcessStartInfo.RedirectStandardOutput = false;
