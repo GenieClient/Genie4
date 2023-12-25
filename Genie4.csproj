@@ -141,6 +141,7 @@
     <Compile Update="Forms\DialogProfileNote.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Mapper\DialogSetClasses.cs" />
     <Compile Update="Mapper\DialogSetTypeahead.cs" />
     <Compile Update="Mapper\DialogUserWalk.cs" />
     <Compile Update="Mapper\DialogDragTarget.cs" />

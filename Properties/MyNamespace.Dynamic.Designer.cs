@@ -240,6 +240,29 @@ namespace GenieClient.My
             }
 
             [EditorBrowsable(EditorBrowsableState.Never)]
+            public DialogSetClasses m_DialogSetClasses;
+
+            public DialogSetClasses DialogSetClasses
+            {
+                [DebuggerHidden]
+                get
+                {
+                    m_DialogSetClasses = MyForms.Create__Instance__(m_DialogSetClasses);
+                    return m_DialogSetClasses;
+                }
+
+                [DebuggerHidden]
+                set
+                {
+                    if (value == m_DialogSetClasses)
+                        return;
+                    if (value is object)
+                        throw new ArgumentException("Property can only be set to Nothing");
+                    Dispose__Instance__(ref m_DialogSetClasses);
+                }
+            }
+
+            [EditorBrowsable(EditorBrowsableState.Never)]
             public DialogDragTarget m_DialogDragTarget;
 
             public DialogDragTarget DialogDragTarget

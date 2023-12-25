@@ -349,42 +349,42 @@ namespace GenieClient
             // genieToolStripMenuItem
             // 
             genieToolStripMenuItem.Name = "genieToolStripMenuItem";
-            genieToolStripMenuItem.Size = new Size(113, 22);
+            genieToolStripMenuItem.Size = new Size(180, 22);
             genieToolStripMenuItem.Text = "Genie";
             genieToolStripMenuItem.Click += genieToolStripMenuItem_Click;
             // 
             // scriptsToolStripMenuItem
             // 
             scriptsToolStripMenuItem.Name = "scriptsToolStripMenuItem";
-            scriptsToolStripMenuItem.Size = new Size(113, 22);
+            scriptsToolStripMenuItem.Size = new Size(180, 22);
             scriptsToolStripMenuItem.Text = "Scripts";
             scriptsToolStripMenuItem.Click += scriptsToolStripMenuItem_Click;
             // 
             // mapsToolStripMenuItem
             // 
             mapsToolStripMenuItem.Name = "mapsToolStripMenuItem";
-            mapsToolStripMenuItem.Size = new Size(113, 22);
+            mapsToolStripMenuItem.Size = new Size(180, 22);
             mapsToolStripMenuItem.Text = "Maps";
             mapsToolStripMenuItem.Click += mapsToolStripMenuItem_Click;
             // 
             // pluginsToolStripMenuItem
             // 
             pluginsToolStripMenuItem.Name = "pluginsToolStripMenuItem";
-            pluginsToolStripMenuItem.Size = new Size(113, 22);
+            pluginsToolStripMenuItem.Size = new Size(180, 22);
             pluginsToolStripMenuItem.Text = "Plugins";
             pluginsToolStripMenuItem.Click += pluginsToolStripMenuItem_Click;
             // 
             // logsToolStripMenuItem
             // 
             logsToolStripMenuItem.Name = "logsToolStripMenuItem";
-            logsToolStripMenuItem.Size = new Size(113, 22);
+            logsToolStripMenuItem.Size = new Size(180, 22);
             logsToolStripMenuItem.Text = "Logs";
             logsToolStripMenuItem.Click += logsToolStripMenuItem_Click;
             // 
             // artToolStripMenuItem
             // 
             artToolStripMenuItem.Name = "artToolStripMenuItem";
-            artToolStripMenuItem.Size = new Size(113, 22);
+            artToolStripMenuItem.Size = new Size(180, 22);
             artToolStripMenuItem.Text = "Art";
             artToolStripMenuItem.Click += artToolStripMenuItem_Click;
             // 
@@ -860,22 +860,22 @@ namespace GenieClient
             // _ShowWindowToolStripMenuItem
             // 
             _ShowWindowToolStripMenuItem.Name = "_ShowWindowToolStripMenuItem";
-            _ShowWindowToolStripMenuItem.Size = new Size(150, 22);
+            _ShowWindowToolStripMenuItem.Size = new Size(180, 22);
             _ShowWindowToolStripMenuItem.Text = "&Show Window";
             _ShowWindowToolStripMenuItem.Click += ShowWindowToolStripMenuItem_Click;
             // 
             // updateMapsToolStripMenuItem
             // 
             updateMapsToolStripMenuItem.Name = "updateMapsToolStripMenuItem";
-            updateMapsToolStripMenuItem.Size = new Size(150, 22);
+            updateMapsToolStripMenuItem.Size = new Size(180, 22);
             updateMapsToolStripMenuItem.Text = "&Update Maps";
             updateMapsToolStripMenuItem.Click += updateMapsToolStripMenuItem_Click;
             // 
             // settingsToolStripMenuItem
             // 
             settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            settingsToolStripMenuItem.Size = new Size(150, 22);
-            settingsToolStripMenuItem.Text = "Settings";
+            settingsToolStripMenuItem.Size = new Size(180, 22);
+            settingsToolStripMenuItem.Text = "Script Settings";
             settingsToolStripMenuItem.Click += settingsToolStripMenuItem_Click;
             // 
             // _PluginsToolStripMenuItem

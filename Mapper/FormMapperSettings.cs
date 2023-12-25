@@ -7,7 +7,7 @@ namespace GenieClient.Forms
     public partial class FormMapperSettings : Form
     {
         private Globals _globals;
-        private static string[] _globalVariables = ["caravan", "mapwalk", "searchwalk", "drag", "verbose", "automapper.iceroadcollect", "automapper.cyclic", "automapper.sigilwalk", "automapper.seekhealing", "automapper.userwalk"];
+        private static string[] _globalVariables = ["caravan", "mapwalk", "searchwalk", "drag", "broom_carpet", "verbose", "automapper.iceroadcollect", "automapper.cyclic", "automapper.sigilwalk", "automapper.seekhealing", "automapper.userwalk"];
 
         public event EventVariableChangedEventHandler EventVariableChanged;
         public delegate void EventVariableChangedEventHandler(string sVariable);
@@ -36,12 +36,14 @@ namespace GenieClient.Forms
             BackColor = window.BgColor;
             ForeColor = window.FgColor;
 
-            ButtonSetTypeahead.BackColor = button.BgColor;
-            ButtonSetTypeahead.ForeColor = button.FgColor;
+            _ButtonSetTypeahead.BackColor = button.BgColor;
+            _ButtonSetTypeahead.ForeColor = button.FgColor;
             _ButtonSetDragging.BackColor = button.BgColor;
             _ButtonSetDragging.ForeColor = button.FgColor;
             _ButtonSetUserWalk.BackColor = button.BgColor;
             _ButtonSetUserWalk.ForeColor = button.FgColor;
+            _ButtonSetClasses.BackColor = button.BgColor;
+            _ButtonSetClasses.ForeColor = button.FgColor;
             CheckedListVariables.BackColor = textbox.BgColor;
             CheckedListVariables.ForeColor = textbox.FgColor;
             _TextboxAction.BackColor = textbox.BgColor;
@@ -54,10 +56,13 @@ namespace GenieClient.Forms
             _TextboxDragging.ForeColor = textbox.FgColor;
             _TextboxTypeahead.BackColor = textbox.BgColor;
             _TextboxTypeahead.ForeColor = textbox.FgColor;
+            _TextboxClass.BackColor = textbox.BgColor;
+            _TextboxClass.ForeColor =  textbox.FgColor;
 
             My.MyProject.Forms.DialogDragTarget.Recolor(window, textbox, button);
             My.MyProject.Forms.DialogSetTypeahead.Recolor(window, textbox, button);
             My.MyProject.Forms.DialogUserWalk.Recolor(window, textbox, button);
+            My.MyProject.Forms.DialogSetClasses.Recolor(window, textbox, button);
         }
 
         public async void VariableChanged(string variable)
@@ -103,6 +108,7 @@ namespace GenieClient.Forms
             _TextboxAction.Text = GetVariableValue("automapper.userwalkaction");
             _TextboxSuccess.Text = GetVariableValue("automapper.userwalksuccess");
             _TextboxRetry.Text = GetVariableValue("automapper.userwalkretry");
+            _TextboxClass.Text = GetVariableValue("automapper.class");
             return;
         }
 
@@ -203,7 +209,7 @@ namespace GenieClient.Forms
             My.MyProject.Forms.DialogDragTarget.TargetText = GetVariableValue("drag.target");
             if (My.MyProject.Forms.DialogDragTarget.ShowDialog(Parent) == DialogResult.OK)
             {
-                if(string.IsNullOrWhiteSpace(My.MyProject.Forms.DialogDragTarget.TargetText.Trim())) 
+                if (string.IsNullOrWhiteSpace(My.MyProject.Forms.DialogDragTarget.TargetText.Trim()))
                 {
                     if (_globals.VariableList.ContainsKey("drag.target")) _globals.VariableList.Remove("drag.target");
                 }
@@ -227,14 +233,14 @@ namespace GenieClient.Forms
 
         private void _ButtonSetDragging_Click(object sender, EventArgs e)
         {
-            if(GetVariableValue("drag") != "1")
+            if (GetVariableValue("drag") != "1")
             {
                 if (MessageBox.Show("Dragging is currently disabled. Enable?", "Enable Dragging?", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
                 {
                     UpdateVariable("drag", "1", true);
                 }
             }
-            if(CheckedListVariables.CheckedItems.Contains("drag"))
+            if (CheckedListVariables.CheckedItems.Contains("drag"))
             {
                 if (!SetDragTarget())
                 {
@@ -246,6 +252,15 @@ namespace GenieClient.Forms
                     }
                     _TextboxDragging.Text = GetVariableValue("drag.target");
                 }
+            }
+        }
+
+        private void ButtonSetClasses_Click(object sender, EventArgs e)
+        {
+            My.MyProject.Forms.DialogSetClasses.ClassText = GetVariableValue("automapper.class");
+            if (My.MyProject.Forms.DialogSetClasses.ShowDialog(Parent) == DialogResult.OK)
+            {
+                UpdateVariable("automapper.class", My.MyProject.Forms.DialogSetClasses.ClassText.Trim(), false);
             }
         }
     }
