@@ -43,6 +43,7 @@ namespace GenieClient.Genie
         public string sUserActivityCommand = "quit";
         public double dRTOffset = 0;
         public string sScriptDir = "Scripts";
+        public string sSoundDir = "Sounds";
         public string sPluginDir = "Plugins";
         public string sMapDir = "Maps";
         public string sConfigDir = "Config";
@@ -54,6 +55,7 @@ namespace GenieClient.Genie
         public bool bWebLinkSafety = true;
 
         public bool SizeInputToGame { get; set; } = false;
+        public bool UpdateMapperScripts { get; set; } = false;
         public bool AlwaysOnTop { get; set; } = false;
         public bool PromptBreak { get; set; } = true;
         public bool PromptForce { get; set; } = true;
@@ -75,7 +77,8 @@ namespace GenieClient.Genie
         public string ScriptExtension { get; set; } = "cmd";
         public string ScriptRepo { get; set; } = string.Empty;
         public string ArtRepo { get; set; } = string.Empty;
-
+        public string MapRepo { get; set;} = string.Empty;
+        public string PluginRepo { get; set; } = string.Empty;
         public int AutoMapperAlpha
         {
             get
@@ -87,6 +90,42 @@ namespace GenieClient.Genie
                 if (value < 0) value = 0;
                 else if (value > 255) value = 255;
                 iAutoMapperAlpha = value;
+            }
+        }
+
+        public string SoundDir
+        {
+            get
+            {
+                string sLocation = string.Empty;
+                if (sSoundDir.Contains(":"))
+                {
+                    sLocation = sSoundDir;
+                }
+                else
+                {
+                    sLocation = LocalDirectory.Path;
+                    if (sSoundDir.StartsWith(@"\") || sLocation.EndsWith(@"\"))
+                    {
+                        sLocation += sSoundDir;
+                    }
+                    else
+                    {
+                        sLocation += @"\" + sSoundDir;
+                    }
+                }
+
+                return sLocation;
+            }
+
+            set
+            {
+                if (value.EndsWith(@"\"))
+                {
+                    value = value.Substring(0, value.Length - 1);
+                }
+
+                sSoundDir = value;
             }
         }
 
@@ -264,7 +303,7 @@ namespace GenieClient.Genie
                 iPickerColors = value;
             }
         }
-
+        
         public string ConfigDir
         {
             get
@@ -363,7 +402,8 @@ namespace GenieClient.Genie
             ClassicConnect,
             ImagesEnabled,
             SizeInputToGame,
-            AlwaysOnTop
+            AlwaysOnTop,
+            UpdateMapperScripts
         }
 
         public Font MonoFont
@@ -435,10 +475,14 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine("#config {artrepo} {" + ArtRepo + "}");
                 oStreamWriter.WriteLine("#config {scriptdir} {" + sScriptDir + "}");
                 oStreamWriter.WriteLine("#config {scriptrepo} {" + ScriptRepo + "}");
+                oStreamWriter.WriteLine("#config {sounddir} {" + SoundDir + "}");
                 oStreamWriter.WriteLine("#config {mapdir} {" + sMapDir + "}");
+                oStreamWriter.WriteLine("#config {maprepo} {" + MapRepo + "}");
                 oStreamWriter.WriteLine("#config {plugindir} {" + sPluginDir + "}");
+                oStreamWriter.WriteLine("#config {pluginrepo} {" + PluginRepo + "}");
                 oStreamWriter.WriteLine("#config {configdir} {" + sConfigDir + "}");
                 oStreamWriter.WriteLine("#config {logdir} {" + sLogDir + "}");
+                oStreamWriter.WriteLine("#config {updatemapperscripts} {" + UpdateMapperScripts.ToString() + "}");
                 oStreamWriter.WriteLine("#config {reconnect} {" + bReconnect + "}");
                 oStreamWriter.WriteLine("#config {ignoreclosealert} {" + bIgnoreCloseAlert + "}");
                 oStreamWriter.WriteLine("#config {keepinputtext} {" + bKeepInput + "}");
@@ -867,6 +911,12 @@ namespace GenieClient.Genie
                                 break;
                             }
 
+                        case "artrepo":
+                            {
+                                ArtRepo = sValue;
+                                break;
+                            }
+
                         case "scriptdir":
                             {
 
@@ -886,6 +936,19 @@ namespace GenieClient.Genie
                             {
                                 messages.Add(LocalDirectory.ValidateDirectory(sValue));
                                 MapDir = sValue;
+                                break;
+                            }
+
+                        case "maprepo":
+                            {
+                                MapRepo = sValue;
+                                break;
+                            }
+
+                        case "sounddir":
+                            {
+                                messages.Add(LocalDirectory.ValidateDirectory(sValue));
+                                SoundDir = sValue;
                                 break;
                             }
 
@@ -1304,6 +1367,30 @@ namespace GenieClient.Genie
                                 ConfigChanged?.Invoke(ConfigFieldUpdated.SizeInputToGame);
                                 break;
                             }
+
+                        case "updatemapperscripts":
+                            {
+                                var switchExpr13 = sValue.ToLower();
+                                switch (switchExpr13)
+                                {
+                                    case "on":
+                                    case "true":
+                                    case "1":
+                                        {
+                                            UpdateMapperScripts = true;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            UpdateMapperScripts = false;
+                                            break;
+                                        }
+                                }
+                                ConfigChanged?.Invoke(ConfigFieldUpdated.UpdateMapperScripts);
+                                break;
+                            }
+
 
                         case "alwaysontop":
                             {

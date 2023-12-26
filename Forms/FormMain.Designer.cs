@@ -175,6 +175,8 @@ namespace GenieClient
             _PanelInput = new Panel();
             _TextBoxInput = new ComponentTextBox();
             _OpenFileDialogProfile = new OpenFileDialog();
+            toolStripSeparator2 = new ToolStripSeparator();
+            updateScriptsWithMapsToolStripMenuItem = new ToolStripMenuItem();
             _StatusStripMain.SuspendLayout();
             _MenuStripMain.SuspendLayout();
             _PanelBars.SuspendLayout();
@@ -349,42 +351,42 @@ namespace GenieClient
             // genieToolStripMenuItem
             // 
             genieToolStripMenuItem.Name = "genieToolStripMenuItem";
-            genieToolStripMenuItem.Size = new Size(180, 22);
+            genieToolStripMenuItem.Size = new Size(113, 22);
             genieToolStripMenuItem.Text = "Genie";
             genieToolStripMenuItem.Click += genieToolStripMenuItem_Click;
             // 
             // scriptsToolStripMenuItem
             // 
             scriptsToolStripMenuItem.Name = "scriptsToolStripMenuItem";
-            scriptsToolStripMenuItem.Size = new Size(180, 22);
+            scriptsToolStripMenuItem.Size = new Size(113, 22);
             scriptsToolStripMenuItem.Text = "Scripts";
             scriptsToolStripMenuItem.Click += scriptsToolStripMenuItem_Click;
             // 
             // mapsToolStripMenuItem
             // 
             mapsToolStripMenuItem.Name = "mapsToolStripMenuItem";
-            mapsToolStripMenuItem.Size = new Size(180, 22);
+            mapsToolStripMenuItem.Size = new Size(113, 22);
             mapsToolStripMenuItem.Text = "Maps";
             mapsToolStripMenuItem.Click += mapsToolStripMenuItem_Click;
             // 
             // pluginsToolStripMenuItem
             // 
             pluginsToolStripMenuItem.Name = "pluginsToolStripMenuItem";
-            pluginsToolStripMenuItem.Size = new Size(180, 22);
+            pluginsToolStripMenuItem.Size = new Size(113, 22);
             pluginsToolStripMenuItem.Text = "Plugins";
             pluginsToolStripMenuItem.Click += pluginsToolStripMenuItem_Click;
             // 
             // logsToolStripMenuItem
             // 
             logsToolStripMenuItem.Name = "logsToolStripMenuItem";
-            logsToolStripMenuItem.Size = new Size(180, 22);
+            logsToolStripMenuItem.Size = new Size(113, 22);
             logsToolStripMenuItem.Text = "Logs";
             logsToolStripMenuItem.Click += logsToolStripMenuItem_Click;
             // 
             // artToolStripMenuItem
             // 
             artToolStripMenuItem.Name = "artToolStripMenuItem";
-            artToolStripMenuItem.Size = new Size(180, 22);
+            artToolStripMenuItem.Size = new Size(113, 22);
             artToolStripMenuItem.Text = "Art";
             artToolStripMenuItem.Click += artToolStripMenuItem_Click;
             // 
@@ -788,71 +790,71 @@ namespace GenieClient
             // _ScriptExplorerToolStripMenuItem
             // 
             _ScriptExplorerToolStripMenuItem.Name = "_ScriptExplorerToolStripMenuItem";
-            _ScriptExplorerToolStripMenuItem.Size = new Size(177, 22);
+            _ScriptExplorerToolStripMenuItem.Size = new Size(180, 22);
             _ScriptExplorerToolStripMenuItem.Text = "Script &Explorer...";
             _ScriptExplorerToolStripMenuItem.Click += ScriptExplorerToolStripMenuItem_Click;
             // 
             // updateScriptsToolStripMenuItem
             // 
             updateScriptsToolStripMenuItem.Name = "updateScriptsToolStripMenuItem";
-            updateScriptsToolStripMenuItem.Size = new Size(177, 22);
+            updateScriptsToolStripMenuItem.Size = new Size(180, 22);
             updateScriptsToolStripMenuItem.Text = "&Update Scripts";
             updateScriptsToolStripMenuItem.Click += updateScriptsToolStripMenuItem_Click;
             // 
             // _ToolStripSeparator11
             // 
             _ToolStripSeparator11.Name = "_ToolStripSeparator11";
-            _ToolStripSeparator11.Size = new Size(174, 6);
+            _ToolStripSeparator11.Size = new Size(177, 6);
             // 
             // _ListAllScriptsToolStripMenuItem
             // 
             _ListAllScriptsToolStripMenuItem.Name = "_ListAllScriptsToolStripMenuItem";
-            _ListAllScriptsToolStripMenuItem.Size = new Size(177, 22);
+            _ListAllScriptsToolStripMenuItem.Size = new Size(180, 22);
             _ListAllScriptsToolStripMenuItem.Text = "&Show Active Scripts";
             _ListAllScriptsToolStripMenuItem.Click += ListAllScriptsToolStripMenuItem_Click;
             // 
             // _TraceAllScriptsToolStripMenuItem
             // 
             _TraceAllScriptsToolStripMenuItem.Name = "_TraceAllScriptsToolStripMenuItem";
-            _TraceAllScriptsToolStripMenuItem.Size = new Size(177, 22);
+            _TraceAllScriptsToolStripMenuItem.Size = new Size(180, 22);
             _TraceAllScriptsToolStripMenuItem.Text = "&Trace Active Scripts";
             _TraceAllScriptsToolStripMenuItem.Click += TraceAllScriptsToolStripMenuItem_Click;
             // 
             // _ToolStripSeparator9
             // 
             _ToolStripSeparator9.Name = "_ToolStripSeparator9";
-            _ToolStripSeparator9.Size = new Size(174, 6);
+            _ToolStripSeparator9.Size = new Size(177, 6);
             // 
             // _PauseAllScriptsToolStripMenuItem
             // 
             _PauseAllScriptsToolStripMenuItem.Name = "_PauseAllScriptsToolStripMenuItem";
-            _PauseAllScriptsToolStripMenuItem.Size = new Size(177, 22);
+            _PauseAllScriptsToolStripMenuItem.Size = new Size(180, 22);
             _PauseAllScriptsToolStripMenuItem.Text = "&Pause All Scripts";
             _PauseAllScriptsToolStripMenuItem.Click += PauseAllScriptsToolStripMenuItem_Click;
             // 
             // _ResumeAllScriptsToolStripMenuItem
             // 
             _ResumeAllScriptsToolStripMenuItem.Name = "_ResumeAllScriptsToolStripMenuItem";
-            _ResumeAllScriptsToolStripMenuItem.Size = new Size(177, 22);
+            _ResumeAllScriptsToolStripMenuItem.Size = new Size(180, 22);
             _ResumeAllScriptsToolStripMenuItem.Text = "&Resume All Scripts";
             _ResumeAllScriptsToolStripMenuItem.Click += ResumeAllScriptsToolStripMenuItem_Click;
             // 
             // _ToolStripMenuItem3
             // 
             _ToolStripMenuItem3.Name = "_ToolStripMenuItem3";
-            _ToolStripMenuItem3.Size = new Size(174, 6);
+            _ToolStripMenuItem3.Size = new Size(177, 6);
             // 
             // _AbortAllScriptsToolStripMenuItem
             // 
             _AbortAllScriptsToolStripMenuItem.Name = "_AbortAllScriptsToolStripMenuItem";
             _AbortAllScriptsToolStripMenuItem.ShortcutKeyDisplayString = "";
-            _AbortAllScriptsToolStripMenuItem.Size = new Size(177, 22);
+            _AbortAllScriptsToolStripMenuItem.Size = new Size(180, 22);
             _AbortAllScriptsToolStripMenuItem.Text = "&Abort All Scripts";
             _AbortAllScriptsToolStripMenuItem.Click += AbortAllScriptsToolStripMenuItem_Click;
             // 
             // _AutoMapperToolStripMenuItem
             // 
-            _AutoMapperToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _ShowWindowToolStripMenuItem, updateMapsToolStripMenuItem, settingsToolStripMenuItem });
+            _AutoMapperToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { _ShowWindowToolStripMenuItem, updateMapsToolStripMenuItem, settingsToolStripMenuItem, toolStripSeparator2, updateScriptsWithMapsToolStripMenuItem });
             _AutoMapperToolStripMenuItem.Name = "_AutoMapperToolStripMenuItem";
             _AutoMapperToolStripMenuItem.Size = new Size(86, 20);
             _AutoMapperToolStripMenuItem.Text = "&AutoMapper";
@@ -860,21 +862,21 @@ namespace GenieClient
             // _ShowWindowToolStripMenuItem
             // 
             _ShowWindowToolStripMenuItem.Name = "_ShowWindowToolStripMenuItem";
-            _ShowWindowToolStripMenuItem.Size = new Size(180, 22);
+            _ShowWindowToolStripMenuItem.Size = new Size(210, 22);
             _ShowWindowToolStripMenuItem.Text = "&Show Window";
             _ShowWindowToolStripMenuItem.Click += ShowWindowToolStripMenuItem_Click;
             // 
             // updateMapsToolStripMenuItem
             // 
             updateMapsToolStripMenuItem.Name = "updateMapsToolStripMenuItem";
-            updateMapsToolStripMenuItem.Size = new Size(180, 22);
+            updateMapsToolStripMenuItem.Size = new Size(210, 22);
             updateMapsToolStripMenuItem.Text = "&Update Maps";
             updateMapsToolStripMenuItem.Click += updateMapsToolStripMenuItem_Click;
             // 
             // settingsToolStripMenuItem
             // 
             settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            settingsToolStripMenuItem.Size = new Size(180, 22);
+            settingsToolStripMenuItem.Size = new Size(210, 22);
             settingsToolStripMenuItem.Text = "Script Settings";
             settingsToolStripMenuItem.Click += settingsToolStripMenuItem_Click;
             // 
@@ -1400,6 +1402,19 @@ namespace GenieClient
             _OpenFileDialogProfile.Filter = "Genie Profile|*.xml|All files|*.*";
             _OpenFileDialogProfile.RestoreDirectory = true;
             _OpenFileDialogProfile.Title = "Open Profile";
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(207, 6);
+            // 
+            // updateScriptsWithMapsToolStripMenuItem
+            // 
+            updateScriptsWithMapsToolStripMenuItem.CheckOnClick = true;
+            updateScriptsWithMapsToolStripMenuItem.Name = "updateScriptsWithMapsToolStripMenuItem";
+            updateScriptsWithMapsToolStripMenuItem.Size = new Size(210, 22);
+            updateScriptsWithMapsToolStripMenuItem.Text = "Update Scripts With Maps";
+            updateScriptsWithMapsToolStripMenuItem.CheckedChanged += updateScriptsWithMapsToolStripMenuItem_CheckedChanged;
             // 
             // FormMain
             // 
@@ -4192,6 +4207,8 @@ namespace GenieClient
         private ToolStripMenuItem alignInputToGameWindowToolStripMenuItem;
         private ToolStripMenuItem alwaysOnTopToolStripMenuItem;
         private ToolStripMenuItem settingsToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripMenuItem updateScriptsWithMapsToolStripMenuItem;
 
         internal ToolStripMenuItem SaveSizedDefaultLayoutToolStripMenuItem
         {

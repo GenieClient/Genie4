@@ -8,6 +8,8 @@ using System.Text.Json.Serialization;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Runtime.CompilerServices;
 
 namespace GenieClient
 {
@@ -81,13 +83,14 @@ namespace GenieClient
 
         public static async Task UpdateUpdater(bool autoUpdate)
         {
-            if (!autoUpdate && File.Exists($@"{Environment.CurrentDirectory}\{UpdaterFilename}")) return;
+            if (!UpdaterIsCurrent && !autoUpdate && MessageBox.Show(@"An updated version of Lamp is available. It is recommended to update Lamp before continuing. Would you like to update now?", "Update Lamp?", MessageBoxButtons.YesNoCancel) != DialogResult.Yes) return;
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             client.DefaultRequestHeaders.Add("User-Agent", "Genie Client Updater");
 
             var streamTask = client.GetStreamAsync(GitHubUpdaterReleaseURL).Result;
             Release latest = JsonSerializer.Deserialize<Release>(streamTask);
+            
             latest.LoadAssets();
             if (latest.Assets.ContainsKey(UpdaterFilename))
             {
@@ -114,24 +117,24 @@ namespace GenieClient
         public static async Task<bool> UpdateMaps(string mapdir, bool autoUpdateLamp)
         {
             await UpdateUpdater(autoUpdateLamp);
-            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --maps|\"{mapdir}\"", true, false);
+            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --maps", true, false);
         }
 
         public static async Task<bool> UpdatePlugins(string plugindir, bool autoUpdateLamp)
         {
             await UpdateUpdater(autoUpdateLamp);
-            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --plugins|\"{plugindir}\"", true, false);
+            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --plugins", true, false);
         }
         public static async Task<bool> UpdateScripts(string scriptdir, string scriptrepo, bool autoUpdateLamp)
         {
             await UpdateUpdater(autoUpdateLamp);
-            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --scripts|\"{scriptdir}\"|\"{scriptrepo}\"", true, false);
+            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --scripts", true, false);
         }
 
         public static async Task<bool> UpdateArt(string artdir, string artrepo, bool autoUpdateLamp)
         {
             await UpdateUpdater(autoUpdateLamp);
-            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --scripts|\"{artdir}\"|\"{artrepo}\"", true, false);
+            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --art", true, false);
         }
         public static async Task<bool> ForceUpdate()
         {

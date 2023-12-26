@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Accessibility;
 using GenieClient.Forms;
+using GenieClient.Genie;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
@@ -1442,11 +1443,11 @@ namespace GenieClient
             try
             {
                 if (m_oGlobals.Config.bAutoMapper)
-                { 
+                {
                     m_oAutoMapper.VariableChanged(sVar);
                     MapperSettings.VariableChanged(sVar);
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -7009,6 +7010,12 @@ namespace GenieClient
                         alignInputToGameWindowToolStripMenuItem.Checked = m_oGlobals.Config.SizeInputToGame;
                         break;
                     }
+
+                case Genie.Config.ConfigFieldUpdated.UpdateMapperScripts:
+                    {
+                        updateScriptsWithMapsToolStripMenuItem.Checked = m_oGlobals.Config.UpdateMapperScripts;
+                        break;
+                    }
                 case Genie.Config.ConfigFieldUpdated.AlwaysOnTop:
                     {
                         alwaysOnTopToolStripMenuItem.Checked = m_oGlobals.Config.AlwaysOnTop;
@@ -8452,7 +8459,8 @@ namespace GenieClient
                             response = MessageBox.Show("Genie will close and this will disconnect you from the game.", "Close Genie?", MessageBoxButtons.YesNoCancel);
                             if (response == DialogResult.Yes)
                             {
-                                AddText("Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                                AddText("Saving Config and Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                                m_oGlobals.Config.Save();
                                 if (await Updater.RunUpdate(m_oGlobals.Config.AutoUpdateLamp))
                                 {
                                     m_oGame.Disconnect(true);
@@ -8462,7 +8470,8 @@ namespace GenieClient
                         }
                         else
                         {
-                            AddText("Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                            AddText("Saving Config and Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                            m_oGlobals.Config.Save();
                             if (await Updater.RunUpdate(m_oGlobals.Config.AutoUpdateLamp))
                             {
                                 System.Windows.Forms.Application.Exit();
@@ -8481,7 +8490,8 @@ namespace GenieClient
                 DialogResult response = MessageBox.Show("Genie will close and this will disconnect you from the game. Are you sure?", "Close Genie?", MessageBoxButtons.YesNoCancel);
                 if (response == DialogResult.Yes)
                 {
-                    AddText("Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    AddText("Saving Config and Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    m_oGlobals.Config.Save();
                     if (await Updater.ForceUpdate())
                     {
                         m_oGame.Disconnect(true);
@@ -8491,7 +8501,8 @@ namespace GenieClient
             }
             else
             {
-                AddText("Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                AddText("Saving Config and Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                m_oGlobals.Config.Save();
                 if (await Updater.ForceUpdate())
                 {
                     System.Windows.Forms.Application.Exit();
@@ -8512,7 +8523,8 @@ namespace GenieClient
                         AddText("Disabling Autoupdate.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                         m_oGlobals.Config.AutoUpdate = false;
                         m_oGlobals.Config.Save(m_oGlobals.Config.ConfigDir + @"\settings.cfg");
-                        AddText("Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                        AddText("Saving Config and Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                        m_oGlobals.Config.Save();
                         if (await Updater.UpdateToTest(m_oGlobals.Config.AutoUpdateLamp))
                         {
                             m_oGame.Disconnect(true);
@@ -8525,7 +8537,8 @@ namespace GenieClient
                     AddText("Disabling Autoupdate.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                     m_oGlobals.Config.AutoUpdate = false;
                     m_oGlobals.Config.Save(m_oGlobals.Config.ConfigDir + @"\settings.cfg");
-                    AddText("Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    AddText("Saving Config and Exiting Genie to Update.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    m_oGlobals.Config.Save();
                     if (await Updater.UpdateToTest(m_oGlobals.Config.AutoUpdateLamp))
                     {
                         System.Windows.Forms.Application.Exit();
@@ -8541,7 +8554,8 @@ namespace GenieClient
             {
                 await Task.Run(async () =>
                 {
-                    AddText($"Updating Maps in {m_oGlobals.Config.MapDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    AddText($"Saving Config and Updating Maps in {m_oGlobals.Config.MapDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    m_oGlobals.Config.Save();
                     if (await Updater.UpdateMaps(m_oGlobals.Config.MapDir, m_oGlobals.Config.AutoUpdateLamp))
                     {
                         AddText("Maps Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
@@ -8561,7 +8575,8 @@ namespace GenieClient
             {
                 await Task.Run(async () =>
                 {
-                    AddText($"Updating Plugins in {m_oGlobals.Config.PluginDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    AddText($"Saving Config and Updating Plugins in {m_oGlobals.Config.PluginDir}\r\nRepo{m_oGlobals.Config.PluginRepo}", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    m_oGlobals.Config.Save();
                     if (await Updater.UpdatePlugins(m_oGlobals.Config.PluginDir, m_oGlobals.Config.AutoUpdateLamp))
                     {
                         AddText("Plugins Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
@@ -8654,12 +8669,13 @@ namespace GenieClient
                 MessageBox.Show("You do not have a repository configured properly." + Environment.NewLine + "Please use \"#config artrepo {address of a zip file}\" to configure." + Environment.NewLine + "The URI must be a zip file.");
                 return;
             }
-            DialogResult response = MessageBox.Show("This may take a moment. Update Images?", "Update Images?", MessageBoxButtons.YesNoCancel);
+            DialogResult response = MessageBox.Show($"This may take a moment. Update Images?\r\nRepo: {m_oGlobals.Config.ArtRepo}", "Update Images?", MessageBoxButtons.YesNoCancel);
             if (response == DialogResult.Yes)
             {
                 await Task.Run(async () =>
                 {
-                    AddText($"Updating Art in {m_oGlobals.Config.ArtDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    AddText($"Saving Config and Updating Art in {m_oGlobals.Config.ArtDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
+                    m_oGlobals.Config.Save();
                     if (await Updater.UpdateArt(m_oGlobals.Config.ArtDir, m_oGlobals.Config.ArtRepo, m_oGlobals.Config.AutoUpdateLamp))
                     {
                         AddText("Art Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
@@ -8704,6 +8720,11 @@ namespace GenieClient
         {
             MapperSettings.Visible = true;
             MapperSettings.BringToFront();
+        }
+
+        private void updateScriptsWithMapsToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            m_oGlobals.Config.UpdateMapperScripts = updateScriptsWithMapsToolStripMenuItem.Checked;
         }
     }
 }

@@ -2929,8 +2929,12 @@ namespace GenieClient.Genie
             EchoText("plugindir=" + oGlobals.Config.sPluginDir + System.Environment.NewLine);
             EchoText("mapdir=" + oGlobals.Config.sMapDir + System.Environment.NewLine);
             EchoText("scriptdir=" + oGlobals.Config.sScriptDir + System.Environment.NewLine);
+            EchoText("sounddir=" + oGlobals.Config.sSoundDir + System.Environment.NewLine);
             EchoText("scriptchar=" + oGlobals.Config.ScriptChar.ToString() + System.Environment.NewLine);
             EchoText("scriptrepo=" + oGlobals.Config.ScriptRepo + System.Environment.NewLine);
+            EchoText("maprepo=" + oGlobals.Config.MapRepo + System.Environment.NewLine);
+            EchoText("updatemapperscripts=" + oGlobals.Config.UpdateMapperScripts.ToString() + System.Environment.NewLine);
+            EchoText("pluginrepo=" + oGlobals.Config.PluginRepo + System.Environment.NewLine);
             EchoText("scriptextension=" + oGlobals.Config.ScriptExtension + System.Environment.NewLine);
             EchoText("scripttimeout=" + oGlobals.Config.iScriptTimeout.ToString() + System.Environment.NewLine);
             EchoText("separatorchar=" + oGlobals.Config.cSeparatorChar.ToString() + System.Environment.NewLine);
