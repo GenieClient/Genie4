@@ -48,11 +48,11 @@ namespace GenieClient
             }
             else if ((Var ?? "") == "PluginPath")
             {
-                return System.IO.Path.Combine(LocalDirectory.Path, "Plugins");
+                return m_oGlobals.Config.PluginDir;
             }
             else if ((Var ?? "") == "ScriptPath")
             {
-                return System.IO.Path.Combine(LocalDirectory.Path, "Scripts");
+                return m_oGlobals.Config.ScriptDir;
             }
             else if (!Information.IsNothing(m_oGlobals))
             {
