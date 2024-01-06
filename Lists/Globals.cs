@@ -233,8 +233,13 @@ namespace GenieClient.Genie
             sText = sText.Replace("@month@", DateTime.Now.ToString("mm").Trim());
             sText = sText.Replace("@dayofmonth@", DateTime.Now.ToString("dd").Trim());
             sText = sText.Replace("@dayofyear@", DateTime.Now.DayOfYear.ToString().Trim());
-            
-            
+
+            sText = sText.Replace("@scriptdir@", Config.ScriptDir);
+            sText = sText.Replace("@mapdir@", Config.MapDir);
+            sText = sText.Replace("@plugindir@", Config.PluginDir);
+            sText = sText.Replace("@artdir@", Config.ArtDir);
+            sText = sText.Replace("@logdir@", Config.sLogDir);
+            sText = sText.Replace("@sounddir@", Config.SoundDir);
 
             return sText;
         }
@@ -854,6 +859,13 @@ namespace GenieClient.Genie
                 Add("gamename", "", VariableType.Reserved);
                 Add("gamehost", "eaccess.play.net", VariableType.Reserved);
                 Add("gameport", "7910", VariableType.Reserved);
+                
+                Add("scriptdir", "@scriptdir@", VariableType.Reserved);
+                Add("mapdir", "@mapdir@", VariableType.Reserved);
+                Add("plugindir", "@plugindir@", VariableType.Reserved);
+                Add("logdir", "@logdir@", VariableType.Reserved);
+                Add("artdir", "@artdir@", VariableType.Reserved);
+                Add("sounddir", "@sounddir@", VariableType.Reserved);
 
                 Add("kneeling", "0", VariableType.Reserved);
                 Add("prone", "0", VariableType.Reserved);
