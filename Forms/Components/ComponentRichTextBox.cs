@@ -343,20 +343,47 @@ namespace GenieClient
                 InvokeEndUpdate();
             }
         }
-        public void AddImage(Image image)
+
+        private List<Tuple<int, string, string, Size>> imagePositions = new List<Tuple<int, string, string, Size>>();
+        private PictureBox hoverPictureBox;
+
+        public ComponentRichTextBox()
+        {
+            InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            this.MouseMove += ComponentRichTextBox_MouseMove;
+            this.MouseLeave += ComponentRichTextBox_MouseLeave;
+            hoverPictureBox = new PictureBox
+            {
+                SizeMode = PictureBoxSizeMode.AutoSize,
+                Visible = false,
+                BackColor = Color.Transparent
+            };
+            this.Controls.Add(hoverPictureBox);
+        }
+
+        public void AddImage(Image image, string thumbnailPath, string fullPath)
         {
             if (IsDisposed || image == null)
             {
                 return;
             }
-            if (InvokeRequired == true)
+            if (InvokeRequired)
             {
-                var parameters = new object[] { image };
-                Invoke(new AddImageDelegate(InvokeAddImage), parameters);
+                var parameters = new object[] { image, thumbnailPath, fullPath };
+                Invoke(new Action<Image, string, string>(AddImage), parameters);
             }
             else
             {
+                int charIndex = this.TextLength;
                 InvokeAddImage(image);
+                this.AppendText(" ");
+                Size imageSize = image.Size;
+                imagePositions.Add(new Tuple<int, string, string, Size>(charIndex, thumbnailPath, fullPath, imageSize));
+
             }
         }
 
@@ -364,14 +391,46 @@ namespace GenieClient
         {
             IDataObject obj = Clipboard.GetDataObject();
             Clipboard.Clear();
-            Clipboard.SetDataObject(image);
+            Clipboard.SetImage(image);
             this.ReadOnly = false;
-            this.Select(this.TextLength,0);
+            this.Select(this.TextLength, 0);
             this.Paste(DataFormats.GetFormat(DataFormats.Bitmap));
             this.ReadOnly = true;
             Clipboard.Clear();
             Clipboard.SetDataObject(obj);
         }
+
+        private void ComponentRichTextBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            Point mousePosition = e.Location;
+
+            foreach (var imgPos in imagePositions)
+            {
+                Rectangle imageRect = GetImageRectangle(imgPos.Item1, imgPos.Item4);
+                if (imageRect.Contains(mousePosition))
+                {
+                    Image fullImage = Image.FromFile(imgPos.Item3);
+                    Point position = new Point(imageRect.X, imageRect.Bottom - fullImage.Height);
+                    hoverPictureBox.Image = fullImage;
+                    hoverPictureBox.Location = position;
+                    hoverPictureBox.Visible = true;
+                    return;
+                }
+            }
+
+            hoverPictureBox.Visible = false;
+        }
+        private Rectangle GetImageRectangle(int charIndex, Size imageSize)
+        {
+            Point position = this.GetPositionFromCharIndex(charIndex);
+            return new Rectangle(position, imageSize);
+        }
+
+        private void ComponentRichTextBox_MouseLeave(object sender, EventArgs e)
+        {
+            hoverPictureBox.Visible = false;
+        }
+
         public void TryInvalidate()
         {
             if (m_oRichTextBuffer.TextLength == 0)
