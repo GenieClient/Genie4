@@ -175,24 +175,43 @@ namespace GenieClient
 
         private void EditNote_Click(object sender, EventArgs e)
         {
-
-            if (_profiles.SelectedNode.Level == 2)
+            if (_profiles.SelectedNode != null && _profiles.SelectedNode.Level == 2)
             {
-                int noteStart = _profiles.SelectedNode.Text.IndexOf(" - ");
-                string noteText = "";
-                if (noteStart > 0) noteText = _profiles.SelectedNode.Text.Substring(noteStart + 3).Trim();
-                My.MyProject.Forms.DialogProfileNote.NoteText = noteText;
-                if (My.MyProject.Forms.DialogProfileNote.ShowDialog(Parent) == DialogResult.OK)
+                try
                 {
-                    string note = My.MyProject.Forms.DialogProfileNote.NoteText;
-                    string profileText = _profiles.SelectedNode.Name;
-                    if (!string.IsNullOrWhiteSpace(note)) profileText += $" - {note}";
-                    _profiles.SelectedNode.Text = profileText;
-                    Genie.XMLConfig xml = new XMLConfig();
-                    xml.LoadFile(_profiles.SelectedNode.Tag.ToString());
-                    xml.SetValue("Genie/Profile", "Note", note);
-                    xml.SaveToFile(_profiles.SelectedNode.Tag.ToString());
+                    int noteStart = _profiles.SelectedNode.Text.IndexOf(" - ");
+                    string noteText = "";
+                    if (noteStart > 0) noteText = _profiles.SelectedNode.Text.Substring(noteStart + 3).Trim();
+
+                    // Instantiate the DialogProfileNote form
+                    DialogProfileNote dialogProfileNote = new DialogProfileNote();
+                    dialogProfileNote.NoteText = noteText;
+                    dialogProfileNote.Owner = this;  // Set the owner to ensure the dialog is on top
+                    dialogProfileNote.TopMost = true;  // Ensure the dialog is on top
+                    dialogProfileNote.BringToFront();  // Bring the dialog to the front
+
+                    // Show the dialog
+                    if (dialogProfileNote.ShowDialog() == DialogResult.OK)
+                    {
+                        string note = dialogProfileNote.NoteText;
+                        string profileText = _profiles.SelectedNode.Name;
+                        if (!string.IsNullOrWhiteSpace(note)) profileText += $" - {note}";
+                        _profiles.SelectedNode.Text = profileText;
+
+                        Genie.XMLConfig xml = new Genie.XMLConfig();
+                        xml.LoadFile(_profiles.SelectedNode.Tag.ToString());
+                        xml.SetValue("Genie/Profile", "Note", note);
+                        xml.SaveToFile(_profiles.SelectedNode.Tag.ToString());
+                    }
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred: {ex.Message}");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Invalid node selection. Please select a profile node.");
             }
         }
     }
