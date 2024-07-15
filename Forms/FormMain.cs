@@ -4901,7 +4901,7 @@ namespace GenieClient
 
             if (oTargetWindow.Equals(m_oOutputMain))
             {
-
+                sImageFileName = sImageFileName.Replace(".jpg", "_t.jpg");
             }
 
             if (InvokeRequired == true)
@@ -5063,13 +5063,21 @@ namespace GenieClient
         }
 
         public delegate void AddImageDelegate(string sImageFilePath, FormSkin oTargetWindow, int width, int height);
-        private async void InvokeAddImage(string sImageFilePath, FormSkin oTargetWindow, int width, int height)
+
+        private void InvokeAddImage(string sImageFilePath, FormSkin oTargetWindow, int width, int height)
         {
             if (!Information.IsNothing(oTargetWindow))
             {
-                Image image = await FileHandler.GetImage(Path.Combine(m_oGlobals.Config.ArtDir, sImageFilePath), width, height);
-                if (oTargetWindow == m_oOutputPortrait) m_oOutputPortrait.ClearWindow();
-                oTargetWindow.RichTextBoxOutput.AddImage(image);
+                string thumbnailPath = Path.Combine(m_oGlobals.Config.ArtDir, sImageFilePath);
+                string fullPath = thumbnailPath.Replace("_t.jpg", ".jpg");
+
+                if (oTargetWindow == m_oOutputPortrait)
+                {
+                    m_oOutputPortrait.ClearWindow();
+                }
+
+                Image thumbnailImage = Image.FromFile(thumbnailPath);
+                oTargetWindow.RichTextBoxOutput.AddImage(thumbnailImage, thumbnailPath, fullPath);
             }
         }
 
