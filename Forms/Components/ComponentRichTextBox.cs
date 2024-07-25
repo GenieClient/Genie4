@@ -429,16 +429,6 @@ namespace GenieClient
         private void ComponentRichTextBox_MouseLeave(object sender, EventArgs e)
         {
             hoverPictureBox.Visible = false;
-            DisposeHoverImage();
-        }
-
-        private void DisposeHoverImage()
-        {
-            if (hoverPictureBox.Image != null)
-            {
-                hoverPictureBox.Image.Dispose();
-                hoverPictureBox.Image = null;
-            }
         }
 
         public void TryInvalidate()
