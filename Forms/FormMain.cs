@@ -7021,6 +7021,16 @@ namespace GenieClient
                         alwaysOnTopToolStripMenuItem.Checked = m_oGlobals.Config.AlwaysOnTop;
                         break;
                     }
+                case Genie.Config.ConfigFieldUpdated.HistorySize:
+                    {
+                        TextBoxInput.SetHistorySize(m_oGlobals.Config.iHistorySize);
+                        break;
+                    }
+                case Genie.Config.ConfigFieldUpdated.HistoryMinLength:
+                    {
+                        TextBoxInput.SetHistoryMinLength(m_oGlobals.Config.iHistoryMinLength);
+                        break;
+                    }
             }
         }
 
