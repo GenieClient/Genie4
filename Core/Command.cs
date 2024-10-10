@@ -2949,6 +2949,8 @@ namespace GenieClient.Genie
             EchoText("autoupdatelamp=" + oGlobals.Config.AutoUpdateLamp.ToString() + System.Environment.NewLine);
             EchoText("automapperalpha=" + oGlobals.Config.AutoMapperAlpha.ToString() + System.Environment.NewLine);
             EchoText("weblinksafety=" + oGlobals.Config.bWebLinkSafety.ToString() + System.Environment.NewLine);
+            EchoText("historysize=" + oGlobals.Config.iHistorySize.ToString() + System.Environment.NewLine);
+            EchoText("historyminlength=" + oGlobals.Config.iHistoryMinLength.ToString() + System.Environment.NewLine);
         }
 
         private void ListColors()

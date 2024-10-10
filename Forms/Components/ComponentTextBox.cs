@@ -36,7 +36,7 @@ namespace GenieClient
         private Genie.Collections.ArrayList HistoryArray = new Genie.Collections.ArrayList();
         private int HistoryPos = -1;
         private int HistorySize = 20;
-        private int HistoryMinLenght = 3;
+        private int HistoryMinLength = 3;
         private bool m_KeepInput = false;
 
         public bool KeepInput
@@ -59,14 +59,14 @@ namespace GenieClient
 
         public void SetHistoryMinLength(int size)
         {
-            HistoryMinLenght = size;
+            HistoryMinLength = size;
         }
 
         private void InsertHistory(string text)
         {
-            if (text.Length < HistoryMinLenght)
+            if (HistorySize == 0 || text.Length < HistoryMinLength)
             {
-                return; // Don't save short commands
+                return; // Don't save command
             }
 
             if (HistoryArray.Count > 0)
