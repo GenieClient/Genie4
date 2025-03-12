@@ -543,8 +543,9 @@ namespace GenieClient
                         m_oRichTextBuffer.SelectionBackColor = Highlight.BgColor;
                     }
                 }
+                if (Conversions.ToBoolean(Highlight.SoundFile.Length > 0 && m_oParentForm.Globals.Config.bPlaySounds))
+                    Sound.PlayWaveFile(Highlight.SoundFile);
             }
-            
         }
 
         private void ParseVolatileHighlights(List<VolatileHighlight> highlightList)
