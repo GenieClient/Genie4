@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using Accessibility;
 using GenieClient.Forms;
 using GenieClient.Genie;
+using GenieClient.Services;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
@@ -4006,8 +4007,12 @@ namespace GenieClient
             oTargetWindow.RichTextBoxOutput.InsertLink(sText, sLink);
         }
 
-        private void ClassCommand_EchoColorText(string sText, Color oColor, Color oBgColor, string sWindow)
+        private void ClassCommand_EchoColorText(string sText, GenieColor oGenieColor, GenieColor oBgGenieColor, string sWindow)
         {
+            // Convert platform-agnostic GenieColor to System.Drawing.Color at the UI boundary
+            Color oColor = oGenieColor.ToDrawingColor();
+            Color oBgColor = oBgGenieColor.ToDrawingColor();
+
             try
             {
                 FormSkin oFormSkin = null;
