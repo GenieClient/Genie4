@@ -171,4 +171,8 @@ Project Link: [https://github.com/GenieClient/Genie4](https://github.com/GenieCl
 [product-screenshot]: images/screenshot.png
 
 
+## Build Command
+dotnet build Genie4.sln --configuration Release
 
+Then run:
+.\bin\Release\net10.0-windows\Genie.exe
