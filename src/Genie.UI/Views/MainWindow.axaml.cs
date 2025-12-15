@@ -219,8 +219,8 @@ public partial class MainWindow : Window
         StatusText.Text = $"Connecting to {result.SelectedGame}...";
         ConnectionStatus.Foreground = new SolidColorBrush(Colors.Yellow);
 
-        // Map game names to Simutronics game codes
-        var gameCode = MapGameNameToCode(result.SelectedGame ?? "DragonRealms");
+        // SelectedGame now contains the game code directly (from Tag property)
+        var gameCode = result.SelectedGame ?? "DR";
 
         try
         {
@@ -243,21 +243,6 @@ public partial class MainWindow : Window
             StatusText.Text = "Connection error";
             ConnectionStatus.Foreground = new SolidColorBrush(Color.Parse("#ef4444"));
         }
-    }
-
-    private string MapGameNameToCode(string gameName)
-    {
-        return gameName switch
-        {
-            "DragonRealms" => "DR",
-            "DragonRealms Prime" => "DRX",
-            "DragonRealms The Fallen" => "DRF",
-            "DragonRealms Platinum" => "DRP",
-            "GemStone IV" => "GS4",
-            "GemStone IV Prime" => "GSX",
-            "GemStone IV Platinum" => "GSF",
-            _ => "DR"
-        };
     }
 
     private void OnDisconnect(object? sender, RoutedEventArgs e)

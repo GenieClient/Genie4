@@ -47,13 +47,14 @@
         <StackPanel Grid.Row="1" Spacing="4" Margin="0,0,0,12">
             <TextBlock Text="Game" Foreground="#888" FontSize="12"/>
             <ComboBox x:Name="GameComboBox" HorizontalAlignment="Stretch" SelectedIndex="0">
-                <ComboBoxItem Content="DragonRealms"/>
-                <ComboBoxItem Content="DragonRealms Prime"/>
-                <ComboBoxItem Content="DragonRealms The Fallen"/>
-                <ComboBoxItem Content="DragonRealms Platinum"/>
-                <ComboBoxItem Content="GemStone IV"/>
-                <ComboBoxItem Content="GemStone IV Prime"/>
-                <ComboBoxItem Content="GemStone IV Platinum"/>
+                <ComboBoxItem Content="DragonRealms" Tag="DR"/>
+                <ComboBoxItem Content="DragonRealms Prime" Tag="DRX"/>
+                <ComboBoxItem Content="DragonRealms The Fallen" Tag="DRF"/>
+                <ComboBoxItem Content="DragonRealms Platinum" Tag="DRP"/>
+                <ComboBoxItem Content="DragonRealms Test" Tag="DRT"/>
+                <ComboBoxItem Content="GemStone IV" Tag="GS4"/>
+                <ComboBoxItem Content="GemStone IV Prime" Tag="GSX"/>
+                <ComboBoxItem Content="GemStone IV Platinum" Tag="GSF"/>
             </ComboBox>
         </StackPanel>
 

@@ -40,9 +40,9 @@ public partial class ConnectDialog : Window
             return;
         }
 
-        // Get selected game
+        // Get selected game code from Tag property
         var selectedItem = GameComboBox.SelectedItem as ComboBoxItem;
-        SelectedGame = selectedItem?.Content?.ToString() ?? "DragonRealms";
+        SelectedGame = selectedItem?.Tag?.ToString() ?? "DR";
         Account = AccountTextBox.Text;
         Password = PasswordTextBox.Text;
         Character = string.IsNullOrWhiteSpace(CharacterTextBox.Text) ? null : CharacterTextBox.Text;
