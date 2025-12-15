@@ -160,7 +160,7 @@ public partial class ConnectDialog : Window
     /// <summary>
     /// Shows the dialog and returns the connection info if not cancelled.
     /// </summary>
-    public static async Task<ConnectDialog?> Show(Window owner)
+    public static new async Task<ConnectDialog?> Show(Window owner)
     {
         var dialog = new ConnectDialog();
         await dialog.ShowDialog(owner);

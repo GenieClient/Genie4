@@ -25,9 +25,6 @@ public class GameManager : IDisposable
     private GameWindowManager? _windowManager;
     public GameWindowManager? WindowManager => _windowManager;
 
-    // Events for UI to subscribe to
-    public event Action<string, GenieColor, GenieColor>? TextReceived;
-    
     /// <summary>
     /// Event for text received with window targeting.
     /// </summary>
@@ -253,7 +250,7 @@ public class GameManager : IDisposable
         var customWindowId = targetwindow == Game.WindowTarget.Other ? targetwindowstring : "";
         
         // Debug: log ALL window text (including Main)
-        var debugText = text.Replace("\r", "").Replace("\n", "\\n");
+        var debugText = (text ?? "").Replace("\r", "").Replace("\n", "\\n");
         if (debugText.Length > 50) debugText = debugText.Substring(0, 50) + "...";
         Console.WriteLine($"[GameManager] target={targetwindow}, winType={winType}, text=\"{debugText}\"");
         

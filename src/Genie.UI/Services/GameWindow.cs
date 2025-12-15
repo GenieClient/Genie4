@@ -187,7 +187,6 @@ public class GameWindowManager
     
     public event Action<GameWindow>? WindowCreated;
     public event Action<GameWindow>? WindowCleared;
-    public event Action<GameWindow>? WindowUpdated;
     
     public GameWindowManager()
     {
