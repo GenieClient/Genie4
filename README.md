@@ -251,7 +251,7 @@ This copies the build output to a separate `bin\Run` folder, allowing you to kee
 **Option 2: Direct build**
 
 ```powershell
-dotnet build Genie5.sln --configuration Release && .\src\Genie.Windows\bin\Release\net10.0-windows\Genie.exe
+dotnet build Genie5.sln --configuration Release; if ($LASTEXITCODE -eq 0) { .\src\Genie.Windows\bin\Release\net10.0-windows\Genie.exe }
 ```
 
 > **Note:** If Genie is running, the direct build will fail because the files are locked. Use the build script instead, which outputs to a separate folder.

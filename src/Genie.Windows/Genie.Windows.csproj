@@ -15,6 +15,9 @@
     <ApplicationIcon>..\..\Graphics\Taleweaver.ico</ApplicationIcon>
     <NoWarn>$(NoWarn);WFO1000</NoWarn>
     
+    <!-- Minimum supported Windows version (Windows 7 = 6.1) to suppress CA1416 warnings -->
+    <SupportedOSPlatformVersion>6.1</SupportedOSPlatformVersion>
+    
     <!-- Always define WINDOWS for Windows Forms project -->
     <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
   </PropertyGroup>
