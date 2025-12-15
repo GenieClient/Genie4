@@ -27,11 +27,11 @@ namespace GenieClient.Services
         /// </summary>
         public static Color ToDrawingColor(this GenieColor color)
         {
-            // Handle transparent/empty colors - return Color.Empty to preserve original behavior
-            // where "no color" means use the control's default color
-            if (color.IsTransparent || color == default(GenieColor))
+            // Handle transparent colors - return Color.Transparent to preserve proper transparency semantics
+            // Note: Color.Transparent is (255,255,255,0) in System.Drawing - white with 0 alpha
+            if (color.IsTransparent)
             {
-                return Color.Empty;
+                return Color.Transparent;
             }
             return Color.FromArgb(color.A, color.R, color.G, color.B);
         }
