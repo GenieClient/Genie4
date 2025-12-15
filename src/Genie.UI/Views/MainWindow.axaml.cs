@@ -43,6 +43,7 @@ public partial class MainWindow : Window
         _gameManager.VitalsChanged += OnVitalsChanged;
         _gameManager.RoundtimeChanged += OnRoundtimeChanged;
         _gameManager.CompassChanged += OnCompassChanged;
+        _gameManager.HandsChanged += OnHandsChanged;
     }
 
     private void OnGameTextReceived(string text, GenieColor color, GenieColor bgcolor)
@@ -105,6 +106,14 @@ public partial class MainWindow : Window
         Dispatcher.UIThread.Post(() =>
         {
             UpdateCompass(n, ne, e, se, s, sw, w, nw, up, down, @out);
+        });
+    }
+
+    private void OnHandsChanged(string leftHand, string rightHand)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            UpdateHands(leftHand, rightHand);
         });
     }
 

@@ -30,6 +30,7 @@ public class GameManager : IDisposable
     public event Action<int, int, int, int, int>? VitalsChanged;
     public event Action<int>? RoundtimeChanged;
     public event Action<bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool>? CompassChanged;
+    public event Action<string, string>? HandsChanged; // left, right
 
     public bool IsConnected => _game?.IsConnected ?? false;
     public string? LastError { get; private set; }
@@ -265,6 +266,12 @@ public class GameManager : IDisposable
                         SetRoundtime(rt);
                     }
                 }
+                
+                // Update hands
+                if (varName == "lefthand" || varName == "righthand")
+                {
+                    UpdateHands();
+                }
             }
         }
         catch (Exception ex)
@@ -319,6 +326,31 @@ public class GameManager : IDisposable
         catch (Exception ex)
         {
             Console.WriteLine($"[GameManager] UpdateCompass error: {ex.Message}");
+        }
+    }
+
+    private void UpdateHands()
+    {
+        if (_globals == null) return;
+        
+        try
+        {
+            string GetVar(string name) => _globals.VariableList?.ContainsKey(name) == true 
+                ? _globals.VariableList[name]?.ToString() ?? "Empty" 
+                : "Empty";
+            
+            var leftHand = GetVar("lefthand");
+            var rightHand = GetVar("righthand");
+            
+            // Empty string means empty hand
+            if (string.IsNullOrWhiteSpace(leftHand)) leftHand = "Empty";
+            if (string.IsNullOrWhiteSpace(rightHand)) rightHand = "Empty";
+            
+            HandsChanged?.Invoke(leftHand, rightHand);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[GameManager] UpdateHands error: {ex.Message}");
         }
     }
 
