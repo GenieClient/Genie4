@@ -9,6 +9,7 @@ using GenieClient.Services;
 using GenieClient.UI.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace GenieClient.Views;
 
@@ -467,6 +468,64 @@ public partial class MainWindow : Window
     private void OnExit(object? sender, RoutedEventArgs e)
     {
         Close();
+    }
+
+    private async void OnUpdateMaps(object? sender, RoutedEventArgs e)
+    {
+        // Determine the maps directory
+        var mapDir = Path.Combine(LocalDirectory.Path, "Maps");
+        
+        AppendText($"Updating Maps to {mapDir}...\n", Colors.Yellow);
+        StatusText.Text = "Updating maps...";
+        
+        try
+        {
+            var result = await Updater.UpdateMaps(mapDir, true);
+            if (result)
+            {
+                AppendText("Maps updated successfully.\n", Colors.LightGreen);
+                StatusText.Text = "Maps updated";
+            }
+            else
+            {
+                AppendText("Failed to update maps.\n", Colors.Red);
+                StatusText.Text = "Map update failed";
+            }
+        }
+        catch (Exception ex)
+        {
+            AppendText($"Error updating maps: {ex.Message}\n", Colors.Red);
+            StatusText.Text = "Map update error";
+        }
+    }
+
+    private async void OnUpdatePlugins(object? sender, RoutedEventArgs e)
+    {
+        // Determine the plugins directory
+        var pluginDir = Path.Combine(LocalDirectory.Path, "Plugins");
+        
+        AppendText($"Updating Plugins to {pluginDir}...\n", Colors.Yellow);
+        StatusText.Text = "Updating plugins...";
+        
+        try
+        {
+            var result = await Updater.UpdatePlugins(pluginDir, true);
+            if (result)
+            {
+                AppendText("Plugins updated successfully.\n", Colors.LightGreen);
+                StatusText.Text = "Plugins updated";
+            }
+            else
+            {
+                AppendText("Failed to update plugins.\n", Colors.Red);
+                StatusText.Text = "Plugin update failed";
+            }
+        }
+        catch (Exception ex)
+        {
+            AppendText($"Error updating plugins: {ex.Message}\n", Colors.Red);
+            StatusText.Text = "Plugin update error";
+        }
     }
 
     private void OnCompassClick(object? sender, PointerPressedEventArgs e)

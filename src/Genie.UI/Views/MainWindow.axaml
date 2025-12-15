@@ -43,6 +43,10 @@
             <MenuItem Header="_Scripts">
                 <MenuItem Header="_Script Manager..."/>
             </MenuItem>
+            <MenuItem Header="_Automapper">
+                <MenuItem Header="_Update Maps" Click="OnUpdateMaps"/>
+                <MenuItem Header="Update _Plugins" Click="OnUpdatePlugins"/>
+            </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About Genie 5"/>
             </MenuItem>
