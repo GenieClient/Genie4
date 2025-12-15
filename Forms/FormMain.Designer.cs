@@ -133,7 +133,6 @@ namespace GenieClient
             loadTestClientToolStripMenuItem = new ToolStripMenuItem();
             _ToolStripSeparator3 = new ToolStripSeparator();
             autoUpdateToolStripMenuItem = new ToolStripMenuItem();
-            autoUpdateLampToolStripMenuItem = new ToolStripMenuItem();
             checkUpdatesOnStartupToolStripMenuItem = new ToolStripMenuItem();
             _ChangelogToolStripMenuItem = new ToolStripMenuItem();
             _ToolStripSeparator10 = new ToolStripSeparator();
@@ -902,7 +901,7 @@ namespace GenieClient
             // 
             // _HelpToolStripMenuItem
             // 
-            _HelpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { checkForUpdatesToolStripMenuItem, forceUpdateToolStripMenuItem, loadTestClientToolStripMenuItem, _ToolStripSeparator3, autoUpdateToolStripMenuItem, autoUpdateLampToolStripMenuItem, checkUpdatesOnStartupToolStripMenuItem, _ChangelogToolStripMenuItem, _ToolStripSeparator10, _OpenGenieDiscordToolStripMenuItem, OpenGenieGithubToolStripMenuItem, _OpenGenieDocsToolStripMenuItem, toolStripSeparator1, toolStripMenuItem1 });
+            _HelpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { checkForUpdatesToolStripMenuItem, forceUpdateToolStripMenuItem, loadTestClientToolStripMenuItem, _ToolStripSeparator3, autoUpdateToolStripMenuItem, checkUpdatesOnStartupToolStripMenuItem, _ChangelogToolStripMenuItem, _ToolStripSeparator10, _OpenGenieDiscordToolStripMenuItem, OpenGenieGithubToolStripMenuItem, _OpenGenieDocsToolStripMenuItem, toolStripSeparator1, toolStripMenuItem1 });
             _HelpToolStripMenuItem.Name = "_HelpToolStripMenuItem";
             _HelpToolStripMenuItem.Size = new Size(44, 20);
             _HelpToolStripMenuItem.Text = "&Help";
@@ -939,15 +938,6 @@ namespace GenieClient
             autoUpdateToolStripMenuItem.Size = new Size(211, 22);
             autoUpdateToolStripMenuItem.Text = "&AutoUpdate";
             autoUpdateToolStripMenuItem.Click += autoUpdateToolStripMenuItem_Click;
-            // 
-            // autoUpdateLampToolStripMenuItem
-            // 
-            autoUpdateLampToolStripMenuItem.Checked = true;
-            autoUpdateLampToolStripMenuItem.CheckState = CheckState.Checked;
-            autoUpdateLampToolStripMenuItem.Name = "autoUpdateLampToolStripMenuItem";
-            autoUpdateLampToolStripMenuItem.Size = new Size(211, 22);
-            autoUpdateLampToolStripMenuItem.Text = "AutoUpdate Lamp";
-            autoUpdateLampToolStripMenuItem.Click += autoUpdateLampToolStripMenuItem_Click;
             // 
             // checkUpdatesOnStartupToolStripMenuItem
             // 
@@ -4189,7 +4179,6 @@ namespace GenieClient
         private ToolStripMenuItem checkForUpdatesToolStripMenuItem;
         private ToolStripMenuItem forceUpdateToolStripMenuItem;
         private ToolStripMenuItem autoUpdateToolStripMenuItem;
-        private ToolStripMenuItem autoUpdateLampToolStripMenuItem;
         private ToolStripMenuItem checkUpdatesOnStartupToolStripMenuItem;
         private ToolStripMenuItem loadTestClientToolStripMenuItem;
         private ToolStripMenuItem updateMapsToolStripMenuItem;

@@ -30,24 +30,13 @@ namespace GenieClient
             return ConfirmationRequested?.Invoke(message, title) ?? true;
         }
 
-        private static string GitHubUpdaterReleaseURL = @"https://api.github.com/repos/GenieClient/Lamp/releases/latest";
         private static string GitHubClientReleaseURL = @"https://api.github.com/repos/GenieClient/Genie4/releases/latest";
-        private static string UpdaterFilename = @"Lamp.exe";
-        private static string LocalUpdater = @$"{Environment.CurrentDirectory}\{UpdaterFilename}";
         private static HttpClient client = new HttpClient();
 
         // Default GitHub repository URLs for direct downloads
         private static string DefaultMapsRepoURL = @"https://github.com/GenieClient/Maps/archive/refs/heads/main.zip";
         private static string DefaultPluginsRepoURL = @"https://github.com/GenieClient/Plugins/archive/refs/heads/main.zip";
 
-        public static string LocalUpdaterVersion
-        {
-            get
-            {
-                if (File.Exists(LocalUpdater)) return FileVersionInfo.GetVersionInfo(LocalUpdater).FileVersion;
-                return "0";
-            }
-        }
         public static string LocalClientVersion
         {
             get
@@ -55,20 +44,7 @@ namespace GenieClient
                 return FileVersionInfo.GetVersionInfo(AppDomain.CurrentDomain.BaseDirectory + "\\Genie.exe").FileVersion;
             }
         }
-        public static string ServerUpdaterVersion
-        {
-            get 
-            {
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-                client.DefaultRequestHeaders.Add("User-Agent", "Genie Client Updater");
 
-                var streamTask = client.GetStreamAsync(GitHubUpdaterReleaseURL).Result;
-                Release latest = JsonSerializer.Deserialize<Release>(streamTask);
-
-                return latest.Version;
-            }
-        }
         public static string ServerClientVersion
         {
             get
@@ -100,60 +76,27 @@ namespace GenieClient
             } 
         }
 
-        public static bool UpdaterIsCurrent
+        public static async Task<bool> RunUpdate()
         {
-            get 
-            {
-                return LocalUpdaterVersion == ServerUpdaterVersion;
-            }
+            return await Task.FromResult(false);
         }
 
-        public static async Task UpdateUpdater(bool autoUpdate)
+        public static async Task<bool> UpdateToTest()
         {
-            if (!UpdaterIsCurrent && !autoUpdate && !RequestConfirmation(
-                "An updated version of Lamp is available. It is recommended to update Lamp before continuing. Would you like to update now?",
-                "Update Lamp?")) return;
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-            client.DefaultRequestHeaders.Add("User-Agent", "Genie Client Updater");
-
-            var streamTask = client.GetStreamAsync(GitHubUpdaterReleaseURL).Result;
-            Release latest = JsonSerializer.Deserialize<Release>(streamTask);
-            
-            latest.LoadAssets();
-            if (latest.Assets.ContainsKey(UpdaterFilename))
-            {
-                Asset updaterAsset = latest.Assets[UpdaterFilename];
-                var response = client.GetAsync(new Uri(updaterAsset.DownloadURL)).Result;
-                using (var updaterFile = new FileStream(updaterAsset.LocalFilepath, FileMode.Create))
-                {
-                    await response.Content.CopyToAsync(updaterFile);
-                }
-            }
+            return await Task.FromResult(false);
         }
 
-        public static async Task<bool> RunUpdate(bool autoUpdateLamp)
-        {
-            await UpdateUpdater(autoUpdateLamp);
-            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a", false, true);
-        }
-
-        public static async Task<bool> UpdateToTest(bool autoUpdateLamp)
-        {
-            await UpdateUpdater(autoUpdateLamp);
-            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a --t", false, true);
-        }
-        public static async Task<bool> UpdateMaps(string mapdir, bool autoUpdateLamp)
+        public static async Task<bool> UpdateMaps(string mapdir)
         {
             return await DownloadAndExtractZip(DefaultMapsRepoURL, mapdir);
         }
 
-        public static async Task<bool> UpdatePlugins(string plugindir, bool autoUpdateLamp)
+        public static async Task<bool> UpdatePlugins(string plugindir)
         {
             return await DownloadAndExtractZip(DefaultPluginsRepoURL, plugindir);
         }
 
-        public static async Task<bool> UpdateScripts(string scriptdir, string scriptrepo, bool autoUpdateLamp)
+        public static async Task<bool> UpdateScripts(string scriptdir, string scriptrepo)
         {
             if (string.IsNullOrWhiteSpace(scriptrepo))
             {
@@ -162,7 +105,7 @@ namespace GenieClient
             return await DownloadAndExtractZip(scriptrepo, scriptdir);
         }
 
-        public static async Task<bool> UpdateArt(string artdir, string artrepo, bool autoUpdateLamp)
+        public static async Task<bool> UpdateArt(string artdir, string artrepo)
         {
             if (string.IsNullOrWhiteSpace(artrepo))
             {
@@ -271,8 +214,7 @@ namespace GenieClient
         }
         public static async Task<bool> ForceUpdate()
         {
-            await UpdateUpdater(true);
-            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", "--a --f", false, true);
+            return await Task.FromResult(false);
         }
         public class Release
         {

@@ -480,7 +480,7 @@ public partial class MainWindow : Window
         
         try
         {
-            var result = await Updater.UpdateMaps(mapDir, true);
+            var result = await Updater.UpdateMaps(mapDir);
             if (result)
             {
                 AppendText("Maps updated successfully.\n", Colors.LightGreen);
@@ -509,7 +509,7 @@ public partial class MainWindow : Window
         
         try
         {
-            var result = await Updater.UpdatePlugins(pluginDir, true);
+            var result = await Updater.UpdatePlugins(pluginDir);
             if (result)
             {
                 AppendText("Plugins updated successfully.\n", Colors.LightGreen);

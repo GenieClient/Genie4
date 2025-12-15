@@ -226,14 +226,14 @@ Project Link: [https://github.com/GenieClient/Genie4](https://github.com/GenieCl
 
 Works on Windows, macOS, and Linux:
 
+Dev Mode:
 ```bash
-# Build and run
-cd src/Genie.UI
-dotnet run
+cd src/Genie.UI && dotnet run
+```
 
-# Or build the whole solution first
-dotnet build Genie5.sln --configuration Release
-dotnet run --project src/Genie.UI/Genie.UI.csproj
+Build Release version and run:
+```bash
+dotnet build Genie5.sln --configuration Release && dotnet run --project src/Genie.UI/Genie.UI.csproj
 ```
 
 #### Classic Windows UI (Windows Forms) 🖥️
@@ -245,15 +245,13 @@ Full-featured Windows-only edition:
 This copies the build output to a separate `bin\Run` folder, allowing you to keep Genie running while rebuilding:
 
 ```powershell
-.\build.ps1
-.\bin\Run\Genie.exe
+.\build.ps1; if ($LASTEXITCODE -eq 0) { .\bin\Run\Genie.exe }
 ```
 
 **Option 2: Direct build**
 
 ```powershell
-dotnet build Genie5.sln --configuration Release
-.\src\Genie.Windows\bin\Release\net10.0-windows\Genie.exe
+dotnet build Genie5.sln --configuration Release && .\src\Genie.Windows\bin\Release\net10.0-windows\Genie.exe
 ```
 
 > **Note:** If Genie is running, the direct build will fail because the files are locked. Use the build script instead, which outputs to a separate folder.

@@ -177,6 +177,13 @@ namespace GenieClient
 
         public async void UpdateOnStartup()
         {
+            // DISABLED: Update checking at startup is disabled while migrating to a new repository.
+            // The update infrastructure is not yet set up for the new repo.
+            // Re-enable this once the new update system is configured.
+            // Original code checked Updater.ClientIsCurrent and triggered auto-update if enabled.
+            return;
+
+            /* Original implementation - re-enable when update infra is ready:
             await Task.Run(async () =>
             {
                 if (m_oGlobals.Config.CheckForUpdates || m_oGlobals.Config.AutoUpdate)
@@ -200,6 +207,7 @@ namespace GenieClient
                     }
                 }
             });
+            */
         }
 
         public void DirectConnect(string[] parameters)
@@ -7026,11 +7034,6 @@ namespace GenieClient
                         autoUpdateToolStripMenuItem.Checked = m_oGlobals.Config.AutoUpdate;
                         break;
                     }
-                case Genie.Config.ConfigFieldUpdated.AutoUpdateLamp:
-                    {
-                        autoUpdateLampToolStripMenuItem.Checked = m_oGlobals.Config.AutoUpdateLamp;
-                        break;
-                    }
                 case Genie.Config.ConfigFieldUpdated.ImagesEnabled:
                     {
                         _ImagesEnabledToolStripMenuItem.Checked = m_oGlobals.Config.bShowImages;
@@ -8473,6 +8476,13 @@ namespace GenieClient
 
         private async void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // DISABLED: Manual update checking is disabled while migrating to a new repository.
+            // The update infrastructure is not yet set up for the new repo.
+            // Re-enable this once the new update system is configured.
+            AddText("Update checking is temporarily disabled while migrating to a new repository.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor);
+            return;
+
+            /* Original implementation - re-enable when update infra is ready:
             await Task.Run(async () =>
             {
                 if (Updater.ClientIsCurrent)
@@ -8512,10 +8522,18 @@ namespace GenieClient
                     }
                 }
             });
+            */
         }
 
         private async void forceUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // DISABLED: Force update is disabled while migrating to a new repository.
+            // The update infrastructure is not yet set up for the new repo.
+            // Re-enable this once the new update system is configured.
+            AddText("Force update is temporarily disabled while migrating to a new repository.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor);
+            return;
+
+            /* Original implementation - re-enable when update infra is ready:
             if (m_oGame.IsConnectedToGame)
             {
                 DialogResult response = MessageBox.Show("Genie will close and this will disconnect you from the game. Are you sure?", "Close Genie?", MessageBoxButtons.YesNoCancel);
@@ -8539,10 +8557,18 @@ namespace GenieClient
                     System.Windows.Forms.Application.Exit();
                 }
             }
+            */
         }
 
         private async void loadTestClientToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // DISABLED: Load test client is disabled while migrating to a new repository.
+            // The update infrastructure is not yet set up for the new repo.
+            // Re-enable this once the new update system is configured.
+            AddText("Load test client is temporarily disabled while migrating to a new repository.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor);
+            return;
+
+            /* Original implementation - re-enable when update infra is ready:
             DialogResult response = MessageBox.Show("This will force your client to the Test Release Version. Test is not considered stable and may introduce bugs. If Autoupdate is enabled it will be disabled. Checking for Updates will restore you to the Latest build. Are you sure?", "Load Test Client?", MessageBoxButtons.YesNoCancel);
             if (response == DialogResult.Yes)
             {
@@ -8576,6 +8602,7 @@ namespace GenieClient
                     }
                 }
             }
+            */
         }
 
         private async void updateMapsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -8587,7 +8614,7 @@ namespace GenieClient
                 {
                     AddText($"Saving Config and Updating Maps in {m_oGlobals.Config.MapDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                     m_oGlobals.Config.Save();
-                    if (await Updater.UpdateMaps(m_oGlobals.Config.MapDir, m_oGlobals.Config.AutoUpdateLamp))
+                    if (await Updater.UpdateMaps(m_oGlobals.Config.MapDir))
                     {
                         AddText("Maps Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                     }
@@ -8608,7 +8635,7 @@ namespace GenieClient
                 {
                     AddText($"Saving Config and Updating Plugins in {m_oGlobals.Config.PluginDir}\r\nRepo{m_oGlobals.Config.PluginRepo}", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                     m_oGlobals.Config.Save();
-                    if (await Updater.UpdatePlugins(m_oGlobals.Config.PluginDir, m_oGlobals.Config.AutoUpdateLamp))
+                    if (await Updater.UpdatePlugins(m_oGlobals.Config.PluginDir))
                     {
                         AddText("Plugins Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                         FormPlugin_ReloadPlugins();
@@ -8634,7 +8661,7 @@ namespace GenieClient
                 await Task.Run(async () =>
                 {
                     AddText($"Updating Scripts in {m_oGlobals.Config.ScriptDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    if (await Updater.UpdateScripts(m_oGlobals.Config.ScriptDir, m_oGlobals.Config.ScriptRepo, m_oGlobals.Config.AutoUpdateLamp))
+                    if (await Updater.UpdateScripts(m_oGlobals.Config.ScriptDir, m_oGlobals.Config.ScriptRepo))
                     {
                         AddText("Scripts Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                     }
@@ -8681,12 +8708,6 @@ namespace GenieClient
             m_oGlobals.Config.bClassicConnect = ClassicConnectToolStripMenuItem.Checked;
         }
 
-        private void autoUpdateLampToolStripMenuItem_Click(global::System.Object sender, global::System.EventArgs e)
-        {
-            m_oGlobals.Config.AutoUpdateLamp = !m_oGlobals.Config.AutoUpdateLamp;
-            autoUpdateLampToolStripMenuItem.Checked = m_oGlobals.Config.AutoUpdateLamp;
-        }
-
         private void _ImagesEnabledToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _ImagesEnabledToolStripMenuItem.Checked = !m_oGlobals.Config.bShowImages;
@@ -8707,7 +8728,7 @@ namespace GenieClient
                 {
                     AddText($"Saving Config and Updating Art in {m_oGlobals.Config.ArtDir}\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                     m_oGlobals.Config.Save();
-                    if (await Updater.UpdateArt(m_oGlobals.Config.ArtDir, m_oGlobals.Config.ArtRepo, m_oGlobals.Config.AutoUpdateLamp))
+                    if (await Updater.UpdateArt(m_oGlobals.Config.ArtDir, m_oGlobals.Config.ArtRepo))
                     {
                         AddText("Art Updated.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                     }

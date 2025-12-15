@@ -62,7 +62,6 @@ namespace GenieClient.Genie
         public bool Condensed { get; set; } = false;
         public bool CheckForUpdates { get; set; } = true;
         public bool AutoUpdate { get; set; } = false;
-        public bool AutoUpdateLamp { get; set; } = true;
 
         public string sConnectString = "FE:GENIE /VERSION:" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + " /P:WIN_XP /XML";
         public int[] iPickerColors = new int[17];
@@ -400,7 +399,6 @@ namespace GenieClient.Genie
             LogDir,
             CheckForUpdates,
             AutoUpdate,
-            AutoUpdateLamp,
             ClassicConnect,
             ImagesEnabled,
             SizeInputToGame,
@@ -509,7 +507,6 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine($"#config {{lichstartpause}} {{{LichStartPause}}}");
                 oStreamWriter.WriteLine($"#config {{connectscript}} {{{ConnectScript}}}");
                 oStreamWriter.WriteLine($"#config {{autoupdate}} {{{AutoUpdate}}}");
-                oStreamWriter.WriteLine($"#config {{autoupdatelamp}} {{{AutoUpdateLamp}}}");
                 oStreamWriter.WriteLine($"#config {{checkforupdates}} {{{CheckForUpdates}}}");
                 oStreamWriter.WriteLine($"#config {{scriptextension}} {{{ScriptExtension}}}");
                 oStreamWriter.Close();
@@ -1161,29 +1158,6 @@ namespace GenieClient.Genie
                                         }
                                 }
                                 ConfigChanged?.Invoke(ConfigFieldUpdated.AutoUpdate);
-                                break;
-                            }
-
-                        case "autoupdatelamp":
-                            {
-                                var expression = sValue.ToLower();
-                                switch (expression)
-                                {
-                                    case "on":
-                                    case "true":
-                                    case "1":
-                                        {
-                                            AutoUpdateLamp = true;
-                                            break;
-                                        }
-
-                                    default:
-                                        {
-                                            AutoUpdateLamp = false;
-                                            break;
-                                        }
-                                }
-                                ConfigChanged?.Invoke(ConfigFieldUpdated.AutoUpdateLamp);
                                 break;
                             }
 
