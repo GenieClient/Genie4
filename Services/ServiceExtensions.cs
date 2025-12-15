@@ -9,12 +9,23 @@ namespace GenieClient.Services
     {
         /// <summary>
         /// Registers all core Genie services with the DI container.
+        /// Uses null (no-op) implementations by default - platform-specific code should
+        /// replace these with real implementations.
         /// </summary>
         public static IServiceCollection AddGenieServices(this IServiceCollection services)
         {
             // Core infrastructure services
             services.AddSingleton<IPathService, PathService>();
             services.AddSingleton<ISoundService, SoundService>();
+
+            // Platform-agnostic service interfaces with null implementations
+            // Platform-specific projects (Genie.Windows, Genie.Avalonia) should register
+            // their own implementations using AddGeniePlatformServices()
+            services.AddSingleton<IWindowAttentionService>(NullWindowAttentionService.Instance);
+            services.AddSingleton<IRichTextService>(NullRichTextService.Instance);
+            services.AddSingleton<IImageService>(NullImageService.Instance);
+            services.AddSingleton<IWindowChromeService>(NullWindowChromeService.Instance);
+            services.AddSingleton<IColorParsingService>(NullColorParsingService.Instance);
 
             // Game services - GameServiceAdapter wraps the existing Game class
             // Note: GameServiceAdapter requires Game and Globals instances, which are 

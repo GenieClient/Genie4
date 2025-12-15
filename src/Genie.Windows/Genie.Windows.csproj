@@ -35,6 +35,8 @@
     <ProjectReference Include="..\Genie.Core\Genie.Core.csproj" />
   </ItemGroup>
 
+  <!-- Windows-specific service implementations are auto-included by SDK -->
+  
   <!-- Plugin host (requires Windows Forms for plugin API compatibility) -->
   <ItemGroup>
     <Compile Include="..\..\Core\PluginHost.cs" Link="Core\PluginHost.cs" />

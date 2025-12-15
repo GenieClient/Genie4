@@ -176,12 +176,12 @@ public interface IColorParsingService
 
 | Current File | Target Service | Implementation |
 |--------------|----------------|----------------|
-| `Utility/Sound.cs` | `ISoundService` | ✅ Interface exists → Create `WindowsSoundService` |
-| `Utility/WindowFlash.cs` | `IWindowAttentionService` | 🆕 Create interface → `WindowsAttentionService` |
-| `Utility/Win32Utility.cs` | `IRichTextService` + `IWindowChromeService` | 🆕 Create interfaces → Move to `Genie.Windows` |
-| `Utility/FileHandler.cs` (images) | `IImageService` | 🆕 Create interface → `SkiaSharpImageService` |
-| `Utility/ColorCode.cs` | `IColorParsingService` | 🆕 Create interface → Refactor class |
-| `Services/ColorConverter.cs` | N/A | ➡️ Move to `Genie.Windows` |
+| `Utility/Sound.cs` | `ISoundService` | ✅ Interface exists, `SoundService.Windows.cs` exists |
+| `Utility/WindowFlash.cs` | `IWindowAttentionService` | ✅ Interface + `WindowsAttentionService` created |
+| `Utility/Win32Utility.cs` | `IRichTextService` + `IWindowChromeService` | ✅ Interfaces + Windows implementations created |
+| `Utility/FileHandler.cs` (images) | `IImageService` | ✅ Interface + `WindowsImageService` created |
+| `Utility/ColorCode.cs` | `IColorParsingService` | ✅ Interface + `WindowsColorParsingService` created |
+| `Services/ColorConverter.cs` | N/A | ⏳ Still to move to `Genie.Windows` |
 
 #### Color Migration (System.Drawing.Color → GenieColor)
 
@@ -236,7 +236,7 @@ public interface IColorParsingService
 ## Phase 1 Task Breakdown
 
 ### Task 1.0: Service Infrastructure Setup
-**STATUS: ❌ TODO** - Do this first!
+**STATUS: ✅ COMPLETE**
 
 Create the service abstraction layer:
 
@@ -267,17 +267,23 @@ src/Genie.Windows/Services/
 ```
 
 Checklist:
-- [ ] Create `Services/Interfaces/` directory in Genie.Core
-- [ ] Create `IWindowAttentionService.cs` interface
-- [ ] Create `IRichTextService.cs` interface
-- [ ] Create `IImageService.cs` + `IGenieImage.cs` interfaces
-- [ ] Create `IWindowChromeService.cs` interface
-- [ ] Create `IColorParsingService.cs` interface
-- [ ] Create `ServiceProvider.cs` for DI registration
-- [ ] Create null implementations for graceful degradation
-- [ ] Create Windows implementations in `Genie.Windows/Services/`
-- [ ] Register Windows services at app startup
-- [ ] Remove Windows-only files from `Genie.Core`
+- [x] Create `Services/Interfaces/` directory in Genie.Core
+- [x] Create `IWindowAttentionService.cs` interface
+- [x] Create `IRichTextService.cs` interface
+- [x] Create `IImageService.cs` + `IGenieImage.cs` interfaces
+- [x] Create `IWindowChromeService.cs` interface
+- [x] Create `IColorParsingService.cs` interface
+- [x] Create `GenieServices.cs` service locator
+- [x] Create `NullServices.cs` null implementations for graceful degradation
+- [x] Create Windows implementations in `Genie.Windows/Services/`:
+  - [x] `WindowsAttentionService.cs`
+  - [x] `WindowsRichTextService.cs`
+  - [x] `WindowsChromeService.cs`
+  - [x] `WindowsImageService.cs`
+  - [x] `WindowsColorParsingService.cs`
+  - [x] `WindowsServiceInitializer.cs`
+- [ ] Register Windows services at app startup (wire up `WindowsServiceInitializer.Initialize()`)
+- [ ] Remove old Windows-only files from `Genie.Core` (after migration)
 
 ---
 
