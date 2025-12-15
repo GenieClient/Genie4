@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Diagnostics;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using GenieClient.Services;
+#if WINDOWS
+using System.Drawing;
+#endif
 
 namespace GenieClient.Mapper
 {
@@ -774,6 +776,7 @@ namespace GenieClient.Mapper
             set => m_NodeColor = value;
         }
 
+#if WINDOWS
         /// <summary>
         /// Legacy Color property for UI compatibility.
         /// </summary>
@@ -782,6 +785,7 @@ namespace GenieClient.Mapper
             get => m_NodeColor.ToDrawingColor();
             set => m_NodeColor = value.ToGenieColor();
         }
+#endif
 
         private Point3D m_oPosition;
 

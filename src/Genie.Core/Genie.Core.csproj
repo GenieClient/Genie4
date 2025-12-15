@@ -73,10 +73,11 @@
   </ItemGroup>
 
   <!-- Services (platform-agnostic interfaces and utilities) -->
-  <!-- Note: ColorConverter.cs stays in Core until color migration is complete (Task 1.2.1) -->
-  <!-- Note: SoundService.Windows.cs stays in Core for now (has runtime platform check) -->
   <ItemGroup>
     <Compile Include="..\..\Services\*.cs" Link="Services\%(Filename)%(Extension)" />
+    <!-- Exclude Windows-only services from Core - they belong in Genie.Windows -->
+    <Compile Remove="..\..\Services\ColorConverter.cs" />
+    <Compile Remove="..\..\Services\SoundService.Windows.cs" />
   </ItemGroup>
 
   <!-- Utility - Core utilities needed by all platforms -->
@@ -106,10 +107,8 @@
     Core code now uses GenieServices.Sound instead of static Sound class.
   -->
 
-  <!-- Mapper data models only (AutoMapper has UI deps, stays in Windows) -->
-  <ItemGroup>
-    <Compile Include="..\..\Mapper\NodeList.cs" Link="Mapper\NodeList.cs" />
-  </ItemGroup>
+  <!-- Mapper is Windows-only for now (uses System.Drawing.RectangleF, etc.) -->
+  <!-- Note: Mapper data models will need platform-agnostic abstractions for Phase 2 -->
 
   <!-- Shared files -->
   <ItemGroup>
@@ -152,6 +151,11 @@
   <!-- Windows-only VB.NET interop -->
   <ItemGroup Condition="$(TargetFramework.Contains('windows'))">
     <Compile Include="..\..\Properties\MyNamespace.Static.1.Designer.cs" Link="Properties\MyNamespace.Static.1.Designer.cs" />
+  </ItemGroup>
+
+  <!-- Windows-only mapper data models (uses System.Drawing.RectangleF, etc.) -->
+  <ItemGroup Condition="$(TargetFramework.Contains('windows'))">
+    <Compile Include="..\..\Mapper\NodeList.cs" Link="Mapper\NodeList.cs" />
   </ItemGroup>
 
 </Project>

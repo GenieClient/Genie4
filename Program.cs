@@ -1,4 +1,5 @@
 ﻿using GenieClient.Services;
+using GenieClient.Windows.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,6 +16,10 @@ namespace GenieClient
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            // Initialize Windows-specific services (sound, window attention, etc.)
+            // This registers Windows implementations with the GenieServices static locator
+            WindowsServiceInitializer.Initialize();
 
             var host = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>

@@ -43,6 +43,9 @@
     <Compile Include="..\..\Utility\Win32Utility.cs" Link="Utility\Win32Utility.cs" />
     <Compile Include="..\..\Utility\Sound.cs" Link="Utility\Sound.cs" />
     <Compile Include="..\..\Utility\EnumWindows.cs" Link="Utility\EnumWindows.cs" />
+    <!-- System.Drawing bridge for color conversion (Windows-only) -->
+    <Compile Include="..\..\Services\ColorConverter.cs" Link="Services\ColorConverter.cs" />
+    <Compile Include="..\..\Services\SoundService.Windows.cs" Link="Services\SoundService.Windows.cs" />
     <!-- GenieError.Windows.cs is now in Genie.Core (multi-target, included for Windows) -->
     <!-- MyNamespace.Static.1.Designer.cs is already included in Properties section below -->
   </ItemGroup>

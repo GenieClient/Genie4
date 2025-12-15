@@ -2369,7 +2369,7 @@ namespace GenieClient.Genie
                                                             }
                                                             catch(Exception ex)
                                                             {
-                                                                EchoColorText(ex.Message + System.Environment.NewLine, oGlobals.PresetList["scriptecho"].FgColor.ToGenieColor(), oGlobals.PresetList["scriptecho"].BgColor.ToGenieColor(), "");
+                                                                EchoColorText(ex.Message + System.Environment.NewLine, oGlobals.PresetList["scriptecho"].Foreground, oGlobals.PresetList["scriptecho"].Background, "");
                                                             }
                                                             break;
                                                         }
@@ -2966,7 +2966,7 @@ namespace GenieClient.Genie
                 if (c > KnownColor.Transparent & c < KnownColor.ButtonFace)
                 {
                     string argsText = s + System.Environment.NewLine;
-                    var argoColor = Color.FromKnownColor(c).ToGenieColor();
+                    var argoColor = ColorCode.StringToGenieColor(s);
                     var argoBgColor = GenieColor.Transparent;
                     EchoColorText(argsText, argoColor, argoBgColor);
                 }
@@ -3198,7 +3198,7 @@ namespace GenieClient.Genie
                         if (bUsePattern == false | de.Value.ToString().Contains(sPattern))
                         {
                             string argsText = Conversions.ToString(de.Key) + System.Environment.NewLine;
-                            EchoColorText(argsText, ((Globals.Presets.Preset)de.Value).FgColor.ToGenieColor(), ((Globals.Presets.Preset)de.Value).BgColor.ToGenieColor());
+                            EchoColorText(argsText, ((Globals.Presets.Preset)de.Value).Foreground, ((Globals.Presets.Preset)de.Value).Background);
                             I += 1;
                         }
                     }
@@ -3243,7 +3243,7 @@ namespace GenieClient.Genie
                             if (((Highlights.Highlight)de.Value).HighlightWholeRow == false)
                             {
                                 string argsText = Conversions.ToString("[" + ((Highlights.Highlight)de.Value).ClassName + ":" + Interaction.IIf(((Highlights.Highlight)de.Value).IsActive, "ON", "OFF") + "] " + Conversions.ToString(de.Key) + System.Environment.NewLine);
-                                EchoColorText(argsText, ((Highlights.Highlight)de.Value).FgColor.ToGenieColor(), ((Highlights.Highlight)de.Value).BgColor.ToGenieColor());
+                                EchoColorText(argsText, ((Highlights.Highlight)de.Value).Foreground, ((Highlights.Highlight)de.Value).Background);
                             }
 
                             I += 1;
@@ -3279,7 +3279,7 @@ namespace GenieClient.Genie
                             if (((Highlights.Highlight)de.Value).HighlightWholeRow == true)
                             {
                                 string argsText1 = Conversions.ToString("[" + ((Highlights.Highlight)de.Value).ClassName + ":" + Interaction.IIf(((Highlights.Highlight)de.Value).IsActive, "ON", "OFF") + "] " + Conversions.ToString(de.Key) + System.Environment.NewLine);
-                                EchoColorText(argsText1, ((Highlights.Highlight)de.Value).FgColor.ToGenieColor(), ((Highlights.Highlight)de.Value).BgColor.ToGenieColor());
+                                EchoColorText(argsText1, ((Highlights.Highlight)de.Value).Foreground, ((Highlights.Highlight)de.Value).Background);
                             }
 
                             I += 1;
@@ -3313,7 +3313,7 @@ namespace GenieClient.Genie
                         {
                             Globals.HighlightLineBeginsWith.Highlight oHighlight = (Globals.HighlightLineBeginsWith.Highlight)de.Value;
                             string argsText2 = Conversions.ToString("[" + oHighlight.ClassName + ":" + Interaction.IIf(oHighlight.IsActive, "ON", "OFF") + "] " + Conversions.ToString(de.Key) + System.Environment.NewLine);
-                            EchoColorText(argsText2, oHighlight.FgColor.ToGenieColor(), oHighlight.BgColor.ToGenieColor());
+                            EchoColorText(argsText2, oHighlight.Foreground, oHighlight.Background);
                             I += 1;
                         }
                     }
@@ -3345,7 +3345,7 @@ namespace GenieClient.Genie
                         {
                             Globals.HighlightRegExp.Highlight oHighlight = (Globals.HighlightRegExp.Highlight)de.Value;
                             string argsText3 = Conversions.ToString("[" + oHighlight.ClassName + ":" + Interaction.IIf(oHighlight.IsActive, "ON", "OFF") + "] " + Conversions.ToString(de.Key) + System.Environment.NewLine);
-                            EchoColorText(argsText3, oHighlight.FgColor.ToGenieColor(), oHighlight.BgColor.ToGenieColor());
+                            EchoColorText(argsText3, oHighlight.Foreground, oHighlight.Background);
                             I += 1;
                         }
                     }

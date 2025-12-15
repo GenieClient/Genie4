@@ -16,11 +16,11 @@ namespace GenieClient.Services
         {
             // Core infrastructure services
             services.AddSingleton<IPathService, PathService>();
-            services.AddSingleton<ISoundService, SoundService>();
 
-            // Platform-agnostic service interfaces with null implementations
-            // Platform-specific projects (Genie.Windows, Genie.Avalonia) should register
-            // their own implementations using AddGeniePlatformServices()
+            // Platform-agnostic service interfaces with null implementations by default
+            // Platform-specific projects (Genie.Windows, Genie.Avalonia) override via
+            // WindowsServiceInitializer.Initialize() or similar
+            services.AddSingleton<ISoundService>(NullSoundService.Instance);
             services.AddSingleton<IWindowAttentionService>(NullWindowAttentionService.Instance);
             services.AddSingleton<IRichTextService>(NullRichTextService.Instance);
             services.AddSingleton<IImageService>(NullImageService.Instance);

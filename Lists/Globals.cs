@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -10,6 +9,9 @@ using System.Text.RegularExpressions;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using GenieClient.Services;
+#if WINDOWS
+using System.Drawing;
+#endif
 
 namespace GenieClient.Genie
 {
@@ -326,7 +328,8 @@ namespace GenieClient.Genie
                 public bool bHighlightLine = false;
                 public bool bSaveToFile = true;
 
-                // Legacy properties for backward compatibility with UI layer
+#if WINDOWS
+                // Legacy properties for backward compatibility with Windows Forms UI layer
                 public Color FgColor
                 {
                     get => Foreground.ToDrawingColor();
@@ -348,6 +351,7 @@ namespace GenieClient.Genie
                     bSaveToFile = Conversions.ToBoolean(_bSaveToFile);
                     bHighlightLine = highlightLine;
                 }
+#endif
 
                 public Preset(string sKey, GenieColor fgColor, GenieColor bgColor, string sColorName, string _bSaveToFile, bool highlightLine)
                 {
@@ -1217,7 +1221,8 @@ namespace GenieClient.Genie
                 public bool IsActive = true;
                 public string SoundFile = string.Empty;
 
-                // Legacy properties for backward compatibility with UI layer
+#if WINDOWS
+                // Legacy properties for backward compatibility with Windows Forms UI layer
                 public Color FgColor
                 {
                     get => Foreground.ToDrawingColor();
@@ -1241,6 +1246,7 @@ namespace GenieClient.Genie
                     this.ClassName = ClassName;
                     this.IsActive = IsActive;
                 }
+#endif
 
                 public Highlight(string Text, string ColorName, GenieColor fgColor, GenieColor bgColor, bool CaseSensitive = true, string SoundFile = "", string ClassName = "", bool IsActive = true)
                 {
@@ -1354,7 +1360,8 @@ namespace GenieClient.Genie
                 public int Length { get { return Text.Length; } }
                 public int EndIndex { get { return StartIndex + Length; } }
 
-                // Legacy properties for backward compatibility with UI layer
+#if WINDOWS
+                // Legacy properties for backward compatibility with Windows Forms UI layer
                 public Color FgColor
                 {
                     get => Foreground.ToDrawingColor();
@@ -1387,6 +1394,7 @@ namespace GenieClient.Genie
                     this.ClassName = ClassName;
                     this.IsActive = IsActive;
                 }
+#endif
 
                 public Highlight(string text, string ColorName, GenieColor fgColor, GenieColor bgColor, bool CaseSensitive = true, string SoundFile = "", string ClassName = "", bool IsActive = true)
                 {

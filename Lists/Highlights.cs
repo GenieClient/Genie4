@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
-using System.Drawing;
 using System.Text.RegularExpressions;
 using GenieClient.Services;
+#if WINDOWS
+using System.Drawing;
+#endif
 
 namespace GenieClient.Genie
 {
@@ -77,7 +79,8 @@ namespace GenieClient.Genie
             public bool IsActive = true;
             public string SoundFile = string.Empty;
 
-            // Legacy properties for backward compatibility with UI layer
+#if WINDOWS
+            // Legacy properties for backward compatibility with Windows Forms UI layer
             public Color FgColor
             {
                 get => Foreground.ToDrawingColor();
@@ -101,6 +104,7 @@ namespace GenieClient.Genie
                 this.ClassName = ClassName;
                 this.IsActive = IsActive;
             }
+#endif
 
             public Highlight(GenieColor fgColor, string sColorName, GenieColor bgColor, bool bHighlightWholeRow, bool CaseSensitive = true, string SoundFile = "", string ClassName = "", bool IsActive = true)
             {

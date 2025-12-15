@@ -155,6 +155,51 @@ namespace GenieClient.Services
         public static bool operator !=(GenieColor left, GenieColor right) => !left.Equals(right);
 
         public override string ToString() => ToHex();
+
+#if WINDOWS
+        /// <summary>
+        /// Converts to System.Drawing.Color (Windows only).
+        /// </summary>
+        public System.Drawing.Color ToDrawingColor()
+        {
+            // Handle transparent colors - return Color.Transparent to preserve proper transparency semantics
+            if (IsTransparent)
+            {
+                return System.Drawing.Color.Transparent;
+            }
+            return System.Drawing.Color.FromArgb(A, R, G, B);
+        }
+
+        /// <summary>
+        /// Creates from System.Drawing.Color (Windows only).
+        /// </summary>
+        public static GenieColor FromDrawingColor(System.Drawing.Color color)
+        {
+            if (color.IsEmpty || color == System.Drawing.Color.Empty)
+            {
+                return Transparent;
+            }
+            return new GenieColor(color.R, color.G, color.B, color.A);
+        }
+#endif
     }
+
+#if WINDOWS
+    /// <summary>
+    /// Extension methods for System.Drawing.Color conversion (Windows only).
+    /// </summary>
+    public static class GenieColorExtensions
+    {
+        public static GenieColor ToGenieColor(this System.Drawing.Color color)
+        {
+            return GenieColor.FromDrawingColor(color);
+        }
+
+        public static System.Drawing.Color ToDrawingColor(this GenieColor color)
+        {
+            return color.ToDrawingColor();
+        }
+    }
+#endif
 }
 

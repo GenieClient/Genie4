@@ -455,7 +455,9 @@ The codebase has already started migrating to `GenieColor`:
 | **Image handling** | ✅ Create `IImageService`, use SkiaSharp for cross-platform |
 | **Color parsing** | ✅ Create `IColorParsingService`, move Windows color name resolution to Genie.Windows |
 | **Plugin System** | ⏸️ Keep Windows-only for now, discuss cross-platform later |
-| **ColorConverter.cs** | ✅ Move to Genie.Windows (System.Drawing bridge, Windows-only) |
+| **ColorConverter.cs** | ✅ Moved to Genie.Windows; extension methods added to GenieColor.cs with `#if WINDOWS` |
+| **SoundService.Windows.cs** | ✅ Moved to Genie.Windows |
+| **NodeList.cs (Mapper)** | ✅ Windows-only (uses System.Drawing.RectangleF) - will need abstractions for Phase 2 |
 
 ---
 
@@ -480,11 +482,16 @@ Genie.Core now builds for both cross-platform (`net10.0`) and Windows (`net10.0-
 - Windows version: Full feature set with all Windows-specific code
 
 All migrations complete:
-- ✅ `GenieColor` - Cross-platform color type
-- ✅ `GenieFont` - Cross-platform font type  
+- ✅ `GenieColor` - Cross-platform color type with `#if WINDOWS` conversion methods
+- ✅ `GenieFont` - Cross-platform font type with `#if WINDOWS` conversion methods
 - ✅ `ColorCode.cs` - Cross-platform with 140+ named colors
 - ✅ Service interfaces for platform abstraction
 - ✅ Windows-specific code properly isolated with `#if WINDOWS`
+- ✅ `ColorConverter.cs` and `SoundService.Windows.cs` moved to `Genie.Windows`
+- ✅ Legacy `FgColor`/`BgColor` properties wrapped in `#if WINDOWS`
+- ✅ Core code uses `Foreground`/`Background` (GenieColor) directly
+- ✅ `NodeList.cs` (Mapper) is Windows-only (uses System.Drawing.RectangleF)
+- ✅ `WindowsServiceInitializer.Initialize()` wired up at app startup
 
 ---
 
