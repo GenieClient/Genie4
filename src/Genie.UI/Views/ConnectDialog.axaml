@@ -2,10 +2,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="350"
+        xmlns:services="using:GenieClient.UI.Services"
+        mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="550"
         x:Class="GenieClient.Views.ConnectDialog"
         Title="Connect to Game"
-        Width="400" Height="440"
+        Width="450" Height="580"
         WindowStartupLocation="CenterOwner"
         CanResize="False"
         Background="#1a1a2e">
@@ -25,6 +26,18 @@
             <Setter Property="Padding" Value="8"/>
             <Setter Property="CornerRadius" Value="4"/>
         </Style>
+        <Style Selector="ListBox">
+            <Setter Property="Background" Value="#16213e"/>
+            <Setter Property="BorderBrush" Value="#0f3460"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        <Style Selector="ListBoxItem">
+            <Setter Property="Foreground" Value="#e0e0e0"/>
+            <Setter Property="Padding" Value="12,8"/>
+        </Style>
+        <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+            <Setter Property="Background" Value="#0f3460"/>
+        </Style>
         <Style Selector="Button">
             <Setter Property="Background" Value="#0f3460"/>
             <Setter Property="Foreground" Value="#e0e0e0"/>
@@ -35,16 +48,46 @@
             <Setter Property="Background" Value="#e94560"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
+        <Style Selector="Button.Danger">
+            <Setter Property="Background" Value="#7c1d1d"/>
+            <Setter Property="Foreground" Value="#fca5a5"/>
+        </Style>
+        <Style Selector="CheckBox">
+            <Setter Property="Foreground" Value="#e0e0e0"/>
+        </Style>
     </Window.Styles>
 
-    <Grid Margin="24" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*,Auto">
+    <Grid Margin="24" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*,Auto">
         <!-- Title -->
         <TextBlock Grid.Row="0" Text="Connect to Simutronics" 
                    FontSize="20" FontWeight="Bold" Foreground="#e94560"
-                   Margin="0,0,0,20"/>
+                   Margin="0,0,0,16"/>
+
+        <!-- Saved Profiles Section -->
+        <StackPanel Grid.Row="1" Spacing="4" Margin="0,0,0,12">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Text="Saved Profiles" Foreground="#888" FontSize="12"/>
+                <Button Grid.Column="1" x:Name="DeleteProfileButton" 
+                        Classes="Danger" Content="Delete" 
+                        FontSize="11" Padding="8,4"
+                        IsEnabled="False"
+                        Click="OnDeleteProfile"/>
+            </Grid>
+            <ListBox x:Name="ProfileListBox" Height="100"
+                     SelectionChanged="OnProfileSelected">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="services:ConnectionProfile">
+                        <TextBlock Text="{Binding DisplayName}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+
+        <!-- Separator -->
+        <Border Grid.Row="2" Height="1" Background="#0f3460" Margin="0,4,0,16"/>
 
         <!-- Game Selection -->
-        <StackPanel Grid.Row="1" Spacing="4" Margin="0,0,0,12">
+        <StackPanel Grid.Row="3" Spacing="4" Margin="0,0,0,12">
             <TextBlock Text="Game" Foreground="#888" FontSize="12"/>
             <ComboBox x:Name="GameComboBox" HorizontalAlignment="Stretch" SelectedIndex="0">
                 <ComboBoxItem Content="DragonRealms" Tag="DR"/>
@@ -59,36 +102,40 @@
         </StackPanel>
 
         <!-- Account -->
-        <StackPanel Grid.Row="2" Spacing="4" Margin="0,0,0,12">
+        <StackPanel Grid.Row="4" Spacing="4" Margin="0,0,0,12">
             <TextBlock Text="Account" Foreground="#888" FontSize="12"/>
             <TextBox x:Name="AccountTextBox" Watermark="Enter your account name"/>
         </StackPanel>
 
         <!-- Password -->
-        <StackPanel Grid.Row="3" Spacing="4" Margin="0,0,0,12">
+        <StackPanel Grid.Row="5" Spacing="4" Margin="0,0,0,12">
             <TextBlock Text="Password" Foreground="#888" FontSize="12"/>
             <TextBox x:Name="PasswordTextBox" PasswordChar="●" Watermark="Enter your password"/>
         </StackPanel>
 
         <!-- Character (optional) -->
-        <StackPanel Grid.Row="4" Spacing="4" Margin="0,0,0,12">
+        <StackPanel Grid.Row="6" Spacing="4" Margin="0,0,0,12">
             <TextBlock Text="Character (optional)" Foreground="#888" FontSize="12"/>
             <TextBox x:Name="CharacterTextBox" Watermark="Auto-select character"/>
         </StackPanel>
 
+        <!-- Save Profile Checkbox -->
+        <CheckBox Grid.Row="7" x:Name="SaveProfileCheckBox" 
+                  Content="Save this profile (including password)" 
+                  Margin="0,0,0,8"/>
+
         <!-- Status message -->
-        <TextBlock Grid.Row="5" x:Name="StatusText" 
+        <TextBlock Grid.Row="8" x:Name="StatusText" 
                    Foreground="#ef4444" FontSize="12" 
-                   TextWrapping="Wrap" Margin="0,0,0,12"/>
+                   TextWrapping="Wrap" Margin="0,0,0,8"/>
 
         <!-- Spacer -->
-        <Border Grid.Row="6"/>
+        <Border Grid.Row="9"/>
 
         <!-- Buttons -->
-        <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12">
+        <StackPanel Grid.Row="10" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12">
             <Button Content="Cancel" Click="OnCancel"/>
             <Button Classes="Primary" Content="Connect" Click="OnConnect"/>
         </StackPanel>
     </Grid>
 </Window>
-
