@@ -93,35 +93,46 @@
                         <!-- Cardinal directions grid -->
                         <Grid Width="44" Height="32">
                             <!-- Row 1: NW N NE -->
-                            <TextBlock x:Name="CompassNW" Text="↖" FontSize="9" Foreground="#444"
-                                       HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                            <TextBlock x:Name="CompassN" Text="N" FontSize="10" Foreground="#666" FontWeight="Bold"
-                                       HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                            <TextBlock x:Name="CompassNE" Text="↗" FontSize="9" Foreground="#444"
-                                       HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                            <TextBlock x:Name="CompassNW" Text="↖" FontSize="10" Foreground="#444"
+                                       HorizontalAlignment="Left" VerticalAlignment="Top"
+                                       Cursor="Hand" PointerPressed="OnCompassClick" Tag="nw"/>
+                            <TextBlock x:Name="CompassN" Text="↑" FontSize="12" Foreground="#444"
+                                       HorizontalAlignment="Center" VerticalAlignment="Top"
+                                       Cursor="Hand" PointerPressed="OnCompassClick" Tag="n"/>
+                            <TextBlock x:Name="CompassNE" Text="↗" FontSize="10" Foreground="#444"
+                                       HorizontalAlignment="Right" VerticalAlignment="Top"
+                                       Cursor="Hand" PointerPressed="OnCompassClick" Tag="ne"/>
                             <!-- Row 2: W O E -->
-                            <TextBlock x:Name="CompassW" Text="W" FontSize="10" Foreground="#666" FontWeight="Bold"
-                                       HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="CompassW" Text="←" FontSize="12" Foreground="#444"
+                                       HorizontalAlignment="Left" VerticalAlignment="Center"
+                                       Cursor="Hand" PointerPressed="OnCompassClick" Tag="w"/>
                             <TextBlock x:Name="CompassOut" Text="○" FontSize="9" Foreground="#444"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock x:Name="CompassE" Text="E" FontSize="10" Foreground="#666" FontWeight="Bold"
-                                       HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Cursor="Hand" PointerPressed="OnCompassClick" Tag="out"/>
+                            <TextBlock x:Name="CompassE" Text="→" FontSize="12" Foreground="#444"
+                                       HorizontalAlignment="Right" VerticalAlignment="Center"
+                                       Cursor="Hand" PointerPressed="OnCompassClick" Tag="e"/>
                             <!-- Row 3: SW S SE -->
-                            <TextBlock x:Name="CompassSW" Text="↙" FontSize="9" Foreground="#444"
-                                       HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
-                            <TextBlock x:Name="CompassS" Text="S" FontSize="10" Foreground="#666" FontWeight="Bold"
-                                       HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                            <TextBlock x:Name="CompassSE" Text="↘" FontSize="9" Foreground="#444"
-                                       HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                            <TextBlock x:Name="CompassSW" Text="↙" FontSize="10" Foreground="#444"
+                                       HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                       Cursor="Hand" PointerPressed="OnCompassClick" Tag="sw"/>
+                            <TextBlock x:Name="CompassS" Text="↓" FontSize="12" Foreground="#444"
+                                       HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                                       Cursor="Hand" PointerPressed="OnCompassClick" Tag="s"/>
+                            <TextBlock x:Name="CompassSE" Text="↘" FontSize="10" Foreground="#444"
+                                       HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                       Cursor="Hand" PointerPressed="OnCompassClick" Tag="se"/>
                         </Grid>
                         <!-- Vertical separator -->
                         <Border Width="1" Background="#444" Margin="2,2"/>
                         <!-- Up/Down column -->
                         <StackPanel VerticalAlignment="Center" Spacing="2">
                             <TextBlock x:Name="CompassUp" Text="▲" FontSize="10" Foreground="#444"
-                                       HorizontalAlignment="Center"/>
+                                       HorizontalAlignment="Center"
+                                       Cursor="Hand" PointerPressed="OnCompassClick" Tag="up"/>
                             <TextBlock x:Name="CompassDown" Text="▼" FontSize="10" Foreground="#444"
-                                       HorizontalAlignment="Center"/>
+                                       HorizontalAlignment="Center"
+                                       Cursor="Hand" PointerPressed="OnCompassClick" Tag="down"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>

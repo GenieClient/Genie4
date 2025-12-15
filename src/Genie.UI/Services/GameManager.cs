@@ -29,6 +29,7 @@ public class GameManager : IDisposable
     public event Action<string, string>? VariableChanged;
     public event Action<int, int, int, int, int>? VitalsChanged;
     public event Action<int>? RoundtimeChanged;
+    public event Action<bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool>? CompassChanged;
 
     public bool IsConnected => _game?.IsConnected ?? false;
     public string? LastError { get; private set; }
@@ -232,6 +233,13 @@ public class GameManager : IDisposable
         
         try
         {
+            // Handle compass updates (no $ prefix)
+            if (variable == "compass")
+            {
+                UpdateCompass();
+                return;
+            }
+            
             // Check if it's a vital-related variable
             if (variable.StartsWith("$"))
             {
@@ -282,6 +290,35 @@ public class GameManager : IDisposable
         catch
         {
             // Ignore parsing errors
+        }
+    }
+
+    private void UpdateCompass()
+    {
+        if (_globals == null) return;
+        
+        try
+        {
+            bool GetDir(string name) => _globals.VariableList?.ContainsKey(name) == true 
+                && _globals.VariableList[name]?.ToString() == "1";
+            
+            bool n = GetDir("north");
+            bool ne = GetDir("northeast");
+            bool e = GetDir("east");
+            bool se = GetDir("southeast");
+            bool s = GetDir("south");
+            bool sw = GetDir("southwest");
+            bool w = GetDir("west");
+            bool nw = GetDir("northwest");
+            bool up = GetDir("up");
+            bool down = GetDir("down");
+            bool @out = GetDir("out");
+            
+            CompassChanged?.Invoke(n, ne, e, se, s, sw, w, nw, up, down, @out);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[GameManager] UpdateCompass error: {ex.Message}");
         }
     }
 

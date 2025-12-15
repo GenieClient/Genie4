@@ -42,6 +42,7 @@ public partial class MainWindow : Window
         _gameManager.Disconnected += OnGameDisconnected;
         _gameManager.VitalsChanged += OnVitalsChanged;
         _gameManager.RoundtimeChanged += OnRoundtimeChanged;
+        _gameManager.CompassChanged += OnCompassChanged;
     }
 
     private void OnGameTextReceived(string text, GenieColor color, GenieColor bgcolor)
@@ -99,6 +100,14 @@ public partial class MainWindow : Window
         });
     }
 
+    private void OnCompassChanged(bool n, bool ne, bool e, bool se, bool s, bool sw, bool w, bool nw, bool up, bool down, bool @out)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            UpdateCompass(n, ne, e, se, s, sw, w, nw, up, down, @out);
+        });
+    }
+
     /// <summary>
     /// Updates the vital bars with the given percentages (0-100).
     /// </summary>
@@ -136,7 +145,7 @@ public partial class MainWindow : Window
     /// </summary>
     public void UpdateCompass(bool n, bool ne, bool e, bool se, bool s, bool sw, bool w, bool nw, bool up, bool down, bool @out)
     {
-        var activeColor = new SolidColorBrush(Color.Parse("#22c55e"));
+        var activeColor = new SolidColorBrush(Color.Parse("#f97316")); // Orange
         var inactiveColor = new SolidColorBrush(Color.Parse("#444"));
         
         CompassN.Foreground = n ? activeColor : inactiveColor;
@@ -253,6 +262,18 @@ public partial class MainWindow : Window
     private void OnExit(object? sender, RoutedEventArgs e)
     {
         Close();
+    }
+
+    private void OnCompassClick(object? sender, PointerPressedEventArgs e)
+    {
+        if (sender is TextBlock textBlock && textBlock.Tag is string direction)
+        {
+            // Send the movement command
+            _gameManager?.SendCommand(direction);
+            
+            // Echo to show it was sent
+            AppendText($"> {direction}\n", Colors.Cyan);
+        }
     }
 
     private void OnCommandKeyDown(object? sender, KeyEventArgs e)
