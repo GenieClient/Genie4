@@ -32,6 +32,7 @@ public class GameManager : IDisposable
     public event Action<bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool>? CompassChanged;
     public event Action<string, string>? HandsChanged; // left, right
     public event Action<string>? SpellChanged;
+    public event Action<string, bool, bool, bool, bool, bool, bool, bool>? StatusChanged; // position, hidden, invisible, joined, webbed, stunned, bleeding, dead
 
     public bool IsConnected => _game?.IsConnected ?? false;
     public string? LastError { get; private set; }
@@ -279,6 +280,14 @@ public class GameManager : IDisposable
                 {
                     UpdateSpell();
                 }
+                
+                // Update status indicators
+                if (varName == "standing" || varName == "sitting" || varName == "kneeling" || varName == "prone" ||
+                    varName == "hidden" || varName == "invisible" || varName == "joined" || varName == "webbed" ||
+                    varName == "stunned" || varName == "bleeding" || varName == "dead")
+                {
+                    UpdateStatus();
+                }
             }
         }
         catch (Exception ex)
@@ -382,6 +391,39 @@ public class GameManager : IDisposable
         catch (Exception ex)
         {
             Console.WriteLine($"[GameManager] UpdateSpell error: {ex.Message}");
+        }
+    }
+
+    private void UpdateStatus()
+    {
+        if (_globals == null) return;
+        
+        try
+        {
+            bool IsActive(string name) => _globals.VariableList?.ContainsKey(name) == true 
+                && _globals.VariableList[name]?.ToString() == "1";
+            
+            // Determine position (only one should be active)
+            string position = "Standing"; // default
+            if (IsActive("sitting")) position = "Sitting";
+            else if (IsActive("kneeling")) position = "Kneeling";
+            else if (IsActive("prone")) position = "Prone";
+            else if (IsActive("standing")) position = "Standing";
+            
+            // Status effects
+            bool hidden = IsActive("hidden");
+            bool invisible = IsActive("invisible");
+            bool joined = IsActive("joined");
+            bool webbed = IsActive("webbed");
+            bool stunned = IsActive("stunned");
+            bool bleeding = IsActive("bleeding");
+            bool dead = IsActive("dead");
+            
+            StatusChanged?.Invoke(position, hidden, invisible, joined, webbed, stunned, bleeding, dead);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[GameManager] UpdateStatus error: {ex.Message}");
         }
     }
 

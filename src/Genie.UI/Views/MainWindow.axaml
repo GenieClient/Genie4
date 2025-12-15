@@ -137,32 +137,137 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Status Effects -->
-                <StackPanel Orientation="Horizontal" Spacing="6" 
-                            VerticalAlignment="Center">
+                <!-- Position Indicator (icon-based) -->
+                <Border x:Name="PositionBorder" Background="#2a2a3e" CornerRadius="6" 
+                        Padding="6,4" VerticalAlignment="Center" ToolTip.Tip="Standing">
+                    <Canvas x:Name="PositionIcon" Width="20" Height="18">
+                        <!-- Standing icon (default) - upright with legs spread -->
+                        <Canvas x:Name="IconStanding" IsVisible="True">
+                            <Ellipse Canvas.Left="7" Canvas.Top="0" Width="6" Height="6" Fill="#22c55e"/>
+                            <Line StartPoint="10,6" EndPoint="10,12" Stroke="#22c55e" StrokeThickness="2"/>
+                            <Line StartPoint="10,12" EndPoint="6,18" Stroke="#22c55e" StrokeThickness="2"/>
+                            <Line StartPoint="10,12" EndPoint="14,18" Stroke="#22c55e" StrokeThickness="2"/>
+                        </Canvas>
+                        <!-- Sitting icon - facing left, legs bent forward -->
+                        <Canvas x:Name="IconSitting" IsVisible="False">
+                            <Ellipse Canvas.Left="7" Canvas.Top="0" Width="6" Height="6" Fill="#eab308"/>
+                            <Line StartPoint="10,6" EndPoint="10,11" Stroke="#eab308" StrokeThickness="2"/>
+                            <Line StartPoint="10,11" EndPoint="4,11" Stroke="#eab308" StrokeThickness="2"/>
+                            <Line StartPoint="4,11" EndPoint="4,18" Stroke="#eab308" StrokeThickness="2"/>
+                        </Canvas>
+                        <!-- Kneeling icon - on knees, legs folded under, profile view facing left -->
+                        <Canvas x:Name="IconKneeling" IsVisible="False">
+                            <!-- Head -->
+                            <Ellipse Canvas.Left="7" Canvas.Top="0" Width="6" Height="6" Fill="#f97316"/>
+                            <!-- Torso (slightly angled forward) -->
+                            <Line StartPoint="10,6" EndPoint="11,12" Stroke="#f97316" StrokeThickness="2"/>
+                            <!-- Thigh going back (to the left) -->
+                            <Line StartPoint="11,12" EndPoint="6,14" Stroke="#f97316" StrokeThickness="2"/>
+                            <!-- Lower leg folded under (going back from knee) -->
+                            <Line StartPoint="6,14" EndPoint="12,16" Stroke="#f97316" StrokeThickness="2"/>
+                        </Canvas>
+                        <!-- Prone icon - lying down, head on right -->
+                        <Canvas x:Name="IconProne" IsVisible="False">
+                            <Ellipse Canvas.Left="15" Canvas.Top="7" Width="5" Height="5" Fill="#ef4444"/>
+                            <Line StartPoint="15,10" EndPoint="8,10" Stroke="#ef4444" StrokeThickness="2"/>
+                            <Line StartPoint="8,10" EndPoint="4,8" Stroke="#ef4444" StrokeThickness="2"/>
+                            <Line StartPoint="8,10" EndPoint="4,12" Stroke="#ef4444" StrokeThickness="2"/>
+                        </Canvas>
+                    </Canvas>
+                </Border>
+
+                <!-- Status Effects (icon-based) -->
+                <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+                    <!-- Hidden: Eye with slash -->
                     <Border x:Name="StatusHidden" Background="#4a4a5e" CornerRadius="4" 
-                            Padding="8,4" IsVisible="False">
-                        <TextBlock Text="Hidden" FontSize="10" Foreground="#a0a0a0"/>
+                            Padding="5,4" IsVisible="False" ToolTip.Tip="Hidden">
+                        <Canvas Width="16" Height="12">
+                            <Ellipse Canvas.Left="3" Canvas.Top="2" Width="10" Height="8" 
+                                     Stroke="#a0a0a0" StrokeThickness="1.5" Fill="Transparent"/>
+                            <Ellipse Canvas.Left="6" Canvas.Top="4" Width="4" Height="4" Fill="#a0a0a0"/>
+                            <Line StartPoint="2,10" EndPoint="14,2" Stroke="#a0a0a0" StrokeThickness="2"/>
+                        </Canvas>
                     </Border>
+                    
+                    <!-- Invisible: Ghost -->
                     <Border x:Name="StatusInvisible" Background="#4a4a5e" CornerRadius="4" 
-                            Padding="8,4" IsVisible="False">
-                        <TextBlock Text="Invisible" FontSize="10" Foreground="#a0a0a0"/>
+                            Padding="5,4" IsVisible="False" ToolTip.Tip="Invisible">
+                        <Canvas Width="14" Height="14">
+                            <Path Data="M7,1 C10,1 12,3 12,6 L12,11 L10,9 L8,11 L6,9 L4,11 L2,9 L2,6 C2,3 4,1 7,1 Z" 
+                                  Stroke="#a0a0a0" StrokeThickness="1.5" Fill="Transparent" StrokeDashArray="2,1"/>
+                            <Ellipse Canvas.Left="4" Canvas.Top="4" Width="2" Height="2" Fill="#a0a0a0"/>
+                            <Ellipse Canvas.Left="8" Canvas.Top="4" Width="2" Height="2" Fill="#a0a0a0"/>
+                        </Canvas>
                     </Border>
+                    
+                    <!-- Joined: Two people/link -->
                     <Border x:Name="StatusJoined" Background="#3b5e3b" CornerRadius="4" 
-                            Padding="8,4" IsVisible="False">
-                        <TextBlock Text="Joined" FontSize="10" Foreground="#90c090"/>
+                            Padding="5,4" IsVisible="False" ToolTip.Tip="Joined">
+                        <Canvas Width="18" Height="12">
+                            <!-- Person 1 -->
+                            <Ellipse Canvas.Left="2" Canvas.Top="0" Width="4" Height="4" Fill="#90c090"/>
+                            <Line StartPoint="4,4" EndPoint="4,9" Stroke="#90c090" StrokeThickness="1.5"/>
+                            <!-- Person 2 -->
+                            <Ellipse Canvas.Left="12" Canvas.Top="0" Width="4" Height="4" Fill="#90c090"/>
+                            <Line StartPoint="14,4" EndPoint="14,9" Stroke="#90c090" StrokeThickness="1.5"/>
+                            <!-- Link -->
+                            <Line StartPoint="5,6" EndPoint="13,6" Stroke="#90c090" StrokeThickness="1.5"/>
+                        </Canvas>
                     </Border>
+                    
+                    <!-- Webbed: Spider web -->
                     <Border x:Name="StatusWebbed" Background="#5e4a3b" CornerRadius="4" 
-                            Padding="8,4" IsVisible="False">
-                        <TextBlock Text="Webbed" FontSize="10" Foreground="#c0a080"/>
+                            Padding="5,4" IsVisible="False" ToolTip.Tip="Webbed">
+                        <Canvas Width="14" Height="14">
+                            <Line StartPoint="7,0" EndPoint="7,14" Stroke="#c0a080" StrokeThickness="1"/>
+                            <Line StartPoint="0,7" EndPoint="14,7" Stroke="#c0a080" StrokeThickness="1"/>
+                            <Line StartPoint="2,2" EndPoint="12,12" Stroke="#c0a080" StrokeThickness="1"/>
+                            <Line StartPoint="12,2" EndPoint="2,12" Stroke="#c0a080" StrokeThickness="1"/>
+                            <Ellipse Canvas.Left="3" Canvas.Top="3" Width="8" Height="8" 
+                                     Stroke="#c0a080" StrokeThickness="1" Fill="Transparent"/>
+                        </Canvas>
                     </Border>
+                    
+                    <!-- Stunned: Stars/spiral -->
                     <Border x:Name="StatusStunned" Background="#5e3b3b" CornerRadius="4" 
-                            Padding="8,4" IsVisible="False">
-                        <TextBlock Text="Stunned" FontSize="10" Foreground="#c08080"/>
+                            Padding="5,4" IsVisible="False" ToolTip.Tip="Stunned">
+                        <Canvas Width="16" Height="14">
+                            <!-- Star 1 -->
+                            <Path Canvas.Left="1" Canvas.Top="1" 
+                                  Data="M4,0 L5,3 L8,3 L5.5,5 L6.5,8 L4,6 L1.5,8 L2.5,5 L0,3 L3,3 Z" 
+                                  Fill="#ff8080" RenderTransform="scale(0.7)"/>
+                            <!-- Star 2 -->
+                            <Path Canvas.Left="8" Canvas.Top="5" 
+                                  Data="M4,0 L5,3 L8,3 L5.5,5 L6.5,8 L4,6 L1.5,8 L2.5,5 L0,3 L3,3 Z" 
+                                  Fill="#ff8080" RenderTransform="scale(0.6)"/>
+                        </Canvas>
                     </Border>
+                    
+                    <!-- Bleeding: Blood drop -->
                     <Border x:Name="StatusBleeding" Background="#5e2a2a" CornerRadius="4" 
-                            Padding="8,4" IsVisible="False">
-                        <TextBlock Text="Bleeding" FontSize="10" Foreground="#ff6060"/>
+                            Padding="5,4" IsVisible="False" ToolTip.Tip="Bleeding">
+                        <Canvas Width="12" Height="14">
+                            <Path Data="M6,0 C6,0 12,7 12,10 C12,13 9,14 6,14 C3,14 0,13 0,10 C0,7 6,0 6,0 Z" 
+                                  Fill="#dc2626"/>
+                        </Canvas>
+                    </Border>
+                    
+                    <!-- Dead: Skull -->
+                    <Border x:Name="StatusDead" Background="#3a1a1a" CornerRadius="4" 
+                            Padding="5,4" IsVisible="False" ToolTip.Tip="Dead">
+                        <Canvas Width="14" Height="14">
+                            <!-- Skull shape -->
+                            <Ellipse Canvas.Left="1" Canvas.Top="0" Width="12" Height="10" Fill="#ff4040"/>
+                            <!-- Eyes -->
+                            <Ellipse Canvas.Left="3" Canvas.Top="3" Width="3" Height="3" Fill="#3a1a1a"/>
+                            <Ellipse Canvas.Left="8" Canvas.Top="3" Width="3" Height="3" Fill="#3a1a1a"/>
+                            <!-- Jaw -->
+                            <Rectangle Canvas.Left="4" Canvas.Top="9" Width="6" Height="5" Fill="#ff4040"/>
+                            <!-- Teeth -->
+                            <Line StartPoint="5,10" EndPoint="5,13" Stroke="#3a1a1a" StrokeThickness="1"/>
+                            <Line StartPoint="7,10" EndPoint="7,13" Stroke="#3a1a1a" StrokeThickness="1"/>
+                            <Line StartPoint="9,10" EndPoint="9,13" Stroke="#3a1a1a" StrokeThickness="1"/>
+                        </Canvas>
                     </Border>
                 </StackPanel>
 

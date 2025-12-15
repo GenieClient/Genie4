@@ -45,6 +45,7 @@ public partial class MainWindow : Window
         _gameManager.CompassChanged += OnCompassChanged;
         _gameManager.HandsChanged += OnHandsChanged;
         _gameManager.SpellChanged += OnSpellChanged;
+        _gameManager.StatusChanged += OnStatusChanged;
     }
 
     private void OnGameTextReceived(string text, GenieColor color, GenieColor bgcolor)
@@ -126,6 +127,15 @@ public partial class MainWindow : Window
         });
     }
 
+    private void OnStatusChanged(string position, bool hidden, bool invisible, bool joined, bool webbed, bool stunned, bool bleeding, bool dead)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            UpdatePosition(position);
+            UpdateStatusEffects(hidden, invisible, joined, webbed, stunned, bleeding, dead);
+        });
+    }
+
     /// <summary>
     /// Updates the vital bars with the given percentages (0-100).
     /// </summary>
@@ -180,10 +190,45 @@ public partial class MainWindow : Window
     }
 
     /// <summary>
+    /// Updates the position indicator (standing/sitting/kneeling/prone).
+    /// </summary>
+    public void UpdatePosition(string position)
+    {
+        // Update tooltip
+        ToolTip.SetTip(PositionBorder, position);
+        
+        // Hide all icons first
+        IconStanding.IsVisible = false;
+        IconSitting.IsVisible = false;
+        IconKneeling.IsVisible = false;
+        IconProne.IsVisible = false;
+        
+        // Show the correct icon
+        switch (position)
+        {
+            case "Standing":
+                IconStanding.IsVisible = true;
+                break;
+            case "Sitting":
+                IconSitting.IsVisible = true;
+                break;
+            case "Kneeling":
+                IconKneeling.IsVisible = true;
+                break;
+            case "Prone":
+                IconProne.IsVisible = true;
+                break;
+            default:
+                IconStanding.IsVisible = true;
+                break;
+        }
+    }
+
+    /// <summary>
     /// Updates status effect visibility.
     /// </summary>
     public void UpdateStatusEffects(bool hidden = false, bool invisible = false, bool joined = false, 
-                                     bool webbed = false, bool stunned = false, bool bleeding = false)
+        bool webbed = false, bool stunned = false, bool bleeding = false, bool dead = false)
     {
         StatusHidden.IsVisible = hidden;
         StatusInvisible.IsVisible = invisible;
@@ -191,6 +236,7 @@ public partial class MainWindow : Window
         StatusWebbed.IsVisible = webbed;
         StatusStunned.IsVisible = stunned;
         StatusBleeding.IsVisible = bleeding;
+        StatusDead.IsVisible = dead;
     }
 
     private void UpdateBar(Border bar, TextBlock text, int percent, string color)
