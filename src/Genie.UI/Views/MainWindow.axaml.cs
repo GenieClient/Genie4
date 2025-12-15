@@ -76,6 +76,11 @@ public partial class MainWindow : Window
         _gameManager.HandsChanged += OnHandsChanged;
         _gameManager.SpellChanged += OnSpellChanged;
         _gameManager.StatusChanged += OnStatusChanged;
+        
+        // Subscribe to script events
+        _gameManager.ScriptStarted += OnScriptStarted;
+        _gameManager.ScriptStopped += OnScriptStopped;
+        _gameManager.ScriptOutput += OnScriptOutput;
     }
     
     private void OnWindowTextReceived(GameWindowType windowType, string customId, string text, GenieColor color, GenieColor bgcolor)
@@ -540,6 +545,98 @@ public partial class MainWindow : Window
         }
     }
 
+    #region Script Handlers
+    
+    private void OnScriptStarted(ScriptInfo info)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            UpdateScriptToolbar();
+        });
+    }
+    
+    private void OnScriptStopped(ScriptInfo info)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            UpdateScriptToolbar();
+        });
+    }
+    
+    private void OnScriptOutput(string message, bool isError)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            var color = isError ? Colors.Red : Colors.LightGray;
+            AppendText(message + "\n", color);
+        });
+    }
+    
+    private void UpdateScriptToolbar()
+    {
+        var scripts = _gameManager?.ScriptManager?.GetRunningScripts();
+        var hasScripts = scripts != null && scripts.Count > 0;
+        
+        ScriptToolbar.IsVisible = hasScripts;
+        
+        if (hasScripts)
+        {
+            ScriptButtons.ItemsSource = scripts;
+        }
+        else
+        {
+            ScriptButtons.ItemsSource = null;
+        }
+    }
+    
+    private async void OnShowScriptExplorer(object? sender, RoutedEventArgs e)
+    {
+        await ScriptExplorerDialog.ShowDialog(this, _gameManager?.ScriptManager, scriptPath =>
+        {
+            // Script was run from explorer - update toolbar
+            UpdateScriptToolbar();
+        });
+    }
+    
+    private void OnAbortAllScripts(object? sender, RoutedEventArgs e)
+    {
+        _gameManager?.AbortScript(null);
+        UpdateScriptToolbar();
+    }
+    
+    private void OnPauseAllScripts(object? sender, RoutedEventArgs e)
+    {
+        _gameManager?.PauseScript(null);
+        UpdateScriptToolbar();
+    }
+    
+    private void OnResumeAllScripts(object? sender, RoutedEventArgs e)
+    {
+        _gameManager?.ResumeScript(null);
+        UpdateScriptToolbar();
+    }
+    
+    private void OnScriptButtonClick(object? sender, PointerPressedEventArgs e)
+    {
+        // Toggle pause/resume on click
+        if (sender is Border border && border.Tag is ScriptInfo info)
+        {
+            _gameManager?.ScriptManager?.TogglePauseScript(info);
+            UpdateScriptToolbar();
+        }
+    }
+    
+    private void OnScriptAbortClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button button && button.Tag is ScriptInfo info)
+        {
+            _gameManager?.ScriptManager?.AbortScript(info);
+            UpdateScriptToolbar();
+        }
+    }
+    
+    #endregion
+
     private void OnCommandKeyDown(object? sender, KeyEventArgs e)
     {
         if (e.Key == Key.Enter)
@@ -549,6 +646,102 @@ public partial class MainWindow : Window
             {
                 // Echo the command
                 AppendText($"> {command}\n", Colors.Cyan);
+                
+                // Check for script commands first (start with .)
+                if (command.StartsWith("."))
+                {
+                    var scriptResult = _gameManager?.RunScript(command);
+                    if (scriptResult != null)
+                    {
+                        UpdateScriptToolbar();
+                    }
+                    CommandInput.Text = "";
+                    e.Handled = true;
+                    return;
+                }
+                
+                // Check for script control commands
+                if (command.Equals("#abort", StringComparison.OrdinalIgnoreCase) ||
+                    command.Equals("#stop", StringComparison.OrdinalIgnoreCase))
+                {
+                    _gameManager?.AbortScript(null);
+                    UpdateScriptToolbar();
+                    CommandInput.Text = "";
+                    e.Handled = true;
+                    return;
+                }
+                
+                if (command.StartsWith("#abort ", StringComparison.OrdinalIgnoreCase) ||
+                    command.StartsWith("#stop ", StringComparison.OrdinalIgnoreCase))
+                {
+                    var scriptName = command.Split(' ', 2)[1];
+                    _gameManager?.AbortScript(scriptName);
+                    UpdateScriptToolbar();
+                    CommandInput.Text = "";
+                    e.Handled = true;
+                    return;
+                }
+                
+                if (command.Equals("#pause", StringComparison.OrdinalIgnoreCase))
+                {
+                    _gameManager?.PauseScript(null);
+                    UpdateScriptToolbar();
+                    CommandInput.Text = "";
+                    e.Handled = true;
+                    return;
+                }
+                
+                if (command.StartsWith("#pause ", StringComparison.OrdinalIgnoreCase))
+                {
+                    var scriptName = command.Split(' ', 2)[1];
+                    _gameManager?.PauseScript(scriptName);
+                    UpdateScriptToolbar();
+                    CommandInput.Text = "";
+                    e.Handled = true;
+                    return;
+                }
+                
+                if (command.Equals("#resume", StringComparison.OrdinalIgnoreCase) ||
+                    command.Equals("#unpause", StringComparison.OrdinalIgnoreCase))
+                {
+                    _gameManager?.ResumeScript(null);
+                    UpdateScriptToolbar();
+                    CommandInput.Text = "";
+                    e.Handled = true;
+                    return;
+                }
+                
+                if (command.StartsWith("#resume ", StringComparison.OrdinalIgnoreCase) ||
+                    command.StartsWith("#unpause ", StringComparison.OrdinalIgnoreCase))
+                {
+                    var scriptName = command.Split(' ', 2)[1];
+                    _gameManager?.ResumeScript(scriptName);
+                    UpdateScriptToolbar();
+                    CommandInput.Text = "";
+                    e.Handled = true;
+                    return;
+                }
+                
+                if (command.Equals("#scripts", StringComparison.OrdinalIgnoreCase))
+                {
+                    var scripts = _gameManager?.ScriptManager?.GetRunningScripts();
+                    if (scripts != null && scripts.Count > 0)
+                    {
+                        AppendText("Running scripts:\n", Colors.LightGreen);
+                        foreach (var script in scripts)
+                        {
+                            var status = script.IsPaused ? " (paused)" : "";
+                            AppendText($"  • {script.DisplayName}{status}\n", Colors.White);
+                        }
+                    }
+                    else
+                    {
+                        AppendText("No scripts running.\n", Colors.Gray);
+                    }
+                    CommandInput.Text = "";
+                    e.Handled = true;
+                    return;
+                }
                 
                 // Check for local commands first
                 if (command.Equals("test", StringComparison.OrdinalIgnoreCase))

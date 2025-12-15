@@ -24,6 +24,10 @@ public class GameManager : IDisposable
     // Window manager for multi-window support
     private GameWindowManager? _windowManager;
     public GameWindowManager? WindowManager => _windowManager;
+    
+    // Script manager for running scripts
+    private ScriptManager? _scriptManager;
+    public ScriptManager? ScriptManager => _scriptManager;
 
     /// <summary>
     /// Event for text received with window targeting.
@@ -39,6 +43,11 @@ public class GameManager : IDisposable
     public event Action<string, string>? HandsChanged; // left, right
     public event Action<string>? SpellChanged;
     public event Action<string, bool, bool, bool, bool, bool, bool, bool>? StatusChanged; // position, hidden, invisible, joined, webbed, stunned, bleeding, dead
+    
+    // Script events
+    public event Action<ScriptInfo>? ScriptStarted;
+    public event Action<ScriptInfo>? ScriptStopped;
+    public event Action<string, bool>? ScriptOutput; // (message, isError)
 
     public bool IsConnected => _game?.IsConnected ?? false;
     public string? LastError { get; private set; }
@@ -105,6 +114,14 @@ public class GameManager : IDisposable
             
             Console.WriteLine("[GameManager] Creating window manager...");
             _windowManager = new GameWindowManager();
+            
+            Console.WriteLine("[GameManager] Creating script manager...");
+            _scriptManager = new ScriptManager();
+            _scriptManager.SetGlobals(_globals);
+            _scriptManager.ScriptStarted += info => ScriptStarted?.Invoke(info);
+            _scriptManager.ScriptStopped += info => ScriptStopped?.Invoke(info);
+            _scriptManager.ScriptOutput += (msg, isError) => ScriptOutput?.Invoke(msg, isError);
+            _scriptManager.SendCommand += (cmd, toQueue) => SendCommand(cmd);
             
             Console.WriteLine("[GameManager] Subscribing to events...");
             _game.EventPrintText += OnGamePrintText;
@@ -215,6 +232,51 @@ public class GameManager : IDisposable
         }
     }
 
+    /// <summary>
+    /// Runs a script by name.
+    /// </summary>
+    /// <param name="scriptPath">Script name or path (e.g., "forage" or ".forage oak bark")</param>
+    public ScriptInfo? RunScript(string scriptPath)
+    {
+        if (_scriptManager == null)
+        {
+            ErrorReceived?.Invoke("Script manager not initialized.");
+            return null;
+        }
+
+        // Parse script path and arguments
+        // Format: .scriptname arg1 arg2 or scriptname arg1 arg2
+        var parts = scriptPath.TrimStart('.').Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+        var scriptName = parts.Length > 0 ? parts[0] : scriptPath;
+        var arguments = parts.Length > 1 ? parts[1] : null;
+
+        return _scriptManager.RunScript(scriptName, arguments);
+    }
+
+    /// <summary>
+    /// Aborts a running script by name, or all scripts if no name specified.
+    /// </summary>
+    public void AbortScript(string? scriptName = null)
+    {
+        _scriptManager?.AbortScript(scriptName);
+    }
+
+    /// <summary>
+    /// Pauses a running script by name, or all scripts if no name specified.
+    /// </summary>
+    public void PauseScript(string? scriptName = null)
+    {
+        _scriptManager?.PauseScript(scriptName);
+    }
+
+    /// <summary>
+    /// Resumes a paused script by name, or all paused scripts if no name specified.
+    /// </summary>
+    public void ResumeScript(string? scriptName = null)
+    {
+        _scriptManager?.ResumeScript(scriptName);
+    }
+
     private void OnGamePrintText(string text, GenieColor color, GenieColor bgcolor, 
         Game.WindowTarget targetwindow, string targetwindowstring, bool mono, bool isprompt, bool isinput)
     {
@@ -255,7 +317,7 @@ public class GameManager : IDisposable
         Console.WriteLine($"[GameManager] target={targetwindow}, winType={winType}, text=\"{debugText}\"");
         
         // Fire the window-specific event (this is now the primary event)
-        WindowTextReceived?.Invoke(winType, customWindowId, text, color, bgcolor);
+        WindowTextReceived?.Invoke(winType, customWindowId, text ?? "", color, bgcolor);
         
         // Check for vital updates in the globals
         CheckVitals();
@@ -500,6 +562,10 @@ public class GameManager : IDisposable
         _roundtimeTimer?.Change(Timeout.Infinite, Timeout.Infinite);
         _roundtimeTimer?.Dispose();
         _roundtimeTimer = null;
+
+        // Dispose script manager
+        _scriptManager?.Dispose();
+        _scriptManager = null;
 
         if (_game != null)
         {

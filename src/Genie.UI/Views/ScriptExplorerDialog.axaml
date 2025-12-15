@@ -1,0 +1,110 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GenieClient.Views"
+        xmlns:services="clr-namespace:GenieClient.UI.Services"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="600"
+        x:Class="GenieClient.Views.ScriptExplorerDialog"
+        Title="Script Explorer"
+        Width="500" Height="600"
+        MinWidth="400" MinHeight="400"
+        WindowStartupLocation="CenterOwner"
+        Background="#1a1a2e"
+        CanResize="True">
+
+    <Window.Styles>
+        <Style Selector="TreeViewItem">
+            <Setter Property="IsExpanded" Value="True"/>
+        </Style>
+    </Window.Styles>
+
+    <Grid RowDefinitions="Auto,*,Auto,Auto">
+        <!-- Toolbar -->
+        <Border Grid.Row="0" Background="#16213e" Padding="8">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button x:Name="RunButton" Content="▶ Run" 
+                        Background="#166534" Foreground="White"
+                        Padding="12,6" FontSize="12"
+                        Click="OnRunClick" IsEnabled="False"/>
+                <Button x:Name="PauseButton" Content="⏸ Pause" 
+                        Background="#854d0e" Foreground="White"
+                        Padding="12,6" FontSize="12"
+                        Click="OnPauseClick" IsEnabled="False"/>
+                <Button x:Name="AbortButton" Content="⏹ Abort" 
+                        Background="#7f1d1d" Foreground="White"
+                        Padding="12,6" FontSize="12"
+                        Click="OnAbortClick" IsEnabled="False"/>
+                <Border Width="1" Background="#333" Margin="4,2"/>
+                <Button Content="🔄 Refresh" 
+                        Background="#1e3a5f" Foreground="White"
+                        Padding="12,6" FontSize="12"
+                        Click="OnRefreshClick"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Script Tree -->
+        <Border Grid.Row="1" Margin="8" Background="#0d1117" CornerRadius="8">
+            <TreeView x:Name="ScriptTree" 
+                      Background="Transparent"
+                      Foreground="#c9d1d9"
+                      SelectionChanged="OnSelectionChanged"
+                      DoubleTapped="OnDoubleClick">
+                <TreeView.ItemTemplate>
+                    <TreeDataTemplate x:DataType="local:ScriptTreeNode" ItemsSource="{Binding Children}">
+                        <StackPanel Orientation="Horizontal" Spacing="6">
+                            <TextBlock Text="{Binding Icon}" FontSize="14"/>
+                            <TextBlock Text="{Binding Name}" FontSize="13"/>
+                        </StackPanel>
+                    </TreeDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </Border>
+
+        <!-- Running Scripts Panel -->
+        <Border x:Name="RunningScriptsPanel" Grid.Row="2" Margin="8,0,8,8" Background="#1e3a5f" CornerRadius="8"
+                Padding="8" IsVisible="False">
+            <StackPanel>
+                <TextBlock Text="Running Scripts" FontWeight="SemiBold" 
+                           Foreground="#60a5fa" FontSize="12" Margin="0,0,0,6"/>
+                <ItemsControl x:Name="RunningScriptsList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="services:ScriptInfo">
+                            <Border Background="#2a3f5f" CornerRadius="4" 
+                                    Padding="8,4" Margin="0,2">
+                                <Grid ColumnDefinitions="*,Auto,Auto">
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <TextBlock Text="📜" FontSize="12"/>
+                                        <TextBlock Text="{Binding DisplayName}" 
+                                                   Foreground="#93c5fd" FontSize="12"/>
+                                        <TextBlock Text="(paused)" Foreground="#fbbf24" 
+                                                   FontSize="11" IsVisible="{Binding IsPaused}"/>
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Content="⏸" FontSize="10"
+                                            Padding="4,2" Background="#854d0e"
+                                            Click="OnPauseRunningClick" Tag="{Binding}"
+                                            Margin="4,0"/>
+                                    <Button Grid.Column="2" Content="✕" FontSize="10"
+                                            Padding="4,2" Background="#7f1d1d"
+                                            Click="OnAbortRunningClick" Tag="{Binding}"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+
+        <!-- Bottom buttons -->
+        <Border Grid.Row="3" Background="#16213e" Padding="8">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock x:Name="StatusText" Text="Select a script to run" 
+                           Foreground="#888" VerticalAlignment="Center"/>
+                <Button Grid.Column="1" Content="Close" 
+                        Background="#374151" Foreground="White"
+                        Padding="16,6" Click="OnCloseClick"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
+

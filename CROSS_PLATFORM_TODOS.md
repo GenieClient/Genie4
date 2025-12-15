@@ -2,9 +2,20 @@
 
 ## Overview
 
-**UI Framework:** Avalonia UI  
-**Target:** Make Genie run on Windows, macOS, and Linux  
+**UI Framework:** Avalonia UI (cross-platform) + Windows Forms (classic)  
+**Target:** Add cross-platform support (Windows, macOS, Linux) while **retaining the classic Windows Forms UI**  
 **Current Status:** Phase 1 - Making Genie.Core truly platform-agnostic
+
+### Key Principle: Dual UI Strategy
+
+We are **NOT replacing** the classic Windows Forms UI. Instead, we are:
+
+1. **Keeping the classic Windows Forms build** - Full-featured, mature, Windows-only
+2. **Adding a new Avalonia UI build** - Cross-platform (Windows, macOS, Linux)
+
+Both UIs share the same `Genie.Core` library. Users on Windows can choose either version:
+- **Classic (Windows Forms)**: Existing feature-complete experience with plugins, skins, etc.
+- **Modern (Avalonia)**: Cross-platform, works on macOS/Linux, gradually gaining features
 
 ---
 
@@ -12,6 +23,9 @@
 
 ```
 Genie5.sln
+├── Genie4.csproj                      # 🪟 CLASSIC Windows Forms UI (RETAINED)
+│   └── (existing Forms/, Mapper/, etc.)
+│
 ├── src/Genie.Core/                    # net10.0 (platform-agnostic)
 │   └── Services/
 │       ├── Interfaces/                # Service contracts
@@ -22,7 +36,7 @@ Genie5.sln
 │       │   └── IWindowChromeService.cs
 │       └── GenieColor.cs              ✅ EXISTS
 │
-├── src/Genie.Windows/                 # net10.0-windows (Windows Forms)
+├── src/Genie.Windows/                 # net10.0-windows (Windows-specific services)
 │   └── Services/
 │       ├── WindowsSoundService.cs     # winmm.dll P/Invoke
 │       ├── WindowsAttentionService.cs # FlashWindow P/Invoke
@@ -30,7 +44,7 @@ Genie5.sln
 │       ├── WindowsImageService.cs     # System.Drawing
 │       └── WindowsChromeService.cs    # Custom skinning
 │
-├── src/Genie.Avalonia/                # net10.0 (cross-platform)
+├── src/Genie.UI/                      # net10.0 (cross-platform Avalonia UI)
 │   └── Services/
 │       ├── AvaloniaSoundService.cs    # Cross-platform audio
 │       ├── AvaloniaAttentionService.cs # Per-platform attention
@@ -38,7 +52,7 @@ Genie5.sln
 │       ├── AvaloniaImageService.cs    # SkiaSharp
 │       └── AvaloniaChromeService.cs   # Avalonia window chrome
 │
-└── Plugin/Plugins.vbproj              # Plugin interfaces
+└── Plugin/Plugins.vbproj              # Plugin interfaces (Windows Forms only)
 ```
 
 ---
@@ -388,7 +402,10 @@ The plugin system (`PluginHost.cs`, `LegacyPluginHost.cs`) requires Windows Form
 
 ---
 
-## Phase 2: Create Avalonia UI Project
+## Phase 2: Create Avalonia UI Project (Additional Cross-Platform UI)
+
+> **Note:** This is an *additional* UI option, not a replacement for the classic Windows Forms UI.
+> The classic build remains fully functional and will continue to be maintained.
 
 ### 2.1 Project Setup ✅ COMPLETE
 - [x] Create `src/Genie.UI/Genie.UI.csproj` (Avalonia 11.2.2)
@@ -436,7 +453,10 @@ The plugin system (`PluginHost.cs`, `LegacyPluginHost.cs`) requires Windows Form
 
 ---
 
-## Phase 3: Feature Parity
+## Phase 3: Feature Parity (Avalonia UI catches up to Classic)
+
+> **Goal:** Bring the Avalonia UI to feature parity with the classic Windows Forms UI.
+> The classic build remains the reference implementation.
 
 - [ ] All game output display features
 - [ ] Script execution
@@ -469,7 +489,8 @@ The codebase has already started migrating to `GenieColor`:
 
 | Question | Decision |
 |----------|----------|
-| **UI Framework** | ✅ Avalonia UI |
+| **Classic UI** | ✅ **RETAIN** Windows Forms UI as the primary, feature-complete Windows build |
+| **Cross-Platform UI** | ✅ Avalonia UI as an *additional* option for macOS/Linux (and Windows) |
 | **Architecture** | ✅ Service-based abstraction - interfaces in Core, implementations per platform |
 | **Game.cs colors** | ✅ Use `GenieColor` everywhere, including delegates |
 | **Window flashing** | ✅ Create `IWindowAttentionService` with cross-platform implementations |

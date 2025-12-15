@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:services="clr-namespace:GenieClient.UI.Services"
         mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
         x:Class="GenieClient.Views.MainWindow"
         Title="Genie 5"
@@ -21,7 +22,7 @@
         </Style>
     </Window.Styles>
 
-    <Grid RowDefinitions="Auto,*,Auto,Auto,Auto,Auto">
+    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto,Auto,Auto">
         <!-- Menu Bar -->
         <Menu Grid.Row="0" Background="#16213e">
             <MenuItem Header="_File">
@@ -41,7 +42,11 @@
                 <MenuItem x:Name="MenuShowDeaths" Header="_Deaths Window" IsChecked="False" Click="OnToggleWindow"/>
             </MenuItem>
             <MenuItem Header="_Scripts">
-                <MenuItem Header="_Script Manager..."/>
+                <MenuItem Header="_Script Explorer..." Click="OnShowScriptExplorer"/>
+                <Separator/>
+                <MenuItem Header="_Abort All Scripts" Click="OnAbortAllScripts"/>
+                <MenuItem Header="_Pause All Scripts" Click="OnPauseAllScripts"/>
+                <MenuItem Header="_Resume All Scripts" Click="OnResumeAllScripts"/>
             </MenuItem>
             <MenuItem Header="_Automapper">
                 <MenuItem Header="_Update Maps" Click="OnUpdateMaps"/>
@@ -52,8 +57,49 @@
             </MenuItem>
         </Menu>
 
+        <!-- Script Toolbar (shows running scripts) -->
+        <Border x:Name="ScriptToolbar" Grid.Row="1" Background="#1a2744" 
+                Padding="4,2" IsVisible="False">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <TextBlock Text="📜 Scripts:" Foreground="#888" FontSize="11" 
+                           VerticalAlignment="Center" Margin="4,0,8,0"/>
+                <ItemsControl x:Name="ScriptButtons" Grid.Column="1">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="4"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="services:ScriptInfo">
+                            <Border Background="#2a3f5f" CornerRadius="4" Padding="6,2"
+                                    Cursor="Hand" PointerPressed="OnScriptButtonClick"
+                                    Tag="{Binding}">
+                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                    <TextBlock Text="{Binding DisplayName}" 
+                                               Foreground="#60a5fa" FontSize="11"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="⏸" FontSize="9" Foreground="#fbbf24"
+                                               IsVisible="{Binding IsPaused}"
+                                               VerticalAlignment="Center"/>
+                                    <Button Content="✕" FontSize="9" 
+                                            Padding="2,0" MinWidth="16" MinHeight="16"
+                                            Background="Transparent" Foreground="#ef4444"
+                                            Click="OnScriptAbortClick" Tag="{Binding}"
+                                            VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Grid.Column="2" Content="Abort All" FontSize="10" 
+                        Padding="8,2" Background="#5c2727" Foreground="#ef4444"
+                        Click="OnAbortAllScripts" VerticalAlignment="Center"
+                        Margin="8,0,4,0"/>
+            </Grid>
+        </Border>
+
         <!-- Main Content Area with Side Panels -->
-        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="8,8,8,4">
+        <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="8,8,8,4">
             <!-- Left: Thoughts + Main Game Output -->
             <Grid RowDefinitions="Auto,*">
                 <!-- Thoughts Panel (above main) -->
@@ -136,7 +182,7 @@
         </Grid>
 
         <!-- Command Input -->
-        <Border Grid.Row="2" Margin="8,4,8,4" CornerRadius="8" ClipToBounds="True">
+        <Border Grid.Row="3" Margin="8,4,8,4" CornerRadius="8" ClipToBounds="True">
             <TextBox x:Name="CommandInput" 
                      Classes="CommandInput"
                      Watermark="Enter command..."
@@ -144,7 +190,7 @@
         </Border>
 
         <!-- Row 1: RT | Compass | Status Effects | Left Hand | Right Hand | Prepared Spell -->
-        <Border Grid.Row="3" Margin="8,4,8,2" Background="#16213e" CornerRadius="8" Padding="8,6">
+        <Border Grid.Row="4" Margin="8,4,8,2" Background="#16213e" CornerRadius="8" Padding="8,6">
             <StackPanel Orientation="Horizontal" Spacing="8">
                 <!-- Roundtime with progress bar background -->
                 <Border Background="#2a2a3e" CornerRadius="6" 
@@ -379,7 +425,7 @@
         </Border>
 
         <!-- Row 2: Health | Mana | Concentration | Stamina | Spirit -->
-        <Border Grid.Row="4" Margin="8,2,8,4" Background="#16213e" CornerRadius="8" Padding="12,8">
+        <Border Grid.Row="5" Margin="8,2,8,4" Background="#16213e" CornerRadius="8" Padding="12,8">
             <Grid ColumnDefinitions="*,*,*,*,*">
                 <!-- Health Bar - Red -->
                 <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
