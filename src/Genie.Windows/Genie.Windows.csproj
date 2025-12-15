@@ -115,7 +115,9 @@
   <!-- NuGet packages -->
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
-    <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
+    <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0">
+      <NoWarn>NU1510</NoWarn>
+    </PackageReference>
   </ItemGroup>
 
   <!-- Plugin project reference -->

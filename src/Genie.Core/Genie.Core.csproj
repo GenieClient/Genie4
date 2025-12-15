@@ -114,7 +114,9 @@
 
   <!-- NuGet packages -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
+    <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0">
+      <NoWarn>NU1510</NoWarn>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
   </ItemGroup>
 
