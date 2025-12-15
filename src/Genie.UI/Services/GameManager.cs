@@ -162,6 +162,16 @@ public class GameManager : IDisposable
             return; // These are window batching control signals, don't display
         }
         
+        // Only display text targeted at the main window
+        // Other targets (Inv, Room, Familiar, etc.) have dedicated windows in the full client
+        // For now, we only support the main game output
+        if (targetwindow != Game.WindowTarget.Main && 
+            targetwindow != Game.WindowTarget.Unknown &&
+            targetwindow != Game.WindowTarget.Log)
+        {
+            return; // Skip non-main window content
+        }
+        
         // Forward to UI on main thread
         TextReceived?.Invoke(text, color, bgcolor);
         
