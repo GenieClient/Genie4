@@ -1,13 +1,22 @@
 ﻿using System;
-using System.Windows.Forms;
-using Microsoft.VisualBasic.CompilerServices;
+using System.Collections.Generic;
 
 namespace GenieClient.Genie
 {
+    /// <summary>
+    /// Platform-agnostic key code handling.
+    /// Replaces System.Windows.Forms.Keys for cross-platform compatibility.
+    /// </summary>
     public class KeyCode
     {
+        /// <summary>
+        /// Platform-agnostic key enumeration.
+        /// Values match Windows virtual key codes for compatibility.
+        /// </summary>
+        [Flags]
         public enum Keys
         {
+            None = 0,
             A = 65,
             Add = 107,
             Alt = 262144,
@@ -169,21 +178,116 @@ namespace GenieClient.Genie
             X = 88,
             Y = 89,
             Z = 90,
-            Zoom = 251
+            Zoom = 251,
+            // Modifier key mask
+            KeyCode = 65535,
+            Modifiers = -65536
         }
 
-        public static System.Windows.Forms.Keys StringToKey(string sHotkey)
+        // Lookup table for string to key conversion
+        private static readonly Dictionary<string, Keys> _keyNameMap = BuildKeyNameMap();
+
+        private static Dictionary<string, Keys> BuildKeyNameMap()
         {
+            var map = new Dictionary<string, Keys>(StringComparer.OrdinalIgnoreCase);
+            foreach (Keys key in Enum.GetValues(typeof(Keys)))
+            {
+                var name = key.ToString();
+                if (!map.ContainsKey(name))
+                {
+                    map[name] = key;
+                }
+            }
+            // Add common aliases
+            map["Ctrl"] = Keys.Control;
+            map["Esc"] = Keys.Escape;
+            map["Del"] = Keys.Delete;
+            map["Ins"] = Keys.Insert;
+            map["PgUp"] = Keys.PageUp;
+            map["PgDn"] = Keys.PageDown;
+            map["PgDown"] = Keys.PageDown;
+            return map;
+        }
+
+        /// <summary>
+        /// Converts a string representation to a Keys value.
+        /// Supports formats like "F1", "Ctrl+A", "Shift+Control+F5", etc.
+        /// </summary>
+        public static Keys StringToKey(string sHotkey)
+        {
+            if (string.IsNullOrWhiteSpace(sHotkey))
+                return Keys.None;
+
             try
             {
-                return (System.Windows.Forms.Keys)Conversions.ToInteger(new KeysConverter().ConvertFromString(sHotkey));
+                Keys result = Keys.None;
+                var parts = sHotkey.Split(new[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var part in parts)
+                {
+                    var trimmed = part.Trim();
+                    if (_keyNameMap.TryGetValue(trimmed, out Keys key))
+                    {
+                        result |= key;
+                    }
+                    else if (Enum.TryParse<Keys>(trimmed, true, out Keys parsedKey))
+                    {
+                        result |= parsedKey;
+                    }
+                }
+
+                return result;
             }
-            #pragma warning disable CS0168
-            catch (Exception ex) // Unfortunately there is no specific error for convert errors.
-            #pragma warning restore CS0168
+            catch
             {
-                return default;
+                return Keys.None;
             }
+        }
+
+        /// <summary>
+        /// Converts a Keys value to its string representation.
+        /// </summary>
+        public static string KeyToString(Keys key)
+        {
+            if (key == Keys.None)
+                return string.Empty;
+
+            var parts = new List<string>();
+
+            // Check modifiers
+            if ((key & Keys.Control) == Keys.Control)
+                parts.Add("Control");
+            if ((key & Keys.Shift) == Keys.Shift)
+                parts.Add("Shift");
+            if ((key & Keys.Alt) == Keys.Alt)
+                parts.Add("Alt");
+
+            // Get the base key (without modifiers)
+            var baseKey = key & Keys.KeyCode;
+            if (baseKey != Keys.None && baseKey != Keys.Control && baseKey != Keys.Shift && baseKey != Keys.Alt)
+            {
+                parts.Add(baseKey.ToString());
+            }
+
+            return string.Join("+", parts);
+        }
+
+        /// <summary>
+        /// Converts an integer key code to Keys.
+        /// Useful for interop with platform-specific key codes.
+        /// </summary>
+        public static Keys FromInt32(int keyCode)
+        {
+            return (Keys)keyCode;
+        }
+
+        /// <summary>
+        /// Converts Keys to an integer key code.
+        /// Useful for interop with platform-specific key codes.
+        /// </summary>
+        public static int ToInt32(Keys key)
+        {
+            return (int)key;
         }
     }
 }

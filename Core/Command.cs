@@ -6,7 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Windows.Forms; // Needed for Keys enum in macro handling - TODO: abstract for cross-platform
+// System.Windows.Forms removed - Keys enum now abstracted via KeyCode.Keys
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using GenieClient.Services;
@@ -3388,7 +3388,7 @@ namespace GenieClient.Genie
                     {
                         if (bUsePattern == false | de.Value.ToString().Contains(sPattern))
                         {
-                            EchoText(((Keys)Conversions.ToInteger(de.Key)).ToString() + "=" + ((Macros.Macro)de.Value).sAction + System.Environment.NewLine);
+                            EchoText(((KeyCode.Keys)Conversions.ToInteger(de.Key)).ToString() + "=" + ((Macros.Macro)de.Value).sAction + System.Environment.NewLine);
                             I += 1;
                         }
                     }

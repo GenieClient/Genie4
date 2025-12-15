@@ -8,13 +8,27 @@ using System.Text.Json.Serialization;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Runtime.CompilerServices;
 
 namespace GenieClient
 {
     public static class Updater
     {
+        /// <summary>
+        /// Event to request user confirmation. UI layer should handle this.
+        /// Return true to proceed, false to cancel.
+        /// </summary>
+        public static event Func<string, string, bool> ConfirmationRequested;
+
+        /// <summary>
+        /// Shows a confirmation dialog via the registered handler.
+        /// Falls back to true (auto-confirm) if no handler is registered.
+        /// </summary>
+        private static bool RequestConfirmation(string message, string title)
+        {
+            return ConfirmationRequested?.Invoke(message, title) ?? true;
+        }
+
         private static string GitHubUpdaterReleaseURL = @"https://api.github.com/repos/GenieClient/Lamp/releases/latest";
         private static string GitHubClientReleaseURL = @"https://api.github.com/repos/GenieClient/Genie4/releases/latest";
         private static string UpdaterFilename = @"Lamp.exe";
@@ -91,7 +105,9 @@ namespace GenieClient
 
         public static async Task UpdateUpdater(bool autoUpdate)
         {
-            if (!UpdaterIsCurrent && !autoUpdate && MessageBox.Show(@"An updated version of Lamp is available. It is recommended to update Lamp before continuing. Would you like to update now?", "Update Lamp?", MessageBoxButtons.YesNoCancel) != DialogResult.Yes) return;
+            if (!UpdaterIsCurrent && !autoUpdate && !RequestConfirmation(
+                "An updated version of Lamp is available. It is recommended to update Lamp before continuing. Would you like to update now?",
+                "Update Lamp?")) return;
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             client.DefaultRequestHeaders.Add("User-Agent", "Genie Client Updater");

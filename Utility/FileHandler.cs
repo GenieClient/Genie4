@@ -5,12 +5,17 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Drawing;
 using System.Threading.Tasks;
+#if WINDOWS
+using System.Drawing;
+#endif
 
 
 namespace GenieClient
 {
+    /// <summary>
+    /// File handling utilities. Image methods are Windows-only due to System.Drawing dependency.
+    /// </summary>
     internal static class FileHandler
     {
         private static readonly HttpClient _httpClient = new HttpClient();
@@ -66,6 +71,10 @@ namespace GenieClient
             return File.Exists(cachedFile);
         }
 
+#if WINDOWS
+        /// <summary>
+        /// Loads and resizes an image. Windows-only due to System.Drawing dependency.
+        /// </summary>
         public static async Task<Image> GetImage(string filename, int width, int height)
         {
             if (!File.Exists(filename)) return null;
@@ -76,5 +85,6 @@ namespace GenieClient
             image = (Image)new Bitmap(image, new Size(w, h));
             return image;
         }
+#endif
     }
 }

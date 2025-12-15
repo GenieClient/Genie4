@@ -35,6 +35,11 @@ namespace GenieClient
             m_oLegacyPluginHost = new LegacyPluginHost(this, ref _m_oGlobals);
             m_oPluginHost = new PluginHost(this, ref _m_oGlobals);
             m_PluginDialog = new FormPlugins(ref _m_oGlobals.PluginList);
+
+            // Register platform-specific UI handlers for cross-platform abstractions
+            Updater.ConfirmationRequested += (message, title) =>
+                MessageBox.Show(message, title, MessageBoxButtons.YesNoCancel) == DialogResult.Yes;
+
             // This call is required by the Windows Form Designer.
             InitializeComponent();
             RecolorUI();
@@ -1647,9 +1652,11 @@ namespace GenieClient
         {
             if (My.MyProject.Forms.FormConfig.Visible == false | TextBoxInput.Focused == true)
             {
-                if (m_oGlobals.MacroList.Contains(e.KeyData) == true)
+                // Convert Windows Forms Keys to platform-agnostic KeyCode.Keys
+                var keyCode = Genie.KeyCode.FromInt32((int)e.KeyData);
+                if (m_oGlobals.MacroList.Contains(keyCode) == true)
                 {
-                    m_oCommand.ParseCommand(((Genie.Macros.Macro)m_oGlobals.MacroList[e.KeyData]).sAction, true, true);
+                    m_oCommand.ParseCommand(((Genie.Macros.Macro)m_oGlobals.MacroList[keyCode]).sAction, true, true);
                     string argsText = "";
                     var argoColor = Color.Transparent;
                     var argoBgColor = Color.Transparent;
@@ -5271,8 +5278,12 @@ namespace GenieClient
         }
 
         // Script Print
-        private void Script_EventPrintText(string sText, Color oColor, Color oBgColor)
+        private void Script_EventPrintText(string sText, GenieColor oGenieColor, GenieColor oBgGenieColor)
         {
+            // Convert platform-agnostic GenieColor to System.Drawing.Color at the UI boundary
+            Color oColor = oGenieColor.ToDrawingColor();
+            Color oBgColor = oBgGenieColor.ToDrawingColor();
+
             Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
             string argsTargetWindow = "";
             AddText(sText, oColor, oBgColor, oTargetWindow: argoTargetWindow, sTargetWindow: argsTargetWindow);

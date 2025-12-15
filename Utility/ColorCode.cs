@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Microsoft.VisualBasic;
+using GenieClient.Services;
 
 namespace GenieClient.Genie
 {
+    /// <summary>
+    /// Color parsing and conversion utilities.
+    /// Contains both System.Drawing.Color methods (legacy) and GenieColor methods (cross-platform).
+    /// </summary>
     public class ColorCode
     {
         public static string ColorToString(Color oColor)
@@ -36,7 +41,7 @@ namespace GenieClient.Genie
                 }
                 else if (IsColorString(sColor))
                 {
-                    return (Color)new ColorConverter().ConvertFromString(sColor);
+                    return (Color)new System.Drawing.ColorConverter().ConvertFromString(sColor);
                 }
             }
             #pragma warning disable CS0168
@@ -151,5 +156,88 @@ namespace GenieClient.Genie
                 return true;
             return false;
         }
+
+        #region GenieColor Methods (Cross-Platform)
+
+        /// <summary>
+        /// Converts a GenieColor to its string representation.
+        /// </summary>
+        public static string GenieColorToString(GenieColor color)
+        {
+            return color.ToHex();
+        }
+
+        /// <summary>
+        /// Parses a color string to GenieColor.
+        /// Supports hex format (#RRGGBB) and named colors.
+        /// </summary>
+        public static GenieColor StringToGenieColor(string sColor)
+        {
+            if (string.IsNullOrWhiteSpace(sColor) || sColor.StartsWith("@"))
+                return GenieColor.Transparent;
+
+            // Try hex format first
+            if (IsHexString(sColor))
+            {
+                return GenieColor.FromHex(sColor);
+            }
+
+            // Try named color via System.Drawing.Color conversion
+            if (IsColorString(sColor))
+            {
+                try
+                {
+                    var drawingColor = (Color)new System.Drawing.ColorConverter().ConvertFromString(sColor);
+                    return drawingColor.ToGenieColor();
+                }
+                catch
+                {
+                    return GenieColor.Transparent;
+                }
+            }
+
+            return GenieColor.Transparent;
+        }
+
+        /// <summary>
+        /// Converts GenieColor to hex string.
+        /// </summary>
+        public static string GenieColorToHex(GenieColor color)
+        {
+            return color.ToHex();
+        }
+
+        /// <summary>
+        /// Creates a lighter version of the color.
+        /// </summary>
+        public static GenieColor GenieColorToLighter(GenieColor color)
+        {
+            int R = (int)(color.R / 1.299);
+            int G = (int)(color.G / 1.587);
+            int B = (int)(color.B / 1.114);
+            return new GenieColor((byte)Math.Min(255, R), (byte)Math.Min(255, G), (byte)Math.Min(255, B), color.A);
+        }
+
+        /// <summary>
+        /// Creates a darker version of the color.
+        /// </summary>
+        public static GenieColor GenieColorToDarker(GenieColor color)
+        {
+            int R = (int)(color.R * 0.299);
+            int G = (int)(color.G * 0.587);
+            int B = (int)(color.B * 0.114);
+            return new GenieColor((byte)R, (byte)G, (byte)B, color.A);
+        }
+
+        /// <summary>
+        /// Creates a grayscale version of the color.
+        /// </summary>
+        public static GenieColor GenieColorToGrayscale(GenieColor color)
+        {
+            int gray = (int)(color.R * 0.299 + color.G * 0.587 + color.B * 0.114);
+            return new GenieColor((byte)gray, (byte)gray, (byte)gray, color.A);
+        }
+
+        #endregion
     }
 }

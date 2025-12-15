@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using GenieClient.Services;
 
 namespace GenieClient.Genie
 {
@@ -67,8 +68,8 @@ namespace GenieClient.Genie
 
         public class Highlight
         {
-            public Color FgColor;
-            public Color BgColor;
+            public GenieColor Foreground;
+            public GenieColor Background;
             public string ColorName = string.Empty;
             public bool HighlightWholeRow = false;
             public bool CaseSensitive = true;
@@ -76,10 +77,35 @@ namespace GenieClient.Genie
             public bool IsActive = true;
             public string SoundFile = string.Empty;
 
+            // Legacy properties for backward compatibility with UI layer
+            public Color FgColor
+            {
+                get => Foreground.ToDrawingColor();
+                set => Foreground = value.ToGenieColor();
+            }
+
+            public Color BgColor
+            {
+                get => Background.ToDrawingColor();
+                set => Background = value.ToGenieColor();
+            }
+
             public Highlight(Color oColor, string sColorName, Color oBgColor, bool bHighlightWholeRow, bool CaseSensitive = true, string SoundFile = "", string ClassName = "", bool IsActive = true)
             {
-                FgColor = oColor;
-                BgColor = oBgColor;
+                Foreground = oColor.ToGenieColor();
+                Background = oBgColor.ToGenieColor();
+                HighlightWholeRow = bHighlightWholeRow;
+                ColorName = sColorName;
+                this.CaseSensitive = CaseSensitive;
+                this.SoundFile = SoundFile;
+                this.ClassName = ClassName;
+                this.IsActive = IsActive;
+            }
+
+            public Highlight(GenieColor fgColor, string sColorName, GenieColor bgColor, bool bHighlightWholeRow, bool CaseSensitive = true, string SoundFile = "", string ClassName = "", bool IsActive = true)
+            {
+                Foreground = fgColor;
+                Background = bgColor;
                 HighlightWholeRow = bHighlightWholeRow;
                 ColorName = sColorName;
                 this.CaseSensitive = CaseSensitive;
@@ -97,19 +123,19 @@ namespace GenieClient.Genie
             }
             else
             {
-                Color oColor;
-                Color oBgcolor;
+                GenieColor oColor;
+                GenieColor oBgcolor;
                 if (sColorName.Contains(",") == true && sColorName.EndsWith(",") == false)
                 {
                     string sColor = sColorName.Substring(0, sColorName.IndexOf(",")).Trim();
                     string sBgColor = sColorName.Substring(sColorName.IndexOf(",") + 1).Trim();
-                    oColor = ColorCode.StringToColor(sColor);
-                    oBgcolor = ColorCode.StringToColor(sBgColor);
+                    oColor = ColorCode.StringToGenieColor(sColor);
+                    oBgcolor = ColorCode.StringToGenieColor(sBgColor);
                 }
                 else
                 {
-                    oColor = ColorCode.StringToColor(sColorName);
-                    oBgcolor = Color.Transparent;
+                    oColor = ColorCode.StringToGenieColor(sColorName);
+                    oBgcolor = GenieColor.Transparent;
                 }
 
                 if (base.ContainsKey(sKey) == true)

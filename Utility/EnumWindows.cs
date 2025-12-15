@@ -1,4 +1,8 @@
-﻿/// <summary>
+﻿// Windows-specific P/Invoke functionality for window enumeration and management.
+// This file only compiles on Windows platform.
+#if WINDOWS
+
+/// <summary>
 /// Window Style Flags
 /// </summary>
 using System;
@@ -498,3 +502,5 @@ namespace GenieClient
     }
 }
 /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
+
+#endif // WINDOWS

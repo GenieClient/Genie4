@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using Microsoft.VisualBasic;
+using GenieClient.Services;
 
 namespace GenieClient.Genie
 {
@@ -26,14 +27,34 @@ namespace GenieClient.Genie
 
         public class Name
         {
-            public Color FgColor;
-            public Color BgColor;
+            public GenieColor Foreground;
+            public GenieColor Background;
             public string ColorName;
+
+            // Legacy properties for backward compatibility with UI layer
+            public Color FgColor
+            {
+                get => Foreground.ToDrawingColor();
+                set => Foreground = value.ToGenieColor();
+            }
+
+            public Color BgColor
+            {
+                get => Background.ToDrawingColor();
+                set => Background = value.ToGenieColor();
+            }
 
             public Name(Color oColor, Color oBgColor, string sColorName = "")
             {
-                FgColor = oColor;
-                BgColor = oBgColor;
+                Foreground = oColor.ToGenieColor();
+                Background = oBgColor.ToGenieColor();
+                ColorName = sColorName;
+            }
+
+            public Name(GenieColor fgColor, GenieColor bgColor, string sColorName = "")
+            {
+                Foreground = fgColor;
+                Background = bgColor;
                 ColorName = sColorName;
             }
         }
@@ -46,19 +67,19 @@ namespace GenieClient.Genie
             }
             else
             {
-                Color oColor;
-                Color oBgcolor;
+                GenieColor oColor;
+                GenieColor oBgcolor;
                 if (sColorName.Contains(",") == true && sColorName.EndsWith(",") == false)
                 {
                     string sColor = sColorName.Substring(0, sColorName.IndexOf(",")).Trim();
                     string sBgColor = sColorName.Substring(sColorName.IndexOf(",") + 1).Trim();
-                    oColor = ColorCode.StringToColor(sColor);
-                    oBgcolor = ColorCode.StringToColor(sBgColor);
+                    oColor = ColorCode.StringToGenieColor(sColor);
+                    oBgcolor = ColorCode.StringToGenieColor(sBgColor);
                 }
                 else
                 {
-                    oColor = ColorCode.StringToColor(sColorName);
-                    oBgcolor = Color.Transparent;
+                    oColor = ColorCode.StringToGenieColor(sColorName);
+                    oBgcolor = GenieColor.Transparent;
                 }
 
                 if (base.ContainsKey(sKey) == true)

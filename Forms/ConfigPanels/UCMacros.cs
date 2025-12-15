@@ -50,8 +50,8 @@ namespace GenieClient
                 ResetList();
                 foreach (DictionaryEntry de in m_MacroList)
                 {
-                    var li = ListViewBase.Items.Add(((Keys)Conversions.ToInteger(de.Key)).ToString());
-                    li.Tag = ((Keys)Conversions.ToInteger(de.Key)).ToString();
+                    var li = ListViewBase.Items.Add(((Genie.KeyCode.Keys)Conversions.ToInteger(de.Key)).ToString());
+                    li.Tag = ((Genie.KeyCode.Keys)Conversions.ToInteger(de.Key)).ToString();
                     li.SubItems.Add(((Genie.Macros.Macro)de.Value).sAction);
                 }
             }
@@ -338,7 +338,8 @@ namespace GenieClient
                 return;
             }
 
-            string sKeyText = ((Keys)Conversions.ToInteger(e.KeyValue)).ToString();
+            // Convert Windows Forms key to platform-agnostic KeyCode.Keys
+            string sKeyText = ((Genie.KeyCode.Keys)Conversions.ToInteger(e.KeyValue)).ToString();
             if (e.Shift == true)
             {
                 sKeyText += ", Shift";

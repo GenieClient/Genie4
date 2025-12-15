@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Drawing; // Still needed for PresetList color conversion
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Windows.Forms;
 using Jint;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using GenieClient.Services;
 
 namespace GenieClient
 {
@@ -627,7 +627,7 @@ namespace GenieClient
 
         public event EventPrintTextEventHandler EventPrintText;
 
-        public delegate void EventPrintTextEventHandler(string sText, Color oColor, Color oBgColor);
+        public delegate void EventPrintTextEventHandler(string sText, GenieColor oColor, GenieColor oBgColor);
 
         public event EventSendTextEventHandler EventSendText;
 
@@ -4357,22 +4357,22 @@ namespace GenieClient
             // Everything above 9 has to be an exact match to show
             if (DebugLevel > 9 & DebugLevel == iLevel)
             {
-                EventPrintText?.Invoke(sDebugMessage + sText + System.Environment.NewLine, Color.RoyalBlue, Color.Transparent);
+                EventPrintText?.Invoke(sDebugMessage + sText + System.Environment.NewLine, GenieColor.RoyalBlue, GenieColor.Transparent);
             }
             else if (DebugLevel <= 9 & DebugLevel >= iLevel)
             {
-                EventPrintText?.Invoke(sDebugMessage + sText + System.Environment.NewLine, Color.RoyalBlue, Color.Transparent);
+                EventPrintText?.Invoke(sDebugMessage + sText + System.Environment.NewLine, GenieColor.RoyalBlue, GenieColor.Transparent);
             }
         }
 
         private void PrintText(string sText)
         {
-            EventPrintText?.Invoke(sText + System.Environment.NewLine, Color.White, Color.Transparent);
+            EventPrintText?.Invoke(sText + System.Environment.NewLine, GenieColor.White, GenieColor.Transparent);
         }
 
         private void PrintEcho(string sText)
         {
-            EventPrintText?.Invoke(sText + System.Environment.NewLine, m_oGlobals.PresetList["scriptecho"].FgColor, Color.Transparent);
+            EventPrintText?.Invoke(sText + System.Environment.NewLine, m_oGlobals.PresetList["scriptecho"].FgColor.ToGenieColor(), GenieColor.Transparent);
         }
 
         private void SendText(string text, bool queue = false, bool docommand = false)

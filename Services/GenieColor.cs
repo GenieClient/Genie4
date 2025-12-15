@@ -122,6 +122,11 @@ namespace GenieClient.Services
         public static GenieColor Olive => new(128, 128, 0);
         public static GenieColor Fuchsia => new(255, 0, 255);
 
+        // Blue variants
+        public static GenieColor RoyalBlue => new(65, 105, 225);
+        public static GenieColor SteelBlue => new(70, 130, 180);
+        public static GenieColor CornflowerBlue => new(100, 149, 237);
+
         // Game-specific colors
         public static GenieColor PaleGreen => new(152, 251, 152);
         public static GenieColor PaleGoldenrod => new(238, 232, 170);
