@@ -101,15 +101,30 @@ public partial class MainWindow : Window
         bar.RenderTransform = new ScaleTransform(percent / 100.0, 1.0);
     }
 
+    private int _maxRoundtime = 1; // Track max RT for percentage calculation
+
     /// <summary>
     /// Updates the roundtime display.
     /// </summary>
-    public void UpdateRoundtime(int seconds)
+    public void UpdateRoundtime(int seconds, int? maxSeconds = null)
     {
+        if (maxSeconds.HasValue && maxSeconds.Value > 0)
+            _maxRoundtime = maxSeconds.Value;
+        else if (seconds > _maxRoundtime)
+            _maxRoundtime = seconds;
+
         RoundtimeText.Text = seconds.ToString();
         RoundtimeText.Foreground = seconds > 0 
-            ? new SolidColorBrush(Color.Parse("#e94560")) 
+            ? new SolidColorBrush(Color.Parse("#ef4444")) 
             : new SolidColorBrush(Color.Parse("#666"));
+
+        // Update progress bar width (70px is the container width)
+        double percentage = _maxRoundtime > 0 ? (double)seconds / _maxRoundtime : 0;
+        RoundtimeBar.Width = 70 * percentage;
+        
+        // Reset max when RT hits 0
+        if (seconds == 0)
+            _maxRoundtime = 1;
     }
 
     private void OnConnect(object? sender, RoutedEventArgs e)
@@ -170,7 +185,7 @@ public partial class MainWindow : Window
                     // Full UI demo
                     var rand = new Random();
                     UpdateVitals(rand.Next(20, 100), rand.Next(20, 100), rand.Next(20, 100), rand.Next(20, 100), rand.Next(20, 100));
-                    UpdateRoundtime(rand.Next(0, 8));
+                    UpdateRoundtime(rand.Next(3, 12), 12); // Show RT with max of 12 for visible bar
                     UpdateHands("broadsword", "steel shield");
                     UpdateSpell("Fire Ball");
                     UpdateCompass(true, false, true, true, true, false, true, false, false, true, true);
