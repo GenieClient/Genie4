@@ -1,8 +1,10 @@
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
+using GenieClient.Genie;
 using GenieClient.Services;
 using GenieClient.UI.Services;
 using System;
@@ -12,6 +14,7 @@ namespace GenieClient.Views;
 public partial class MainWindow : Window
 {
     private GameManager? _gameManager;
+    private HighlightProcessor? _highlightProcessor;
 
     public MainWindow()
     {
@@ -26,6 +29,11 @@ public partial class MainWindow : Window
         
         // Initialize vitals at 100%
         UpdateVitals(100, 100, 100, 100, 100);
+        
+        // Clear the initial text from XAML since we'll use Inlines
+        GameOutput.Text = "";
+        AppendText("Welcome to Genie 5 - Cross-Platform Edition\n\n", Colors.LightGreen);
+        AppendText("Use File → Connect to connect to a game server.\n\n", Colors.Gray);
         
         // Initialize game manager
         InitializeGameManager();
@@ -48,14 +56,47 @@ public partial class MainWindow : Window
         _gameManager.StatusChanged += OnStatusChanged;
     }
 
+    private void EnsureHighlightProcessor()
+    {
+        // Create the highlight processor once globals is available
+        if (_highlightProcessor == null && _gameManager?.Globals != null)
+        {
+            _highlightProcessor = new HighlightProcessor(_gameManager.Globals);
+        }
+    }
+
     private void OnGameTextReceived(string text, GenieColor color, GenieColor bgcolor)
     {
         // Marshal to UI thread
         Dispatcher.UIThread.Post(() =>
         {
-            // Convert GenieColor to Avalonia Color
-            var avaloniaColor = Color.FromRgb(color.R, color.G, color.B);
-            AppendText(text, avaloniaColor);
+            EnsureHighlightProcessor();
+            
+            if (_highlightProcessor != null)
+            {
+                // Process text through highlight system
+                var segments = _highlightProcessor.Process(text, color, bgcolor);
+                foreach (var segment in segments)
+                {
+                    var fg = Color.FromRgb(segment.ForegroundColor.R, segment.ForegroundColor.G, segment.ForegroundColor.B);
+                    var bg = segment.BackgroundColor != GenieColor.Transparent 
+                        ? Color.FromRgb(segment.BackgroundColor.R, segment.BackgroundColor.G, segment.BackgroundColor.B)
+                        : (Color?)null;
+                    AppendStyledText(segment.Text, fg, bg);
+                    
+                    // Play sound if specified
+                    if (!string.IsNullOrEmpty(segment.SoundFile))
+                    {
+                        GenieServices.Sound.PlayWaveFile(segment.SoundFile);
+                    }
+                }
+            }
+            else
+            {
+                // Fall back to simple text append
+                var avaloniaColor = Color.FromRgb(color.R, color.G, color.B);
+                AppendText(text, avaloniaColor);
+            }
         });
     }
 
@@ -360,9 +401,24 @@ public partial class MainWindow : Window
                 {
                     ShowColorTest();
                 }
+                else if (command.Equals("highlights", StringComparison.OrdinalIgnoreCase))
+                {
+                    ShowHighlightInfo();
+                }
+                else if (command.StartsWith("#highlight ", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Add a test highlight: #highlight <pattern> <color>
+                    AddTestHighlight(command);
+                }
+                else if (command.StartsWith("#echo ", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Echo text through the highlight processor: #echo <text>
+                    var echoText = command.Substring(6);
+                    EchoWithHighlights(echoText + "\n");
+                }
                 else if (command.Equals("clear", StringComparison.OrdinalIgnoreCase))
                 {
-                    GameOutput.Text = "";
+                    ClearOutput();
                 }
                 else if (command.Equals("vitals", StringComparison.OrdinalIgnoreCase))
                 {
@@ -413,14 +469,167 @@ public partial class MainWindow : Window
         AppendText("  LightGray text\n", Colors.LightGray);
     }
 
-    private void AppendText(string text, Color color)
+    private void ShowHighlightInfo()
     {
-        // For now, just append plain text
-        // TODO: Implement rich text with colors using Avalonia's inline support
-        GameOutput.Text += text;
+        EnsureHighlightProcessor();
+        var globals = _gameManager?.Globals;
+        
+        if (globals?.HighlightList == null)
+        {
+            AppendText("Highlights not initialized. Connect to game first or use #highlight to add test patterns.\n", Colors.Yellow);
+            return;
+        }
+        
+        AppendText("Highlight System Info:\n", Colors.White);
+        AppendText($"  String highlights: {globals.HighlightList.Count}\n", Colors.Gray);
+        
+        if (globals.HighlightList.Count > 0)
+        {
+            AppendText("\nDefined Highlights:\n", Colors.LightGreen);
+            foreach (var key in globals.HighlightList.Keys)
+            {
+                if (globals.HighlightList[key] is GenieClient.Genie.Highlights.Highlight hl)
+                {
+                    var fg = Color.FromRgb(hl.Foreground.R, hl.Foreground.G, hl.Foreground.B);
+                    AppendText($"  • ", Colors.Gray);
+                    AppendStyledText(key.ToString() ?? "", fg);
+                    AppendText($" → {hl.ColorName}\n", Colors.Gray);
+                }
+            }
+        }
+        
+        AppendText("\nTest highlight with: #highlight <pattern> <color>\n", Colors.Gray);
+        AppendText("Example: #highlight dragon red\n", Colors.Gray);
+        AppendText("Example: #highlight treasure gold\n", Colors.Gray);
+    }
+
+    private void AddTestHighlight(string command)
+    {
+        // Parse: #highlight <pattern> <color>
+        var parts = command.Split(' ', 3, StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length < 3)
+        {
+            AppendText("Usage: #highlight <pattern> <color>\n", Colors.Yellow);
+            return;
+        }
+        
+        var pattern = parts[1];
+        var colorName = parts[2];
+        
+        var globals = _gameManager?.Globals;
+        if (globals?.HighlightList == null)
+        {
+            // Need to initialize globals first
+            AppendText("Initializing highlight system...\n", Colors.Gray);
+            _ = _gameManager?.ConnectAsync("", "", "", ""); // Trigger init
+            
+            // Wait a bit for initialization
+            System.Threading.Tasks.Task.Delay(500).ContinueWith(_ =>
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (_gameManager?.Globals?.HighlightList != null)
+                    {
+                        DoAddHighlight(pattern, colorName);
+                    }
+                    else
+                    {
+                        AppendText("Could not initialize highlight system.\n", Colors.Red);
+                    }
+                });
+            });
+            return;
+        }
+        
+        DoAddHighlight(pattern, colorName);
+    }
+
+    private void DoAddHighlight(string pattern, string colorName)
+    {
+        var globals = _gameManager?.Globals;
+        if (globals?.HighlightList == null) return;
+        
+        // Add the highlight
+        globals.HighlightList.Add(pattern, false, colorName);
+        globals.HighlightList.RebuildStringIndex();
+        
+        // Recreate the highlight processor to pick up changes
+        _highlightProcessor = new HighlightProcessor(globals);
+        
+        var color = ColorCode.StringToGenieColor(colorName);
+        var fg = Color.FromRgb(color.R, color.G, color.B);
+        AppendText("Added highlight: ", Colors.Gray);
+        AppendStyledText(pattern, fg);
+        AppendText($" → {colorName}\n", Colors.Gray);
+        AppendText($"Test with: #echo The dragon breathes fire!\n", Colors.Gray);
+    }
+
+    /// <summary>
+    /// Echos text through the highlight processor for testing highlights locally.
+    /// </summary>
+    private void EchoWithHighlights(string text)
+    {
+        EnsureHighlightProcessor();
+        
+        // Use default colors for echo
+        var defaultFg = GenieColor.FromRgb(201, 209, 217); // #c9d1d9
+        var defaultBg = GenieColor.Transparent;
+        
+        if (_highlightProcessor != null)
+        {
+            var segments = _highlightProcessor.Process(text, defaultFg, defaultBg);
+            foreach (var segment in segments)
+            {
+                var fg = Color.FromRgb(segment.ForegroundColor.R, segment.ForegroundColor.G, segment.ForegroundColor.B);
+                var bg = segment.BackgroundColor != GenieColor.Transparent 
+                    ? Color.FromRgb(segment.BackgroundColor.R, segment.BackgroundColor.G, segment.BackgroundColor.B)
+                    : (Color?)null;
+                AppendStyledText(segment.Text, fg, bg);
+            }
+        }
+        else
+        {
+            AppendText(text, Color.Parse("#c9d1d9"));
+        }
+    }
+
+    /// <summary>
+    /// Appends styled text with foreground and optional background color using Inlines.
+    /// </summary>
+    private void AppendStyledText(string text, Color foreground, Color? background = null)
+    {
+        if (string.IsNullOrEmpty(text)) return;
+        
+        var run = new Run(text)
+        {
+            Foreground = new SolidColorBrush(foreground)
+        };
+        
+        if (background.HasValue)
+        {
+            run.Background = new SolidColorBrush(background.Value);
+        }
+        
+        GameOutput.Inlines?.Add(run);
         
         // Auto-scroll to bottom
         OutputScroller.ScrollToEnd();
+    }
+
+    /// <summary>
+    /// Appends plain text with the specified color (convenience method).
+    /// </summary>
+    private void AppendText(string text, Color color)
+    {
+        AppendStyledText(text, color);
+    }
+
+    /// <summary>
+    /// Clears all text from the output.
+    /// </summary>
+    private void ClearOutput()
+    {
+        GameOutput.Inlines?.Clear();
     }
 }
 

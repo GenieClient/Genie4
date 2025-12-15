@@ -52,8 +52,7 @@
                                      FontFamily="Cascadia Mono, Consolas, monospace"
                                      FontSize="13"
                                      Padding="12"
-                                     TextWrapping="Wrap"
-                                     Text="Welcome to Genie 5 - Cross-Platform Edition&#x0a;&#x0a;Use File → Connect to connect to a game server.&#x0a;"/>
+                                     TextWrapping="Wrap"/>
             </ScrollViewer>
         </Border>
 

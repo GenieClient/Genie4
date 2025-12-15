@@ -36,6 +36,12 @@ public class GameManager : IDisposable
 
     public bool IsConnected => _game?.IsConnected ?? false;
     public string? LastError { get; private set; }
+    
+    /// <summary>
+    /// Gets the Globals instance for accessing highlights, presets, and other configuration.
+    /// Returns null if not initialized.
+    /// </summary>
+    public Globals? Globals => _globals;
 
     public GameManager()
     {
