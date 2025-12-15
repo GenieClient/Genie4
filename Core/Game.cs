@@ -34,7 +34,7 @@ namespace GenieClient.Genie
         public delegate void EventAddImageEventHandler(string filename, string window, int width, int height);
         public event EventPrintTextEventHandler EventPrintText;
 
-        public delegate void EventPrintTextEventHandler(string text, Color color, Color bgcolor, WindowTarget targetwindow, string targetwindowstring, bool mono, bool isprompt, bool isinput);
+        public delegate void EventPrintTextEventHandler(string text, GenieColor color, GenieColor bgcolor, WindowTarget targetwindow, string targetwindowstring, bool mono, bool isprompt, bool isinput);
 
         public event EventPrintErrorEventHandler EventPrintError;
 
@@ -494,12 +494,12 @@ namespace GenieClient.Genie
 
             if (bHideOutput == false)
             {
-                Color color;
-                Color bgcolor;
+                GenieColor color;
+                GenieColor bgcolor;
                 if (bUserInput == true)
                 {
-                    color = m_oGlobals.PresetList["inputuser"].FgColor;
-                    bgcolor = m_oGlobals.PresetList["inputuser"].BgColor;
+                    color = m_oGlobals.PresetList["inputuser"].Foreground;
+                    bgcolor = m_oGlobals.PresetList["inputuser"].Background;
                     if (!sText.StartsWith(Conversions.ToString(m_oGlobals.Config.cMyCommandChar))) // Skip user commands
                     {
                         m_oGlobals.VariableList["lastinput"] = sText;
@@ -510,8 +510,8 @@ namespace GenieClient.Genie
                 }
                 else
                 {
-                    color = m_oGlobals.PresetList["inputother"].FgColor;
-                    bgcolor = m_oGlobals.PresetList["inputother"].BgColor;
+                    color = m_oGlobals.PresetList["inputother"].Foreground;
+                    bgcolor = m_oGlobals.PresetList["inputother"].Background;
                 }
 
                 string argsText = sShowText + System.Environment.NewLine;
@@ -568,7 +568,7 @@ namespace GenieClient.Genie
 
             if (m_bShowRawOutput == true)
             {
-                PrintTextToWindow(sText, Color.LightGray, Color.Black, WindowTarget.Raw);
+                PrintTextToWindow(sText, GenieColor.LightGray, GenieColor.Black, WindowTarget.Raw);
             }
 
             foreach (char c in sText)
@@ -936,25 +936,25 @@ namespace GenieClient.Genie
                     {
                         // ClearWindow(WindowTarget.Room)
                         WindowTarget targetRoom = WindowTarget.Room;
-                        PrintTextToWindow("@suspend@", Color.Transparent, Color.Transparent, targetRoom, false, true);
+                        PrintTextToWindow("@suspend@", GenieColor.Transparent, GenieColor.Transparent, targetRoom, false, true);
                         if (Strings.Len(m_sRoomTitle) > 0)
                         {
                             string argsText = "[" + m_sRoomTitle + "]" + Constants.vbCrLf;
                             bool argbIsRoomOutput = true;
-                            PrintTextWithParse(argsText, m_oGlobals.PresetList["roomname"].FgColor, m_oGlobals.PresetList["roomname"].BgColor, false, targetRoom, argbIsRoomOutput);
+                            PrintTextWithParse(argsText, m_oGlobals.PresetList["roomname"].Foreground, m_oGlobals.PresetList["roomname"].Background, false, targetRoom, argbIsRoomOutput);
                         }
                         else
                         {
                             string argsText1 = "[Unknown Room]" + Constants.vbCrLf;
                             bool argbIsRoomOutput1 = true;
-                            PrintTextWithParse(argsText1, m_oGlobals.PresetList["roomname"].FgColor, m_oGlobals.PresetList["roomname"].BgColor, false, targetRoom, argbIsRoomOutput1);
+                            PrintTextWithParse(argsText1, m_oGlobals.PresetList["roomname"].Foreground, m_oGlobals.PresetList["roomname"].Background, false, targetRoom, argbIsRoomOutput1);
                         }
 
                         if (Strings.Len(m_sRoomDesc) > 0)
                         {
                             string argsText2 = m_sRoomDesc + System.Environment.NewLine;
                             bool argbIsRoomOutput2 = true;
-                            PrintTextWithParse(argsText2, m_oGlobals.PresetList["roomdesc"].FgColor, m_oGlobals.PresetList["roomdesc"].BgColor, false, WindowTarget.Room, argbIsRoomOutput2);
+                            PrintTextWithParse(argsText2, m_oGlobals.PresetList["roomdesc"].Foreground, m_oGlobals.PresetList["roomdesc"].Background, false, WindowTarget.Room, argbIsRoomOutput2);
                         }
 
                         if (Strings.Len(m_sRoomObjs) > 0)
@@ -985,10 +985,10 @@ namespace GenieClient.Genie
 
                             string argsText5 = m_sRoomExits + System.Environment.NewLine;
                             bool argbIsRoomOutput5 = true;
-                            PrintTextWithParse(argsText5, Color.Transparent, Color.Transparent, false, targetRoom, argbIsRoomOutput5);
+                            PrintTextWithParse(argsText5, GenieColor.Transparent, GenieColor.Transparent, false, targetRoom, argbIsRoomOutput5);
                         }
 
-                        PrintTextToWindow("@resume@", Color.Transparent, Color.Transparent, WindowTarget.Room, false, true);
+                        PrintTextToWindow("@resume@", GenieColor.Transparent, GenieColor.Transparent, WindowTarget.Room, false, true);
                     }
                     else
                     {
@@ -1586,7 +1586,7 @@ namespace GenieClient.Genie
                                         string argsText = GetTextFromXML(oXmlNode) + System.Environment.NewLine;
                                         bool argbIsRoomOutput = false;
                                         WindowTarget windowTarget = WindowTarget.Thoughts;
-                                        PrintTextWithParse(argsText, m_oGlobals.PresetList["thoughts"].FgColor, m_oGlobals.PresetList["thoughts"].BgColor, false, windowTarget, bIsRoomOutput: argbIsRoomOutput);
+                                        PrintTextWithParse(argsText, m_oGlobals.PresetList["thoughts"].Foreground, m_oGlobals.PresetList["thoughts"].Background, false, windowTarget, bIsRoomOutput: argbIsRoomOutput);
                                         break;
                                     }
 
@@ -2693,7 +2693,7 @@ namespace GenieClient.Genie
             PrintTextWithParse(sText, default, default, bIsPrompt, oWindowTarget, bIsRoomOutput: argbIsRoomOutput);
         }
 
-        public void PrintTextWithParse(string sText, Color color, Color bgcolor, bool bIsPrompt = false, WindowTarget oWindowTarget = WindowTarget.Unknown, bool bIsRoomOutput = false)
+        public void PrintTextWithParse(string sText, GenieColor color, GenieColor bgcolor, bool bIsPrompt = false, WindowTarget oWindowTarget = WindowTarget.Unknown, bool bIsRoomOutput = false)
         {
             
             if (sText.Trim().Length > 0)
@@ -2711,16 +2711,16 @@ namespace GenieClient.Genie
                     {
                         case "roomName":
                             {
-                                color = m_oGlobals.PresetList["roomname"].FgColor;
-                                bgcolor = m_oGlobals.PresetList["roomname"].BgColor;
+                                color = m_oGlobals.PresetList["roomname"].Foreground;
+                                bgcolor = m_oGlobals.PresetList["roomname"].Background;
                                 m_oLastFgColor = color;
                                 break;
                             }
 
                         case "roomDesc":
                             {
-                                color = m_oGlobals.PresetList["roomdesc"].FgColor;
-                                bgcolor = m_oGlobals.PresetList["roomdesc"].BgColor;
+                                color = m_oGlobals.PresetList["roomdesc"].Foreground;
+                                bgcolor = m_oGlobals.PresetList["roomdesc"].Background;
                                 m_oLastFgColor = color;
                                 break;
                             }
@@ -2755,8 +2755,8 @@ namespace GenieClient.Genie
                             {
                                 if (sText.StartsWith(o.Text, !o.CaseSensitive, null) == true)
                                 {
-                                    color = o.FgColor;
-                                    bgcolor = o.BgColor;
+                                    color = o.Foreground;
+                                    bgcolor = o.Background;
                                     m_oLastFgColor = color;
                                     if (o.SoundFile.Length > 0 && m_oGlobals.Config.bPlaySounds)
                                         GenieServices.Sound.PlayWaveFile(o.SoundFile);
@@ -2784,8 +2784,8 @@ namespace GenieClient.Genie
                         if (m_oGlobals.HighlightList.Contains(oMatch.Value))
                         {
                             oHighlightString = (Highlights.Highlight)m_oGlobals.HighlightList[oMatch.Value];
-                            color = oHighlightString.FgColor;
-                            bgcolor = oHighlightString.BgColor;
+                            color = oHighlightString.Foreground;
+                            bgcolor = oHighlightString.Background;
                             m_oLastFgColor = color;
                             if (oHighlightString.SoundFile.Length > 0 && m_oGlobals.Config.bPlaySounds)
                                 GenieServices.Sound.PlayWaveFile(oHighlightString.SoundFile);
@@ -2802,10 +2802,10 @@ namespace GenieClient.Genie
             
         }
 
-        private Color m_oLastFgColor = default;
-        private Color m_oEmptyColor = default;
+        private GenieColor m_oLastFgColor = default;
+        private GenieColor m_oEmptyColor = default;
 
-        private void PrintTextToWindow(string text, Color color, Color bgcolor, WindowTarget targetwindow = WindowTarget.Main, bool isprompt = false, bool isroomoutput = false)
+        private void PrintTextToWindow(string text, GenieColor color, GenieColor bgcolor, WindowTarget targetwindow = WindowTarget.Main, bool isprompt = false, bool isroomoutput = false)
         {
             if (text.Length == 0 || (!isroomoutput && m_oGlobals.Config.Condensed && text.Trim().Length == 0))
             {
@@ -3028,11 +3028,16 @@ namespace GenieClient.Genie
                 m_bManualDisconnect = true;
             }
 
-            if (color == m_oEmptyColor | color == Color.Transparent)
+            if (color == m_oEmptyColor | color == GenieColor.Transparent)
             {
                 if (m_oLastFgColor != m_oEmptyColor)
                 {
                     color = m_oLastFgColor;
+                }
+                else
+                {
+                    // Use default text color (Silver) when no fallback is available
+                    color = GenieColor.Silver;
                 }
             }
 
@@ -3049,8 +3054,8 @@ namespace GenieClient.Genie
 
             if (targetwindow == WindowTarget.Familiar)
             {
-                color = m_oGlobals.PresetList["familiar"].FgColor;
-                bgcolor = m_oGlobals.PresetList["familiar"].BgColor;
+                color = m_oGlobals.PresetList["familiar"].Foreground;
+                bgcolor = m_oGlobals.PresetList["familiar"].Background;
             }
 
             var tempVar = false;
@@ -3114,7 +3119,7 @@ namespace GenieClient.Genie
         }
 
         // Skip all blank line/prompt checks and just print it
-        private void PrintInputText(string sText, Color oColor, Color oBgColor)
+        private void PrintInputText(string sText, GenieColor oColor, GenieColor oBgColor)
         {
             if (sText.Length == 0)
             {
@@ -3302,12 +3307,12 @@ namespace GenieClient.Genie
         {
             WindowTarget argoWindowTarget = 0;
             bool argbIsRoomOutput = false;
-            PrintTextWithParse(text, Color.White, Color.Transparent, oWindowTarget: argoWindowTarget, bIsRoomOutput: argbIsRoomOutput);
+            PrintTextWithParse(text, GenieColor.White, GenieColor.Transparent, oWindowTarget: argoWindowTarget, bIsRoomOutput: argbIsRoomOutput);
         }
 
         private void GameSocket_EventPrintError(string text)
         {
-            PrintTextToWindow(text, Color.Red, Color.Transparent);
+            PrintTextToWindow(text, GenieColor.Red, GenieColor.Transparent);
         }
 
         private bool m_bManualDisconnect = false;

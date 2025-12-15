@@ -66,12 +66,12 @@ namespace GenieClient.Services
             _game.EventDataRecieveEnd += OnGameDataReceiveEnd;
         }
 
-        private void OnGamePrintText(string text, Color color, Color bgcolor, Game.WindowTarget targetwindow, string targetwindowstring, bool mono, bool isprompt, bool isinput)
+        private void OnGamePrintText(string text, GenieColor color, GenieColor bgcolor, Game.WindowTarget targetwindow, string targetwindowstring, bool mono, bool isprompt, bool isinput)
         {
             var args = new GameTextEventArgs(
                 text,
-                color.ToGenieColor(),
-                bgcolor.ToGenieColor(),
+                color,  // Already GenieColor, no conversion needed
+                bgcolor,  // Already GenieColor, no conversion needed
                 ConvertWindowTarget(targetwindow),
                 string.IsNullOrEmpty(targetwindowstring) ? null : targetwindowstring,
                 mono,

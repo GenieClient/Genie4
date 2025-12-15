@@ -14,6 +14,11 @@ namespace GenieClient.Services
         /// </summary>
         public static GenieColor ToGenieColor(this Color color)
         {
+            // Handle Color.Empty specially - it should map to GenieColor.Transparent
+            if (color.IsEmpty || color == Color.Empty)
+            {
+                return GenieColor.Transparent;
+            }
             return new GenieColor(color.R, color.G, color.B, color.A);
         }
 
@@ -22,6 +27,12 @@ namespace GenieClient.Services
         /// </summary>
         public static Color ToDrawingColor(this GenieColor color)
         {
+            // Handle transparent/empty colors - return Color.Empty to preserve original behavior
+            // where "no color" means use the control's default color
+            if (color.IsTransparent || color == default(GenieColor))
+            {
+                return Color.Empty;
+            }
             return Color.FromArgb(color.A, color.R, color.G, color.B);
         }
     }

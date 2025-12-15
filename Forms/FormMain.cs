@@ -5263,10 +5263,13 @@ namespace GenieClient
             }
         }
 
-        private void Simutronics_EventPrintText(string sText, Color oColor, Color oBgColor, Genie.Game.WindowTarget oTargetWindow, string sTargetWindow, bool bMono, bool bPrompt, bool bInput)
+        private void Simutronics_EventPrintText(string sText, GenieColor oGenieColor, GenieColor oBgGenieColor, Genie.Game.WindowTarget oTargetWindow, string sTargetWindow, bool bMono, bool bPrompt, bool bInput)
         {
             try
             {
+                // Convert platform-agnostic GenieColor to System.Drawing.Color at the UI boundary
+                Color oColor = oGenieColor.ToDrawingColor();
+                Color oBgColor = oBgGenieColor.ToDrawingColor();
                 AddText(sText, oColor, oBgColor, oTargetWindow, sTargetWindow, false, bMono, bPrompt, bInput); // False = Cache this
             }
             /* TODO ERROR: Skipped IfDirectiveTrivia */

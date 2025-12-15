@@ -187,16 +187,17 @@ public interface IColorParsingService
 
 | File | Status | Notes |
 |------|--------|-------|
-| `Core/Game.cs` | ⚠️ NEEDS WORK | Change delegates to use `GenieColor` |
-| `Core/Command.cs` | ⚠️ PARTIAL | Uses `Color.FromKnownColor`, `Color.Empty` |
-| `Lists/Globals.cs` | ✅ MOSTLY DONE | Uses `GenieColor` internally |
-| `Lists/Highlights.cs` | ✅ MOSTLY DONE | Uses `GenieColor` internally |
-| `Lists/Names.cs` | ✅ MOSTLY DONE | Uses `GenieColor` internally |
+| `Core/Game.cs` | ✅ DONE | Delegates, methods, fields all use `GenieColor` |
+| `Core/Command.cs` | ⚠️ PARTIAL | Uses `Color.FromKnownColor`, `Color.Empty` (OK - color parsing) |
+| `Lists/Globals.cs` | ✅ DONE | Uses `GenieColor` internally |
+| `Lists/Highlights.cs` | ✅ DONE | Uses `GenieColor` internally |
+| `Lists/Names.cs` | ✅ DONE | Uses `GenieColor` internally |
 | `Lists/Config.cs` | ⚠️ NEEDS WORK | Uses `ColorToColorref` (Win32 specific) |
-| `Script/Script.cs` | ⚠️ NEEDS WORK | Color conversion for PresetList |
+| `Script/Script.cs` | ✅ DONE | Already uses `GenieColor` |
 | `Utility/ColorCode.cs` | ⚠️ NEEDS WORK | Add `GenieColor` methods |
 | `Mapper/NodeList.cs` | ⚠️ NEEDS WORK | Map node colors |
-| `Services/GameServiceAdapter.cs` | ⚠️ NEEDS WORK | Color conversion |
+| `Services/GameServiceAdapter.cs` | ✅ DONE | Accepts `GenieColor` directly |
+| `Forms/FormMain.cs` | ✅ DONE | Converts at UI boundary |
 
 #### Files to Move to Genie.Windows
 
@@ -298,15 +299,17 @@ Checklist:
 ---
 
 ### Task 1.2.1: Core/Game.cs - Color Migration
-**STATUS: ❌ TODO**
+**STATUS: ✅ COMPLETE**
 **Decision:** ✅ Use GenieColor for all color settings (including delegates)
 
-Changes needed:
-- [ ] Change `EventPrintTextEventHandler` delegate to use `GenieColor` instead of `Color`
-- [ ] Replace `Color.LightGray`, `Color.Black`, `Color.Transparent` with `GenieColor` equivalents
-- [ ] Change `m_oLastFgColor` and `m_oEmptyColor` from `Color` to `GenieColor`
-- [ ] Update all callers in `Game.cs` to use `GenieColor`
-- [ ] Update Windows Forms subscribers to convert at the boundary
+Changes made:
+- [x] Changed `EventPrintTextEventHandler` delegate to use `GenieColor` instead of `Color`
+- [x] Replaced `Color.LightGray`, `Color.Black`, `Color.Transparent`, `Color.White`, `Color.Red` with `GenieColor` equivalents
+- [x] Changed `m_oLastFgColor` and `m_oEmptyColor` from `Color` to `GenieColor`
+- [x] Updated `PrintTextWithParse()` and `PrintTextToWindow()` method signatures
+- [x] Changed all `.FgColor`/`.BgColor` usages to `.Foreground`/`.Background` (native GenieColor)
+- [x] Updated `FormMain.Simutronics_EventPrintText` to convert at the boundary
+- [x] Updated `GameServiceAdapter.OnGamePrintText` to accept GenieColor directly
 
 ---
 
@@ -461,8 +464,8 @@ Recommended order for Phase 1:
 3. ✅ **Task 1.0** - Create service provider/registration infrastructure
 4. ✅ **Task 1.2.2** - Move Windows-only files to `Genie.Windows/` (partial)
 5. ✅ **Task 1.2.2** - Create Windows service implementations
-6. ⏳ **Task 1.2.1** - Migrate Game.cs to GenieColor ← NEXT
-7. ⏳ **Task 1.2.3** - Update ColorCode.cs with GenieColor methods
+6. ✅ **Task 1.2.1** - Migrate Game.cs to GenieColor
+7. ⏳ **Task 1.2.3** - Update ColorCode.cs with GenieColor methods ← NEXT
 8. ⏳ **Task 1.2.4** - Add SkiaSharp image handling
 9. ⏳ **Task 1.1** - Update project files (change target framework) ← LAST
 
