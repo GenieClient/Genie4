@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using GenieClient.Genie;
 using GenieClient.Services;
@@ -15,6 +16,11 @@ public class GameManager : IDisposable
     private bool _disposed;
     private bool _initialized;
 
+    // Roundtime countdown
+    private Timer? _roundtimeTimer;
+    private int _currentRoundtime;
+    private int _maxRoundtime;
+
     // Events for UI to subscribe to
     public event Action<string, GenieColor, GenieColor>? TextReceived;
     public event Action<string>? ErrorReceived;
@@ -30,6 +36,42 @@ public class GameManager : IDisposable
     public GameManager()
     {
         // Defer initialization to avoid constructor crashes
+        _roundtimeTimer = new Timer(OnRoundtimeTick, null, Timeout.Infinite, Timeout.Infinite);
+    }
+
+    private void OnRoundtimeTick(object? state)
+    {
+        if (_currentRoundtime > 0)
+        {
+            _currentRoundtime--;
+            RoundtimeChanged?.Invoke(_currentRoundtime);
+            
+            if (_currentRoundtime <= 0)
+            {
+                // Stop the timer when RT reaches 0
+                _roundtimeTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+            }
+        }
+    }
+
+    private void SetRoundtime(int seconds)
+    {
+        _currentRoundtime = seconds;
+        _maxRoundtime = seconds;
+        
+        // Fire initial event
+        RoundtimeChanged?.Invoke(_currentRoundtime);
+        
+        if (seconds > 0)
+        {
+            // Start countdown timer (1 second interval)
+            _roundtimeTimer?.Change(1000, 1000);
+        }
+        else
+        {
+            // Stop timer
+            _roundtimeTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+        }
     }
 
     private bool Initialize()
@@ -207,12 +249,12 @@ public class GameManager : IDisposable
                     CheckVitals();
                 }
                 
-                // Update roundtime
+                // Update roundtime - starts the countdown timer
                 if (varName == "roundtime")
                 {
                     if (int.TryParse(value, out int rt))
                     {
-                        RoundtimeChanged?.Invoke(rt);
+                        SetRoundtime(rt);
                     }
                 }
             }
@@ -260,6 +302,11 @@ public class GameManager : IDisposable
     {
         if (_disposed) return;
         _disposed = true;
+
+        // Stop and dispose the roundtime timer
+        _roundtimeTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+        _roundtimeTimer?.Dispose();
+        _roundtimeTimer = null;
 
         if (_game != null)
         {
