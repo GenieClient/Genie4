@@ -2,13 +2,17 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Threading;
 using GenieClient.Services;
+using GenieClient.UI.Services;
 using System;
 
 namespace GenieClient.Views;
 
 public partial class MainWindow : Window
 {
+    private GameManager? _gameManager;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -22,6 +26,77 @@ public partial class MainWindow : Window
         
         // Initialize vitals at 100%
         UpdateVitals(100, 100, 100, 100, 100);
+        
+        // Initialize game manager
+        InitializeGameManager();
+    }
+
+    private void InitializeGameManager()
+    {
+        _gameManager = new GameManager();
+        
+        // Subscribe to game events
+        _gameManager.TextReceived += OnGameTextReceived;
+        _gameManager.ErrorReceived += OnGameErrorReceived;
+        _gameManager.Connected += OnGameConnected;
+        _gameManager.Disconnected += OnGameDisconnected;
+        _gameManager.VitalsChanged += OnVitalsChanged;
+        _gameManager.RoundtimeChanged += OnRoundtimeChanged;
+    }
+
+    private void OnGameTextReceived(string text, GenieColor color, GenieColor bgcolor)
+    {
+        // Marshal to UI thread
+        Dispatcher.UIThread.Post(() =>
+        {
+            // Convert GenieColor to Avalonia Color
+            var avaloniaColor = Color.FromRgb(color.R, color.G, color.B);
+            AppendText(text, avaloniaColor);
+        });
+    }
+
+    private void OnGameErrorReceived(string text)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            AppendText(text + "\n", Colors.Red);
+        });
+    }
+
+    private void OnGameConnected()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            StatusText.Text = "Connected";
+            ConnectionStatus.Foreground = new SolidColorBrush(Color.Parse("#22c55e"));
+            AppendText("Connected to game server.\n", Colors.Green);
+        });
+    }
+
+    private void OnGameDisconnected()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            StatusText.Text = "Disconnected";
+            ConnectionStatus.Foreground = new SolidColorBrush(Color.Parse("#ef4444"));
+            AppendText("Disconnected from game server.\n", Colors.Gray);
+        });
+    }
+
+    private void OnVitalsChanged(int health, int mana, int concentration, int stamina, int spirit)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            UpdateVitals(health, mana, concentration, stamina, spirit);
+        });
+    }
+
+    private void OnRoundtimeChanged(int seconds)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            UpdateRoundtime(seconds);
+        });
     }
 
     /// <summary>
@@ -144,22 +219,50 @@ public partial class MainWindow : Window
         StatusText.Text = $"Connecting to {result.SelectedGame}...";
         ConnectionStatus.Foreground = new SolidColorBrush(Colors.Yellow);
 
-        // TODO: Actually connect to the game server using Genie.Core
-        // For now, simulate connection
-        await System.Threading.Tasks.Task.Delay(1000);
-        
-        AppendText("Connection would happen here (not yet implemented).\n", Colors.Orange);
-        AppendText("The next step is to wire up Genie.Core's GameSocket!\n", Colors.Cyan);
-        
-        StatusText.Text = "Not connected (demo mode)";
-        ConnectionStatus.Foreground = new SolidColorBrush(Color.Parse("#ef4444"));
+        // Map game names to Simutronics game codes
+        var gameCode = MapGameNameToCode(result.SelectedGame ?? "DragonRealms");
+
+        try
+        {
+            var connected = await _gameManager!.ConnectAsync(
+                result.Account ?? "", 
+                result.Password ?? "", 
+                result.Character ?? "", 
+                gameCode);
+            
+            if (!connected)
+            {
+                AppendText("Connection failed. Check your credentials and try again.\n", Colors.Red);
+                StatusText.Text = "Connection failed";
+                ConnectionStatus.Foreground = new SolidColorBrush(Color.Parse("#ef4444"));
+            }
+        }
+        catch (Exception ex)
+        {
+            AppendText($"Connection error: {ex.Message}\n", Colors.Red);
+            StatusText.Text = "Connection error";
+            ConnectionStatus.Foreground = new SolidColorBrush(Color.Parse("#ef4444"));
+        }
+    }
+
+    private string MapGameNameToCode(string gameName)
+    {
+        return gameName switch
+        {
+            "DragonRealms" => "DR",
+            "DragonRealms Prime" => "DRX",
+            "DragonRealms The Fallen" => "DRF",
+            "DragonRealms Platinum" => "DRP",
+            "GemStone IV" => "GS4",
+            "GemStone IV Prime" => "GSX",
+            "GemStone IV Platinum" => "GSF",
+            _ => "DR"
+        };
     }
 
     private void OnDisconnect(object? sender, RoutedEventArgs e)
     {
-        AppendText("Disconnected.\n", Colors.Gray);
-        StatusText.Text = "Disconnected";
-        ConnectionStatus.Foreground = new SolidColorBrush(Color.Parse("#ef4444"));
+        _gameManager?.Disconnect();
     }
 
     private void OnExit(object? sender, RoutedEventArgs e)
@@ -177,8 +280,7 @@ public partial class MainWindow : Window
                 // Echo the command
                 AppendText($"> {command}\n", Colors.Cyan);
                 
-                // TODO: Send command to game server
-                // For now, just echo it back as a test
+                // Check for local commands first
                 if (command.Equals("test", StringComparison.OrdinalIgnoreCase))
                 {
                     AppendText("This is a test response from Genie 5!\n", Colors.LightGreen);
@@ -212,9 +314,14 @@ public partial class MainWindow : Window
                     UpdateStatusEffects(hidden: rand.Next(2) == 1, joined: rand.Next(2) == 1);
                     AppendText("Full UI demo activated!\n", Colors.Yellow);
                 }
+                else if (_gameManager?.IsConnected == true)
+                {
+                    // Send to game server
+                    _gameManager.SendCommand(command);
+                }
                 else
                 {
-                    AppendText($"Command not recognized (not connected): {command}\n", Colors.Gray);
+                    AppendText($"Not connected. Use File → Connect to connect to a game server.\n", Colors.Gray);
                 }
                 
                 CommandInput.Text = "";
