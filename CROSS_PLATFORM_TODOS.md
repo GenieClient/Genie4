@@ -342,17 +342,20 @@ Checklist:
 ---
 
 ### Task 1.2.3: ColorCode.cs - Add GenieColor methods
-**STATUS: ❌ TODO**
+**STATUS: ✅ COMPLETE**
 
-The `ColorCode` class has methods like:
-- `StringToColor(string)` → returns `System.Drawing.Color`
-- `ColorToString(Color)` → uses `Color`
-- `ColorToColorref(Color)` → Win32 specific
+The `ColorCode` class has been refactored to be fully cross-platform:
 
-Need to add parallel methods:
-- [ ] `StringToGenieColor(string)` - already partially exists
-- [ ] `GenieColorToString(GenieColor)`
-- [ ] Make Win32-specific methods conditional
+Completed:
+- [x] Created cross-platform dictionary of 140+ named colors
+- [x] `StringToGenieColor(string)` - uses dictionary lookup, no System.Drawing dependency
+- [x] `GenieColorToString(GenieColor)` - finds named color match or returns hex
+- [x] `IsColorString()` - uses dictionary instead of KnownColor enum
+- [x] Windows-only methods wrapped in `#if WINDOWS` conditional:
+  - `StringToColor()`, `ColorToString()`, `ColorToColorref()`, `HexToColor()`
+  - `ColorToLighter()`, `ColorToDarker()`, `ColorToGrayscale()` (Color versions)
+- [x] Removed `using System.Drawing;` from main code path
+- [x] Removed `using Microsoft.VisualBasic;` dependency
 
 ---
 
@@ -465,8 +468,8 @@ Recommended order for Phase 1:
 4. ✅ **Task 1.2.2** - Move Windows-only files to `Genie.Windows/` (partial)
 5. ✅ **Task 1.2.2** - Create Windows service implementations
 6. ✅ **Task 1.2.1** - Migrate Game.cs to GenieColor
-7. ⏳ **Task 1.2.3** - Update ColorCode.cs with GenieColor methods ← NEXT
-8. ⏳ **Task 1.2.4** - Add SkiaSharp image handling
+7. ✅ **Task 1.2.3** - Update ColorCode.cs with GenieColor methods
+8. ⏳ **Task 1.2.4** - Add SkiaSharp image handling ← NEXT
 9. ⏳ **Task 1.1** - Update project files (change target framework) ← LAST
 
 ---
