@@ -43,6 +43,8 @@
     <Compile Include="..\..\Utility\Win32Utility.cs" Link="Utility\Win32Utility.cs" />
     <Compile Include="..\..\Utility\Sound.cs" Link="Utility\Sound.cs" />
     <Compile Include="..\..\Utility\EnumWindows.cs" Link="Utility\EnumWindows.cs" />
+    <!-- GenieError.Windows.cs is now in Genie.Core (multi-target, included for Windows) -->
+    <!-- MyNamespace.Static.1.Designer.cs is already included in Properties section below -->
   </ItemGroup>
 
   <!-- Plugin host (requires Windows Forms for plugin API compatibility) -->

@@ -28,7 +28,7 @@ namespace GenieClient
 
             if (m_CurrentValue > 0)
             {
-                var myTextureBrush = new SolidBrush((Color)Interaction.IIf(m_IsConnected, m_ForegroundColor, Genie.ColorCode.ColorToGrayscale(m_ForegroundColor)));
+                var myTextureBrush = new SolidBrush((Color)Interaction.IIf(m_IsConnected, m_ForegroundColor, Genie.ColorCodeWindows.ColorToGrayscale(m_ForegroundColor)));
                 int w = Conversions.ToInteger(Math.Round(Width / (double)100 * m_CurrentValue));
                 e.Graphics.FillRectangle(myTextureBrush, 0, 0, w, PanelBar.Height);
                 Pen argp = (Pen)Interaction.IIf(m_IsConnected, m_BorderColor, m_BorderColorGrayScale);
@@ -48,7 +48,7 @@ namespace GenieClient
             set
             {
                 m_IsConnected = value;
-                PanelBar.BackColor = (Color)Interaction.IIf(m_IsConnected, m_BackgroundColor, Genie.ColorCode.ColorToGrayscale(m_BackgroundColor));
+                PanelBar.BackColor = (Color)Interaction.IIf(m_IsConnected, m_BackgroundColor, Genie.ColorCodeWindows.ColorToGrayscale(m_BackgroundColor));
                 Invalidate();
             }
         }
@@ -77,7 +77,7 @@ namespace GenieClient
             set
             {
                 m_BackgroundColor = value;
-                PanelBar.BackColor = (Color)Interaction.IIf(m_IsConnected, m_BackgroundColor, Genie.ColorCode.ColorToGrayscale(m_BackgroundColor));
+                PanelBar.BackColor = (Color)Interaction.IIf(m_IsConnected, m_BackgroundColor, Genie.ColorCodeWindows.ColorToGrayscale(m_BackgroundColor));
                 Invalidate();
             }
         }
@@ -106,7 +106,7 @@ namespace GenieClient
             set
             {
                 m_BorderColor = new Pen(value);
-                m_BorderColorGrayScale = new Pen(Genie.ColorCode.ColorToGrayscale(value));
+                m_BorderColorGrayScale = new Pen(Genie.ColorCodeWindows.ColorToGrayscale(value));
                 Invalidate();
             }
         }

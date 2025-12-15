@@ -300,18 +300,15 @@ namespace GenieClient.Genie
                                                 {
                                                     string sColor = sColorName.Substring(0, sColorName.IndexOf(",")).Trim();
                                                     string sBgColor = sColorName.Substring(sColorName.IndexOf(",") + 1).Trim();
-                                                    var drawingColor = ColorCode.StringToColor(sColor);
-                                                    var drawingBgColor = ColorCode.StringToColor(sBgColor);
-                                                    oColor = drawingColor.ToGenieColor();
-                                                    oBgcolor = drawingBgColor.ToGenieColor();
-                                                    hasValidColor = !Information.IsNothing(drawingColor) && drawingColor != Color.Empty;
+                                                    oColor = ColorCode.StringToGenieColor(sColor);
+                                                    oBgcolor = ColorCode.StringToGenieColor(sBgColor);
+                                                    hasValidColor = !oColor.IsTransparent;
                                                 }
                                                 else
                                                 {
-                                                    var drawingColor = ColorCode.StringToColor(sColorName);
-                                                    oColor = drawingColor.ToGenieColor();
+                                                    oColor = ColorCode.StringToGenieColor(sColorName);
                                                     oBgcolor = GenieColor.Transparent;
-                                                    hasValidColor = !Information.IsNothing(drawingColor) && drawingColor != Color.Empty;
+                                                    hasValidColor = !oColor.IsTransparent;
                                                 }
 
                                                 if (hasValidColor)
@@ -3160,7 +3157,7 @@ namespace GenieClient.Genie
                         if (bUsePattern == false | de.Value.ToString().Contains(sPattern))
                         {
                             string argsText = Conversions.ToString(de.Key) + System.Environment.NewLine;
-                            EchoColorText(argsText, ((Names.Name)de.Value).FgColor.ToGenieColor(), ((Names.Name)de.Value).BgColor.ToGenieColor());
+                            EchoColorText(argsText, ((Names.Name)de.Value).Foreground, ((Names.Name)de.Value).Background);
                             I += 1;
                         }
                     }

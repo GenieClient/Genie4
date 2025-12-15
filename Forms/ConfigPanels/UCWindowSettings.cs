@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
+using GenieClient.Services;
 
 namespace GenieClient
 {
@@ -40,10 +41,13 @@ namespace GenieClient
         {
             if (!Information.IsNothing(m_FormMain))
             {
-                TextBoxMonoFont.Text = GetFontName(m_FormMain.m_oGlobals.Config.MonoFont);
-                TextBoxMonoFont.Tag = m_FormMain.m_oGlobals.Config.MonoFont;
-                TextBoxInputFont.Text = GetFontName(m_FormMain.m_oGlobals.Config.InputFont);
-                TextBoxInputFont.Tag = m_FormMain.m_oGlobals.Config.InputFont;
+                // Convert GenieFont to Font for UI display and storage in Tag
+                var monoFont = m_FormMain.m_oGlobals.Config.MonoFont.ToDrawingFont();
+                var inputFont = m_FormMain.m_oGlobals.Config.InputFont.ToDrawingFont();
+                TextBoxMonoFont.Text = GetFontName(monoFont);
+                TextBoxMonoFont.Tag = monoFont;
+                TextBoxInputFont.Text = GetFontName(inputFont);
+                TextBoxInputFont.Tag = inputFont;
             }
         }
 
@@ -115,12 +119,14 @@ namespace GenieClient
             {
                 if (!Information.IsNothing(TextBoxMonoFont.Tag))
                 {
-                    m_FormMain.m_oGlobals.Config.MonoFont = (Font)TextBoxMonoFont.Tag;
+                    // Convert Font to GenieFont for storage in config
+                    m_FormMain.m_oGlobals.Config.MonoFont = ((Font)TextBoxMonoFont.Tag).ToGenieFont();
                 }
 
                 if (!Information.IsNothing(TextBoxInputFont.Tag))
                 {
-                    m_FormMain.m_oGlobals.Config.InputFont = (Font)TextBoxInputFont.Tag;
+                    // Convert Font to GenieFont for storage in config
+                    m_FormMain.m_oGlobals.Config.InputFont = ((Font)TextBoxInputFont.Tag).ToGenieFont();
                 }
             }
         }

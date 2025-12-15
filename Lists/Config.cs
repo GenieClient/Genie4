@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using GenieClient.Services;
 
 namespace GenieClient.Genie
 {
@@ -64,7 +64,7 @@ namespace GenieClient.Genie
         public bool AutoUpdate { get; set; } = false;
         public bool AutoUpdateLamp { get; set; } = true;
 
-        public string sConnectString = "FE:GENIE /VERSION:" + My.MyProject.Application.Info.Version.ToString() + " /P:WIN_XP /XML";
+        public string sConnectString = "FE:GENIE /VERSION:" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + " /P:WIN_XP /XML";
         public int[] iPickerColors = new int[17];
         public string RubyPath { get; set; } = @"C:\ruby4lich5\bin\ruby.exe";
         public string CmdPath { get; set; } = @"C:\Windows\System32\cmd.exe";
@@ -277,22 +277,24 @@ namespace GenieClient.Genie
             {
                 if (iPickerColors[0] == 0)
                 {
-                    iPickerColors[0] = ColorCode.ColorToColorref(Color.DimGray);
-                    iPickerColors[1] = ColorCode.ColorToColorref(Color.DarkRed);
-                    iPickerColors[2] = ColorCode.ColorToColorref(Color.Green);
-                    iPickerColors[3] = ColorCode.ColorToColorref(Color.Olive);
-                    iPickerColors[4] = ColorCode.ColorToColorref(Color.DarkBlue);
-                    iPickerColors[5] = ColorCode.ColorToColorref(Color.Purple);
-                    iPickerColors[6] = ColorCode.ColorToColorref(Color.DarkCyan);
-                    iPickerColors[7] = ColorCode.ColorToColorref(Color.Silver);
-                    iPickerColors[8] = ColorCode.ColorToColorref(Color.Gray);
-                    iPickerColors[9] = ColorCode.ColorToColorref(Color.Red);
-                    iPickerColors[10] = ColorCode.ColorToColorref(Color.Lime);
-                    iPickerColors[11] = ColorCode.ColorToColorref(Color.Yellow);
-                    iPickerColors[12] = ColorCode.ColorToColorref(Color.Blue);
-                    iPickerColors[13] = ColorCode.ColorToColorref(Color.Magenta);
-                    iPickerColors[14] = ColorCode.ColorToColorref(Color.Cyan);
-                    iPickerColors[15] = ColorCode.ColorToColorref(Color.WhiteSmoke);
+                    // Pre-computed Win32 COLORREF values (0x00BBGGRR format)
+                    // These are used by the Windows color picker dialog
+                    iPickerColors[0] = 6908265;   // DimGray
+                    iPickerColors[1] = 139;       // DarkRed
+                    iPickerColors[2] = 32768;     // Green
+                    iPickerColors[3] = 32896;     // Olive
+                    iPickerColors[4] = 9109504;   // DarkBlue
+                    iPickerColors[5] = 8388736;   // Purple
+                    iPickerColors[6] = 9145088;   // DarkCyan
+                    iPickerColors[7] = 12632256;  // Silver
+                    iPickerColors[8] = 8421504;   // Gray
+                    iPickerColors[9] = 255;       // Red
+                    iPickerColors[10] = 65280;    // Lime
+                    iPickerColors[11] = 65535;    // Yellow
+                    iPickerColors[12] = 16711680; // Blue
+                    iPickerColors[13] = 16711935; // Magenta
+                    iPickerColors[14] = 16776960; // Cyan
+                    iPickerColors[15] = 16119285; // WhiteSmoke
                 }
 
                 return iPickerColors;
@@ -379,8 +381,8 @@ namespace GenieClient.Genie
             }
         }
 
-        public Font m_oMonoFont = new Font("Courier New", 9, FontStyle.Regular);
-        public Font m_oInputFont = new Font("Courier New", 9, FontStyle.Regular);
+        public GenieFont m_oMonoFont = new GenieFont("Courier New", 9, GenieFontStyle.Regular);
+        public GenieFont m_oInputFont = new GenieFont("Courier New", 9, GenieFontStyle.Regular);
 
         public event ConfigChangedEventHandler ConfigChanged;
 
@@ -406,7 +408,7 @@ namespace GenieClient.Genie
             UpdateMapperScripts
         }
 
-        public Font MonoFont
+        public GenieFont MonoFont
         {
             get
             {
@@ -420,7 +422,7 @@ namespace GenieClient.Genie
             }
         }
 
-        public Font InputFont
+        public GenieFont InputFont
         {
             get
             {

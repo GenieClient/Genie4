@@ -117,7 +117,7 @@ namespace GenieClient
             for (int X = 0, loopTo = b.Width - 1; X <= loopTo; X++)
             {
                 for (int Y = 0, loopTo1 = b.Height - 1; Y <= loopTo1; Y++)
-                    oOutput.SetPixel(X, Y, Genie.ColorCode.ColorToGrayscale(b.GetPixel(X, Y)));
+                    oOutput.SetPixel(X, Y, Genie.ColorCodeWindows.ColorToGrayscale(b.GetPixel(X, Y)));
             }
 
             return oOutput;

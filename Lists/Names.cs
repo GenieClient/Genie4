@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
-using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using Microsoft.VisualBasic;
 using GenieClient.Services;
+#if WINDOWS
+using System.Drawing;
+#endif
 
 namespace GenieClient.Genie
 {
@@ -31,7 +33,8 @@ namespace GenieClient.Genie
             public GenieColor Background;
             public string ColorName;
 
-            // Legacy properties for backward compatibility with UI layer
+#if WINDOWS
+            // Legacy properties for backward compatibility with Windows Forms UI layer
             public Color FgColor
             {
                 get => Foreground.ToDrawingColor();
@@ -50,6 +53,7 @@ namespace GenieClient.Genie
                 Background = oBgColor.ToGenieColor();
                 ColorName = sColorName;
             }
+#endif
 
             public Name(GenieColor fgColor, GenieColor bgColor, string sColorName = "")
             {
@@ -194,7 +198,7 @@ namespace GenieClient.Genie
                             string sColorName = ((Name)base[key]).ColorName;
                             if (sColorName.Length == 0)
                             {
-                                sColorName = ColorCode.ColorToHex(((Name)base[key]).FgColor) + "," + ColorCode.ColorToHex(((Name)base[key]).BgColor);
+                                sColorName = ColorCode.GenieColorToHex(((Name)base[key]).Foreground) + "," + ColorCode.GenieColorToHex(((Name)base[key]).Background);
                             }
 
                             oStreamWriter.WriteLine("#name {" + sColorName + "} {" + key + "}");

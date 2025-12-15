@@ -903,8 +903,9 @@ namespace GenieClient.Genie
                 Add("poisoned", "0", VariableType.Reserved);
                 Add("diseased", "0", VariableType.Reserved);
                 Add("connected", "0", VariableType.Reserved);
-                Add("client", My.MyProject.Application.Info.ProductName.ToString(), VariableType.Reserved);
-                Add("version", My.MyProject.Application.Info.Version.ToString(), VariableType.Reserved);
+                var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                Add("client", assembly.GetName().Name ?? "Genie", VariableType.Reserved);
+                Add("version", assembly.GetName().Version?.ToString() ?? "5.0.0.0", VariableType.Reserved);
                 Add("time", "@time@", VariableType.Reserved);
                 Add("time24", "@time24@", VariableType.Reserved);
                 Add("militarytime", "@militarytime@", VariableType.Reserved);

@@ -289,12 +289,17 @@ Checklist:
 ---
 
 ### Task 1.1: Project File Changes
-**STATUS: ❌ TODO** - After service infrastructure
+**STATUS: ✅ COMPLETE**
 
-- [ ] Change `Genie.Core.csproj` target from `net10.0-windows` to `net10.0`
-- [ ] Remove `<UseWindowsForms>true</UseWindowsForms>` from Core
-- [ ] Add SkiaSharp package to Core
-- [ ] Update `Genie.Windows.csproj` to include moved files
+Implemented multi-targeting approach instead of single cross-platform target:
+
+- [x] `Genie.Core.csproj` now targets BOTH `net10.0` AND `net10.0-windows`
+- [x] Cross-platform build (`net10.0`) excludes Windows dependencies
+- [x] Windows build (`net10.0-windows`) includes all Windows-specific code
+- [x] `WINDOWS` define set conditionally for Windows target
+- [x] Plugin references conditional for Windows target
+- [x] Windows-only files (GenieError.Windows.cs, MyNamespace.Designer.cs) conditional
+- [ ] SkiaSharp package (DEFERRED to Phase 2 with Avalonia)
 
 ---
 
@@ -360,21 +365,17 @@ Completed:
 ---
 
 ### Task 1.2.4: FileHandler.cs - Image handling
-**STATUS: ❌ TODO**
-**Decision:** Use cross-platform image library
+**STATUS: ⏸️ DEFERRED TO PHASE 2**
+**Decision:** Defer SkiaSharp integration to Phase 2 (Avalonia UI)
 
-#### Library Options:
-| Library | Pros | Cons |
-|---------|------|------|
-| **SkiaSharp** | GPU-accelerated, used by Avalonia internally, powerful | Larger binary, native dependencies |
-| **ImageSharp** | Pure managed code, no native deps, good for basic ops | Slower for complex operations |
+**Rationale:**
+- `FetchImage()` is already cross-platform (HTTP download + file save only)
+- `GetImage()` is Windows-only and already wrapped in `#if WINDOWS`
+- `IImageService` interface and `WindowsImageService` already created
+- SkiaSharp will come naturally with Avalonia (uses it internally)
+- No functional changes needed for Phase 1
 
-**Recommendation:** SkiaSharp (since Avalonia uses it internally anyway)
-
-Implementation:
-- [ ] Add SkiaSharp NuGet package to Genie.Core
-- [ ] Replace `System.Drawing.Image` with `SKBitmap` / `SKImage`
-- [ ] Update image download/processing methods
+Will add SkiaSharp-based `IImageService` implementation when building Avalonia UI.
 
 ---
 
@@ -469,8 +470,21 @@ Recommended order for Phase 1:
 5. ✅ **Task 1.2.2** - Create Windows service implementations
 6. ✅ **Task 1.2.1** - Migrate Game.cs to GenieColor
 7. ✅ **Task 1.2.3** - Update ColorCode.cs with GenieColor methods
-8. ⏳ **Task 1.2.4** - Add SkiaSharp image handling ← NEXT
-9. ⏳ **Task 1.1** - Update project files (change target framework) ← LAST
+8. ⏸️ **Task 1.2.4** - SkiaSharp image handling (DEFERRED to Phase 2)
+9. ✅ **Task 1.1** - Multi-target project files (net10.0 + net10.0-windows) ✅ COMPLETE
+
+## Phase 1 COMPLETE! 🎉
+
+Genie.Core now builds for both cross-platform (`net10.0`) and Windows (`net10.0-windows`):
+- Cross-platform version: No System.Drawing, Windows Forms, or P/Invoke dependencies
+- Windows version: Full feature set with all Windows-specific code
+
+All migrations complete:
+- ✅ `GenieColor` - Cross-platform color type
+- ✅ `GenieFont` - Cross-platform font type  
+- ✅ `ColorCode.cs` - Cross-platform with 140+ named colors
+- ✅ Service interfaces for platform abstraction
+- ✅ Windows-specific code properly isolated with `#if WINDOWS`
 
 ---
 

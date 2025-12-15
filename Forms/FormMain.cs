@@ -2289,12 +2289,12 @@ namespace GenieClient
                     {
                         string sColor = sColorName.Substring(0, sColorName.IndexOf(",")).Trim();
                         string sBgColor = sColorName.Substring(sColorName.IndexOf(",") + 1).Trim();
-                        m_oOutputMain.RichTextBoxOutput.ForeColor = Genie.ColorCode.StringToColor(sColor);
-                        m_oOutputMain.RichTextBoxOutput.BackColor = Genie.ColorCode.StringToColor(sBgColor);
+                        m_oOutputMain.RichTextBoxOutput.ForeColor = Genie.ColorCodeWindows.StringToColor(sColor);
+                        m_oOutputMain.RichTextBoxOutput.BackColor = Genie.ColorCodeWindows.StringToColor(sBgColor);
                     }
                     else
                     {
-                        m_oOutputMain.RichTextBoxOutput.ForeColor = Genie.ColorCode.StringToColor(sColorName);
+                        m_oOutputMain.RichTextBoxOutput.ForeColor = Genie.ColorCodeWindows.StringToColor(sColorName);
                     }
                 }
 
@@ -2314,8 +2314,8 @@ namespace GenieClient
                 {
                     float oFontSize = m_oConfig.GetValueSingle("Genie/Windows/MonoFont", "Size", 9);
                     string sFontStyle = m_oConfig.GetValue("Genie/Windows/MonoFont", "Style", "Regular");
-                    FontStyle oFontStyle = (FontStyle)Enum.Parse(typeof(FontStyle), sFontStyle, true);
-                    m_oGlobals.Config.MonoFont = new Font(sMonoFontFamily, oFontSize, oFontStyle);
+                    var oFontStyle = (Services.GenieFontStyle)Enum.Parse(typeof(Services.GenieFontStyle), sFontStyle, true);
+                    m_oGlobals.Config.MonoFont = new Services.GenieFont(sMonoFontFamily, oFontSize, oFontStyle);
                 }
 
                 string sInputFontFamily = m_oConfig.GetValue("Genie/Windows/InputFont", "Family", string.Empty);
@@ -2323,8 +2323,8 @@ namespace GenieClient
                 {
                     float oFontSize = m_oConfig.GetValueSingle("Genie/Windows/InputFont", "Size", 9);
                     string sFontStyle = m_oConfig.GetValue("Genie/Windows/InputFont", "Style", "Regular");
-                    FontStyle oFontStyle = (FontStyle)Enum.Parse(typeof(FontStyle), sFontStyle, true);
-                    m_oGlobals.Config.InputFont = new Font(sInputFontFamily, oFontSize, oFontStyle);
+                    var oFontStyle = (Services.GenieFontStyle)Enum.Parse(typeof(Services.GenieFontStyle), sFontStyle, true);
+                    m_oGlobals.Config.InputFont = new Services.GenieFont(sInputFontFamily, oFontSize, oFontStyle);
                     UpdateInputFont();
                 }
 
@@ -2465,10 +2465,10 @@ namespace GenieClient
 
             m_oConfig.SetValue("Genie/Windows/Main", "Maximized", (WindowState == FormWindowState.Maximized).ToString());
             m_oConfig.SetValue("Genie/ScriptBar", "Visible", ToolStripButtons.Visible.ToString());
-            m_oConfig.SetValue("Genie/Windows/MonoFont", "Family", m_oGlobals.Config.MonoFont.Name.ToString());
+            m_oConfig.SetValue("Genie/Windows/MonoFont", "Family", m_oGlobals.Config.MonoFont.FamilyName);
             m_oConfig.SetValue("Genie/Windows/MonoFont", "Size", m_oGlobals.Config.MonoFont.Size.ToString());
             m_oConfig.SetValue("Genie/Windows/MonoFont", "Style", m_oGlobals.Config.MonoFont.Style.ToString());
-            m_oConfig.SetValue("Genie/Windows/InputFont", "Family", m_oGlobals.Config.InputFont.Name.ToString());
+            m_oConfig.SetValue("Genie/Windows/InputFont", "Family", m_oGlobals.Config.InputFont.FamilyName);
             m_oConfig.SetValue("Genie/Windows/InputFont", "Size", m_oGlobals.Config.InputFont.Size.ToString());
             m_oConfig.SetValue("Genie/Windows/InputFont", "Style", m_oGlobals.Config.InputFont.Style.ToString());
             m_oConfig.SetValue("Genie/Windows/Game", "ID", "main");
@@ -2478,7 +2478,7 @@ namespace GenieClient
             m_oConfig.SetValue("Genie/Windows/Game", "Left", m_oOutputMain.Left.ToString());
             m_oConfig.SetValue("Genie/Windows/Game", "Top", m_oOutputMain.Top.ToString());
             m_oConfig.SetValue("Genie/Windows/Game", "TimeStamp", m_oOutputMain.TimeStamp.ToString());
-            m_oConfig.SetValue("Genie/Windows/Game", "Colors", Genie.ColorCode.ColorToString(m_oOutputMain.RichTextBoxOutput.ForeColor, m_oOutputMain.RichTextBoxOutput.BackColor));
+            m_oConfig.SetValue("Genie/Windows/Game", "Colors", Genie.ColorCodeWindows.ColorToString(m_oOutputMain.RichTextBoxOutput.ForeColor, m_oOutputMain.RichTextBoxOutput.BackColor));
             m_oConfig.SetValue("Genie/Windows/Game", "NameListOnly", m_oOutputMain.NameListOnly.ToString());
             m_oConfig.SetValue("Genie/Windows/Game/Font", "Family", m_oOutputMain.TextFont.Name.ToString());
             m_oConfig.SetValue("Genie/Windows/Game/Font", "Size", m_oOutputMain.TextFont.Size.ToString());
@@ -2510,7 +2510,7 @@ namespace GenieClient
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "Top", tmpFormSkin.Top.ToString());
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "Visible", tmpFormSkin.Visible.ToString());
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "TimeStamp", tmpFormSkin.TimeStamp.ToString());
-                m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "Colors", Genie.ColorCode.ColorToString(tmpFormSkin.RichTextBoxOutput.ForeColor, tmpFormSkin.RichTextBoxOutput.BackColor));
+                m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "Colors", Genie.ColorCodeWindows.ColorToString(tmpFormSkin.RichTextBoxOutput.ForeColor, tmpFormSkin.RichTextBoxOutput.BackColor));
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString(), "NameListOnly", tmpFormSkin.NameListOnly.ToString());
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString() + "/Font", "Family", tmpFormSkin.TextFont.Name.ToString());
                 m_oConfig.SetValue("Genie/Windows/Window" + i.ToString() + "/Font", "Size", tmpFormSkin.TextFont.Size.ToString());
@@ -3751,7 +3751,7 @@ namespace GenieClient
                 oForm.TextFont = oFont;
             }
 
-            oForm.RichTextBoxOutput.MonoFont = m_oGlobals.Config.MonoFont;
+            oForm.RichTextBoxOutput.MonoFont = m_oGlobals.Config.MonoFont.ToDrawingFont();
             oForm.Width = iWidth;
             oForm.Height = iHeight;
             oForm.Top = iTop;
@@ -3763,12 +3763,12 @@ namespace GenieClient
                 {
                     string sColor = sColorName.Substring(0, sColorName.IndexOf(",")).Trim();
                     string sBgColor = sColorName.Substring(sColorName.IndexOf(",") + 1).Trim();
-                    oForm.RichTextBoxOutput.ForeColor = Genie.ColorCode.StringToColor(sColor);
-                    oForm.RichTextBoxOutput.BackColor = Genie.ColorCode.StringToColor(sBgColor);
+                    oForm.RichTextBoxOutput.ForeColor = Genie.ColorCodeWindows.StringToColor(sColor);
+                    oForm.RichTextBoxOutput.BackColor = Genie.ColorCodeWindows.StringToColor(sBgColor);
                 }
                 else
                 {
-                    oForm.RichTextBoxOutput.ForeColor = Genie.ColorCode.StringToColor(sColorName);
+                    oForm.RichTextBoxOutput.ForeColor = Genie.ColorCodeWindows.StringToColor(sColorName);
                 }
             }
 
@@ -6928,12 +6928,12 @@ namespace GenieClient
 
         private void UpdateMonoFont()
         {
-            m_oOutputMain.RichTextBoxOutput.MonoFont = m_oGlobals.Config.MonoFont;
+            m_oOutputMain.RichTextBoxOutput.MonoFont = m_oGlobals.Config.MonoFont.ToDrawingFont();
             var oEnumerator = m_oFormList.GetEnumerator();
             while (oEnumerator.MoveNext())
             {
                 FormSkin oForm = (FormSkin)oEnumerator.Current;
-                oForm.RichTextBoxOutput.MonoFont = m_oGlobals.Config.MonoFont;
+                oForm.RichTextBoxOutput.MonoFont = m_oGlobals.Config.MonoFont.ToDrawingFont();
             }
         }
 
@@ -6953,7 +6953,7 @@ namespace GenieClient
 
         private void UpdateInputFont()
         {
-            TextBoxInput.Font = m_oGlobals.Config.InputFont;
+            TextBoxInput.Font = m_oGlobals.Config.InputFont.ToDrawingFont();
             PanelInput.Height = TextBoxInput.FontHeight + 6;
         }
 

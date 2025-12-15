@@ -1,19 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <!-- 
-      Currently targets Windows to support plugin system.
-      When porting to other platforms, change to net10.0 and make plugin code conditional.
+      Multi-target core library:
+      - net10.0: Cross-platform version (no Windows dependencies)
+      - net10.0-windows: Windows version (includes System.Drawing, Windows Forms helpers)
     -->
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetFrameworks>net10.0;net10.0-windows</TargetFrameworks>
     <RootNamespace>GenieClient</RootNamespace>
     <AssemblyName>Genie.Core</AssemblyName>
     <LangVersion>latest</LangVersion>
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <!-- Windows-specific settings -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net10.0-windows'">
     <UseWindowsForms>true</UseWindowsForms>
-    
-    <!-- Define WINDOWS for conditional compilation -->
     <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
   </PropertyGroup>
 
@@ -34,6 +37,10 @@
     <Compile Include="..\..\Core\Connection.cs" Link="Core\Connection.cs" />
     <Compile Include="..\..\Core\Game.cs" Link="Core\Game.cs" />
     <Compile Include="..\..\Core\GenieError.cs" Link="Core\GenieError.cs" />
+  </ItemGroup>
+  
+  <!-- Windows-only core files -->
+  <ItemGroup Condition="$(TargetFramework.Contains('windows'))">
     <Compile Include="..\..\Core\GenieError.Windows.cs" Link="Core\GenieError.Windows.cs" />
   </ItemGroup>
 
@@ -130,16 +137,20 @@
   </ItemGroup>
 
   <!-- Plugin interfaces (Windows-only) -->
-  <ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.Contains('windows'))">
     <Reference Include="Interfaces">
       <HintPath>..\..\Libs\Interfaces.dll</HintPath>
     </Reference>
     <ProjectReference Include="..\..\Plugin\Plugins.vbproj" />
   </ItemGroup>
 
-  <!-- Properties for My namespace (VB.NET interop) -->
+  <!-- Properties -->
   <ItemGroup>
     <Compile Include="..\..\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  
+  <!-- Windows-only VB.NET interop -->
+  <ItemGroup Condition="$(TargetFramework.Contains('windows'))">
     <Compile Include="..\..\Properties\MyNamespace.Static.1.Designer.cs" Link="Properties\MyNamespace.Static.1.Designer.cs" />
   </ItemGroup>
 

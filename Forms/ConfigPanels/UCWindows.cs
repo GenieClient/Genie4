@@ -46,7 +46,7 @@ namespace GenieClient
                 ResetList();
                 var li = ListViewBase.Items.Add(m_FormMain.OutputMain.Text);
                 li.SubItems.Add(GetFontName(m_FormMain.OutputMain.RichTextBoxOutput.Font));
-                li.SubItems.Add(Genie.ColorCode.ColorToString(m_FormMain.OutputMain.RichTextBoxOutput.ForeColor, m_FormMain.OutputMain.RichTextBoxOutput.BackColor));
+                li.SubItems.Add(Genie.ColorCodeWindows.ColorToString(m_FormMain.OutputMain.RichTextBoxOutput.ForeColor, m_FormMain.OutputMain.RichTextBoxOutput.BackColor));
                 li.SubItems.Add(m_FormMain.OutputMain.TimeStamp.ToString());
                 li.SubItems.Add(m_FormMain.OutputMain.NameListOnly.ToString());
                 li.Tag = m_FormMain.OutputMain;
@@ -57,7 +57,7 @@ namespace GenieClient
                     tmpFormSkin = (FormSkin)myEnumerator.Current;
                     li = ListViewBase.Items.Add(tmpFormSkin.Text);
                     li.SubItems.Add(GetFontName(tmpFormSkin.RichTextBoxOutput.Font));
-                    li.SubItems.Add(Genie.ColorCode.ColorToString(tmpFormSkin.RichTextBoxOutput.ForeColor, tmpFormSkin.RichTextBoxOutput.BackColor));
+                    li.SubItems.Add(Genie.ColorCodeWindows.ColorToString(tmpFormSkin.RichTextBoxOutput.ForeColor, tmpFormSkin.RichTextBoxOutput.BackColor));
                     li.SubItems.Add(tmpFormSkin.TimeStamp.ToString());
                     li.SubItems.Add(tmpFormSkin.NameListOnly.ToString());
                     li.Tag = tmpFormSkin;
@@ -306,12 +306,12 @@ namespace GenieClient
                                 {
                                     string sColor = sColorName.Substring(0, sColorName.IndexOf(",")).Trim();
                                     string sBgColor = sColorName.Substring(sColorName.IndexOf(",") + 1).Trim();
-                                    fo.RichTextBoxOutput.ForeColor = Genie.ColorCode.StringToColor(sColor);
-                                    fo.RichTextBoxOutput.BackColor = Genie.ColorCode.StringToColor(sBgColor);
+                                    fo.RichTextBoxOutput.ForeColor = Genie.ColorCodeWindows.StringToColor(sColor);
+                                    fo.RichTextBoxOutput.BackColor = Genie.ColorCodeWindows.StringToColor(sBgColor);
                                 }
                                 else
                                 {
-                                    fo.RichTextBoxOutput.ForeColor = Genie.ColorCode.StringToColor(sColorName);
+                                    fo.RichTextBoxOutput.ForeColor = Genie.ColorCodeWindows.StringToColor(sColorName);
                                 }
                             }
                         }
@@ -355,7 +355,7 @@ namespace GenieClient
                     fo.NameListOnly = CheckBoxNameListOnly.Checked;
                     var li = ListViewBase.Items.Add(TextBoxTitle.Text);
                     li.SubItems.Add(GetFontName(fo.RichTextBoxOutput.Font));
-                    li.SubItems.Add(Genie.ColorCode.ColorToString(fo.RichTextBoxOutput.ForeColor, fo.RichTextBoxOutput.BackColor));
+                    li.SubItems.Add(Genie.ColorCodeWindows.ColorToString(fo.RichTextBoxOutput.ForeColor, fo.RichTextBoxOutput.BackColor));
                     li.SubItems.Add(fo.TimeStamp.ToString());
                     li.SubItems.Add(fo.NameListOnly.ToString());
                     li.Tag = fo;
@@ -485,11 +485,11 @@ namespace GenieClient
                 LabelExampleColor.ForeColor = ColorDialogPicker.Color;
                 if (LabelExampleColor.BackColor != Color.Black)
                 {
-                    TextBoxColor.Text = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor) + ", " + Genie.ColorCode.ColorToString(LabelExampleColor.BackColor);
+                    TextBoxColor.Text = Genie.ColorCodeWindows.ColorToString(LabelExampleColor.ForeColor) + ", " + Genie.ColorCodeWindows.ColorToString(LabelExampleColor.BackColor);
                 }
                 else
                 {
-                    TextBoxColor.Text = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor);
+                    TextBoxColor.Text = Genie.ColorCodeWindows.ColorToString(LabelExampleColor.ForeColor);
                 }
             }
         }
@@ -500,12 +500,12 @@ namespace GenieClient
             if (ColorDialogPicker.ShowDialog(this) == DialogResult.OK)
             {
                 LabelExampleColor.BackColor = ColorDialogPicker.Color;
-                TextBoxColor.Text = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor) + ", " + Genie.ColorCode.ColorToString(LabelExampleColor.BackColor);
+                TextBoxColor.Text = Genie.ColorCodeWindows.ColorToString(LabelExampleColor.ForeColor) + ", " + Genie.ColorCodeWindows.ColorToString(LabelExampleColor.BackColor);
             }
             else
             {
                 LabelExampleColor.BackColor = Color.Black;
-                TextBoxColor.Text = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor);
+                TextBoxColor.Text = Genie.ColorCodeWindows.ColorToString(LabelExampleColor.ForeColor);
             }
         }
 
@@ -538,9 +538,9 @@ namespace GenieClient
                 {
                     string sColor = TextBoxColor.Text.Substring(0, TextBoxColor.Text.IndexOf(",")).Trim();
                     string sBgColor = TextBoxColor.Text.Substring(TextBoxColor.Text.IndexOf(",") + 1).Trim();
-                    LabelExampleColor.ForeColor = Genie.ColorCode.StringToColor(sColor);
-                    LabelExampleColor.BackColor = Genie.ColorCode.StringToColor(sBgColor);
-                    string sText = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor) + ", " + Genie.ColorCode.ColorToString(LabelExampleColor.BackColor);
+                    LabelExampleColor.ForeColor = Genie.ColorCodeWindows.StringToColor(sColor);
+                    LabelExampleColor.BackColor = Genie.ColorCodeWindows.StringToColor(sBgColor);
+                    string sText = Genie.ColorCodeWindows.ColorToString(LabelExampleColor.ForeColor) + ", " + Genie.ColorCodeWindows.ColorToString(LabelExampleColor.BackColor);
                     if (sText.Contains("ControlText"))
                     {
                         sText = "";
@@ -550,9 +550,9 @@ namespace GenieClient
                 }
                 else
                 {
-                    LabelExampleColor.ForeColor = Genie.ColorCode.StringToColor(TextBoxColor.Text);
+                    LabelExampleColor.ForeColor = Genie.ColorCodeWindows.StringToColor(TextBoxColor.Text);
                     LabelExampleColor.BackColor = Color.Black;
-                    string sText = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor);
+                    string sText = Genie.ColorCodeWindows.ColorToString(LabelExampleColor.ForeColor);
                     if (sText.Contains("ControlText"))
                     {
                         sText = "";

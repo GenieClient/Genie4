@@ -81,11 +81,11 @@ namespace GenieClient
                 LabelExampleColor.ForeColor = ColorDialogPicker.Color;
                 if (LabelExampleColor.BackColor != Color.Black)
                 {
-                    TextBoxColor.Text = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor) + ", " + Genie.ColorCode.ColorToString(LabelExampleColor.BackColor);
+                    TextBoxColor.Text = Genie.ColorCodeWindows.ColorToString(LabelExampleColor.ForeColor) + ", " + Genie.ColorCodeWindows.ColorToString(LabelExampleColor.BackColor);
                 }
                 else
                 {
-                    TextBoxColor.Text = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor);
+                    TextBoxColor.Text = Genie.ColorCodeWindows.ColorToString(LabelExampleColor.ForeColor);
                 }
             }
         }
@@ -96,12 +96,12 @@ namespace GenieClient
             if (ColorDialogPicker.ShowDialog(this) == DialogResult.OK)
             {
                 LabelExampleColor.BackColor = ColorDialogPicker.Color;
-                TextBoxColor.Text = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor) + ", " + Genie.ColorCode.ColorToString(LabelExampleColor.BackColor);
+                TextBoxColor.Text = Genie.ColorCodeWindows.ColorToString(LabelExampleColor.ForeColor) + ", " + Genie.ColorCodeWindows.ColorToString(LabelExampleColor.BackColor);
             }
             else
             {
                 LabelExampleColor.BackColor = Color.Black;
-                TextBoxColor.Text = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor);
+                TextBoxColor.Text = Genie.ColorCodeWindows.ColorToString(LabelExampleColor.ForeColor);
             }
         }
 
@@ -134,9 +134,9 @@ namespace GenieClient
                 {
                     string sColor = TextBoxColor.Text.Substring(0, TextBoxColor.Text.IndexOf(",")).Trim();
                     string sBgColor = TextBoxColor.Text.Substring(TextBoxColor.Text.IndexOf(",") + 1).Trim();
-                    LabelExampleColor.ForeColor = Genie.ColorCode.StringToColor(sColor);
-                    LabelExampleColor.BackColor = Genie.ColorCode.StringToColor(sBgColor);
-                    string sText = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor) + ", " + Genie.ColorCode.ColorToString(LabelExampleColor.BackColor);
+                    LabelExampleColor.ForeColor = Genie.ColorCodeWindows.StringToColor(sColor);
+                    LabelExampleColor.BackColor = Genie.ColorCodeWindows.StringToColor(sBgColor);
+                    string sText = Genie.ColorCodeWindows.ColorToString(LabelExampleColor.ForeColor) + ", " + Genie.ColorCodeWindows.ColorToString(LabelExampleColor.BackColor);
                     if (sText.Contains("ControlText"))
                     {
                         sText = "";
@@ -146,9 +146,9 @@ namespace GenieClient
                 }
                 else
                 {
-                    LabelExampleColor.ForeColor = Genie.ColorCode.StringToColor(TextBoxColor.Text);
+                    LabelExampleColor.ForeColor = Genie.ColorCodeWindows.StringToColor(TextBoxColor.Text);
                     LabelExampleColor.BackColor = Color.Black;
-                    string sText = Genie.ColorCode.ColorToString(LabelExampleColor.ForeColor);
+                    string sText = Genie.ColorCodeWindows.ColorToString(LabelExampleColor.ForeColor);
                     if (sText.Contains("ControlText"))
                     {
                         sText = "";

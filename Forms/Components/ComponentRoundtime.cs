@@ -89,7 +89,7 @@ namespace GenieClient
             set
             {
                 m_BorderColor = new Pen(value);
-                m_BorderColorGrayScale = new Pen(Genie.ColorCode.ColorToGrayscale(value));
+                m_BorderColorGrayScale = new Pen(Genie.ColorCodeWindows.ColorToGrayscale(value));
                 Invalidate();
             }
         }
@@ -104,7 +104,7 @@ namespace GenieClient
             set
             {
                 m_BorderColorRT = new Pen(value);
-                m_BorderColorRTGrayScale = new Pen(Genie.ColorCode.ColorToGrayscale(value));
+                m_BorderColorRTGrayScale = new Pen(Genie.ColorCodeWindows.ColorToGrayscale(value));
                 Invalidate();
             }
         }
@@ -119,7 +119,7 @@ namespace GenieClient
 
             if (RT > 0 & StartRT > 0)
             {
-                var myTextureBrush = new SolidBrush((Color)Interaction.IIf(m_IsConnected, m_ForegroundColor, Genie.ColorCode.ColorToGrayscale(m_ForegroundColor)));
+                var myTextureBrush = new SolidBrush((Color)Interaction.IIf(m_IsConnected, m_ForegroundColor, Genie.ColorCodeWindows.ColorToGrayscale(m_ForegroundColor)));
                 w = (int)(PanelRT.Width / (double)StartRT * RT);
                 g.FillRectangle(myTextureBrush, 0, 0, w, PanelRT.Height);
                 Pen argp = (Pen)Interaction.IIf(m_IsConnected, m_BorderColorRT, m_BorderColorRTGrayScale);
@@ -142,7 +142,7 @@ namespace GenieClient
 
         public void SetRT(int RoundTime)
         {
-            PanelRT.BackColor = (Color)Interaction.IIf(m_IsConnected, m_BackgroundColorRT, Genie.ColorCode.ColorToGrayscale(m_BackgroundColorRT));
+            PanelRT.BackColor = (Color)Interaction.IIf(m_IsConnected, m_BackgroundColorRT, Genie.ColorCodeWindows.ColorToGrayscale(m_BackgroundColorRT));
             RT = RoundTime;
             StartRT = RoundTime;
             LabelRT.Text = RT > 0 ? RT.ToString() : "";
