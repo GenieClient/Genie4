@@ -1,0 +1,172 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+        x:Class="GenieClient.Views.MainWindow"
+        Title="Genie 5"
+        Width="1200" Height="800"
+        MinWidth="800" MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        Background="#1a1a2e">
+
+    <Window.Styles>
+        <Style Selector="TextBox.CommandInput">
+            <Setter Property="Background" Value="#16213e"/>
+            <Setter Property="Foreground" Value="#e0e0e0"/>
+            <Setter Property="BorderBrush" Value="#0f3460"/>
+            <Setter Property="FontFamily" Value="Cascadia Mono, Consolas, monospace"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="8"/>
+        </Style>
+    </Window.Styles>
+
+    <Grid RowDefinitions="Auto,*,Auto,Auto,Auto">
+        <!-- Menu Bar -->
+        <Menu Grid.Row="0" Background="#16213e">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Connect..." Click="OnConnect"/>
+                <MenuItem Header="_Disconnect" Click="OnDisconnect"/>
+                <Separator/>
+                <MenuItem Header="E_xit" Click="OnExit"/>
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Preferences..."/>
+            </MenuItem>
+            <MenuItem Header="_Scripts">
+                <MenuItem Header="_Script Manager..."/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About Genie 5"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- Game Text Output -->
+        <Border Grid.Row="1" Margin="8,8,8,4" CornerRadius="8" ClipToBounds="True">
+            <ScrollViewer x:Name="OutputScroller" 
+                          HorizontalScrollBarVisibility="Disabled"
+                          VerticalScrollBarVisibility="Auto">
+                <SelectableTextBlock x:Name="GameOutput"
+                                     Background="#0d1117"
+                                     Foreground="#c9d1d9"
+                                     FontFamily="Cascadia Mono, Consolas, monospace"
+                                     FontSize="13"
+                                     Padding="12"
+                                     TextWrapping="Wrap"
+                                     Text="Welcome to Genie 5 - Cross-Platform Edition&#x0a;&#x0a;Use File → Connect to connect to a game server.&#x0a;"/>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Command Input -->
+        <Border Grid.Row="2" Margin="8,4,8,4" CornerRadius="8" ClipToBounds="True">
+            <TextBox x:Name="CommandInput" 
+                     Classes="CommandInput"
+                     Watermark="Enter command..."
+                     KeyDown="OnCommandKeyDown"/>
+        </Border>
+
+        <!-- Status Bars (Vitals) -->
+        <Border Grid.Row="3" Margin="8,4,8,4" Background="#16213e" CornerRadius="8" Padding="12,8">
+            <Grid ColumnDefinitions="*,*,*,*,*,Auto">
+                <!-- Health Bar -->
+                <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <TextBlock Text="Health" Foreground="#888" FontSize="10" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" x:Name="HealthText" Text="100%" 
+                                   Foreground="#22c55e" FontSize="10" 
+                                   HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+                    <Grid Height="16">
+                        <Border Background="#2a2a3e" CornerRadius="3"/>
+                        <Border x:Name="HealthBar" Background="#22c55e" 
+                                CornerRadius="3" HorizontalAlignment="Stretch"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Mana Bar -->
+                <StackPanel Grid.Column="1" Spacing="2" Margin="8,0">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <TextBlock Text="Mana" Foreground="#888" FontSize="10" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" x:Name="ManaText" Text="100%" 
+                                   Foreground="#3b82f6" FontSize="10" 
+                                   HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+                    <Grid Height="16">
+                        <Border Background="#2a2a3e" CornerRadius="3"/>
+                        <Border x:Name="ManaBar" Background="#3b82f6" 
+                                CornerRadius="3" HorizontalAlignment="Stretch"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Fatigue Bar -->
+                <StackPanel Grid.Column="2" Spacing="2" Margin="8,0">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <TextBlock Text="Fatigue" Foreground="#888" FontSize="10" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" x:Name="FatigueText" Text="100%" 
+                                   Foreground="#eab308" FontSize="10" 
+                                   HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+                    <Grid Height="16">
+                        <Border Background="#2a2a3e" CornerRadius="3"/>
+                        <Border x:Name="FatigueBar" Background="#eab308" 
+                                CornerRadius="3" HorizontalAlignment="Stretch"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Spirit Bar -->
+                <StackPanel Grid.Column="3" Spacing="2" Margin="8,0">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <TextBlock Text="Spirit" Foreground="#888" FontSize="10" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" x:Name="SpiritText" Text="100%" 
+                                   Foreground="#a855f7" FontSize="10" 
+                                   HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+                    <Grid Height="16">
+                        <Border Background="#2a2a3e" CornerRadius="3"/>
+                        <Border x:Name="SpiritBar" Background="#a855f7" 
+                                CornerRadius="3" HorizontalAlignment="Stretch"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Concentration Bar -->
+                <StackPanel Grid.Column="4" Spacing="2" Margin="8,0">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <TextBlock Text="Conc" Foreground="#888" FontSize="10" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" x:Name="ConcentrationText" Text="100%" 
+                                   Foreground="#06b6d4" FontSize="10" 
+                                   HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+                    <Grid Height="16">
+                        <Border Background="#2a2a3e" CornerRadius="3"/>
+                        <Border x:Name="ConcentrationBar" Background="#06b6d4" 
+                                CornerRadius="3" HorizontalAlignment="Stretch"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Roundtime -->
+                <Border Grid.Column="5" Background="#2a2a3e" CornerRadius="6" 
+                        Padding="16,4" Margin="8,0,0,0" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="RT" Foreground="#888" FontSize="11" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="RoundtimeText" Text="0" 
+                                   FontSize="18" FontWeight="Bold" Foreground="#e94560"
+                                   VerticalAlignment="Center" MinWidth="24" TextAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Status Bar -->
+        <Border Grid.Row="4" Background="#16213e" Padding="8,4">
+            <Grid ColumnDefinitions="*,Auto,Auto">
+                <TextBlock x:Name="StatusText" Text="Disconnected" 
+                           Foreground="#888" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" x:Name="ConnectionStatus" 
+                           Text="●" Foreground="#ef4444" FontSize="12" 
+                           VerticalAlignment="Center" Margin="8,0"/>
+                <TextBlock Grid.Column="2" Text="Genie 5.0.0" 
+                           Foreground="#666" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
