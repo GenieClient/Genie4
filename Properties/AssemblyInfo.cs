@@ -8,10 +8,10 @@ using System.Runtime.InteropServices;
 
 // Review the values of the assembly attributes
 
-[assembly: AssemblyTitle("Genie Client 4")]
+[assembly: AssemblyTitle("Genie Client 5")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("genieclient.com")]
-[assembly: AssemblyProduct("Genie Client 4")]
+[assembly: AssemblyProduct("Genie Client 5")]
 [assembly: AssemblyCopyright("GPL-3")]
 [assembly: AssemblyTrademark("")]
 [assembly: ComVisible(false)]
@@ -30,6 +30,6 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // <Assembly: AssemblyVersion("1.0.*")> 
 
-[assembly: AssemblyVersion("4.0.2.9")]
-[assembly: AssemblyFileVersion("4.0.2.9")] 
+[assembly: AssemblyVersion("5.0.0.0")]
+[assembly: AssemblyFileVersion("5.0.0.0")] 
 

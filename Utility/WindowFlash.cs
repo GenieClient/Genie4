@@ -7,7 +7,7 @@ namespace GenieClient
     /// <summary>
 /// Necessary native methods to import
 /// </summary>
-    internal static class NativeMethods
+    public static class NativeMethods
     {
         static NativeMethods()
         {

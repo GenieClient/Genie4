@@ -1,4 +1,4 @@
-# Build and Run Script for Genie4
+# Build and Run Script for Genie5
 # This script builds the project and copies output to a separate Run folder
 # so you can keep Genie running while developing
 
@@ -6,11 +6,11 @@ $ErrorActionPreference = "Stop"
 
 $BuildConfig = "Release"
 $TargetFramework = "net10.0-windows"
-$SourceDir = "bin\$BuildConfig\$TargetFramework"
+$SourceDir = "src\Genie.Windows\bin\$BuildConfig\$TargetFramework"
 $RunDir = "bin\Run"
 
-Write-Host "Building Genie4..." -ForegroundColor Cyan
-dotnet build Genie4.sln --configuration $BuildConfig
+Write-Host "Building Genie5..." -ForegroundColor Cyan
+dotnet build Genie5.sln --configuration $BuildConfig
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Build failed!" -ForegroundColor Red

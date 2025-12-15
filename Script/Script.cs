@@ -2910,6 +2910,7 @@ namespace GenieClient
 
         private string EvalPlugin(string sText, int iFileId, int iFileRow)
         {
+#if WINDOWS
             string sResult;
             foreach (GeniePlugin.Interfaces.IPlugin oPlugin in m_oGlobals.PluginList)
             {
@@ -2920,12 +2921,13 @@ namespace GenieClient
                         return sResult;
                 }
             }
-
+#endif
             return "undefined";
         }
 
         private string EvalPluginScript(string sText, int iFileId, int iFileRow)
         {
+#if WINDOWS
             string sResult;
             foreach (GeniePlugin.Interfaces.IPlugin oPlugin in m_oGlobals.PluginList)
             {
@@ -2936,7 +2938,7 @@ namespace GenieClient
                         return sResult;
                 }
             }
-
+#endif
             return string.Empty;
         }
 

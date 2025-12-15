@@ -3244,6 +3244,7 @@ namespace GenieClient.Genie
 
         private string ParsePluginText(string sText, string sWindow)
         {
+#if WINDOWS
             if (m_oGlobals.PluginsEnabled == false)
                 return sText;
             foreach (object oPlugin in m_oGlobals.PluginList)
@@ -3256,12 +3257,10 @@ namespace GenieClient.Genie
                         {
                             sText = (oPlugin as GeniePlugin.Interfaces.IPlugin).ParseText(sText, sWindow);
                         }
-                        /* TODO ERROR: Skipped IfDirectiveTrivia */
                         catch (Exception ex)
                         {
                             GenieError.GeniePluginError((oPlugin as GeniePlugin.Interfaces.IPlugin), "ParseText", ex);
                             (oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled = false;
-                            /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                         }
                     }
                 }
@@ -3273,17 +3272,15 @@ namespace GenieClient.Genie
                         {
                             sText = (oPlugin as GeniePlugin.Plugins.IPlugin).ParseText(sText, sWindow);
                         }
-                        /* TODO ERROR: Skipped IfDirectiveTrivia */
                         catch (Exception ex)
                         {
                             GenieError.GeniePluginError((oPlugin as GeniePlugin.Plugins.IPlugin), "ParseText", ex);
                             (oPlugin as GeniePlugin.Plugins.IPlugin).Enabled = false;
-                            /* TODO ERROR: Skipped ElseDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
                         }
                     }
                 }
             }
-
+#endif
             return sText;
         }
 

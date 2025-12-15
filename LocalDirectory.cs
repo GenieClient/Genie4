@@ -8,7 +8,7 @@ namespace GenieClient
     /// Manages local directory paths for the application.
     /// Cross-platform compatible.
     /// </summary>
-    static class LocalDirectory
+    public static class LocalDirectory
     {
         public static string Path = AppDomain.CurrentDomain.BaseDirectory;
         public static bool IsLocal = true;

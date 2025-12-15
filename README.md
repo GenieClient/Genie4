@@ -31,7 +31,7 @@
 <div align="center">
 
 
-<h1 align="center">Genie 4</h1>
+<h1 align="center">Genie 5</h1>
 
   <p align="center">
     Genie is an alternative front-end for use with the Simutronics Corporation’s game DragonRealms.
@@ -97,7 +97,7 @@
 
 - [x] .NET 6 Upgrade
 - [x] .NET 10 Upgrade
-- [ ] Refactor Core Logic away from GUI
+- [x] Refactor Core Logic away from GUI
 - [ ] Convert GUI to Cross-Platform
 - [ ] Upgrade Plugin Interface
 - [ ] Get Latest Version (OneButton) <AInstallLogo>
@@ -191,8 +191,38 @@ This copies the build output to a separate `bin\Run` folder, allowing you to kee
 **Option 2: Direct build**
 
 ```powershell
-dotnet build Genie4.sln --configuration Release
-.\bin\Release\net10.0-windows\Genie.exe
+dotnet build Genie5.sln --configuration Release
+.\src\Genie.Windows\bin\Release\net10.0-windows\Genie.exe
 ```
 
 > **Note:** If Genie is running, the direct build will fail because the files are locked. Use the build script instead, which outputs to a separate folder.
+
+## Project Architecture
+
+The codebase has been separated into modular components to support future cross-platform development:
+
+```
+Genie5.sln                   # Main solution
+├── src/
+│   ├── Genie.Core/          # Platform-agnostic core logic library
+│   │   └── Genie.Core.csproj
+│   └── Genie.Windows/       # Windows Forms GUI (references Genie.Core)
+│       └── Genie.Windows.csproj
+└── Plugin/
+    └── Plugins.vbproj       # Plugin interfaces (VB.NET)
+```
+
+### Genie.Core
+Contains platform-independent business logic:
+- Connection handling and game communication
+- Script engine (Genie scripts, JavaScript, Lua)
+- Configuration management
+- Lists and data structures
+- Service interfaces
+
+### Genie.Windows
+Contains Windows-specific GUI components:
+- Windows Forms UI
+- Plugin host implementation
+- Auto-mapper with visual display
+- All dialogs and configuration panels

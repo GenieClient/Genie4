@@ -2,7 +2,7 @@
 
 namespace GenieClient
 {
-    static class MyRegexOptions
+    public static class MyRegexOptions
     {
         public static RegexOptions options = RegexOptions.Multiline;
     }

@@ -8,7 +8,7 @@ using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient
 {
-    internal class PluginServices
+    public class PluginServices
     {
         public struct AvailablePlugin
         {

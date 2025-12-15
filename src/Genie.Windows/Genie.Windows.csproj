@@ -1,0 +1,127 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>GenieClient.Program</StartupObject>
+    <RootNamespace>GenieClient</RootNamespace>
+    <AssemblyName>Genie</AssemblyName>
+    <MyType>WindowsForms</MyType>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <ApplicationIcon>..\..\Graphics\Taleweaver.ico</ApplicationIcon>
+    <NoWarn>$(NoWarn);WFO1000</NoWarn>
+    
+    <!-- Always define WINDOWS for Windows Forms project -->
+    <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>None</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>false</DefineTrace>
+  </PropertyGroup>
+
+  <!-- Reference the Core library -->
+  <ItemGroup>
+    <ProjectReference Include="..\Genie.Core\Genie.Core.csproj" />
+  </ItemGroup>
+
+  <!-- Plugin host (requires Windows Forms for plugin API compatibility) -->
+  <ItemGroup>
+    <Compile Include="..\..\Core\PluginHost.cs" Link="Core\PluginHost.cs" />
+    <Compile Include="..\..\Core\LegacyPluginHost.cs" Link="Core\LegacyPluginHost.cs" />
+  </ItemGroup>
+
+  <!-- Entry point -->
+  <ItemGroup>
+    <Compile Include="..\..\Program.cs" Link="Program.cs" />
+  </ItemGroup>
+
+  <!-- Properties -->
+  <ItemGroup>
+    <Compile Include="..\..\Properties\Application.Designer.cs" Link="Properties\Application.Designer.cs" />
+    <Compile Include="..\..\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\Properties\MyNamespace.Dynamic.Designer.cs" Link="Properties\MyNamespace.Dynamic.Designer.cs" />
+    <Compile Include="..\..\Properties\MyNamespace.Static.1.Designer.cs" Link="Properties\MyNamespace.Static.1.Designer.cs" />
+    <Compile Include="..\..\Properties\Settings.Designer.cs" Link="Properties\Settings.Designer.cs" />
+    <Compile Include="..\..\Properties\Settings1.Designer.cs" Link="Properties\Settings1.Designer.cs" />
+    <EmbeddedResource Include="..\..\Properties\Resources.resx" Link="Properties\Resources.resx" />
+    <EmbeddedResource Include="..\..\Properties\Settings.settings" Link="Properties\Settings.settings" />
+  </ItemGroup>
+
+  <!-- Forms -->
+  <ItemGroup>
+    <Compile Include="..\..\Forms\**\*.cs" Link="Forms\%(RecursiveDir)%(Filename)%(Extension)" />
+    <EmbeddedResource Include="..\..\Forms\**\*.resx" Link="Forms\%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <!-- Mapper (AutoMapper has UI dependencies) -->
+  <ItemGroup>
+    <Compile Include="..\..\Mapper\AutoMapper.cs" Link="Mapper\AutoMapper.cs" />
+    <Compile Include="..\..\Mapper\MapForm.cs" Link="Mapper\MapForm.cs" />
+    <Compile Include="..\..\Mapper\MapForm.Designer.cs" Link="Mapper\MapForm.Designer.cs" />
+    <Compile Include="..\..\Mapper\FormMapperSettings.cs" Link="Mapper\FormMapperSettings.cs" />
+    <Compile Include="..\..\Mapper\FormMapperSettings.Designer.cs" Link="Mapper\FormMapperSettings.Designer.cs" />
+    <Compile Include="..\..\Mapper\DialogDragTarget.cs" Link="Mapper\DialogDragTarget.cs" />
+    <Compile Include="..\..\Mapper\DialogDragTarget.Designer.cs" Link="Mapper\DialogDragTarget.Designer.cs" />
+    <Compile Include="..\..\Mapper\DialogSetClasses.cs" Link="Mapper\DialogSetClasses.cs" />
+    <Compile Include="..\..\Mapper\DialogSetClasses.Designer.cs" Link="Mapper\DialogSetClasses.Designer.cs" />
+    <Compile Include="..\..\Mapper\DialogSetTypeahead.cs" Link="Mapper\DialogSetTypeahead.cs" />
+    <Compile Include="..\..\Mapper\DialogSetTypeahead.Designer.cs" Link="Mapper\DialogSetTypeahead.Designer.cs" />
+    <Compile Include="..\..\Mapper\DialogUserWalk.cs" Link="Mapper\DialogUserWalk.cs" />
+    <Compile Include="..\..\Mapper\DialogUserWalk.Designer.cs" Link="Mapper\DialogUserWalk.Designer.cs" />
+    <Compile Include="..\..\Mapper\Panels\*.cs" Link="Mapper\Panels\%(Filename)%(Extension)" />
+    <EmbeddedResource Include="..\..\Mapper\**\*.resx" Link="Mapper\%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <!-- Resources -->
+  <ItemGroup>
+    <Compile Include="..\..\Resources.Designer.cs" Link="Resources.Designer.cs" />
+    <EmbeddedResource Include="..\..\Resources.resx" Link="Resources.resx" />
+    <EmbeddedResource Include="..\..\Graphics\Taleweaver.ico" Link="Graphics\Taleweaver.ico" />
+    <EmbeddedResource Include="..\..\Resources\*.bmp" Link="Resources\%(Filename)%(Extension)" />
+    <EmbeddedResource Include="..\..\Resources\*.png" Link="Resources\%(Filename)%(Extension)" />
+    <EmbeddedResource Include="..\..\Resources\*.gif" Link="Resources\%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <!-- Plugin and library references -->
+  <ItemGroup>
+    <Reference Include="Interfaces">
+      <HintPath>..\..\Libs\Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Jint">
+      <HintPath>..\..\Libs\Jint.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <!-- Embedded libraries for distribution -->
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\Libs\Antlr3.Runtime.dll" Link="Libs\Antlr3.Runtime.dll" />
+    <EmbeddedResource Include="..\..\Libs\Interfaces.dll" Link="Libs\Interfaces.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Libs\Jint.dll" Link="Libs\Jint.dll" />
+  </ItemGroup>
+
+  <!-- NuGet packages -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+    <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
+  </ItemGroup>
+
+  <!-- Plugin project reference -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\Plugin\Plugins.vbproj" />
+  </ItemGroup>
+
+</Project>
+

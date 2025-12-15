@@ -1,0 +1,136 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- 
+      Currently targets Windows to support plugin system.
+      When porting to other platforms, change to net10.0 and make plugin code conditional.
+    -->
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>GenieClient</RootNamespace>
+    <AssemblyName>Genie.Core</AssemblyName>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    
+    <!-- Define WINDOWS for conditional compilation -->
+    <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>None</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>false</DefineTrace>
+  </PropertyGroup>
+
+  <!-- Core logic files -->
+  <ItemGroup>
+    <Compile Include="..\..\Core\Command.cs" Link="Core\Command.cs" />
+    <Compile Include="..\..\Core\Connection.cs" Link="Core\Connection.cs" />
+    <Compile Include="..\..\Core\Game.cs" Link="Core\Game.cs" />
+    <Compile Include="..\..\Core\GenieError.cs" Link="Core\GenieError.cs" />
+    <Compile Include="..\..\Core\GenieError.Windows.cs" Link="Core\GenieError.Windows.cs" />
+  </ItemGroup>
+
+  <!-- Lists -->
+  <ItemGroup>
+    <Compile Include="..\..\Lists\Aliases.cs" Link="Lists\Aliases.cs" />
+    <Compile Include="..\..\Lists\ArrayList.cs" Link="Lists\ArrayList.cs" />
+    <Compile Include="..\..\Lists\Classes.cs" Link="Lists\Classes.cs" />
+    <Compile Include="..\..\Lists\CollectionList.cs" Link="Lists\CollectionList.cs" />
+    <Compile Include="..\..\Lists\CommandQueue.cs" Link="Lists\CommandQueue.cs" />
+    <Compile Include="..\..\Lists\Config.cs" Link="Lists\Config.cs" />
+    <Compile Include="..\..\Lists\Events.cs" Link="Lists\Events.cs" />
+    <Compile Include="..\..\Lists\Globals.cs" Link="Lists\Globals.cs" />
+    <Compile Include="..\..\Lists\Highlights.cs" Link="Lists\Highlights.cs" />
+    <Compile Include="..\..\Lists\Macros.cs" Link="Lists\Macros.cs" />
+    <Compile Include="..\..\Lists\Names.cs" Link="Lists\Names.cs" />
+    <Compile Include="..\..\Lists\ScriptList.cs" Link="Lists\ScriptList.cs" />
+    <Compile Include="..\..\Lists\SortedList.cs" Link="Lists\SortedList.cs" />
+    <Compile Include="..\..\Lists\VolatileHighlight.cs" Link="Lists\VolatileHighlight.cs" />
+  </ItemGroup>
+
+  <!-- Script Engine -->
+  <ItemGroup>
+    <Compile Include="..\..\Script\Eval.cs" Link="Script\Eval.cs" />
+    <Compile Include="..\..\Script\JavaScript.cs" Link="Script\JavaScript.cs" />
+    <Compile Include="..\..\Script\LUAScript.cs" Link="Script\LUAScript.cs" />
+    <Compile Include="..\..\Script\MathEval.cs" Link="Script\MathEval.cs" />
+    <Compile Include="..\..\Script\Script.cs" Link="Script\Script.cs" />
+    <Compile Include="..\..\Script\Trace.cs" Link="Script\Trace.cs" />
+  </ItemGroup>
+
+  <!-- Services (platform-agnostic interfaces) -->
+  <ItemGroup>
+    <Compile Include="..\..\Services\*.cs" Link="Services\%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <!-- Utility - Core utilities needed by all platforms -->
+  <ItemGroup>
+    <Compile Include="..\..\Utility\ColorCode.cs" Link="Utility\ColorCode.cs" />
+    <Compile Include="..\..\Utility\Crypto.cs" Link="Utility\Crypto.cs" />
+    <Compile Include="..\..\Utility\DownloadResult.cs" Link="Utility\DownloadResult.cs" />
+    <Compile Include="..\..\Utility\EmbeddedAssembly.cs" Link="Utility\EmbeddedAssembly.cs" />
+    <Compile Include="..\..\Utility\EnumWindows.cs" Link="Utility\EnumWindows.cs" />
+    <Compile Include="..\..\Utility\FileHandler.cs" Link="Utility\FileHandler.cs" />
+    <Compile Include="..\..\Utility\INaturalComparer.cs" Link="Utility\INaturalComparer.cs" />
+    <Compile Include="..\..\Utility\KeyCode.cs" Link="Utility\KeyCode.cs" />
+    <Compile Include="..\..\Utility\Log.cs" Link="Utility\Log.cs" />
+    <Compile Include="..\..\Utility\PluginServices.cs" Link="Utility\PluginServices.cs" />
+    <Compile Include="..\..\Utility\Sound.cs" Link="Utility\Sound.cs" />
+    <Compile Include="..\..\Utility\Updater.cs" Link="Utility\Updater.cs" />
+    <Compile Include="..\..\Utility\Utility.cs" Link="Utility\Utility.cs" />
+    <Compile Include="..\..\Utility\Win32Utility.cs" Link="Utility\Win32Utility.cs" />
+    <Compile Include="..\..\Utility\WindowFlash.cs" Link="Utility\WindowFlash.cs" />
+    <Compile Include="..\..\Utility\XMLConfig.cs" Link="Utility\XMLConfig.cs" />
+  </ItemGroup>
+
+  <!-- Mapper data models only (AutoMapper has UI deps, stays in Windows) -->
+  <ItemGroup>
+    <Compile Include="..\..\Mapper\NodeList.cs" Link="Mapper\NodeList.cs" />
+  </ItemGroup>
+
+  <!-- Shared files -->
+  <ItemGroup>
+    <Compile Include="..\..\LocalDirectory.cs" Link="LocalDirectory.cs" />
+    <Compile Include="..\..\RegexOptions.cs" Link="RegexOptions.cs" />
+  </ItemGroup>
+
+  <!-- References -->
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\..\Libs\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Jint">
+      <HintPath>..\..\Libs\Jint.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+
+  <!-- NuGet packages -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
+  </ItemGroup>
+
+  <!-- Plugin interfaces (Windows-only) -->
+  <ItemGroup>
+    <Reference Include="Interfaces">
+      <HintPath>..\..\Libs\Interfaces.dll</HintPath>
+    </Reference>
+    <ProjectReference Include="..\..\Plugin\Plugins.vbproj" />
+  </ItemGroup>
+
+  <!-- Properties for My namespace (VB.NET interop) -->
+  <ItemGroup>
+    <Compile Include="..\..\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\Properties\MyNamespace.Static.1.Designer.cs" Link="Properties\MyNamespace.Static.1.Designer.cs" />
+  </ItemGroup>
+
+</Project>
+

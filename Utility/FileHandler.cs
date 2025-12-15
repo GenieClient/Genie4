@@ -16,7 +16,7 @@ namespace GenieClient
     /// <summary>
     /// File handling utilities. Image methods are Windows-only due to System.Drawing dependency.
     /// </summary>
-    internal static class FileHandler
+    public static class FileHandler
     {
         private static readonly HttpClient _httpClient = new HttpClient();
 
