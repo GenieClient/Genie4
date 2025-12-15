@@ -390,26 +390,49 @@ The plugin system (`PluginHost.cs`, `LegacyPluginHost.cs`) requires Windows Form
 
 ## Phase 2: Create Avalonia UI Project
 
-### 2.1 Project Setup
-- [ ] Create `src/Genie.Avalonia/Genie.Avalonia.csproj`
-- [ ] Add Avalonia NuGet packages
-- [ ] Reference `Genie.Core`
-- [ ] Create basic window structure
+### 2.1 Project Setup ✅ COMPLETE
+- [x] Create `src/Genie.UI/Genie.UI.csproj` (Avalonia 11.2.2)
+- [x] Add Avalonia NuGet packages
+- [x] Reference `Genie.Core`
+- [x] Create basic window structure
+- [x] Add to `Genie5.sln`
 
-### 2.2 UI Components to Implement
-- [ ] Main window with menu
-- [ ] Rich text output pane (game text with colors)
-- [ ] Command input box
-- [ ] Vitals/status bars (health, mana, etc.)
-- [ ] Roundtime indicator
-- [ ] Map display panel
-- [ ] Script explorer
-- [ ] Configuration dialogs
+### 2.2 UI Components - Basic Features ✅ COMPLETE
+- [x] Main window with menu (File → Connect/Disconnect/Exit)
+- [x] Rich text output pane (game text with colors)
+- [x] Command input box with Enter key handling
+- [x] Vitals/status bars (Health, Mana, Concentration, Stamina, Spirit)
+- [x] Roundtime indicator with countdown timer and progress bar
+- [x] Compass with clickable directions (orange when available)
+- [x] Status icons (position: standing/sitting/kneeling/prone)
+- [x] Status effect icons (hidden, invisible, joined, webbed, stunned, bleeding, dead)
+- [x] Left/Right hand displays
+- [x] Prepared spell display
+- [x] Connection dialog with profile saving/loading
 
-### 2.3 Platform Services
-- [ ] `ISoundService` - cross-platform implementation
-- [ ] File dialogs
-- [ ] System tray/notifications
+### 2.3 UI Components - Advanced Features (TODO)
+
+**High Priority:**
+- [x] **Highlights system** - colored text based on patterns/triggers ✅ DONE
+- [ ] **Multiple windows/panes** - inventory, thoughts, combat, room, familiar, etc.
+- [ ] **Script support** - run/stop scripts, script explorer
+
+**Medium Priority:**
+- [ ] **Configuration dialogs** - settings UI for presets, highlights, aliases
+- [ ] **Aliases** - command shortcuts (#alias go = "go gate")
+- [ ] **Macros/keybindings** - F-keys, custom shortcuts
+- [ ] **Triggers** - auto-respond to text patterns
+
+**Lower Priority:**
+- [ ] **Auto-mapper integration** - display map, click to navigate
+- [ ] **Sound support** - cross-platform audio (NAudio or similar)
+- [ ] **Logging** - save game output to files
+
+### 2.4 Platform Services (TODO)
+- [ ] `ISoundService` - cross-platform audio (NAudio or similar)
+- [ ] File dialogs - load/save configs, scripts
+- [ ] System tray / notifications
+- [ ] Window attention (flash taskbar on activity)
 
 ---
 

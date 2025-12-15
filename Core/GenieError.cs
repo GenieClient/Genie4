@@ -9,9 +9,23 @@ namespace GenieClient
     /// </summary>
     public static partial class GenieError
     {
+        [ThreadStatic]
+        private static bool _isHandlingError;
+
         public static void Error(string section, string message, string description = null)
         {
-            EventGenieError?.Invoke(section, message, description);
+            // Prevent infinite recursion if an error handler raises another error
+            if (_isHandlingError) return;
+            
+            try
+            {
+                _isHandlingError = true;
+                EventGenieError?.Invoke(section, message, description);
+            }
+            finally
+            {
+                _isHandlingError = false;
+            }
         }
 
         public static event EventGenieErrorEventHandler EventGenieError;
