@@ -33,6 +33,13 @@
             <MenuItem Header="_Edit">
                 <MenuItem Header="_Preferences..."/>
             </MenuItem>
+            <MenuItem Header="_View">
+                <MenuItem x:Name="MenuShowRoom" Header="_Room Window" IsChecked="True" Click="OnToggleWindow"/>
+                <MenuItem x:Name="MenuShowInventory" Header="_Inventory Window" IsChecked="True" Click="OnToggleWindow"/>
+                <MenuItem x:Name="MenuShowThoughts" Header="_Thoughts Window" IsChecked="True" Click="OnToggleWindow"/>
+                <MenuItem x:Name="MenuShowArrivals" Header="_Arrivals Window" IsChecked="False" Click="OnToggleWindow"/>
+                <MenuItem x:Name="MenuShowDeaths" Header="_Deaths Window" IsChecked="False" Click="OnToggleWindow"/>
+            </MenuItem>
             <MenuItem Header="_Scripts">
                 <MenuItem Header="_Script Manager..."/>
             </MenuItem>
@@ -41,20 +48,88 @@
             </MenuItem>
         </Menu>
 
-        <!-- Game Text Output -->
-        <Border Grid.Row="1" Margin="8,8,8,4" CornerRadius="8" ClipToBounds="True">
-            <ScrollViewer x:Name="OutputScroller" 
-                          HorizontalScrollBarVisibility="Disabled"
-                          VerticalScrollBarVisibility="Auto">
-                <SelectableTextBlock x:Name="GameOutput"
-                                     Background="#0d1117"
-                                     Foreground="#c9d1d9"
-                                     FontFamily="Cascadia Mono, Consolas, monospace"
-                                     FontSize="13"
-                                     Padding="12"
-                                     TextWrapping="Wrap"/>
-            </ScrollViewer>
-        </Border>
+        <!-- Main Content Area with Side Panels -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="8,8,8,4">
+            <!-- Left: Thoughts + Main Game Output -->
+            <Grid RowDefinitions="Auto,*">
+                <!-- Thoughts Panel (above main) -->
+                <Border x:Name="ThoughtsPanel" Grid.Row="0" CornerRadius="8" 
+                        ClipToBounds="True" Margin="0,0,0,4" Height="120">
+                    <Grid RowDefinitions="Auto,*">
+                        <Border Background="#1e3a5f" Padding="8,4" CornerRadius="8,8,0,0">
+                            <TextBlock Text="💭 Thoughts" Foreground="#60a5fa" FontWeight="SemiBold" FontSize="11"/>
+                        </Border>
+                        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled"
+                                      VerticalScrollBarVisibility="Auto">
+                            <SelectableTextBlock x:Name="ThoughtsOutput"
+                                                 Background="#0d1117"
+                                                 Foreground="#93c5fd"
+                                                 FontFamily="Cascadia Mono, Consolas, monospace"
+                                                 FontSize="12"
+                                                 Padding="8"
+                                                 TextWrapping="Wrap"/>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+                
+                <!-- Main Game Output -->
+                <Border Grid.Row="1" CornerRadius="8" ClipToBounds="True">
+                    <ScrollViewer x:Name="OutputScroller" 
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Auto">
+                        <SelectableTextBlock x:Name="GameOutput"
+                                             Background="#0d1117"
+                                             Foreground="#c9d1d9"
+                                             FontFamily="Cascadia Mono, Consolas, monospace"
+                                             FontSize="13"
+                                             Padding="12"
+                                             TextWrapping="Wrap"/>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+            
+            <!-- Right: Room + Inventory Panels -->
+            <Grid Grid.Column="1" RowDefinitions="*,*" Width="300" Margin="4,0,0,0">
+                <!-- Room Description Panel -->
+                <Border x:Name="RoomPanel" CornerRadius="8" ClipToBounds="True" Margin="0,0,0,2">
+                    <Grid RowDefinitions="Auto,*">
+                        <Border Background="#1e4d3d" Padding="8,4" CornerRadius="8,8,0,0">
+                            <TextBlock Text="🏠 Room" Foreground="#6ee7b7" FontWeight="SemiBold" FontSize="11"/>
+                        </Border>
+                        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled"
+                                      VerticalScrollBarVisibility="Auto">
+                            <SelectableTextBlock x:Name="RoomOutput"
+                                                 Background="#0d1117"
+                                                 Foreground="#a7f3d0"
+                                                 FontFamily="Cascadia Mono, Consolas, monospace"
+                                                 FontSize="12"
+                                                 Padding="8"
+                                                 TextWrapping="Wrap"/>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+                
+                <!-- Inventory Panel -->
+                <Border x:Name="InventoryPanel" Grid.Row="1" CornerRadius="8" 
+                        ClipToBounds="True" Margin="0,2,0,0">
+                    <Grid RowDefinitions="Auto,*">
+                        <Border Background="#4a3728" Padding="8,4" CornerRadius="8,8,0,0">
+                            <TextBlock Text="🎒 Inventory" Foreground="#fbbf24" FontWeight="SemiBold" FontSize="11"/>
+                        </Border>
+                        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled"
+                                      VerticalScrollBarVisibility="Auto">
+                            <SelectableTextBlock x:Name="InventoryOutput"
+                                                 Background="#0d1117"
+                                                 Foreground="#fcd34d"
+                                                 FontFamily="Cascadia Mono, Consolas, monospace"
+                                                 FontSize="12"
+                                                 Padding="8"
+                                                 TextWrapping="Wrap"/>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
 
         <!-- Command Input -->
         <Border Grid.Row="2" Margin="8,4,8,4" CornerRadius="8" ClipToBounds="True">

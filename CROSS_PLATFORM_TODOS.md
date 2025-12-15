@@ -414,7 +414,7 @@ The plugin system (`PluginHost.cs`, `LegacyPluginHost.cs`) requires Windows Form
 
 **High Priority:**
 - [x] **Highlights system** - colored text based on patterns/triggers ✅ DONE
-- [ ] **Multiple windows/panes** - inventory, thoughts, combat, room, familiar, etc.
+- [x] **Multiple windows/panes** - inventory, thoughts, room ✅ DONE
 - [ ] **Script support** - run/stop scripts, script explorer
 
 **Medium Priority:**

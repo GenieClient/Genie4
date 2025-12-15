@@ -20,9 +20,18 @@ public class GameManager : IDisposable
     private Timer? _roundtimeTimer;
     private int _currentRoundtime;
     private int _maxRoundtime;
+    
+    // Window manager for multi-window support
+    private GameWindowManager? _windowManager;
+    public GameWindowManager? WindowManager => _windowManager;
 
     // Events for UI to subscribe to
     public event Action<string, GenieColor, GenieColor>? TextReceived;
+    
+    /// <summary>
+    /// Event for text received with window targeting.
+    /// </summary>
+    public event Action<GameWindowType, string, string, GenieColor, GenieColor>? WindowTextReceived;
     public event Action<string>? ErrorReceived;
     public event Action? Connected;
     public event Action? Disconnected;
@@ -97,10 +106,14 @@ public class GameManager : IDisposable
             Console.WriteLine("[GameManager] Creating Game instance...");
             _game = new Game(ref _globals);
             
+            Console.WriteLine("[GameManager] Creating window manager...");
+            _windowManager = new GameWindowManager();
+            
             Console.WriteLine("[GameManager] Subscribing to events...");
             _game.EventPrintText += OnGamePrintText;
             _game.EventPrintError += OnGamePrintError;
             _game.EventVariableChanged += OnVariableChanged;
+            _game.EventClearWindow += OnClearWindow;
             
             Console.WriteLine("[GameManager] Initialization complete.");
             return true;
@@ -207,28 +220,44 @@ public class GameManager : IDisposable
     private void OnGamePrintText(string text, GenieColor color, GenieColor bgcolor, 
         Game.WindowTarget targetwindow, string targetwindowstring, bool mono, bool isprompt, bool isinput)
     {
-        // Filter out control markers that shouldn't be displayed
+        // Determine the window type
+        var winType = GameWindow.FromWindowTarget(targetwindow, targetwindowstring);
+        
+        // Handle control markers for window batching
         var trimmedText = text?.Trim() ?? "";
-        if (trimmedText == "@suspend@" || trimmedText == "@resume@")
+        if (trimmedText == "@suspend@")
         {
-            return; // These are window batching control signals, don't display
+            Console.WriteLine($"[GameManager] SUSPEND: target={targetwindow}, winType={winType}");
+            var window = _windowManager?.GetWindow(winType);
+            window?.Suspend();
+            return;
+        }
+        if (trimmedText == "@resume@")
+        {
+            Console.WriteLine($"[GameManager] RESUME: target={targetwindow}, winType={winType}");
+            var window = _windowManager?.GetWindow(winType);
+            window?.Resume();
+            return;
         }
         
-        // Only display text targeted at the main window
-        // Other targets (Inv, Room, Familiar, etc.) have dedicated windows in the full client
-        // For now, we only support the main game output
-        if (targetwindow != Game.WindowTarget.Main && 
-            targetwindow != Game.WindowTarget.Unknown &&
-            targetwindow != Game.WindowTarget.Log)
-        {
-            return; // Skip non-main window content
-        }
+        // For custom windows, use the targetwindowstring as the ID
+        var customWindowId = targetwindow == Game.WindowTarget.Other ? targetwindowstring : "";
         
-        // Forward to UI on main thread
-        TextReceived?.Invoke(text, color, bgcolor);
+        // Debug: log ALL window text (including Main)
+        var debugText = text.Replace("\r", "").Replace("\n", "\\n");
+        if (debugText.Length > 50) debugText = debugText.Substring(0, 50) + "...";
+        Console.WriteLine($"[GameManager] target={targetwindow}, winType={winType}, text=\"{debugText}\"");
+        
+        // Fire the window-specific event (this is now the primary event)
+        WindowTextReceived?.Invoke(winType, customWindowId, text, color, bgcolor);
         
         // Check for vital updates in the globals
         CheckVitals();
+    }
+    
+    private void OnClearWindow(string windowId)
+    {
+        _windowManager?.ClearWindow(windowId);
     }
 
     private void OnGamePrintError(string text)

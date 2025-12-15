@@ -8,6 +8,7 @@ using GenieClient.Genie;
 using GenieClient.Services;
 using GenieClient.UI.Services;
 using System;
+using System.Collections.Generic;
 
 namespace GenieClient.Views;
 
@@ -15,6 +16,10 @@ public partial class MainWindow : Window
 {
     private GameManager? _gameManager;
     private HighlightProcessor? _highlightProcessor;
+    
+    // Window scrollers for auto-scroll
+    private readonly Dictionary<GameWindowType, ScrollViewer> _windowScrollers = new();
+    private readonly Dictionary<GameWindowType, SelectableTextBlock> _windowOutputs = new();
 
     public MainWindow()
     {
@@ -35,8 +40,23 @@ public partial class MainWindow : Window
         AppendText("Welcome to Genie 5 - Cross-Platform Edition\n\n", Colors.LightGreen);
         AppendText("Use File → Connect to connect to a game server.\n\n", Colors.Gray);
         
+        // Setup window output mappings
+        SetupWindowMappings();
+        
         // Initialize game manager
         InitializeGameManager();
+    }
+    
+    private void SetupWindowMappings()
+    {
+        // Map window types to their UI elements
+        _windowOutputs[GameWindowType.Main] = GameOutput;
+        _windowOutputs[GameWindowType.Room] = RoomOutput;
+        _windowOutputs[GameWindowType.Inventory] = InventoryOutput;
+        _windowOutputs[GameWindowType.Thoughts] = ThoughtsOutput;
+        
+        // Find scrollers (parent ScrollViewer)
+        _windowScrollers[GameWindowType.Main] = OutputScroller;
     }
 
     private void InitializeGameManager()
@@ -44,7 +64,8 @@ public partial class MainWindow : Window
         _gameManager = new GameManager();
         
         // Subscribe to game events
-        _gameManager.TextReceived += OnGameTextReceived;
+        // Note: Using WindowTextReceived for all text routing (not TextReceived)
+        _gameManager.WindowTextReceived += OnWindowTextReceived;
         _gameManager.ErrorReceived += OnGameErrorReceived;
         _gameManager.Connected += OnGameConnected;
         _gameManager.Disconnected += OnGameDisconnected;
@@ -54,6 +75,143 @@ public partial class MainWindow : Window
         _gameManager.HandsChanged += OnHandsChanged;
         _gameManager.SpellChanged += OnSpellChanged;
         _gameManager.StatusChanged += OnStatusChanged;
+    }
+    
+    // Track if we're in "room mode" to capture room description
+    private bool _inRoomCapture = false;
+    private System.Text.StringBuilder _roomBuffer = new();
+    
+    private void OnWindowTextReceived(GameWindowType windowType, string customId, string text, GenieColor color, GenieColor bgcolor)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            // Get the output for this window type
+            if (!_windowOutputs.TryGetValue(windowType, out var output))
+            {
+                // For unknown windows, route to main
+                output = GameOutput;
+            }
+            
+            EnsureHighlightProcessor();
+            
+            // For Main window, also check if this is room content and copy to Room window
+            if (windowType == GameWindowType.Main)
+            {
+                CaptureRoomContent(text, color, bgcolor);
+            }
+            
+            // For Inventory window, clear when we see the header line
+            if (windowType == GameWindowType.Inventory)
+            {
+                var trimmed = text.Trim();
+                if (trimmed.StartsWith("Your worn items are:") || 
+                    trimmed.StartsWith("You are carrying:") ||
+                    trimmed.StartsWith("You have:"))
+                {
+                    InventoryOutput.Inlines?.Clear();
+                }
+            }
+            
+            // Apply highlights
+            if (_highlightProcessor != null)
+            {
+                var segments = _highlightProcessor.Process(text, color, bgcolor);
+                foreach (var segment in segments)
+                {
+                    var fg = Color.FromRgb(segment.ForegroundColor.R, segment.ForegroundColor.G, segment.ForegroundColor.B);
+                    var bg = segment.BackgroundColor != GenieColor.Transparent 
+                        ? Color.FromRgb(segment.BackgroundColor.R, segment.BackgroundColor.G, segment.BackgroundColor.B)
+                        : (Color?)null;
+                    AppendStyledTextTo(output, segment.Text, fg, bg);
+                }
+            }
+            else
+            {
+                var avaloniaColor = Color.FromRgb(color.R, color.G, color.B);
+                AppendStyledTextTo(output, text, avaloniaColor);
+            }
+            
+            // Auto-scroll if we have a scroller for this window
+            if (_windowScrollers.TryGetValue(windowType, out var scroller))
+            {
+                scroller.ScrollToEnd();
+            }
+        });
+    }
+    
+    /// <summary>
+    /// Captures room-related content from Main window and copies to Room window.
+    /// Detects room patterns: [Room Name], room description, "You also see", "Obvious paths:"
+    /// </summary>
+    private void CaptureRoomContent(string text, GenieColor color, GenieColor bgcolor)
+    {
+        var trimmed = text.Trim();
+        
+        // Detect room title: starts with [ and contains ]
+        if (trimmed.StartsWith("[") && trimmed.Contains("]") && !trimmed.StartsWith("[You"))
+        {
+            // New room - clear room window and start capturing
+            _inRoomCapture = true;
+            RoomOutput.Inlines?.Clear();
+            AddToRoomWindow(text, color, bgcolor);
+            return;
+        }
+        
+        // If we're in room capture mode, keep capturing until we hit a prompt or action
+        if (_inRoomCapture)
+        {
+            // Stop capturing on prompt or player action
+            if (trimmed == ">" || trimmed.StartsWith(">") || string.IsNullOrEmpty(trimmed))
+            {
+                if (trimmed == ">" || trimmed.StartsWith(">"))
+                {
+                    _inRoomCapture = false;
+                }
+                return;
+            }
+            
+            AddToRoomWindow(text, color, bgcolor);
+        }
+    }
+    
+    private void AddToRoomWindow(string text, GenieColor color, GenieColor bgcolor)
+    {
+        EnsureHighlightProcessor();
+        
+        if (_highlightProcessor != null)
+        {
+            var segments = _highlightProcessor.Process(text, color, bgcolor);
+            foreach (var segment in segments)
+            {
+                var fg = Color.FromRgb(segment.ForegroundColor.R, segment.ForegroundColor.G, segment.ForegroundColor.B);
+                var bg = segment.BackgroundColor != GenieColor.Transparent 
+                    ? Color.FromRgb(segment.BackgroundColor.R, segment.BackgroundColor.G, segment.BackgroundColor.B)
+                    : (Color?)null;
+                AppendStyledTextTo(RoomOutput, segment.Text, fg, bg);
+            }
+        }
+        else
+        {
+            var avaloniaColor = Color.FromRgb(color.R, color.G, color.B);
+            AppendStyledTextTo(RoomOutput, text, avaloniaColor);
+        }
+    }
+    
+    private void OnToggleWindow(object? sender, RoutedEventArgs e)
+    {
+        if (sender is MenuItem menuItem)
+        {
+            var isChecked = !menuItem.IsChecked;
+            menuItem.IsChecked = isChecked;
+            
+            // Toggle panel visibility
+            if (menuItem == MenuShowRoom)
+                RoomPanel.IsVisible = isChecked;
+            else if (menuItem == MenuShowInventory)
+                InventoryPanel.IsVisible = isChecked;
+            else if (menuItem == MenuShowThoughts)
+                ThoughtsPanel.IsVisible = isChecked;
+        }
     }
 
     private void EnsureHighlightProcessor()
@@ -594,9 +752,9 @@ public partial class MainWindow : Window
     }
 
     /// <summary>
-    /// Appends styled text with foreground and optional background color using Inlines.
+    /// Appends styled text to a specific SelectableTextBlock.
     /// </summary>
-    private void AppendStyledText(string text, Color foreground, Color? background = null)
+    private void AppendStyledTextTo(SelectableTextBlock output, string text, Color foreground, Color? background = null)
     {
         if (string.IsNullOrEmpty(text)) return;
         
@@ -610,9 +768,15 @@ public partial class MainWindow : Window
             run.Background = new SolidColorBrush(background.Value);
         }
         
-        GameOutput.Inlines?.Add(run);
-        
-        // Auto-scroll to bottom
+        output.Inlines?.Add(run);
+    }
+
+    /// <summary>
+    /// Appends styled text with foreground and optional background color using Inlines.
+    /// </summary>
+    private void AppendStyledText(string text, Color foreground, Color? background = null)
+    {
+        AppendStyledTextTo(GameOutput, text, foreground, background);
         OutputScroller.ScrollToEnd();
     }
 
@@ -630,6 +794,17 @@ public partial class MainWindow : Window
     private void ClearOutput()
     {
         GameOutput.Inlines?.Clear();
+    }
+    
+    /// <summary>
+    /// Clears a specific window's output.
+    /// </summary>
+    private void ClearWindowOutput(GameWindowType windowType)
+    {
+        if (_windowOutputs.TryGetValue(windowType, out var output))
+        {
+            output.Inlines?.Clear();
+        }
     }
 }
 
