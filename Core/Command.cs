@@ -1559,11 +1559,11 @@ namespace GenieClient.Genie
                                                 string sSound = GetArgumentString(sRow);
                                                 if ((sSound.ToLower() ?? "") == "stop")
                                                 {
-                                                    Sound.StopPlaying();
+                                                    GenieServices.Sound.StopPlaying();
                                                 }
                                                 else if (sSound.Length > 0)
                                                 {
-                                                    Sound.PlayWaveFile(sSound);
+                                                    GenieServices.Sound.PlayWaveFile(sSound);
                                                 }
                                             }
 
@@ -1577,7 +1577,7 @@ namespace GenieClient.Genie
                                                 string sSound = GetArgumentString(sRow);
                                                 if (sSound.Length > 0)
                                                 {
-                                                    Sound.PlayWaveSystem(sSound);
+                                                    GenieServices.Sound.PlaySystemSound(sSound);
                                                 }
                                             }
 

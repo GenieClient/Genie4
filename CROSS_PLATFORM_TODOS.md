@@ -311,28 +311,30 @@ Changes needed:
 ---
 
 ### Task 1.2.2: Move Windows-Only Files to Genie.Windows
-**STATUS: ❌ TODO**
+**STATUS: ✅ COMPLETE (Partial)**
 
-| Source File | Action | New Location |
-|-------------|--------|--------------|
-| `Utility/WindowFlash.cs` | Move + Refactor | `Genie.Windows/Services/WindowsAttentionService.cs` |
-| `Utility/Win32Utility.cs` | Move + Split | `Genie.Windows/Services/WindowsRichTextService.cs` + `WindowsChromeService.cs` |
-| `Utility/Sound.cs` | Move + Refactor | `Genie.Windows/Services/WindowsSoundService.cs` |
-| `Services/ColorConverter.cs` | Move | `Genie.Windows/Services/ColorConverter.cs` |
-| `Core/PluginHost.cs` | Move | `Genie.Windows/PluginHost.cs` |
-| `Core/LegacyPluginHost.cs` | Move | `Genie.Windows/LegacyPluginHost.cs` |
+Windows-only P/Invoke utilities have been moved from Core to Windows:
+
+| Source File | Status | Notes |
+|-------------|--------|-------|
+| `Utility/WindowFlash.cs` | ✅ Moved | Now in Genie.Windows only |
+| `Utility/Win32Utility.cs` | ✅ Moved | Now in Genie.Windows only |
+| `Utility/Sound.cs` | ✅ Moved | Now in Genie.Windows only |
+| `Utility/EnumWindows.cs` | ✅ Moved | Now in Genie.Windows only |
+| `Services/ColorConverter.cs` | ⏳ Kept in Core | Needed until color migration complete |
+| `Core/PluginHost.cs` | ✅ Already in Windows | Was already Windows-only |
+| `Core/LegacyPluginHost.cs` | ✅ Already in Windows | Was already Windows-only |
+
+**Code updates made:**
+- `Game.cs` and `Command.cs` now use `GenieServices.Sound` instead of static `Sound` class
+- Windows services in `src/Genie.Windows/Services/` provide implementations
 
 Checklist:
-- [ ] Create `Services/` folder in `Genie.Windows`
-- [ ] Move `WindowFlash.cs` → create `WindowsAttentionService : IWindowAttentionService`
-- [ ] Move `Sound.cs` → create `WindowsSoundService : ISoundService`
-- [ ] Split `Win32Utility.cs`:
-  - Scroll/redraw methods → `WindowsRichTextService : IRichTextService`
-  - Window chrome methods → `WindowsChromeService : IWindowChromeService`
-- [ ] Move `ColorConverter.cs` (no interface needed, Windows-only bridge)
-- [ ] Move `PluginHost.cs` and `LegacyPluginHost.cs`
-- [ ] Update all references in Genie.Windows
-- [ ] Delete original files from Genie.Core
+- [x] Create `Services/` folder in `Genie.Windows`
+- [x] Windows service implementations created (Task 1.0)
+- [x] Move `WindowFlash.cs`, `Win32Utility.cs`, `Sound.cs`, `EnumWindows.cs` to Genie.Windows
+- [x] Update `Game.cs` and `Command.cs` to use `GenieServices.Sound`
+- [ ] Move `ColorConverter.cs` to Genie.Windows (after color migration)
 
 ---
 
@@ -454,15 +456,15 @@ The codebase has already started migrating to `GenieColor`:
 
 Recommended order for Phase 1:
 
-1. **Task 1.0** - Create service interfaces in `Genie.Core/Services/Interfaces/`
-2. **Task 1.0** - Create null implementations for graceful degradation
-3. **Task 1.0** - Create service provider/registration infrastructure
-4. **Task 1.2.2** - Move Windows-only files to `Genie.Windows/Services/`
-5. **Task 1.2.2** - Create Windows service implementations
-6. **Task 1.1** - Update project files (change target framework)
-7. **Task 1.2.1** - Migrate Game.cs to GenieColor
-8. **Task 1.2.3** - Update ColorCode.cs with GenieColor methods
-9. **Task 1.2.4** - Add SkiaSharp image handling
+1. ✅ **Task 1.0** - Create service interfaces in `Genie.Core/Services/`
+2. ✅ **Task 1.0** - Create null implementations for graceful degradation
+3. ✅ **Task 1.0** - Create service provider/registration infrastructure
+4. ✅ **Task 1.2.2** - Move Windows-only files to `Genie.Windows/` (partial)
+5. ✅ **Task 1.2.2** - Create Windows service implementations
+6. ⏳ **Task 1.2.1** - Migrate Game.cs to GenieColor ← NEXT
+7. ⏳ **Task 1.2.3** - Update ColorCode.cs with GenieColor methods
+8. ⏳ **Task 1.2.4** - Add SkiaSharp image handling
+9. ⏳ **Task 1.1** - Update project files (change target framework) ← LAST
 
 ---
 

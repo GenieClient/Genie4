@@ -37,6 +37,14 @@
 
   <!-- Windows-specific service implementations are auto-included by SDK -->
   
+  <!-- Windows-only utilities (moved from Genie.Core for cross-platform support) -->
+  <ItemGroup>
+    <Compile Include="..\..\Utility\WindowFlash.cs" Link="Utility\WindowFlash.cs" />
+    <Compile Include="..\..\Utility\Win32Utility.cs" Link="Utility\Win32Utility.cs" />
+    <Compile Include="..\..\Utility\Sound.cs" Link="Utility\Sound.cs" />
+    <Compile Include="..\..\Utility\EnumWindows.cs" Link="Utility\EnumWindows.cs" />
+  </ItemGroup>
+
   <!-- Plugin host (requires Windows Forms for plugin API compatibility) -->
   <ItemGroup>
     <Compile Include="..\..\Core\PluginHost.cs" Link="Core\PluginHost.cs" />

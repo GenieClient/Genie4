@@ -65,7 +65,9 @@
     <Compile Include="..\..\Script\Trace.cs" Link="Script\Trace.cs" />
   </ItemGroup>
 
-  <!-- Services (platform-agnostic interfaces) -->
+  <!-- Services (platform-agnostic interfaces and utilities) -->
+  <!-- Note: ColorConverter.cs stays in Core until color migration is complete (Task 1.2.1) -->
+  <!-- Note: SoundService.Windows.cs stays in Core for now (has runtime platform check) -->
   <ItemGroup>
     <Compile Include="..\..\Services\*.cs" Link="Services\%(Filename)%(Extension)" />
   </ItemGroup>
@@ -76,19 +78,26 @@
     <Compile Include="..\..\Utility\Crypto.cs" Link="Utility\Crypto.cs" />
     <Compile Include="..\..\Utility\DownloadResult.cs" Link="Utility\DownloadResult.cs" />
     <Compile Include="..\..\Utility\EmbeddedAssembly.cs" Link="Utility\EmbeddedAssembly.cs" />
-    <Compile Include="..\..\Utility\EnumWindows.cs" Link="Utility\EnumWindows.cs" />
     <Compile Include="..\..\Utility\FileHandler.cs" Link="Utility\FileHandler.cs" />
     <Compile Include="..\..\Utility\INaturalComparer.cs" Link="Utility\INaturalComparer.cs" />
     <Compile Include="..\..\Utility\KeyCode.cs" Link="Utility\KeyCode.cs" />
     <Compile Include="..\..\Utility\Log.cs" Link="Utility\Log.cs" />
     <Compile Include="..\..\Utility\PluginServices.cs" Link="Utility\PluginServices.cs" />
-    <Compile Include="..\..\Utility\Sound.cs" Link="Utility\Sound.cs" />
     <Compile Include="..\..\Utility\Updater.cs" Link="Utility\Updater.cs" />
     <Compile Include="..\..\Utility\Utility.cs" Link="Utility\Utility.cs" />
-    <Compile Include="..\..\Utility\Win32Utility.cs" Link="Utility\Win32Utility.cs" />
-    <Compile Include="..\..\Utility\WindowFlash.cs" Link="Utility\WindowFlash.cs" />
     <Compile Include="..\..\Utility\XMLConfig.cs" Link="Utility\XMLConfig.cs" />
   </ItemGroup>
+
+  <!-- Windows-only P/Invoke utilities - moved to Genie.Windows project -->
+  <!-- 
+    The following files have been removed from Core and moved to Genie.Windows:
+    - Utility/WindowFlash.cs → FlashWindow P/Invoke (use IWindowAttentionService)
+    - Utility/Win32Utility.cs → RichTextBox/Window P/Invoke (use IRichTextService, IWindowChromeService)
+    - Utility/Sound.cs → winmm.dll P/Invoke (use GenieServices.Sound / ISoundService)
+    - Utility/EnumWindows.cs → Windows window enumeration P/Invoke
+    
+    Core code now uses GenieServices.Sound instead of static Sound class.
+  -->
 
   <!-- Mapper data models only (AutoMapper has UI deps, stays in Windows) -->
   <ItemGroup>

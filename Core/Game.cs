@@ -13,6 +13,7 @@ using System.Xml;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using System.IO;
+using GenieClient.Services;
 
 namespace GenieClient.Genie
 {
@@ -2758,7 +2759,7 @@ namespace GenieClient.Genie
                                     bgcolor = o.BgColor;
                                     m_oLastFgColor = color;
                                     if (o.SoundFile.Length > 0 && m_oGlobals.Config.bPlaySounds)
-                                        Sound.PlayWaveFile(o.SoundFile);
+                                        GenieServices.Sound.PlayWaveFile(o.SoundFile);
                                 }
                             }
                         }
@@ -2787,7 +2788,7 @@ namespace GenieClient.Genie
                             bgcolor = oHighlightString.BgColor;
                             m_oLastFgColor = color;
                             if (oHighlightString.SoundFile.Length > 0 && m_oGlobals.Config.bPlaySounds)
-                                Sound.PlayWaveFile(oHighlightString.SoundFile);
+                                GenieServices.Sound.PlayWaveFile(oHighlightString.SoundFile);
                         }
                     }
                 }
