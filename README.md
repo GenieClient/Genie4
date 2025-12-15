@@ -34,7 +34,13 @@
 <h1 align="center">Genie 5</h1>
 
   <p align="center">
-    Genie is an alternative front-end for use with the Simutronics Corporation’s game DragonRealms.
+    Genie is an alternative front-end for use with the Simutronics Corporation's game DragonRealms.
+    <br />
+    <strong>Now available in two editions:</strong>
+    <br />
+    🖥️ <strong>Classic</strong> (Windows Forms) - Full-featured, Windows-only
+    <br />
+    🌐 <strong>Cross-Platform</strong> (Avalonia UI) - Works on Windows, macOS, and Linux
   </p>
 </div>
 
@@ -95,21 +101,32 @@
 <!-- ROADMAP -->
 ## Roadmap
 
+### Completed ✅
 - [x] .NET 6 Upgrade
-- [x] .NET 10 Upgrade
+- [x] .NET 10 Upgrade  
 - [x] Refactor Core Logic away from GUI
-- [x] Convert GUI to Cross-Platform (Avalonia UI) ✨ **IN PROGRESS**
+- [x] Cross-Platform UI Foundation (Avalonia)
   - [x] Basic window with game text output
   - [x] Vitals display (Health, Mana, Conc, Stamina, Spirit)
-  - [x] Compass and status effects
-  - [x] Connection dialog
+  - [x] Compass and status effects  
+  - [x] Connection dialog with saved profiles
   - [x] Game server connection
+  - [x] Highlights system
+  - [x] Multiple windows (Room, Inventory, Thoughts)
+
+### In Progress 🚧
+- [ ] Cross-Platform UI - Advanced Features
   - [ ] Script management
   - [ ] Configuration dialogs
   - [ ] Auto-mapper
+  - [ ] Command history
+  - [ ] Macros and aliases
 - [ ] Upgrade Plugin Interface
+
+### Future 📋
 - [ ] Get Latest Version (OneButton) <AInstallLogo>
     <img src="https://cdn.advancedinstaller.com/svg/pressinfo/AiLogoColor.svg" width="70" height="40"></AInstallLogo>
+- [ ] Native installers for macOS and Linux
 
 
 See the [open issues](https://github.com/GenieClient/Genie4/issues) for a full list of proposed features (and known issues).
@@ -185,13 +202,31 @@ Project Link: [https://github.com/GenieClient/Genie4](https://github.com/GenieCl
 ### Prerequisites
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) (or later)
 
+### Which Edition Should I Use?
+
+| Feature | Classic (Windows Forms) | Cross-Platform (Avalonia) |
+|---------|------------------------|---------------------------|
+| **Platforms** | Windows only | Windows, macOS, Linux |
+| **Maturity** | Full-featured, stable | In development |
+| **Auto-Mapper** | ✅ Yes | ⏳ Coming soon |
+| **Script Manager** | ✅ Yes | ⏳ Coming soon |
+| **Config Dialogs** | ✅ Yes | ⏳ Coming soon |
+| **Plugins** | ✅ Yes | ⏳ Coming soon |
+| **Game Connection** | ✅ Yes | ✅ Yes |
+| **Highlights** | ✅ Yes | ✅ Yes |
+| **Multiple Windows** | ✅ Yes | ✅ Yes |
+
+**Recommendation:** 
+- Use **Classic** if you're on Windows and need all features now
+- Use **Cross-Platform** if you're on macOS/Linux, or want to try the new UI
+
 ### Build and Run
 
-#### Cross-Platform UI (Avalonia) - NEW! 🎉
+#### Cross-Platform UI (Avalonia) 🌐
 
-The new cross-platform UI works on Windows, macOS, and Linux:
+Works on Windows, macOS, and Linux:
 
-```powershell
+```bash
 # Build and run
 cd src/Genie.UI
 dotnet run
@@ -201,7 +236,9 @@ dotnet build Genie5.sln --configuration Release
 dotnet run --project src/Genie.UI/Genie.UI.csproj
 ```
 
-#### Windows Forms UI (Legacy)
+#### Classic Windows UI (Windows Forms) 🖥️
+
+Full-featured Windows-only edition:
 
 **Option 1: Using the build script (recommended for development)**
 
@@ -223,40 +260,44 @@ dotnet build Genie5.sln --configuration Release
 
 ## Project Architecture
 
-The codebase has been separated into modular components for cross-platform support:
+The codebase uses a shared core library with two UI options:
 
 ```
 Genie5.sln                   # Main solution
 ├── src/
-│   ├── Genie.Core/          # Platform-agnostic core logic library
+│   ├── Genie.Core/          # Shared core logic (used by both UIs)
 │   │   └── Genie.Core.csproj
-│   ├── Genie.UI/            # Cross-platform Avalonia UI (NEW!)
+│   ├── Genie.UI/            # Cross-platform Avalonia UI 🌐
 │   │   └── Genie.UI.csproj
-│   └── Genie.Windows/       # Windows Forms GUI (legacy)
+│   └── Genie.Windows/       # Classic Windows Forms UI 🖥️
 │       └── Genie.Windows.csproj
 └── Plugin/
     └── Plugins.vbproj       # Plugin interfaces (VB.NET)
 ```
 
-### Genie.Core
-Contains platform-independent business logic:
+### Genie.Core (Shared)
+Platform-independent business logic used by both UIs:
 - Connection handling and game communication
 - Script engine (Genie scripts, JavaScript, Lua)
 - Configuration management
-- Lists and data structures
-- Service interfaces
+- Highlights, triggers, and macros
+- Service interfaces for platform-specific features
 
-### Genie.UI (Cross-Platform)
+### Genie.UI (Cross-Platform Edition) 🌐
 The new cross-platform UI built with Avalonia:
-- Works on Windows, macOS, and Linux
+- **Platforms:** Windows, macOS, Linux
 - Modern dark theme interface
-- Full game connection support
+- Game connection and text output
 - Vitals display, compass, status effects
-- Game text output with colors
+- Highlights and multiple windows
+- *In active development - more features coming!*
 
-### Genie.Windows (Legacy)
-Windows-specific GUI components:
-- Windows Forms UI
-- Plugin host implementation
+### Genie.Windows (Classic Edition) 🖥️
+The full-featured Windows-only GUI:
+- **Platforms:** Windows only
+- Complete Windows Forms UI
 - Auto-mapper with visual display
-- All dialogs and configuration panels
+- Full script manager
+- All configuration dialogs
+- Plugin support
+- *Mature and stable - use this for all features*
