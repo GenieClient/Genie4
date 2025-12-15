@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace GenieClient.Views;
 
@@ -433,23 +434,59 @@ public partial class MainWindow : Window
             return;
         }
 
-        AppendText($"Connecting to {result.SelectedGame}...\n", Colors.Yellow);
-        AppendText($"Account: {result.Account}\n", Colors.Gray);
-        if (!string.IsNullOrEmpty(result.Character))
-            AppendText($"Character: {result.Character}\n", Colors.Gray);
-        
-        StatusText.Text = $"Connecting to {result.SelectedGame}...";
-        ConnectionStatus.Foreground = new SolidColorBrush(Colors.Yellow);
+        await DoConnect(
+            result.SelectedGame ?? "DR",
+            result.Account ?? "",
+            result.Password ?? "",
+            result.Character ?? "");
+    }
 
-        // SelectedGame now contains the game code directly (from Tag property)
-        var gameCode = result.SelectedGame ?? "DR";
+    private async void OnConnectUsingProfile(object? sender, RoutedEventArgs e)
+    {
+        var result = await ProfileConnectDialog.Show(this);
+        if (result == null)
+        {
+            AppendText("Connection cancelled.\n", Colors.Gray);
+            return;
+        }
+
+        var profile = result.SelectedProfile;
+        if (profile == null)
+        {
+            AppendText("No profile selected.\n", Colors.Gray);
+            return;
+        }
+
+        var password = result.GetPassword();
+        if (string.IsNullOrEmpty(password))
+        {
+            AppendText("Profile has no saved password. Use File → Connect instead.\n", Colors.Yellow);
+            return;
+        }
+
+        await DoConnect(
+            profile.GameCode,
+            profile.Account,
+            password,
+            profile.Character ?? "");
+    }
+
+    private async Task DoConnect(string gameCode, string account, string password, string character)
+    {
+        AppendText($"Connecting to {gameCode}...\n", Colors.Yellow);
+        AppendText($"Account: {account}\n", Colors.Gray);
+        if (!string.IsNullOrEmpty(character))
+            AppendText($"Character: {character}\n", Colors.Gray);
+        
+        StatusText.Text = $"Connecting to {gameCode}...";
+        ConnectionStatus.Foreground = new SolidColorBrush(Colors.Yellow);
 
         try
         {
             var connected = await _gameManager!.ConnectAsync(
-                result.Account ?? "", 
-                result.Password ?? "", 
-                result.Character ?? "", 
+                account, 
+                password, 
+                character, 
                 gameCode);
             
             if (!connected)

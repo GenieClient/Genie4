@@ -27,6 +27,7 @@
         <Menu Grid.Row="0" Background="#16213e">
             <MenuItem Header="_File">
                 <MenuItem Header="_Connect..." Click="OnConnect"/>
+                <MenuItem Header="Connect Using _Profile..." Click="OnConnectUsingProfile"/>
                 <MenuItem Header="_Disconnect" Click="OnDisconnect"/>
                 <Separator/>
                 <MenuItem Header="Open _Directory">

@@ -224,14 +224,24 @@ Project Link: [https://github.com/GenieClient/Genie4](https://github.com/GenieCl
 
 #### Cross-Platform UI (Avalonia) 🌐
 
-Works on Windows, macOS, and Linux:
+Works on Windows, macOS, and Linux.
 
-Dev Mode:
-```bash
-cd src/Genie.UI && dotnet run
+Dev Mode, Windows:
+```powershell
+pushd src\Genie.UI; try { dotnet run } finally { popd }
 ```
 
-Build Release version and run:
+Dev Mode, macOS/Linux:
+```bash
+( cd src/Genie.UI && dotnet run )
+```
+
+Build Release version and run, Windows:
+```powershell
+dotnet build Genie5.sln --configuration Release; if ($LASTEXITCODE -eq 0) { dotnet run --project src/Genie.UI/Genie.UI.csproj }
+```
+
+Build Release version and run, macOS/Linux:
 ```bash
 dotnet build Genie5.sln --configuration Release && dotnet run --project src/Genie.UI/Genie.UI.csproj
 ```

@@ -1,0 +1,74 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:services="using:GenieClient.UI.Services"
+        mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="400"
+        x:Class="GenieClient.Views.ProfileConnectDialog"
+        Title="Connect Using Profile"
+        Width="420" Height="400"
+        WindowStartupLocation="CenterOwner"
+        CanResize="True"
+        MinWidth="350" MinHeight="300"
+        Background="#1a1a2e">
+
+    <Window.Styles>
+        <Style Selector="ListBox">
+            <Setter Property="Background" Value="#16213e"/>
+            <Setter Property="BorderBrush" Value="#0f3460"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        <Style Selector="ListBoxItem">
+            <Setter Property="Foreground" Value="#e0e0e0"/>
+            <Setter Property="Padding" Value="12,8"/>
+        </Style>
+        <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+            <Setter Property="Background" Value="#0f3460"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="Background" Value="#0f3460"/>
+            <Setter Property="Foreground" Value="#e0e0e0"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        <Style Selector="Button.Primary">
+            <Setter Property="Background" Value="#e94560"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button.Danger">
+            <Setter Property="Background" Value="#7c1d1d"/>
+            <Setter Property="Foreground" Value="#fca5a5"/>
+        </Style>
+    </Window.Styles>
+
+    <Grid Margin="16" RowDefinitions="Auto,*,Auto">
+        <!-- Title -->
+        <TextBlock Grid.Row="0" Text="Select a Profile" 
+                   FontSize="18" FontWeight="Bold" Foreground="#e94560"
+                   Margin="0,0,0,12"/>
+
+        <!-- Profile List -->
+        <ListBox x:Name="ProfileListBox" Grid.Row="1"
+                 DoubleTapped="OnListBoxDoubleTapped"
+                 SelectionChanged="OnProfileSelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="services:ConnectionProfile">
+                    <TextBlock Text="{Binding DisplayName}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!-- Buttons -->
+        <Grid Grid.Row="2" ColumnDefinitions="Auto,*,Auto,Auto" Margin="0,16,0,0">
+            <Button x:Name="DeleteButton" Classes="Danger" Content="Delete" 
+                    Click="OnDeleteProfile" IsEnabled="False"
+                    ToolTip.Tip="Delete the selected profile"/>
+            
+            <Button Grid.Column="2" Content="Cancel" Click="OnCancel"/>
+            
+            <Button Grid.Column="3" Classes="Primary" x:Name="ConnectButton" 
+                    Content="Connect" Click="OnConnect" IsEnabled="False" Margin="8,0,0,0"/>
+        </Grid>
+    </Grid>
+</Window>

@@ -2,12 +2,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:services="using:GenieClient.UI.Services"
-        mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="600"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="400"
         x:Class="GenieClient.Views.ConnectDialog"
         Title="Connect to Game"
-        Width="450" MinHeight="500" MaxHeight="800"
-        SizeToContent="Height"
+        Width="400" SizeToContent="Height"
         WindowStartupLocation="CenterOwner"
         CanResize="False"
         Background="#1a1a2e">
@@ -27,18 +25,6 @@
             <Setter Property="Padding" Value="8"/>
             <Setter Property="CornerRadius" Value="4"/>
         </Style>
-        <Style Selector="ListBox">
-            <Setter Property="Background" Value="#16213e"/>
-            <Setter Property="BorderBrush" Value="#0f3460"/>
-            <Setter Property="CornerRadius" Value="4"/>
-        </Style>
-        <Style Selector="ListBoxItem">
-            <Setter Property="Foreground" Value="#e0e0e0"/>
-            <Setter Property="Padding" Value="12,6"/>
-        </Style>
-        <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
-            <Setter Property="Background" Value="#0f3460"/>
-        </Style>
         <Style Selector="Button">
             <Setter Property="Background" Value="#0f3460"/>
             <Setter Property="Foreground" Value="#e0e0e0"/>
@@ -49,48 +35,19 @@
             <Setter Property="Background" Value="#e94560"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
-        <Style Selector="Button.Danger">
-            <Setter Property="Background" Value="#7c1d1d"/>
-            <Setter Property="Foreground" Value="#fca5a5"/>
-        </Style>
         <Style Selector="CheckBox">
             <Setter Property="Foreground" Value="#e0e0e0"/>
         </Style>
     </Window.Styles>
 
-    <Grid Margin="24" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+    <StackPanel Margin="24" Spacing="12">
         <!-- Title -->
-        <TextBlock Grid.Row="0" Text="Connect to Simutronics" 
+        <TextBlock Text="Connect to Simutronics" 
                    FontSize="20" FontWeight="Bold" Foreground="#e94560"
-                   Margin="0,0,0,16"/>
-
-        <!-- Saved Profiles Section - scrollable list with max height -->
-        <StackPanel Grid.Row="1" Spacing="4" Margin="0,0,0,12">
-            <Grid ColumnDefinitions="*,Auto">
-                <TextBlock Text="Saved Profiles" Foreground="#888" FontSize="12"/>
-                <Button Grid.Column="1" x:Name="DeleteProfileButton" 
-                        Classes="Danger" Content="Delete" 
-                        FontSize="11" Padding="8,4"
-                        IsEnabled="False"
-                        Click="OnDeleteProfile"/>
-            </Grid>
-            <!-- ListBox has built-in scrolling, just set max height -->
-            <ListBox x:Name="ProfileListBox" 
-                     MinHeight="60" MaxHeight="200"
-                     SelectionChanged="OnProfileSelected">
-                <ListBox.ItemTemplate>
-                    <DataTemplate x:DataType="services:ConnectionProfile">
-                        <TextBlock Text="{Binding DisplayName}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </StackPanel>
-
-        <!-- Separator -->
-        <Border Grid.Row="2" Height="1" Background="#0f3460" Margin="0,4,0,16"/>
+                   Margin="0,0,0,8"/>
 
         <!-- Game Selection -->
-        <StackPanel Grid.Row="3" Spacing="4" Margin="0,0,0,12">
+        <StackPanel Spacing="4">
             <TextBlock Text="Game" Foreground="#888" FontSize="12"/>
             <ComboBox x:Name="GameComboBox" HorizontalAlignment="Stretch" SelectedIndex="0">
                 <ComboBoxItem Content="DragonRealms" Tag="DR"/>
@@ -105,41 +62,48 @@
         </StackPanel>
 
         <!-- Account -->
-        <StackPanel Grid.Row="4" Spacing="4" Margin="0,0,0,12">
-            <TextBlock Text="Account" Foreground="#888" FontSize="12"/>
+        <StackPanel Spacing="4">
+            <TextBlock Text="Account Name" Foreground="#888" FontSize="12"/>
             <TextBox x:Name="AccountTextBox" Watermark="Enter your account name"/>
         </StackPanel>
 
         <!-- Password -->
-        <StackPanel Grid.Row="5" Spacing="4" Margin="0,0,0,12">
+        <StackPanel Spacing="4">
             <TextBlock Text="Password" Foreground="#888" FontSize="12"/>
             <TextBox x:Name="PasswordTextBox" PasswordChar="●" Watermark="Enter your password"/>
         </StackPanel>
 
         <!-- Character (optional) -->
-        <StackPanel Grid.Row="6" Spacing="4" Margin="0,0,0,12">
-            <TextBlock Text="Character (optional)" Foreground="#888" FontSize="12"/>
-            <TextBox x:Name="CharacterTextBox" Watermark="Auto-select character"/>
+        <StackPanel Spacing="4">
+            <TextBlock Text="Character Name (optional)" Foreground="#888" FontSize="12"/>
+            <TextBox x:Name="CharacterTextBox" Watermark="Leave empty for character list"/>
         </StackPanel>
 
+        <!-- Help text -->
+        <Border Background="#16213e" CornerRadius="4" Padding="12,8" Margin="0,4,0,0">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="💡" FontSize="16" VerticalAlignment="Center"/>
+                <TextBlock Text="Leave character name empty to get a list of characters on the account."
+                           Foreground="#888" FontSize="11" TextWrapping="Wrap"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
         <!-- Save Profile Checkbox -->
-        <CheckBox Grid.Row="7" x:Name="SaveProfileCheckBox" 
+        <CheckBox x:Name="SaveProfileCheckBox" 
                   Content="Save this profile (including password)" 
-                  Margin="0,0,0,8"/>
+                  Margin="0,4,0,0"/>
 
         <!-- Status message -->
-        <TextBlock Grid.Row="8" x:Name="StatusText" 
+        <TextBlock x:Name="StatusText" 
                    Foreground="#ef4444" FontSize="12" 
-                   TextWrapping="Wrap" Margin="0,0,0,8"
-                   MinHeight="20"/>
-
-        <!-- Spacer -->
-        <Border Grid.Row="9" Height="8"/>
+                   TextWrapping="Wrap"
+                   MinHeight="16"/>
 
         <!-- Buttons -->
-        <StackPanel Grid.Row="10" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12" Margin="0,8,0,0">
             <Button Content="Cancel" Click="OnCancel"/>
             <Button Classes="Primary" Content="Connect" Click="OnConnect"/>
         </StackPanel>
-    </Grid>
+    </StackPanel>
 </Window>
