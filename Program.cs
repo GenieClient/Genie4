@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using GenieClient.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -30,10 +31,11 @@ namespace GenieClient
 
         private static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
         {
-            services.AddSingleton<FormMain>();
+            // Register core platform-agnostic services
+            services.AddGenieServices();
 
-            //Register services here. 
-            //Example... Service.AddSingleton(Interface, Service);
+            // Register Windows Forms UI
+            services.AddSingleton<FormMain>();
         }
     }
 }
