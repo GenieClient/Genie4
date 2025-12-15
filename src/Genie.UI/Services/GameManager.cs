@@ -114,6 +114,7 @@ public class GameManager : IDisposable
             _game.EventPrintError += OnGamePrintError;
             _game.EventVariableChanged += OnVariableChanged;
             _game.EventClearWindow += OnClearWindow;
+            _game.EventDataRecieveEnd += OnDataReceiveEnd;
             
             Console.WriteLine("[GameManager] Initialization complete.");
             return true;
@@ -220,6 +221,14 @@ public class GameManager : IDisposable
     private void OnGamePrintText(string text, GenieColor color, GenieColor bgcolor, 
         Game.WindowTarget targetwindow, string targetwindowstring, bool mono, bool isprompt, bool isinput)
     {
+        // Debug: Log ALL incoming events at entry point (including Room)
+        if (targetwindow == Game.WindowTarget.Room)
+        {
+            var roomDebug = text?.Replace("\r", "").Replace("\n", "\\n") ?? "";
+            if (roomDebug.Length > 60) roomDebug = roomDebug.Substring(0, 60) + "...";
+            Console.WriteLine($"[GameManager] *** ROOM EVENT ***: text=\"{roomDebug}\"");
+        }
+        
         // Determine the window type
         var winType = GameWindow.FromWindowTarget(targetwindow, targetwindowstring);
         
@@ -258,6 +267,16 @@ public class GameManager : IDisposable
     private void OnClearWindow(string windowId)
     {
         _windowManager?.ClearWindow(windowId);
+    }
+    
+    /// <summary>
+    /// Called when the game socket finishes receiving a batch of data.
+    /// This triggers deferred operations like Room window updates.
+    /// </summary>
+    private void OnDataReceiveEnd()
+    {
+        // Critical: Call SetBufferEnd to trigger deferred Room window updates
+        _game?.SetBufferEnd();
     }
 
     private void OnGamePrintError(string text)
@@ -492,6 +511,7 @@ public class GameManager : IDisposable
                 _game.EventPrintText -= OnGamePrintText;
                 _game.EventPrintError -= OnGamePrintError;
                 _game.EventVariableChanged -= OnVariableChanged;
+                _game.EventDataRecieveEnd -= OnDataReceiveEnd;
                 
                 if (_game.IsConnected)
                 {

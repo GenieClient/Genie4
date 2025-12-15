@@ -77,10 +77,6 @@ public partial class MainWindow : Window
         _gameManager.StatusChanged += OnStatusChanged;
     }
     
-    // Track if we're in "room mode" to capture room description
-    private bool _inRoomCapture = false;
-    private System.Text.StringBuilder _roomBuffer = new();
-    
     private void OnWindowTextReceived(GameWindowType windowType, string customId, string text, GenieColor color, GenieColor bgcolor)
     {
         Dispatcher.UIThread.Post(() =>
@@ -94,12 +90,6 @@ public partial class MainWindow : Window
             
             EnsureHighlightProcessor();
             
-            // For Main window, also check if this is room content and copy to Room window
-            if (windowType == GameWindowType.Main)
-            {
-                CaptureRoomContent(text, color, bgcolor);
-            }
-            
             // For Inventory window, clear when we see the header line
             if (windowType == GameWindowType.Inventory)
             {
@@ -109,6 +99,16 @@ public partial class MainWindow : Window
                     trimmed.StartsWith("You have:"))
                 {
                     InventoryOutput.Inlines?.Clear();
+                }
+            }
+            
+            // For Room window, clear when we see a room title (starts with [)
+            if (windowType == GameWindowType.Room)
+            {
+                var trimmed = text.Trim();
+                if (trimmed.StartsWith("[") && trimmed.Contains("]"))
+                {
+                    RoomOutput.Inlines?.Clear();
                 }
             }
             
@@ -137,64 +137,6 @@ public partial class MainWindow : Window
                 scroller.ScrollToEnd();
             }
         });
-    }
-    
-    /// <summary>
-    /// Captures room-related content from Main window and copies to Room window.
-    /// Detects room patterns: [Room Name], room description, "You also see", "Obvious paths:"
-    /// </summary>
-    private void CaptureRoomContent(string text, GenieColor color, GenieColor bgcolor)
-    {
-        var trimmed = text.Trim();
-        
-        // Detect room title: starts with [ and contains ]
-        if (trimmed.StartsWith("[") && trimmed.Contains("]") && !trimmed.StartsWith("[You"))
-        {
-            // New room - clear room window and start capturing
-            _inRoomCapture = true;
-            RoomOutput.Inlines?.Clear();
-            AddToRoomWindow(text, color, bgcolor);
-            return;
-        }
-        
-        // If we're in room capture mode, keep capturing until we hit a prompt or action
-        if (_inRoomCapture)
-        {
-            // Stop capturing on prompt or player action
-            if (trimmed == ">" || trimmed.StartsWith(">") || string.IsNullOrEmpty(trimmed))
-            {
-                if (trimmed == ">" || trimmed.StartsWith(">"))
-                {
-                    _inRoomCapture = false;
-                }
-                return;
-            }
-            
-            AddToRoomWindow(text, color, bgcolor);
-        }
-    }
-    
-    private void AddToRoomWindow(string text, GenieColor color, GenieColor bgcolor)
-    {
-        EnsureHighlightProcessor();
-        
-        if (_highlightProcessor != null)
-        {
-            var segments = _highlightProcessor.Process(text, color, bgcolor);
-            foreach (var segment in segments)
-            {
-                var fg = Color.FromRgb(segment.ForegroundColor.R, segment.ForegroundColor.G, segment.ForegroundColor.B);
-                var bg = segment.BackgroundColor != GenieColor.Transparent 
-                    ? Color.FromRgb(segment.BackgroundColor.R, segment.BackgroundColor.G, segment.BackgroundColor.B)
-                    : (Color?)null;
-                AppendStyledTextTo(RoomOutput, segment.Text, fg, bg);
-            }
-        }
-        else
-        {
-            var avaloniaColor = Color.FromRgb(color.R, color.G, color.B);
-            AppendStyledTextTo(RoomOutput, text, avaloniaColor);
-        }
     }
     
     private void OnToggleWindow(object? sender, RoutedEventArgs e)
