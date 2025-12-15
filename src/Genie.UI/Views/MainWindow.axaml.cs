@@ -44,6 +44,7 @@ public partial class MainWindow : Window
         _gameManager.RoundtimeChanged += OnRoundtimeChanged;
         _gameManager.CompassChanged += OnCompassChanged;
         _gameManager.HandsChanged += OnHandsChanged;
+        _gameManager.SpellChanged += OnSpellChanged;
     }
 
     private void OnGameTextReceived(string text, GenieColor color, GenieColor bgcolor)
@@ -114,6 +115,14 @@ public partial class MainWindow : Window
         Dispatcher.UIThread.Post(() =>
         {
             UpdateHands(leftHand, rightHand);
+        });
+    }
+
+    private void OnSpellChanged(string spell)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            UpdateSpell(spell);
         });
     }
 

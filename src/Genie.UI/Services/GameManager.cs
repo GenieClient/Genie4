@@ -31,6 +31,7 @@ public class GameManager : IDisposable
     public event Action<int>? RoundtimeChanged;
     public event Action<bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool>? CompassChanged;
     public event Action<string, string>? HandsChanged; // left, right
+    public event Action<string>? SpellChanged;
 
     public bool IsConnected => _game?.IsConnected ?? false;
     public string? LastError { get; private set; }
@@ -272,6 +273,12 @@ public class GameManager : IDisposable
                 {
                     UpdateHands();
                 }
+                
+                // Update prepared spell
+                if (varName == "preparedspell")
+                {
+                    UpdateSpell();
+                }
             }
         }
         catch (Exception ex)
@@ -351,6 +358,30 @@ public class GameManager : IDisposable
         catch (Exception ex)
         {
             Console.WriteLine($"[GameManager] UpdateHands error: {ex.Message}");
+        }
+    }
+
+    private void UpdateSpell()
+    {
+        if (_globals == null) return;
+        
+        try
+        {
+            var spell = _globals.VariableList?.ContainsKey("preparedspell") == true 
+                ? _globals.VariableList["preparedspell"]?.ToString() ?? "" 
+                : "";
+            
+            // "None" from the game means no spell
+            if (string.IsNullOrWhiteSpace(spell) || spell.Equals("None", StringComparison.OrdinalIgnoreCase))
+            {
+                spell = "";
+            }
+            
+            SpellChanged?.Invoke(spell);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[GameManager] UpdateSpell error: {ex.Message}");
         }
     }
 
