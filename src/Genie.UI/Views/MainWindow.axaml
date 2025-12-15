@@ -29,6 +29,15 @@
                 <MenuItem Header="_Connect..." Click="OnConnect"/>
                 <MenuItem Header="_Disconnect" Click="OnDisconnect"/>
                 <Separator/>
+                <MenuItem Header="Open _Directory">
+                    <MenuItem Header="_Genie" Click="OnOpenGenieDir" ToolTip.Tip="Open main Genie data directory"/>
+                    <MenuItem Header="_Scripts" Click="OnOpenScriptsDir"/>
+                    <MenuItem Header="_Maps" Click="OnOpenMapsDir"/>
+                    <MenuItem Header="_Plugins" Click="OnOpenPluginsDir"/>
+                    <MenuItem Header="_Logs" Click="OnOpenLogsDir"/>
+                    <MenuItem Header="_Art" Click="OnOpenArtDir"/>
+                </MenuItem>
+                <Separator/>
                 <MenuItem Header="E_xit" Click="OnExit"/>
             </MenuItem>
             <MenuItem Header="_Edit">

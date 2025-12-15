@@ -9,7 +9,9 @@ using GenieClient.Services;
 using GenieClient.UI.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace GenieClient.Views;
 
@@ -474,6 +476,102 @@ public partial class MainWindow : Window
     {
         Close();
     }
+
+    #region Open Directory Handlers
+    
+    /// <summary>
+    /// Opens a directory in the system's file explorer (cross-platform).
+    /// </summary>
+    private void OpenDirectory(string path)
+    {
+        try
+        {
+            if (!Directory.Exists(path))
+            {
+                // Try to create the directory if it doesn't exist
+                Directory.CreateDirectory(path);
+                AppendText($"Created directory: {path}\n", Colors.Yellow);
+            }
+            
+            // Cross-platform directory opening
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "explorer.exe",
+                    Arguments = path,
+                    UseShellExecute = true
+                });
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "open",
+                    Arguments = path,
+                    UseShellExecute = true
+                });
+            }
+            else // Linux and others
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "xdg-open",
+                    Arguments = path,
+                    UseShellExecute = true
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            AppendText($"Error opening directory: {ex.Message}\n", Colors.Red);
+        }
+    }
+    
+    private void OnOpenGenieDir(object? sender, RoutedEventArgs e)
+    {
+        OpenDirectory(LocalDirectory.Path);
+    }
+    
+    private void OnOpenScriptsDir(object? sender, RoutedEventArgs e)
+    {
+        var dir = _gameManager?.Globals?.Config?.ScriptDir 
+            ?? Path.Combine(LocalDirectory.Path, "Scripts");
+        OpenDirectory(dir);
+    }
+    
+    private void OnOpenMapsDir(object? sender, RoutedEventArgs e)
+    {
+        var dir = _gameManager?.Globals?.Config?.MapDir 
+            ?? Path.Combine(LocalDirectory.Path, "Maps");
+        OpenDirectory(dir);
+    }
+    
+    private void OnOpenPluginsDir(object? sender, RoutedEventArgs e)
+    {
+        var dir = _gameManager?.Globals?.Config?.PluginDir 
+            ?? Path.Combine(LocalDirectory.Path, "Plugins");
+        OpenDirectory(dir);
+    }
+    
+    private void OnOpenLogsDir(object? sender, RoutedEventArgs e)
+    {
+        var dir = _gameManager?.Globals?.Config?.sLogDir;
+        if (string.IsNullOrEmpty(dir) || !Path.IsPathRooted(dir))
+        {
+            dir = Path.Combine(LocalDirectory.Path, dir ?? "Logs");
+        }
+        OpenDirectory(dir);
+    }
+    
+    private void OnOpenArtDir(object? sender, RoutedEventArgs e)
+    {
+        var dir = _gameManager?.Globals?.Config?.ArtDir 
+            ?? Path.Combine(LocalDirectory.Path, "Art");
+        OpenDirectory(dir);
+    }
+    
+    #endregion
 
     private async void OnUpdateMaps(object? sender, RoutedEventArgs e)
     {
