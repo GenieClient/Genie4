@@ -3,10 +3,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:services="using:GenieClient.UI.Services"
-        mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="550"
+        mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="600"
         x:Class="GenieClient.Views.ConnectDialog"
         Title="Connect to Game"
-        Width="450" Height="580"
+        Width="450" MinHeight="500" MaxHeight="800"
+        SizeToContent="Height"
         WindowStartupLocation="CenterOwner"
         CanResize="False"
         Background="#1a1a2e">
@@ -33,7 +34,7 @@
         </Style>
         <Style Selector="ListBoxItem">
             <Setter Property="Foreground" Value="#e0e0e0"/>
-            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Padding" Value="12,6"/>
         </Style>
         <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
             <Setter Property="Background" Value="#0f3460"/>
@@ -57,13 +58,13 @@
         </Style>
     </Window.Styles>
 
-    <Grid Margin="24" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*,Auto">
+    <Grid Margin="24" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
         <!-- Title -->
         <TextBlock Grid.Row="0" Text="Connect to Simutronics" 
                    FontSize="20" FontWeight="Bold" Foreground="#e94560"
                    Margin="0,0,0,16"/>
 
-        <!-- Saved Profiles Section -->
+        <!-- Saved Profiles Section - scrollable list with max height -->
         <StackPanel Grid.Row="1" Spacing="4" Margin="0,0,0,12">
             <Grid ColumnDefinitions="*,Auto">
                 <TextBlock Text="Saved Profiles" Foreground="#888" FontSize="12"/>
@@ -73,7 +74,9 @@
                         IsEnabled="False"
                         Click="OnDeleteProfile"/>
             </Grid>
-            <ListBox x:Name="ProfileListBox" Height="100"
+            <!-- ListBox has built-in scrolling, just set max height -->
+            <ListBox x:Name="ProfileListBox" 
+                     MinHeight="60" MaxHeight="200"
                      SelectionChanged="OnProfileSelected">
                 <ListBox.ItemTemplate>
                     <DataTemplate x:DataType="services:ConnectionProfile">
@@ -127,10 +130,11 @@
         <!-- Status message -->
         <TextBlock Grid.Row="8" x:Name="StatusText" 
                    Foreground="#ef4444" FontSize="12" 
-                   TextWrapping="Wrap" Margin="0,0,0,8"/>
+                   TextWrapping="Wrap" Margin="0,0,0,8"
+                   MinHeight="20"/>
 
         <!-- Spacer -->
-        <Border Grid.Row="9"/>
+        <Border Grid.Row="9" Height="8"/>
 
         <!-- Buttons -->
         <StackPanel Grid.Row="10" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12">
