@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -34,6 +35,10 @@ namespace GenieClient
         private static string UpdaterFilename = @"Lamp.exe";
         private static string LocalUpdater = @$"{Environment.CurrentDirectory}\{UpdaterFilename}";
         private static HttpClient client = new HttpClient();
+
+        // Default GitHub repository URLs for direct downloads
+        private static string DefaultMapsRepoURL = @"https://github.com/GenieClient/Maps/archive/refs/heads/main.zip";
+        private static string DefaultPluginsRepoURL = @"https://github.com/GenieClient/Plugins/archive/refs/heads/main.zip";
 
         public static string LocalUpdaterVersion
         {
@@ -140,25 +145,129 @@ namespace GenieClient
         }
         public static async Task<bool> UpdateMaps(string mapdir, bool autoUpdateLamp)
         {
-            await UpdateUpdater(autoUpdateLamp);
-            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --maps", true, false);
+            return await DownloadAndExtractZip(DefaultMapsRepoURL, mapdir);
         }
 
         public static async Task<bool> UpdatePlugins(string plugindir, bool autoUpdateLamp)
         {
-            await UpdateUpdater(autoUpdateLamp);
-            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --plugins", true, false);
+            return await DownloadAndExtractZip(DefaultPluginsRepoURL, plugindir);
         }
+
         public static async Task<bool> UpdateScripts(string scriptdir, string scriptrepo, bool autoUpdateLamp)
         {
-            await UpdateUpdater(autoUpdateLamp);
-            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --scripts", true, false);
+            if (string.IsNullOrWhiteSpace(scriptrepo))
+            {
+                return false; // No script repo configured
+            }
+            return await DownloadAndExtractZip(scriptrepo, scriptdir);
         }
 
         public static async Task<bool> UpdateArt(string artdir, string artrepo, bool autoUpdateLamp)
         {
-            await UpdateUpdater(autoUpdateLamp);
-            return await Utility.ExecuteProcess($@"{Environment.CurrentDirectory}\{UpdaterFilename}", $"--background --art", true, false);
+            if (string.IsNullOrWhiteSpace(artrepo))
+            {
+                return false; // No art repo configured
+            }
+            return await DownloadAndExtractZip(artrepo, artdir);
+        }
+
+        /// <summary>
+        /// Downloads a zip file from a URL and extracts its contents to the target directory.
+        /// Handles GitHub's zip structure where files are in a subdirectory like "Maps-main/".
+        /// </summary>
+        private static async Task<bool> DownloadAndExtractZip(string zipUrl, string targetDirectory)
+        {
+            try
+            {
+                // Ensure target directory exists
+                if (!Directory.Exists(targetDirectory))
+                {
+                    Directory.CreateDirectory(targetDirectory);
+                }
+
+                // Download the zip file
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Add("User-Agent", "Genie Client Updater");
+
+                using var response = await client.GetAsync(zipUrl, HttpCompletionOption.ResponseHeadersRead);
+                response.EnsureSuccessStatusCode();
+
+                // Create a temporary file to store the zip
+                string tempZipPath = Path.Combine(Path.GetTempPath(), $"genie_update_{Guid.NewGuid()}.zip");
+
+                try
+                {
+                    // Download to temp file
+                    using (var fileStream = new FileStream(tempZipPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        await response.Content.CopyToAsync(fileStream);
+                    }
+
+                    // Extract the zip
+                    using (var archive = ZipFile.OpenRead(tempZipPath))
+                    {
+                        // GitHub zips have a root folder like "Maps-main", we need to extract contents from inside that
+                        string rootFolder = null;
+
+                        // Find the root folder (first entry that's a directory)
+                        foreach (var entry in archive.Entries)
+                        {
+                            if (string.IsNullOrEmpty(entry.Name) && entry.FullName.EndsWith("/"))
+                            {
+                                // This is the root directory
+                                rootFolder = entry.FullName;
+                                break;
+                            }
+                        }
+
+                        // Extract files, stripping the root folder prefix
+                        foreach (var entry in archive.Entries)
+                        {
+                            // Skip directory entries and the root folder itself
+                            if (string.IsNullOrEmpty(entry.Name))
+                                continue;
+
+                            string relativePath = entry.FullName;
+
+                            // Strip the root folder prefix if present
+                            if (rootFolder != null && relativePath.StartsWith(rootFolder))
+                            {
+                                relativePath = relativePath.Substring(rootFolder.Length);
+                            }
+
+                            if (string.IsNullOrEmpty(relativePath))
+                                continue;
+
+                            string destinationPath = Path.Combine(targetDirectory, relativePath);
+
+                            // Create directory if needed
+                            string destinationDir = Path.GetDirectoryName(destinationPath);
+                            if (!string.IsNullOrEmpty(destinationDir) && !Directory.Exists(destinationDir))
+                            {
+                                Directory.CreateDirectory(destinationDir);
+                            }
+
+                            // Extract the file, overwriting if exists
+                            entry.ExtractToFile(destinationPath, overwrite: true);
+                        }
+                    }
+
+                    return true;
+                }
+                finally
+                {
+                    // Clean up temp file
+                    if (File.Exists(tempZipPath))
+                    {
+                        try { File.Delete(tempZipPath); } catch { /* ignore cleanup errors */ }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                GenieError.Error("Updater", $"Error downloading/extracting from {zipUrl}", ex.Message);
+                return false;
+            }
         }
         public static async Task<bool> ForceUpdate()
         {
