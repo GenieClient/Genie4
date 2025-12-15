@@ -29,11 +29,11 @@ public partial class MainWindow : Window
     /// </summary>
     public void UpdateVitals(int health, int mana, int concentration, int stamina, int spirit)
     {
-        UpdateBar(HealthBar, HealthText, health, "#22c55e");
-        UpdateBar(ManaBar, ManaText, mana, "#3b82f6");
-        UpdateBar(ConcentrationBar, ConcentrationText, concentration, "#06b6d4");
-        UpdateBar(StaminaBar, StaminaText, stamina, "#eab308");
-        UpdateBar(SpiritBar, SpiritText, spirit, "#a855f7");
+        UpdateBar(HealthBar, HealthText, health, "#ef4444");      // Red
+        UpdateBar(ManaBar, ManaText, mana, "#3b82f6");            // Blue
+        UpdateBar(ConcentrationBar, ConcentrationText, concentration, "#22d3ee"); // Cyan
+        UpdateBar(StaminaBar, StaminaText, stamina, "#22c55e");   // Green
+        UpdateBar(SpiritBar, SpiritText, spirit, "#e879f9");      // Magenta
     }
 
     /// <summary>
@@ -127,12 +127,32 @@ public partial class MainWindow : Window
             _maxRoundtime = 1;
     }
 
-    private void OnConnect(object? sender, RoutedEventArgs e)
+    private async void OnConnect(object? sender, RoutedEventArgs e)
     {
-        AppendText("Connecting...\n", Colors.Yellow);
-        // TODO: Show connection dialog and connect to game server
-        StatusText.Text = "Connecting...";
+        var result = await ConnectDialog.Show(this);
+        if (result == null)
+        {
+            AppendText("Connection cancelled.\n", Colors.Gray);
+            return;
+        }
+
+        AppendText($"Connecting to {result.SelectedGame}...\n", Colors.Yellow);
+        AppendText($"Account: {result.Account}\n", Colors.Gray);
+        if (!string.IsNullOrEmpty(result.Character))
+            AppendText($"Character: {result.Character}\n", Colors.Gray);
+        
+        StatusText.Text = $"Connecting to {result.SelectedGame}...";
         ConnectionStatus.Foreground = new SolidColorBrush(Colors.Yellow);
+
+        // TODO: Actually connect to the game server using Genie.Core
+        // For now, simulate connection
+        await System.Threading.Tasks.Task.Delay(1000);
+        
+        AppendText("Connection would happen here (not yet implemented).\n", Colors.Orange);
+        AppendText("The next step is to wire up Genie.Core's GameSocket!\n", Colors.Cyan);
+        
+        StatusText.Text = "Not connected (demo mode)";
+        ConnectionStatus.Foreground = new SolidColorBrush(Color.Parse("#ef4444"));
     }
 
     private void OnDisconnect(object? sender, RoutedEventArgs e)

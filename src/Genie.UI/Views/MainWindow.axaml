@@ -187,22 +187,22 @@
         <!-- Row 2: Health | Mana | Concentration | Stamina | Spirit -->
         <Border Grid.Row="4" Margin="8,2,8,4" Background="#16213e" CornerRadius="8" Padding="12,8">
             <Grid ColumnDefinitions="*,*,*,*,*">
-                <!-- Health Bar -->
+                <!-- Health Bar - Red -->
                 <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,8,0">
                     <Grid ColumnDefinitions="Auto,*">
                         <TextBlock Text="Health" Foreground="#888" FontSize="10" VerticalAlignment="Center"/>
                         <TextBlock Grid.Column="1" x:Name="HealthText" Text="100%" 
-                                   Foreground="#22c55e" FontSize="10" 
+                                   Foreground="#ef4444" FontSize="10" 
                                    HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     </Grid>
                     <Grid Height="16">
                         <Border Background="#2a2a3e" CornerRadius="3"/>
-                        <Border x:Name="HealthBar" Background="#22c55e" 
+                        <Border x:Name="HealthBar" Background="#ef4444" 
                                 CornerRadius="3" HorizontalAlignment="Stretch"/>
                     </Grid>
                 </StackPanel>
 
-                <!-- Mana Bar -->
+                <!-- Mana Bar - Blue -->
                 <StackPanel Grid.Column="1" Spacing="2" Margin="8,0">
                     <Grid ColumnDefinitions="Auto,*">
                         <TextBlock Text="Mana" Foreground="#888" FontSize="10" VerticalAlignment="Center"/>
@@ -217,47 +217,47 @@
                     </Grid>
                 </StackPanel>
 
-                <!-- Concentration Bar -->
+                <!-- Concentration Bar - Cyan -->
                 <StackPanel Grid.Column="2" Spacing="2" Margin="8,0">
                     <Grid ColumnDefinitions="Auto,*">
                         <TextBlock Text="Conc" Foreground="#888" FontSize="10" VerticalAlignment="Center"/>
                         <TextBlock Grid.Column="1" x:Name="ConcentrationText" Text="100%" 
-                                   Foreground="#06b6d4" FontSize="10" 
+                                   Foreground="#22d3ee" FontSize="10" 
                                    HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     </Grid>
                     <Grid Height="16">
                         <Border Background="#2a2a3e" CornerRadius="3"/>
-                        <Border x:Name="ConcentrationBar" Background="#06b6d4" 
+                        <Border x:Name="ConcentrationBar" Background="#22d3ee" 
                                 CornerRadius="3" HorizontalAlignment="Stretch"/>
                     </Grid>
                 </StackPanel>
 
-                <!-- Stamina Bar -->
+                <!-- Stamina Bar - Green -->
                 <StackPanel Grid.Column="3" Spacing="2" Margin="8,0">
                     <Grid ColumnDefinitions="Auto,*">
                         <TextBlock Text="Stamina" Foreground="#888" FontSize="10" VerticalAlignment="Center"/>
                         <TextBlock Grid.Column="1" x:Name="StaminaText" Text="100%" 
-                                   Foreground="#eab308" FontSize="10" 
+                                   Foreground="#22c55e" FontSize="10" 
                                    HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     </Grid>
                     <Grid Height="16">
                         <Border Background="#2a2a3e" CornerRadius="3"/>
-                        <Border x:Name="StaminaBar" Background="#eab308" 
+                        <Border x:Name="StaminaBar" Background="#22c55e" 
                                 CornerRadius="3" HorizontalAlignment="Stretch"/>
                     </Grid>
                 </StackPanel>
 
-                <!-- Spirit Bar -->
+                <!-- Spirit Bar - Magenta -->
                 <StackPanel Grid.Column="4" Spacing="2" Margin="8,0,0,0">
                     <Grid ColumnDefinitions="Auto,*">
                         <TextBlock Text="Spirit" Foreground="#888" FontSize="10" VerticalAlignment="Center"/>
                         <TextBlock Grid.Column="1" x:Name="SpiritText" Text="100%" 
-                                   Foreground="#a855f7" FontSize="10" 
+                                   Foreground="#e879f9" FontSize="10" 
                                    HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     </Grid>
                     <Grid Height="16">
                         <Border Background="#2a2a3e" CornerRadius="3"/>
-                        <Border x:Name="SpiritBar" Background="#a855f7" 
+                        <Border x:Name="SpiritBar" Background="#e879f9" 
                                 CornerRadius="3" HorizontalAlignment="Stretch"/>
                     </Grid>
                 </StackPanel>

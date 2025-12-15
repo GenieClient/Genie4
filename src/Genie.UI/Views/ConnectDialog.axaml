@@ -1,0 +1,93 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="350"
+        x:Class="GenieClient.Views.ConnectDialog"
+        Title="Connect to Game"
+        Width="400" Height="440"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        Background="#1a1a2e">
+
+    <Window.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="#16213e"/>
+            <Setter Property="Foreground" Value="#e0e0e0"/>
+            <Setter Property="BorderBrush" Value="#0f3460"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        <Style Selector="ComboBox">
+            <Setter Property="Background" Value="#16213e"/>
+            <Setter Property="Foreground" Value="#e0e0e0"/>
+            <Setter Property="BorderBrush" Value="#0f3460"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="Background" Value="#0f3460"/>
+            <Setter Property="Foreground" Value="#e0e0e0"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        <Style Selector="Button.Primary">
+            <Setter Property="Background" Value="#e94560"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Styles>
+
+    <Grid Margin="24" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*,Auto">
+        <!-- Title -->
+        <TextBlock Grid.Row="0" Text="Connect to Simutronics" 
+                   FontSize="20" FontWeight="Bold" Foreground="#e94560"
+                   Margin="0,0,0,20"/>
+
+        <!-- Game Selection -->
+        <StackPanel Grid.Row="1" Spacing="4" Margin="0,0,0,12">
+            <TextBlock Text="Game" Foreground="#888" FontSize="12"/>
+            <ComboBox x:Name="GameComboBox" HorizontalAlignment="Stretch" SelectedIndex="0">
+                <ComboBoxItem Content="DragonRealms"/>
+                <ComboBoxItem Content="DragonRealms Prime"/>
+                <ComboBoxItem Content="DragonRealms The Fallen"/>
+                <ComboBoxItem Content="DragonRealms Platinum"/>
+                <ComboBoxItem Content="GemStone IV"/>
+                <ComboBoxItem Content="GemStone IV Prime"/>
+                <ComboBoxItem Content="GemStone IV Platinum"/>
+            </ComboBox>
+        </StackPanel>
+
+        <!-- Account -->
+        <StackPanel Grid.Row="2" Spacing="4" Margin="0,0,0,12">
+            <TextBlock Text="Account" Foreground="#888" FontSize="12"/>
+            <TextBox x:Name="AccountTextBox" Watermark="Enter your account name"/>
+        </StackPanel>
+
+        <!-- Password -->
+        <StackPanel Grid.Row="3" Spacing="4" Margin="0,0,0,12">
+            <TextBlock Text="Password" Foreground="#888" FontSize="12"/>
+            <TextBox x:Name="PasswordTextBox" PasswordChar="●" Watermark="Enter your password"/>
+        </StackPanel>
+
+        <!-- Character (optional) -->
+        <StackPanel Grid.Row="4" Spacing="4" Margin="0,0,0,12">
+            <TextBlock Text="Character (optional)" Foreground="#888" FontSize="12"/>
+            <TextBox x:Name="CharacterTextBox" Watermark="Auto-select character"/>
+        </StackPanel>
+
+        <!-- Status message -->
+        <TextBlock Grid.Row="5" x:Name="StatusText" 
+                   Foreground="#ef4444" FontSize="12" 
+                   TextWrapping="Wrap" Margin="0,0,0,12"/>
+
+        <!-- Spacer -->
+        <Border Grid.Row="6"/>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12">
+            <Button Content="Cancel" Click="OnCancel"/>
+            <Button Classes="Primary" Content="Connect" Click="OnConnect"/>
+        </StackPanel>
+    </Grid>
+</Window>
+
