@@ -1100,8 +1100,12 @@ namespace GenieClient
                 }
             }
         }
-        private void Plugin_EventEchoText(string sText, Color oColor, Color oBgColor)
+        private void Plugin_EventEchoText(string sText, GenieColor oGenieColor, GenieColor oBgGenieColor)
         {
+            // Convert platform-agnostic GenieColor to System.Drawing.Color at the UI boundary
+            Color oColor = oGenieColor.ToDrawingColor();
+            Color oBgColor = oBgGenieColor.ToDrawingColor();
+
             Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
             string argsTargetWindow = "";
             AddText(sText, oColor, oBgColor, oTargetWindow: argoTargetWindow, sTargetWindow: argsTargetWindow);

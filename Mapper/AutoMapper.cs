@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Xml;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using GenieClient.Services;
 
 namespace GenieClient.Mapper
 {
@@ -27,7 +28,7 @@ namespace GenieClient.Mapper
 
         public event EventEchoTextEventHandler EventEchoText;
 
-        public delegate void EventEchoTextEventHandler(string sText, Color oColor, Color oBgColor);
+        public delegate void EventEchoTextEventHandler(string sText, GenieColor oColor, GenieColor oBgColor);
 
         public event EventSendTextEventHandler EventSendText;
 
@@ -2020,7 +2021,7 @@ namespace GenieClient.Mapper
         {
             if (AlwaysEcho == false && (Information.IsNothing(m_Form) || m_Form.Visible == false))
                 return;
-            EventEchoText?.Invoke(Text + System.Environment.NewLine, Color.Cyan, Color.Transparent);
+            EventEchoText?.Invoke(Text + System.Environment.NewLine, GenieColor.Cyan, GenieColor.Transparent);
         }
 
         public void SendText(string Text)

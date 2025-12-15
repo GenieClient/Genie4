@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using GenieClient.Services;
 
 namespace GenieClient
 {
@@ -9,7 +10,7 @@ namespace GenieClient
     {
         public event EventEchoTextEventHandler EventEchoText;
 
-        public delegate void EventEchoTextEventHandler(string sText, Color oColor, Color oBgColor);
+        public delegate void EventEchoTextEventHandler(string sText, GenieColor oColor, GenieColor oBgColor);
 
         public event EventSendTextEventHandler EventSendText;
 
@@ -24,7 +25,7 @@ namespace GenieClient
 
         public void EchoText(string Text)
         {
-            EventEchoText?.Invoke(Text + System.Environment.NewLine, Color.Cyan, Color.Transparent);
+            EventEchoText?.Invoke(Text + System.Environment.NewLine, GenieColor.Cyan, GenieColor.Transparent);
         }
 
         public void SendText(string Text)
