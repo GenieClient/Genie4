@@ -96,6 +96,7 @@
 ## Roadmap
 
 - [x] .NET 6 Upgrade
+- [x] .NET 10 Upgrade
 - [ ] Refactor Core Logic away from GUI
 - [ ] Convert GUI to Cross-Platform
 - [ ] Upgrade Plugin Interface
@@ -171,8 +172,27 @@ Project Link: [https://github.com/GenieClient/Genie4](https://github.com/GenieCl
 [product-screenshot]: images/screenshot.png
 
 
-## Build Command
-dotnet build Genie4.sln --configuration Release
+## Building from Source
 
-Then run:
+### Prerequisites
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) (or later)
+
+### Build and Run
+
+**Option 1: Using the build script (recommended for development)**
+
+This copies the build output to a separate `bin\Run` folder, allowing you to keep Genie running while rebuilding:
+
+```powershell
+.\build.ps1
+.\bin\Run\Genie.exe
+```
+
+**Option 2: Direct build**
+
+```powershell
+dotnet build Genie4.sln --configuration Release
 .\bin\Release\net10.0-windows\Genie.exe
+```
+
+> **Note:** If Genie is running, the direct build will fail because the files are locked. Use the build script instead, which outputs to a separate folder.

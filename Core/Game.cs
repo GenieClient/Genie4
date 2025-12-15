@@ -1405,6 +1405,9 @@ namespace GenieClient.Genie
                                             m_sRoomTitle = m_sRoomTitle.Substring(3);
                                         }
 
+                                        // Strip room ID suffix if present: (21101) or (**)
+                                        m_sRoomTitle = Regex.Replace(m_sRoomTitle, @"\s*\((\d+|\*\*)\)$", "");
+
                                         if (m_sRoomTitle.StartsWith("["))
                                         {
                                             m_sRoomTitle = m_sRoomTitle.Substring(1, m_sRoomTitle.Length - 2);
