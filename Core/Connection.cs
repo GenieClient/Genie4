@@ -51,6 +51,10 @@ namespace GenieClient.Genie
 
         public delegate void EventConnectionLostEventHandler();
 
+        public event EventExitRequestedEventHandler EventExitRequested;
+
+        public delegate void EventExitRequestedEventHandler();
+
         public enum SocketErrorCodes
         {
             InterruptedFunctionCall = 10004,
@@ -432,13 +436,10 @@ namespace GenieClient.Genie
                 s.EndDisconnect(ar);
                 ParseData(System.Environment.NewLine); // Show lines not yet sent out
                 PrintText(Utility.GetTimeStamp() + " Connection closed.");
+                EventDisconnected?.Invoke();
                 if (ExitOnDisconnect)
                 {
-                    System.Windows.Forms.Application.Exit();
-                }
-                else
-                {
-                    EventDisconnected?.Invoke();
+                    EventExitRequested?.Invoke();
                 }
                 
             }

@@ -91,6 +91,10 @@ namespace GenieClient.Genie
 
         public delegate void EventStreamWindowEventHandler(object sID, object sTitle, object sIfClosed);
 
+        public event EventExitRequestedEventHandler EventExitRequested;
+
+        public delegate void EventExitRequestedEventHandler();
+
         private Connection _m_oSocket;
 
         private Connection m_oSocket
@@ -109,6 +113,7 @@ namespace GenieClient.Genie
                     _m_oSocket.EventConnected -= GameSocket_EventConnected;
                     _m_oSocket.EventDisconnected -= GameSocket_EventDisconnected;
                     _m_oSocket.EventConnectionLost -= GameSocket_EventConnectionLost;
+                    _m_oSocket.EventExitRequested -= GameSocket_EventExitRequested;
 
                     _m_oSocket.EventParseRow -= GameSocket_EventParseRow;
                     _m_oSocket.EventParsePartialRow -= GameSocket_EventParsePartialRow;
@@ -124,6 +129,7 @@ namespace GenieClient.Genie
                     _m_oSocket.EventConnected += GameSocket_EventConnected;
                     _m_oSocket.EventDisconnected += GameSocket_EventDisconnected;
                     _m_oSocket.EventConnectionLost += GameSocket_EventConnectionLost;
+                    _m_oSocket.EventExitRequested += GameSocket_EventExitRequested;
                     _m_oSocket.EventParseRow += GameSocket_EventParseRow;
                     _m_oSocket.EventParsePartialRow += GameSocket_EventParsePartialRow;
                     _m_oSocket.EventDataRecieveEnd += GameSocket_EventDataRecieveEnd;
@@ -3223,6 +3229,13 @@ namespace GenieClient.Genie
         {
             Disconnect(true);
         }
+
+        private void GameSocket_EventExitRequested()
+        {
+            // Forward to UI layer - decoupled from System.Windows.Forms
+            EventExitRequested?.Invoke();
+        }
+
         private void GameSocket_EventParseRow(StringBuilder row)
         {
             var rowVar = row.ToString();

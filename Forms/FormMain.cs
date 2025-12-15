@@ -395,6 +395,7 @@ namespace GenieClient
                     _m_oGame.EventRoundTime -= Game_EventRoundtime;
                     _m_oGame.EventTriggerPrompt -= Game_EventTriggerPrompt;
                     _m_oGame.EventTriggerMove -= Game_EventTriggerMove;
+                    _m_oGame.EventExitRequested -= Game_EventExitRequested;
                 }
 
                 _m_oGame = value;
@@ -418,8 +419,15 @@ namespace GenieClient
                     _m_oGame.EventRoundTime += Game_EventRoundtime;
                     _m_oGame.EventTriggerPrompt += Game_EventTriggerPrompt;
                     _m_oGame.EventTriggerMove += Game_EventTriggerMove;
+                    _m_oGame.EventExitRequested += Game_EventExitRequested;
                 }
             }
+        }
+
+        private void Game_EventExitRequested()
+        {
+            // Handle exit request from Game - platform-specific implementation
+            Application.Exit();
         }
 
         private Genie.Command _m_oCommand;
