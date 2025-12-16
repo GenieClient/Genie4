@@ -23,7 +23,12 @@ public class HighlightProcessor
     /// Processes text and returns a list of styled segments based on highlight rules.
     /// Handles volatile highlights (monsterbold/presets), string highlights, and line highlights.
     /// </summary>
-    public List<StyledTextSegment> Process(string text, GenieColor defaultFg, GenieColor defaultBg)
+    /// <param name="text">The text to process</param>
+    /// <param name="defaultFg">Default foreground color</param>
+    /// <param name="defaultBg">Default background color</param>
+    /// <param name="volatileHighlightSnapshot">Optional snapshot of VolatileHighlights captured before async dispatch</param>
+    public List<StyledTextSegment> Process(string text, GenieColor defaultFg, GenieColor defaultBg, 
+        List<GenieClient.Genie.VolatileHighlight>? volatileHighlightSnapshot = null)
     {
         var result = new List<StyledTextSegment>();
         
@@ -47,7 +52,8 @@ public class HighlightProcessor
         var allMatches = new List<GenericMatch>();
         
         // 1. Get volatile highlights (monsterbold, presets like creatures, roomdesc, etc.)
-        allMatches.AddRange(GetVolatileHighlightMatches(text));
+        // Use the snapshot if provided, otherwise fall back to globals (for backward compatibility)
+        allMatches.AddRange(GetVolatileHighlightMatches(text, volatileHighlightSnapshot));
         
         // 2. Get string highlights (user-defined patterns)
         allMatches.AddRange(GetStringHighlightMatches(text));
@@ -104,36 +110,68 @@ public class HighlightProcessor
     /// <summary>
     /// Gets volatile highlight matches (monsterbold, presets) for the text.
     /// These are position-based highlights set by the game parser.
+    /// Each VolatileHighlight has a StartIndex indicating its position in the text.
     /// </summary>
-    private List<GenericMatch> GetVolatileHighlightMatches(string text)
+    /// <param name="text">The text to search for matches</param>
+    /// <param name="volatileHighlightSnapshot">Optional snapshot of VHs captured before async dispatch</param>
+    private List<GenericMatch> GetVolatileHighlightMatches(string text, 
+        List<GenieClient.Genie.VolatileHighlight>? volatileHighlightSnapshot = null)
     {
         var matches = new List<GenericMatch>();
         
         try
         {
+            // Use snapshot if provided, otherwise fall back to globals
+            var vhList = volatileHighlightSnapshot ?? _globals.VolatileHighlights?.ToList();
+            
             // Process volatile highlights (like creatures/monsterbold)
-            if (_globals.VolatileHighlights?.Count > 0)
+            // These have position-based StartIndex set by the game parser
+            if (vhList?.Count > 0)
             {
-                foreach (var vh in _globals.VolatileHighlights.ToArray())
+                foreach (var vh in vhList)
                 {
-                    // Find the text in our string (position-based matching)
-                    var idx = text.IndexOf(vh.Text, StringComparison.Ordinal);
-                    if (idx >= 0)
+                    var preset = GetPreset(vh.Preset);
+                    if (preset == null) continue;
+                    
+                    // Use the stored StartIndex for position-based matching
+                    // Verify the text actually matches at that position
+                    if (vh.StartIndex >= 0 && vh.StartIndex + vh.Length <= text.Length)
                     {
-                        // Get preset colors
-                        var preset = GetPreset(vh.Preset);
-                        if (preset != null)
+                        var textAtPosition = text.Substring(vh.StartIndex, vh.Length);
+                        if (textAtPosition == vh.Text)
                         {
                             matches.Add(new GenericMatch(
-                                idx, 
-                                vh.Text.Length, 
+                                vh.StartIndex, 
+                                vh.Length, 
                                 vh.Text, 
                                 preset.Foreground,
                                 preset.Background,
                                 true,  // is volatile
                                 true,  // is bold (monsterbold)
                                 null));
+                            continue;
                         }
+                    }
+                    
+                    // Fallback: if position-based matching fails (e.g., text was modified),
+                    // find ALL occurrences of the text instead of just the first
+                    int searchStart = 0;
+                    while (searchStart < text.Length)
+                    {
+                        var idx = text.IndexOf(vh.Text, searchStart, StringComparison.Ordinal);
+                        if (idx < 0) break;
+                        
+                        matches.Add(new GenericMatch(
+                            idx, 
+                            vh.Length, 
+                            vh.Text, 
+                            preset.Foreground,
+                            preset.Background,
+                            true,  // is volatile
+                            true,  // is bold (monsterbold)
+                            null));
+                        
+                        searchStart = idx + vh.Length;
                     }
                 }
             }
@@ -143,22 +181,46 @@ public class HighlightProcessor
             {
                 foreach (var ro in _globals.RoomObjects.ToArray())
                 {
-                    var idx = text.IndexOf(ro.Text, StringComparison.Ordinal);
-                    if (idx >= 0)
+                    var preset = GetPreset(ro.Preset);
+                    if (preset == null) continue;
+                    
+                    // Use position-based matching first
+                    if (ro.StartIndex >= 0 && ro.StartIndex + ro.Length <= text.Length)
                     {
-                        var preset = GetPreset(ro.Preset);
-                        if (preset != null)
+                        var textAtPosition = text.Substring(ro.StartIndex, ro.Length);
+                        if (textAtPosition == ro.Text)
                         {
                             matches.Add(new GenericMatch(
-                                idx,
-                                ro.Text.Length,
+                                ro.StartIndex,
+                                ro.Length,
                                 ro.Text,
                                 preset.Foreground,
                                 preset.Background,
                                 true,
                                 true,
                                 null));
+                            continue;
                         }
+                    }
+                    
+                    // Fallback: find ALL occurrences
+                    int searchStart = 0;
+                    while (searchStart < text.Length)
+                    {
+                        var idx = text.IndexOf(ro.Text, searchStart, StringComparison.Ordinal);
+                        if (idx < 0) break;
+                        
+                        matches.Add(new GenericMatch(
+                            idx,
+                            ro.Length,
+                            ro.Text,
+                            preset.Foreground,
+                            preset.Background,
+                            true,
+                            true,
+                            null));
+                        
+                        searchStart = idx + ro.Length;
                     }
                 }
             }

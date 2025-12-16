@@ -820,6 +820,23 @@ namespace GenieClient.Genie
 
                 if (!(sTextBuffer == "\r\n" && hasXML))
                 {
+                    // If we're in bold mode and have accumulated bold text, create a VolatileHighlight
+                    // BEFORE printing, so the highlight is available for cross-platform UI processing.
+                    // This handles cases where <pushBold/> and <popBold/> span multiple rows.
+                    if (m_bBold && !string.IsNullOrWhiteSpace(sBoldBuffer))
+                    {
+                        // Only create if the bold text is within the current buffer
+                        if (iBoldIndex >= 0 && iBoldIndex + sBoldBuffer.Length <= sTextBuffer.Length)
+                        {
+                            var parsedBold = ParseSubstitutions(sBoldBuffer);
+                            m_oGlobals.VolatileHighlights.Add(new VolatileHighlight(parsedBold, "creatures", iBoldIndex));
+                        }
+                        // Reset bold buffer so popBold handler doesn't create a duplicate
+                        // Keep bold mode active (m_bBold=true) for the next row
+                        // The popBold handler checks !string.IsNullOrWhiteSpace(sBoldBuffer) before creating
+                        sBoldBuffer = string.Empty;
+                    }
+                    
                     bool isRoomOutput = sText.Contains(@"<preset id='roomDesc'>");
                     PrintTextWithParse(sTextBuffer, default, default, default, default, isRoomOutput);
                 }

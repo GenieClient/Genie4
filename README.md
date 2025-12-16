@@ -63,6 +63,8 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
+    <li><a href="#building-from-source">Building from Source</a></li>
+    <li><a href="#running-tests">Running Tests</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
@@ -265,6 +267,42 @@ dotnet build Genie5.sln --configuration Release; if ($LASTEXITCODE -eq 0) { .\sr
 ```
 
 > **Note:** If Genie is running, the direct build will fail because the files are locked. Use the build script instead, which outputs to a separate folder.
+
+## Running Tests
+
+The project uses xUnit for testing. Tests are located in the `src/Genie.UI.Tests` directory.
+
+### Run All Tests
+
+Windows (PowerShell):
+```powershell
+dotnet test Genie5.sln
+```
+
+macOS/Linux:
+```bash
+dotnet test Genie5.sln
+```
+
+### Run Tests for a Specific Project
+
+```powershell
+dotnet test src/Genie.UI.Tests/Genie.UI.Tests.csproj
+```
+
+### Run Tests with Detailed Output
+
+```powershell
+dotnet test Genie5.sln --verbosity detailed
+```
+
+### Run Tests with Code Coverage
+
+```powershell
+dotnet test Genie5.sln --collect:"XPlat Code Coverage"
+```
+
+Coverage reports will be generated in the `TestResults` folder of each test project.
 
 ## Project Architecture
 

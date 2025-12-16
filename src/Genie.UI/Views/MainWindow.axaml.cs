@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -88,6 +89,15 @@ public partial class MainWindow : Window
     
     private void OnWindowTextReceived(GameWindowType windowType, string customId, string text, GenieColor color, GenieColor bgcolor)
     {
+        // CRITICAL: Capture VolatileHighlights snapshot BEFORE async dispatch!
+        // The VHs are cleared in SetBufferEnd which may run before the async block executes.
+        EnsureHighlightProcessor();
+        List<GenieClient.Genie.VolatileHighlight>? vhSnapshot = null;
+        if (_gameManager?.Globals?.VolatileHighlights != null)
+        {
+            vhSnapshot = _gameManager.Globals.VolatileHighlights.ToList();
+        }
+        
         Dispatcher.UIThread.Post(() =>
         {
             // Get the output for this window type
@@ -96,8 +106,6 @@ public partial class MainWindow : Window
                 // For unknown windows, route to main
                 output = GameOutput;
             }
-            
-            EnsureHighlightProcessor();
             
             // For Inventory window, clear when we see the header line
             if (windowType == GameWindowType.Inventory)
@@ -121,10 +129,10 @@ public partial class MainWindow : Window
                 }
             }
             
-            // Apply highlights
+            // Apply highlights using the captured VH snapshot
             if (_highlightProcessor != null)
             {
-                var segments = _highlightProcessor.Process(text, color, bgcolor);
+                var segments = _highlightProcessor.Process(text, color, bgcolor, vhSnapshot);
                 foreach (var segment in segments)
                 {
                     var fg = Color.FromRgb(segment.ForegroundColor.R, segment.ForegroundColor.G, segment.ForegroundColor.B);
@@ -176,15 +184,21 @@ public partial class MainWindow : Window
 
     private void OnGameTextReceived(string text, GenieColor color, GenieColor bgcolor)
     {
+        // CRITICAL: Capture VolatileHighlights snapshot BEFORE async dispatch!
+        EnsureHighlightProcessor();
+        List<GenieClient.Genie.VolatileHighlight>? vhSnapshot = null;
+        if (_gameManager?.Globals?.VolatileHighlights != null)
+        {
+            vhSnapshot = _gameManager.Globals.VolatileHighlights.ToList();
+        }
+        
         // Marshal to UI thread
         Dispatcher.UIThread.Post(() =>
         {
-            EnsureHighlightProcessor();
-            
             if (_highlightProcessor != null)
             {
-                // Process text through highlight system
-                var segments = _highlightProcessor.Process(text, color, bgcolor);
+                // Process text through highlight system using captured VH snapshot
+                var segments = _highlightProcessor.Process(text, color, bgcolor, vhSnapshot);
                 foreach (var segment in segments)
                 {
                     var fg = Color.FromRgb(segment.ForegroundColor.R, segment.ForegroundColor.G, segment.ForegroundColor.B);
