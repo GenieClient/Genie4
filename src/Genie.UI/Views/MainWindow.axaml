@@ -42,6 +42,10 @@
                 <MenuItem Header="E_xit" Click="OnExit"/>
             </MenuItem>
             <MenuItem Header="_Edit">
+                <MenuItem Header="_Aliases..." Click="OnShowAliases"/>
+                <MenuItem Header="_Macros..." Click="OnShowMacros"/>
+                <MenuItem Header="_Triggers..." Click="OnShowTriggers"/>
+                <Separator/>
                 <MenuItem Header="_Preferences..."/>
             </MenuItem>
             <MenuItem Header="_View">

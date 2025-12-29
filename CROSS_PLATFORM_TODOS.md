@@ -432,13 +432,13 @@ The plugin system (`PluginHost.cs`, `LegacyPluginHost.cs`) requires Windows Form
 **High Priority:**
 - [x] **Highlights system** - colored text based on patterns/triggers ✅ DONE
 - [x] **Multiple windows/panes** - inventory, thoughts, room ✅ DONE
-- [ ] **Script support** - run/stop scripts, script explorer
+- [x] **Script support** - run/stop scripts, script explorer ✅ DONE
 
 **Medium Priority:**
-- [ ] **Configuration dialogs** - settings UI for presets, highlights, aliases
-- [ ] **Aliases** - command shortcuts (#alias go = "go gate")
-- [ ] **Macros/keybindings** - F-keys, custom shortcuts
-- [ ] **Triggers** - auto-respond to text patterns
+- [x] **Aliases configuration dialog** - view/add/edit/delete aliases ✅ DONE
+- [ ] **Macros configuration dialog** - F-keys, custom shortcuts
+- [ ] **Triggers configuration dialog** - auto-respond to text patterns
+- [ ] **Highlights configuration dialog** - settings UI for highlight patterns
 
 **Lower Priority:**
 - [ ] **Auto-mapper integration** - display map, click to navigate

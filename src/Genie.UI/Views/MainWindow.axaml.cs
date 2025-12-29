@@ -747,6 +747,23 @@ public partial class MainWindow : Window
         });
     }
     
+    private async void OnShowAliases(object? sender, RoutedEventArgs e)
+    {
+        await AliasesDialog.ShowDialog(this, _gameManager?.Globals?.AliasList);
+    }
+    
+    private async void OnShowMacros(object? sender, RoutedEventArgs e)
+    {
+        // TODO: Create MacrosDialog
+        AppendText("[Macros dialog not yet implemented]\n", Colors.Yellow);
+    }
+    
+    private async void OnShowTriggers(object? sender, RoutedEventArgs e)
+    {
+        // TODO: Create TriggersDialog
+        AppendText("[Triggers dialog not yet implemented]\n", Colors.Yellow);
+    }
+    
     private void OnAbortAllScripts(object? sender, RoutedEventArgs e)
     {
         _gameManager?.AbortScript(null);
