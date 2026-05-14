@@ -1,10 +1,16 @@
 <div id="top"></div>
 <!--
-*** Genie Client is a Community focused development of Conny's Open Source Version of GenieClient.
-*** we want to take a moment and thank Conny for his hard work on GenieClient over the years and 
-*** for allowing the community to take a part in the future development of the Client.
-*** 
-*** Thanks again! Now team go create something AMAZING! :D
+*** Genie Client is a community-focused continuation of Conny's Open Source version of GenieClient.
+***
+*** We want to take a moment to thank Conny for his years of hard work on GenieClient
+*** and for allowing the community to help shape the future development of the client.
+***
+*** We also honor and remember community contributor Colonel Panic
+*** (https://github.com/mj-colonel-panic) for his contributions and passion for the project.
+*** His impact on the community will not be forgotten.
+***
+*** Thanks again to everyone who has helped make GenieClient what it is today.
+*** As Mark would say - Now team, go create something AMAZING! :D
 -->
 
 
@@ -112,16 +118,20 @@ See the [open issues](https://github.com/GenieClient/Genie4/issues) for a full l
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make is **greatly appreciated**.
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+To help keep GenieClient healthy and reduce long-term fragmentation, we encourage contributors to collaborate upstream through the official GenieClient repositories whenever possible.
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+If you have a suggestion, please open an issue or discussion first, especially for larger changes. Small fixes may be submitted directly as pull requests.
+
+Recommended process:
+
+1. Search existing issues and discussions
+2. Open a new issue or discussion if needed
+3. Make focused changes in a branch or temporary fork
+4. Submit a pull request back to the official GenieClient repository
+
+Forks are welcome for experimentation, but long-term improvements should be proposed upstream so the whole community benefits.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
