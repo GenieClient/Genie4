@@ -8521,12 +8521,12 @@ namespace GenieClient
                 else
                 {
                     AddText("An Update is Available.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
-                    DialogResult response = MessageBox.Show("An Update is Available. Would you like to update?", "Rub the Bottle?", MessageBoxButtons.YesNoCancel);
+                    DialogResult response = (DialogResult)Invoke((Func<DialogResult>)(() => MessageBox.Show(this, "An Update is Available. Would you like to update?", "Rub the Bottle?", MessageBoxButtons.YesNoCancel)));
                     if (response == DialogResult.Yes)
                     {
                         if (m_oGame.IsConnectedToGame)
                         {
-                            response = MessageBox.Show("Genie will close and this will disconnect you from the game.", "Close Genie?", MessageBoxButtons.YesNoCancel);
+                            response = (DialogResult)Invoke((Func<DialogResult>)(() => MessageBox.Show(this, "Genie will close and this will disconnect you from the game.", "Close Genie?", MessageBoxButtons.YesNoCancel)));
                             if (response == DialogResult.Yes)
                             {
                                 AddText("Saving Config and Exiting Genie to Update.", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);

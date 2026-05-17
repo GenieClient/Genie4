@@ -9,6 +9,7 @@ All notable changes to Genie Client 4 are documented here.
 ### Fixed
 - Updater: kill any running `Lamp.exe` process before overwriting the file — prevents `IOException` on force-update when Lamp is already running
 - Updater: fetch Lamp release once in `UpdateUpdater` and reuse for version check and download — eliminates a redundant GitHub API call that contributed to rate limit exhaustion
+- Update dialogs ("Rub the Bottle", "Update Lamp") now own the main window as parent, forcing them to the foreground instead of appearing behind Genie
 
 ---
 

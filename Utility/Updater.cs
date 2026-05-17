@@ -98,7 +98,7 @@ namespace GenieClient
             Release latest = await GetReleaseAsync(GitHubUpdaterReleaseURL).ConfigureAwait(false);
             string serverVersion = latest.Version?.TrimStart('v') ?? "0";
             bool isCurrent = LocalUpdaterVersion == serverVersion;
-            if (!isCurrent && !autoUpdate && MessageBox.Show(@"An updated version of Lamp is available. It is recommended to update Lamp before continuing. Would you like to update now?", "Update Lamp?", MessageBoxButtons.YesNoCancel) != DialogResult.Yes) return;
+            if (!isCurrent && !autoUpdate && MessageBox.Show(System.Windows.Forms.Form.ActiveForm, @"An updated version of Lamp is available. It is recommended to update Lamp before continuing. Would you like to update now?", "Update Lamp?", MessageBoxButtons.YesNoCancel) != DialogResult.Yes) return;
             await latest.LoadAssetsAsync().ConfigureAwait(false);
             if (latest.Assets.ContainsKey(UpdaterFilename))
             {
