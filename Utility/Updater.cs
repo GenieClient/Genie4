@@ -101,6 +101,13 @@ namespace GenieClient
             if (latest.Assets.ContainsKey(UpdaterFilename))
             {
                 Asset updaterAsset = latest.Assets[UpdaterFilename];
+
+                // Kill any running Lamp process before overwriting the file
+                foreach (var proc in System.Diagnostics.Process.GetProcessesByName("Lamp"))
+                {
+                    try { proc.Kill(); proc.WaitForExit(3000); } catch { }
+                }
+
                 using (var response = await client.GetAsync(new Uri(updaterAsset.DownloadURL)).ConfigureAwait(false))
                 {
                     response.EnsureSuccessStatusCode();

@@ -18,6 +18,7 @@ All notable changes to Genie Client 4 are documented here.
 - Plugins menu: **Require Signed Plugins** checkbox toggle — off by default; when enabled, unsigned plugin DLLs are skipped at load; setting persists via `#config {requiresignedplugins}`
 
 ### Fixed
+- Updater: kill any running `Lamp.exe` process before overwriting the file — prevents `IOException` when Lamp is locked by a previous run
 - `ParseTriggers` re-entry guard (`m_bParseTriggers`) — prevents infinite trigger loops when `bTriggerOnInput` is enabled and a trigger action sends text back to the game
 - `TriggerVariableChanged` depth guard (`m_iTriggerVariableChangedDepth`) — skips trigger/script processing on recursive calls (depth > 1) to prevent eval-trigger re-fire loops; hard cap at depth 20
 - `ParseCommand` recursion depth guard (`m_iParseCommandDepth`) — returns early at depth ≥ 30 to prevent stack overflows in deeply nested trigger/script chains
