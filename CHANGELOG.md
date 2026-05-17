@@ -4,7 +4,15 @@ All notable changes to Genie Client 4 are documented here.
 
 ---
 
-## [4.5.0.0] - Unreleased
+## [4.5.0.1] - 2026-05-17
+
+### Fixed
+- Updater: kill any running `Lamp.exe` process before overwriting the file — prevents `IOException` on force-update when Lamp is already running
+- Updater: fetch Lamp release once in `UpdateUpdater` and reuse for version check and download — eliminates a redundant GitHub API call that contributed to rate limit exhaustion
+
+---
+
+## [4.5.0.0] - 2026-05-16
 
 ### Added
 - `#ping` command — client-side connection check that reads `$connected` without sending anything to the game server
