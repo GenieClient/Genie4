@@ -179,16 +179,12 @@ namespace GenieClient
 
         private void UpdateLabelTextMethod(Label label, string text)
         {
-            if (Information.IsNothing(label))
+            if (Information.IsNothing(label) || label.IsDisposed == true)
             {
                 return;
             }
 
-            if (label.IsDisposed == true)
-            {
-                return;
-            }
-
+            // Preserve original VB-style concatenation and conversion behavior
             label.Text = Conversions.ToString(label.Tag + text);
         }
 

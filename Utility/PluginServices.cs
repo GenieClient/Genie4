@@ -24,7 +24,7 @@ namespace GenieClient
             public const string Modern = "GeniePlugin.Plugins.IPlugin";
         }
 
-        public static AvailablePlugin[] FindPlugins(string strPath)
+        public static AvailablePlugin[] FindPlugins(string strPath, bool requireSigned = true)
         {
             var Plugins = new ArrayList();
             string[] strDLLs;
@@ -38,10 +38,15 @@ namespace GenieClient
             {
                 try
                 {
+                    // Only attempt to load assemblies that are strong-named
+                    if (requireSigned && !IsAssemblyStrongNamed(strDLLs[intIndex]))
+                        continue;
+
                     string argsText = GetMD5HashFromFile(strDLLs[intIndex]);
                     object strKey = Utility.GenerateKeyHash(argsText);
-                    var readAllBytes = File.ReadAllBytes(strDLLs[intIndex]);
-                    objDLL = Assembly.Load(readAllBytes);
+
+                    // Load assembly from file path (avoids loading raw bytes)
+                    objDLL = Assembly.LoadFrom(strDLLs[intIndex]);
                     ExamineAssembly(objDLL, strDLLs[intIndex], Conversions.ToString(strKey), Plugins);
                 }
 #pragma warning disable CS0168
@@ -65,7 +70,7 @@ namespace GenieClient
             }
         }
 
-        public static AvailablePlugin FindPlugin(string strFile, string strInterface)
+        public static AvailablePlugin FindPlugin(string strFile, string strInterface, bool requireSigned = true)
         {
             if (!File.Exists(strFile))
             {
@@ -73,10 +78,15 @@ namespace GenieClient
             }
 
             Assembly objDLL;
+            // Require strong-named plugin assemblies
+            if (requireSigned && !IsAssemblyStrongNamed(strFile))
+                return default;
+
             string argsText = GetMD5HashFromFile(strFile);
             object strKey = Utility.GenerateKeyHash(argsText);
-            var readAllBytes = File.ReadAllBytes(strFile);
-            objDLL = Assembly.Load(readAllBytes);
+
+            // Load assembly by path
+            objDLL = Assembly.LoadFrom(strFile);
             var Plugins = new ArrayList();
             ExamineAssembly(objDLL, strFile, Conversions.ToString(strKey), Plugins);
             if (Plugins.Count != 0)
@@ -139,17 +149,18 @@ namespace GenieClient
             }
         }
 
-        public static object CreateInstance(AvailablePlugin Plugin)
+        public static object CreateInstance(AvailablePlugin Plugin, bool requireSigned = true)
         {
             Assembly objDLL;
             object objPlugin;
             try
             {
-                // Load dll
-                var readAllBytes = File.ReadAllBytes(Plugin.AssemblyPath);
-                objDLL = Assembly.Load(readAllBytes);
+                // Require strong-named assemblies for instantiation
+                if (requireSigned && !IsAssemblyStrongNamed(Plugin.AssemblyPath))
+                    return null;
 
-                // Create and return class instance
+                // Load assembly by path and create instance
+                objDLL = Assembly.LoadFrom(Plugin.AssemblyPath);
                 objPlugin = objDLL.CreateInstance(Plugin.ClassName);
             }
 #pragma warning disable CS0168
@@ -160,6 +171,20 @@ namespace GenieClient
             }
 
             return objPlugin;
+        }
+
+        private static bool IsAssemblyStrongNamed(string path)
+        {
+            try
+            {
+                var asmName = AssemblyName.GetAssemblyName(path);
+                var pkt = asmName.GetPublicKeyToken();
+                return pkt != null && pkt.Length > 0;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

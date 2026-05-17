@@ -203,6 +203,7 @@ namespace GenieClient.Mapper
             }
             else if ((var ?? "") == "prompt" && m_RoomUpdated == true) // Check for room change on prompt
             {
+                m_RoomUpdated = false; // reset before entering to prevent re-entrant calls
                 UpdateCurrentRoom();
             }
             else if ((var ?? "") == "connected")
@@ -353,13 +354,22 @@ namespace GenieClient.Mapper
             }
         }
 
+        private bool m_bUpdatingCurrentRoom = false;
+
         private void UpdateCurrentRoom(bool bMapChanged = false)
         {
+            // Block external re-entry (e.g. trigger fires $prompt mid-run), but allow
+            // intentional bMapChanged=true restarts triggered by LoadXML inside this method.
+            if (m_bUpdatingCurrentRoom && !bMapChanged) return;
+            bool m_bPrevUpdatingCurrentRoom = m_bUpdatingCurrentRoom;
+            m_bUpdatingCurrentRoom = true;
             if (Information.IsNothing(m_Form))
                 m_Form = new MapForm(m_oGlobals);
             if (Information.IsNothing(m_Form.NodeList))
                 m_Form.SetNodeList(m_Nodes);
             m_RoomUpdated = false;
+            try
+            {
 
             // -----------------------------------------------------
             // Set up a new oNode
@@ -992,6 +1002,11 @@ namespace GenieClient.Mapper
                 set_GlobalVariable("upid", "-1");
                 set_GlobalVariable("downid", "-1");
                 set_GlobalVariable("roomportals", "");
+            }
+            } // end try
+            finally
+            {
+                m_bUpdatingCurrentRoom = m_bPrevUpdatingCurrentRoom;
             }
         }
 

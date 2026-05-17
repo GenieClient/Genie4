@@ -718,7 +718,7 @@ namespace GenieClient
                 return 0;
             }
             // Get list of plugins
-            var oAvailablePlugins = PluginServices.FindPlugins(sPluginPath);
+            var oAvailablePlugins = PluginServices.FindPlugins(sPluginPath, m_oGlobals.Config.bRequireSignedPlugins);
             m_oPlugins.Clear();
             if (!Information.IsNothing(oAvailablePlugins))
             {
@@ -738,11 +738,11 @@ namespace GenieClient
                 switch (loadingPlugin.Interface)
                 {
                     case PluginServices.Interfaces.Legacy:
-                        GeniePlugin.Interfaces.IPlugin legacyPlugin = (GeniePlugin.Interfaces.IPlugin)PluginServices.CreateInstance(loadingPlugin);
+                        GeniePlugin.Interfaces.IPlugin legacyPlugin = (GeniePlugin.Interfaces.IPlugin)PluginServices.CreateInstance(loadingPlugin, m_oGlobals.Config.bRequireSignedPlugins);
                         LoadLegacyPlugin(legacyPlugin, loadingPlugin.AssemblyPath, loadingPlugin.Key);
                         break;
                     case PluginServices.Interfaces.Modern:
-                        GeniePlugin.Plugins.IPlugin modernPlugin = (GeniePlugin.Plugins.IPlugin)PluginServices.CreateInstance(loadingPlugin);
+                        GeniePlugin.Plugins.IPlugin modernPlugin = (GeniePlugin.Plugins.IPlugin)PluginServices.CreateInstance(loadingPlugin, m_oGlobals.Config.bRequireSignedPlugins);
                         LoadPlugin(modernPlugin, loadingPlugin.AssemblyPath, loadingPlugin.Key);
                         break;
                     default:
@@ -850,7 +850,7 @@ namespace GenieClient
                 return;
             }
 
-            var oAvalabilePlugin = PluginServices.FindPlugin(filename, "GeniePlugin.Interfaces.IPlugin");
+            var oAvalabilePlugin = PluginServices.FindPlugin(filename, "GeniePlugin.Interfaces.IPlugin", m_oGlobals.Config.bRequireSignedPlugins);
             if (Information.IsNothing(oAvalabilePlugin.Key))
             {
                 AppendText("Plugin not found: " + filename + System.Environment.NewLine);
@@ -858,7 +858,7 @@ namespace GenieClient
             }
 
             AppendText("Plugin loading: " + filename + System.Environment.NewLine);
-            GeniePlugin.Interfaces.IPlugin oPlugin = (GeniePlugin.Interfaces.IPlugin)PluginServices.CreateInstance(oAvalabilePlugin);
+            GeniePlugin.Interfaces.IPlugin oPlugin = (GeniePlugin.Interfaces.IPlugin)PluginServices.CreateInstance(oAvalabilePlugin, m_oGlobals.Config.bRequireSignedPlugins);
             string argsText = PluginServices.GetMD5HashFromFile(filename);
             string strKey = Utility.GenerateKeyHash(argsText);
             UnloadPlugin(oPlugin.Name, strKey);
@@ -1209,6 +1209,15 @@ namespace GenieClient
             pluginUpdateItem.Text = "&Update Plugins";
             pluginUpdateItem.Click += updatePluginsToolStripMenuItem_Click;
             PluginsToolStripMenuItem.DropDownItems.Add(pluginUpdateItem);
+            ToolStripMenuItem requireSignedItem = new ToolStripMenuItem();
+            requireSignedItem.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
+            requireSignedItem.ForeColor = m_oGlobals.PresetList["ui.menu"].FgColor;
+            requireSignedItem.Name = "ToolStripMenuItemRequireSignedPlugins";
+            requireSignedItem.Text = "Require &Signed Plugins";
+            requireSignedItem.CheckOnClick = true;
+            requireSignedItem.Checked = m_oGlobals.Config.bRequireSignedPlugins;
+            requireSignedItem.Click += RequireSignedPluginsMenuItem_Click;
+            PluginsToolStripMenuItem.DropDownItems.Add(requireSignedItem);
 
             ToolStripMenuItem pluginSeparator = new ToolStripMenuItem();
             pluginSeparator.BackColor = m_oGlobals.PresetList["ui.menu"].BgColor;
@@ -2517,6 +2526,11 @@ namespace GenieClient
 
         private void EventStreamWindow(object sID, object sTitle, object sIfClosed)
         {
+            if (InvokeRequired)
+            {
+                Invoke((Action)(() => EventStreamWindow(sID, sTitle, sIfClosed)));
+                return;
+            }
             if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(sID, "main", false)))
                 return;
             var fo = FindSkinFormByIDOrName(Conversions.ToString(sID), Conversions.ToString(sTitle));
@@ -4090,9 +4104,18 @@ namespace GenieClient
             }
         }
 
+        private bool m_bParseTriggers = false;
+
         // BufferWait is since script always wait for end of buffer before setting off an action... We don't want this with #parse
         private void ParseTriggers(string sText, bool bBufferWait = true)
         {
+            // Block re-entrant calls: a trigger action that sends text must not re-fire triggers
+            // for that same sent text (prevents infinite trigger loops when bTriggerOnInput is enabled).
+            if (m_bParseTriggers) return;
+
+            m_bParseTriggers = true;
+            try
+            {
             if (m_bTriggersEnabled == true)
             {
                 if (sText.Trim().Length > 0)
@@ -4179,6 +4202,11 @@ namespace GenieClient
                         ShowDialogException("TriggerParse", "Unable to acquire reader lock.");
                     }
                 }
+            }
+            } // end try
+            finally
+            {
+                m_bParseTriggers = false;
             }
         }
 
@@ -4391,8 +4419,21 @@ namespace GenieClient
             }
         }
 
+        private int m_iTriggerVariableChangedDepth = 0;
+
         public void TriggerVariableChanged(string sVariableName) // When variables change
         {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action<string>(TriggerVariableChanged), sVariableName);
+                return;
+            }
+
+            if (m_iTriggerVariableChangedDepth >= 20) return;
+            m_iTriggerVariableChangedDepth++;
+            try
+            {
+
             switch (sVariableName)
             {
                 case "$health":
@@ -4570,6 +4611,11 @@ namespace GenieClient
                     }
             }
 
+            // Skip trigger/script processing if called recursively from within a trigger action.
+            // Sending a command during trigger execution updates $lastcommand/$lastinput, which
+            // would otherwise re-fire matching triggers indefinitely.
+            if (m_iTriggerVariableChangedDepth > 1) return;
+
             if (m_bTriggersEnabled == true)
             {
                 if (m_oGlobals.TriggerList.AcquireReaderLock())
@@ -4636,6 +4682,12 @@ namespace GenieClient
                 {
                     ShowDialogException("TriggerVariableChanged", "Unable to acquire reader lock.");
                 }
+            }
+
+            } // end try
+            finally
+            {
+                m_iTriggerVariableChangedDepth--;
             }
         }
 
@@ -4792,6 +4844,12 @@ namespace GenieClient
                 return;
             }
 
+            if (InvokeRequired)
+            {
+                Invoke((Action)(() => AddText(sText, oColor, oBgColor, oTargetWindow, sTargetWindow, bNoCache, bMono, bPrompt, bInput)));
+                return;
+            }
+
             FormSkin oFormTarget = null;
             if (!Information.IsNothing(m_oOutputMain))
             {
@@ -4924,6 +4982,12 @@ namespace GenieClient
         {
             if (IsDisposed)
             {
+                return;
+            }
+
+            if (InvokeRequired)
+            {
+                Invoke((Action)(() => AddImage(sImageFileName, oTargetWindow, sTargetWindow, width, height)));
                 return;
             }
 
@@ -5254,11 +5318,9 @@ namespace GenieClient
         }
 
         // Script Print
-        private void Script_EventPrintText(string sText, Color oColor, Color oBgColor)
+        private void Script_EventPrintText(string sText, Color oColor, Color oBgColor, Genie.Game.WindowTarget oTarget = Genie.Game.WindowTarget.Main)
         {
-            Genie.Game.WindowTarget argoTargetWindow = Genie.Game.WindowTarget.Main;
-            string argsTargetWindow = "";
-            AddText(sText, oColor, oBgColor, oTargetWindow: argoTargetWindow, sTargetWindow: argsTargetWindow);
+            AddText(sText, oColor, oBgColor, oTargetWindow: oTarget, sTargetWindow: "");
         }
 
         private void Simutronics_EventEndUpdate()
@@ -7410,6 +7472,14 @@ namespace GenieClient
         private void PluginsEnabledToolStripMenuItem_Click(object sender, EventArgs e)
         {
             m_oGlobals.PluginsEnabled = PluginsEnabledToolStripMenuItem.Checked;
+        }
+
+        private void RequireSignedPluginsMenuItem_Click(object sender, EventArgs e)
+        {
+            if (sender is ToolStripMenuItem menuItem)
+            {
+                m_oGlobals.Config.bRequireSignedPlugins = menuItem.Checked;
+            }
         }
 
         private void UpdateLayoutMenu()

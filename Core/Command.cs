@@ -215,8 +215,14 @@ namespace GenieClient.Genie
             oGlobals = cl;
         }
 
+        private int m_iParseCommandDepth = 0;
+
         public async Task<string> ParseCommand(string sText, bool bSendToGame = false, bool bUserInput = false, string sOrigin = "", bool bParseQuickSend = true)
         {
+            if (m_iParseCommandDepth >= 30) return string.Empty;
+            m_iParseCommandDepth++;
+            try
+            {
             /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
             string sResult = string.Empty;
             if (sText.ToLower().StartsWith("bug ") | sText.ToLower().StartsWith("sing ") | sText.ToLower().StartsWith(";"))
@@ -835,6 +841,17 @@ namespace GenieClient.Genie
                                             Send(oArgs);
 
                                             sResult = "";
+                                            break;
+                                        }
+
+                                    case "ping":
+                                        {
+                                            bool bConnected = Utility.StringToBoolean(Conversions.ToString(oGlobals.VariableList["connected"]));
+                                            if (bConnected)
+                                                EchoText("[Ping]: Connected to game server.");
+                                            else
+                                                EchoText("[Ping]: Not connected to game server.");
+                                            sResult = bConnected ? "1" : "0";
                                             break;
                                         }
 
@@ -2553,8 +2570,13 @@ namespace GenieClient.Genie
 
             /* TODO ERROR: Skipped IfDirectiveTrivia *//* TODO ERROR: Skipped DisabledTextTrivia *//* TODO ERROR: Skipped EndIfDirectiveTrivia */
             return sResult;
+            } // end try
+            finally
+            {
+                m_iParseCommandDepth--;
+            }
         }
-     
+
         private void Do(ArrayList oArgs)
         {
             if (oArgs.Count > 1)

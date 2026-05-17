@@ -53,6 +53,7 @@ namespace GenieClient.Genie
         public string sLogDir = "Logs";
         public string sArtDir = "Art";
         public bool bWebLinkSafety = true;
+        public bool bRequireSignedPlugins = false;
 
         public bool SizeInputToGame { get; set; } = false;
         public bool UpdateMapperScripts { get; set; } = false;
@@ -403,7 +404,8 @@ namespace GenieClient.Genie
             ImagesEnabled,
             SizeInputToGame,
             AlwaysOnTop,
-            UpdateMapperScripts
+            UpdateMapperScripts,
+            RequireSignedPlugins
         }
 
         public Font MonoFont
@@ -510,6 +512,7 @@ namespace GenieClient.Genie
                 oStreamWriter.WriteLine($"#config {{autoupdatelamp}} {{{AutoUpdateLamp}}}");
                 oStreamWriter.WriteLine($"#config {{checkforupdates}} {{{CheckForUpdates}}}");
                 oStreamWriter.WriteLine($"#config {{scriptextension}} {{{ScriptExtension}}}");
+                oStreamWriter.WriteLine($"#config {{requiresignedplugins}} {{{bRequireSignedPlugins}}}");
                 oStreamWriter.Close();
                 return true;
             }
@@ -1438,6 +1441,30 @@ namespace GenieClient.Genie
                                 break;
                             }
 
+
+                        case "requiresignedplugins":
+                            {
+                                var switchExprRSP = sValue.ToLower();
+                                switch (switchExprRSP)
+                                {
+                                    case "on":
+                                    case "true":
+                                    case "1":
+                                        {
+                                            bRequireSignedPlugins = true;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            bRequireSignedPlugins = false;
+                                            break;
+                                        }
+                                }
+
+                                ConfigChanged?.Invoke(ConfigFieldUpdated.RequireSignedPlugins);
+                                break;
+                            }
                         default:
                             throw new Exception($"Config {switchExpr} was not recognized.");
                     }

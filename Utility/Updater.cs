@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Net.Http;
@@ -21,6 +22,16 @@ namespace GenieClient
         private static string LocalUpdater = @$"{Environment.CurrentDirectory}\{UpdaterFilename}";
         private static HttpClient client = new HttpClient();
 
+        private static async Task<System.IO.Stream> GetGitHubStreamAsync(string url)
+        {
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            client.DefaultRequestHeaders.Remove("User-Agent");
+            client.DefaultRequestHeaders.Add("User-Agent", "Genie Client Updater");
+
+            return await client.GetStreamAsync(url).ConfigureAwait(false);
+        }
+
         public static string LocalUpdaterVersion
         {
             get
@@ -38,16 +49,16 @@ namespace GenieClient
         }
         public static string ServerUpdaterVersion
         {
-            get 
+            get
             {
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-                client.DefaultRequestHeaders.Add("User-Agent", "Genie Client Updater");
-
-                var streamTask = client.GetStreamAsync(GitHubUpdaterReleaseURL).Result;
-                Release latest = JsonSerializer.Deserialize<Release>(streamTask);
-
-                return latest.Version;
+                try
+                {
+                    return GetServerUpdaterVersionAsync().GetAwaiter().GetResult();
+                }
+                catch
+                {
+                    return LocalUpdaterVersion;
+                }
             }
         }
         public static string ServerClientVersion
@@ -56,18 +67,11 @@ namespace GenieClient
             {
                 try
                 {
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-                    client.DefaultRequestHeaders.Add("User-Agent", "Genie Client Updater");
-
-                    var streamTask = client.GetStreamAsync(GitHubClientReleaseURL).Result;
-                    Release latest = JsonSerializer.Deserialize<Release>(streamTask);
-
-                    return latest.Version;
+                    return GetServerClientVersionAsync().GetAwaiter().GetResult();
                 }
                 catch
                 {
-                    //if we can't reach github just report current because we can't update
+                    // if we can't reach github just report current because we can't update
                     return LocalClientVersion;
                 }
             }
@@ -92,22 +96,69 @@ namespace GenieClient
         public static async Task UpdateUpdater(bool autoUpdate)
         {
             if (!UpdaterIsCurrent && !autoUpdate && MessageBox.Show(@"An updated version of Lamp is available. It is recommended to update Lamp before continuing. Would you like to update now?", "Update Lamp?", MessageBoxButtons.YesNoCancel) != DialogResult.Yes) return;
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-            client.DefaultRequestHeaders.Add("User-Agent", "Genie Client Updater");
-
-            var streamTask = client.GetStreamAsync(GitHubUpdaterReleaseURL).Result;
-            Release latest = JsonSerializer.Deserialize<Release>(streamTask);
-            
-            latest.LoadAssets();
+            Release latest = await GetReleaseAsync(GitHubUpdaterReleaseURL).ConfigureAwait(false);
+            await latest.LoadAssetsAsync().ConfigureAwait(false);
             if (latest.Assets.ContainsKey(UpdaterFilename))
             {
                 Asset updaterAsset = latest.Assets[UpdaterFilename];
-                var response = client.GetAsync(new Uri(updaterAsset.DownloadURL)).Result;
-                using (var updaterFile = new FileStream(updaterAsset.LocalFilepath, FileMode.Create))
+                using (var response = await client.GetAsync(new Uri(updaterAsset.DownloadURL)).ConfigureAwait(false))
                 {
-                    await response.Content.CopyToAsync(updaterFile);
+                    response.EnsureSuccessStatusCode();
+                    using (var updaterFile = new FileStream(updaterAsset.LocalFilepath, FileMode.Create))
+                    {
+                        await response.Content.CopyToAsync(updaterFile).ConfigureAwait(false);
+                    }
                 }
+
+                // Integrity check: if a corresponding .sha256 asset exists, verify it
+                string checksumAssetName = UpdaterFilename + ".sha256";
+                if (latest.Assets.ContainsKey(checksumAssetName))
+                {
+                    Asset checksumAsset = latest.Assets[checksumAssetName];
+                    string remoteHash;
+                    using (var resp = await client.GetAsync(new Uri(checksumAsset.DownloadURL)).ConfigureAwait(false))
+                    {
+                        resp.EnsureSuccessStatusCode();
+                        remoteHash = (await resp.Content.ReadAsStringAsync().ConfigureAwait(false)).Trim();
+                    }
+
+                    // remote file may include filename; extract first token that looks like hex
+                    var token = remoteHash.Split(new[] {' ', '\t', '\r', '\n'}, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() ?? string.Empty;
+                    token = token.Trim();
+
+                    using (var fs = File.OpenRead(updaterAsset.LocalFilepath))
+                    using (var sha = SHA256.Create())
+                    {
+                        var localHashBytes = sha.ComputeHash(fs);
+                        var localHash = BitConverter.ToString(localHashBytes).Replace("-", "").ToLowerInvariant();
+                        if (!string.IsNullOrEmpty(token) && !localHash.Equals(token, StringComparison.OrdinalIgnoreCase))
+                        {
+                            // verification failed
+                            File.Delete(updaterAsset.LocalFilepath);
+                            throw new InvalidOperationException("Updater integrity check failed: checksum mismatch.");
+                        }
+                    }
+                }
+            }
+        }
+
+        private static async Task<string> GetServerUpdaterVersionAsync()
+        {
+            Release latest = await GetReleaseAsync(GitHubUpdaterReleaseURL).ConfigureAwait(false);
+            return latest.Version?.TrimStart('v') ?? "0";
+        }
+
+        private static async Task<string> GetServerClientVersionAsync()
+        {
+            Release latest = await GetReleaseAsync(GitHubClientReleaseURL).ConfigureAwait(false);
+            return latest.Version?.TrimStart('v') ?? "0";
+        }
+
+        private static async Task<Release> GetReleaseAsync(string releaseUrl)
+        {
+            using (var stream = await GetGitHubStreamAsync(releaseUrl).ConfigureAwait(false))
+            {
+                return JsonSerializer.Deserialize<Release>(stream);
             }
         }
 
@@ -160,19 +211,22 @@ namespace GenieClient
             public Dictionary<string, Asset> Assets { get; set; }
             public void LoadAssets()
             {
+                // synchronous wrapper
+                LoadAssetsAsync().GetAwaiter().GetResult();
+            }
+
+            public async Task LoadAssetsAsync()
+            {
                 if (!string.IsNullOrWhiteSpace(AssetsURL))
                 {
                     Assets = new Dictionary<string, Asset>();
-                    
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-                    client.DefaultRequestHeaders.Add("User-Agent", "Genie Client Updater");
-
-                    var streamTask = client.GetStreamAsync(AssetsURL).Result;
-                    List<Asset> latestAssets = JsonSerializer.Deserialize<List<Asset>>(streamTask);
-                    foreach (Asset asset in latestAssets)
+                    using (var stream = await GetGitHubStreamAsync(AssetsURL).ConfigureAwait(false))
                     {
-                        Assets.Add(asset.Name, asset);
+                        List<Asset> latestAssets = JsonSerializer.Deserialize<List<Asset>>(stream);
+                        foreach (Asset asset in latestAssets)
+                        {
+                            Assets.Add(asset.Name, asset);
+                        }
                     }
                 }
             }

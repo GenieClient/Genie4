@@ -627,7 +627,7 @@ namespace GenieClient
 
         public event EventPrintTextEventHandler EventPrintText;
 
-        public delegate void EventPrintTextEventHandler(string sText, Color oColor, Color oBgColor);
+        public delegate void EventPrintTextEventHandler(string sText, Color oColor, Color oBgColor, Genie.Game.WindowTarget oTarget = Genie.Game.WindowTarget.Main);
 
         public event EventSendTextEventHandler EventSendText;
 
@@ -4357,11 +4357,11 @@ namespace GenieClient
             // Everything above 9 has to be an exact match to show
             if (DebugLevel > 9 & DebugLevel == iLevel)
             {
-                EventPrintText?.Invoke(sDebugMessage + sText + System.Environment.NewLine, Color.RoyalBlue, Color.Transparent);
+                EventPrintText?.Invoke(sDebugMessage + sText + System.Environment.NewLine, Color.RoyalBlue, Color.Transparent, Genie.Game.WindowTarget.Debug);
             }
             else if (DebugLevel <= 9 & DebugLevel >= iLevel)
             {
-                EventPrintText?.Invoke(sDebugMessage + sText + System.Environment.NewLine, Color.RoyalBlue, Color.Transparent);
+                EventPrintText?.Invoke(sDebugMessage + sText + System.Environment.NewLine, Color.RoyalBlue, Color.Transparent, Genie.Game.WindowTarget.Debug);
             }
         }
 
