@@ -4,6 +4,20 @@ All notable changes to Genie Client 4 are documented here.
 
 ---
 
+## [4.5.0.2] - 2026-05-18
+
+### Added
+- New reserved variable `$gameroomid` — populated with the DragonRealms room ID when `flag showroomid on` is active; defaults to `"0"` (PR #187, kryptonomica)
+
+### Fixed
+- Profile connect: G, C, and L commands to eaccess.play.net were missing `\n` terminators, causing the server to return `E\tUnexpected parameters`
+- Command-line connect crash: `DirectConnect` was called before the form finished loading (no config, presets, or plugins initialized); deferred until end of `FormMain_Load`
+- Auto-update: `Application.Exit()` was called from a background thread — now marshalled to the UI thread via `Invoke`; config is saved before exit
+- Font picker (#180): `FontDialog` internally calls `Font.FromHfont()` which throws `ArgumentException` for some OpenType/TrueType fonts; bypassed with a direct Win32 `ChooseFont` P/Invoke
+- AutoMapper: DR's `flag showroomid on` appended ` (1234567)` to room names, mangling `$roomname` and breaking map matching; suffix is now stripped cleanly (PR #187, kryptonomica)
+
+---
+
 ## [4.5.0.1] - 2026-05-17
 
 ### Fixed
