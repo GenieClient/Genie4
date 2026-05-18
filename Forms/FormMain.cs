@@ -188,7 +188,8 @@ namespace GenieClient
                             AddText("AutoUpdate is Enabled. Exiting and launching Updater.\r\n", m_oGlobals.PresetList["scriptecho"].FgColor, m_oGlobals.PresetList["scriptecho"].BgColor, Genie.Game.WindowTarget.Main);
                             if (await Updater.RunUpdate(m_oGlobals.Config.AutoUpdateLamp))
                             {
-                                System.Windows.Forms.Application.Exit();
+                                m_oGlobals.Config.Save();
+                                Invoke((Action)(() => System.Windows.Forms.Application.Exit()));
                             }
                         }
                     }
