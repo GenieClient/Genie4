@@ -5227,7 +5227,8 @@ namespace GenieClient
             FormSkin oFormSkin = null;
             if (sID.Length > 0)
             {
-                if ((sID.ToLower() ?? "") == (m_oOutputMain.ID ?? ""))
+                string sIDLower = sID.ToLower();
+                if ((sIDLower ?? "") == (m_oOutputMain.ID ?? "") || sIDLower == "game")
                 {
                     oFormSkin = m_oOutputMain;
                 }
