@@ -24,7 +24,7 @@ namespace GenieClient
 
             var services = host.Services;
             var formMain = services.GetRequiredService<FormMain>();
-            formMain.DirectConnect(args);
+            formMain.StartupArgs = args;
             Application.Run(formMain);
         }
 

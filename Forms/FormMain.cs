@@ -292,6 +292,8 @@ namespace GenieClient
             }
         }
 
+        public string[] StartupArgs { get; set; }
+
         private Genie.Globals _m_oGlobals;
 
         public Genie.Globals m_oGlobals
@@ -2095,6 +2097,8 @@ namespace GenieClient
             // TEMP TEMP TEMP
             // m_PluginDialog.ShowDialog(Me)
 
+            if (StartupArgs != null && StartupArgs.Length > 0)
+                DirectConnect(StartupArgs);
         }
 
         private void FormPlugin_LoadPlugin(string filename)
