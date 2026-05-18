@@ -49,53 +49,23 @@ namespace GenieClient
 
         private void ButtonMonoFont_Click(object sender, EventArgs e)
         {
-            if (!Information.IsNothing(TextBoxMonoFont.Tag))
+            var picked = FontHelper.PickFont(this, TextBoxMonoFont.Tag as Font);
+            if (picked != null && !picked.Equals(TextBoxMonoFont.Tag as Font))
             {
-                FontDialogPicker.Font = (Font)TextBoxMonoFont.Tag;
-            }
-
-            try
-            {
-                if (FontDialogPicker.ShowDialog(this) == DialogResult.OK)
-                {
-                    TextBoxMonoFont.Text = GetFontName(FontDialogPicker.Font);
-                    TextBoxMonoFont.Tag = FontDialogPicker.Font;
-                    m_ItemChanged = true;
-                }
-            }
-#pragma warning disable CS0168
-            catch (Exception exp)
-#pragma warning restore CS0168
-            {
-                TextBoxMonoFont.Text = "";
-                TextBoxMonoFont.Tag = null;
-                Interaction.MsgBox("Invalid font selected. Please select a TrueType font.", MsgBoxStyle.Critical);
+                TextBoxMonoFont.Text = GetFontName(picked);
+                TextBoxMonoFont.Tag = picked;
+                m_ItemChanged = true;
             }
         }
 
         private void ButtonInputFont_Click(object sender, EventArgs e)
         {
-            if (!Information.IsNothing(TextBoxInputFont.Tag))
+            var picked = FontHelper.PickFont(this, TextBoxInputFont.Tag as Font);
+            if (picked != null && !picked.Equals(TextBoxInputFont.Tag as Font))
             {
-                FontDialogPicker.Font = (Font)TextBoxInputFont.Tag;
-            }
-
-            try
-            {
-                if (FontDialogPicker.ShowDialog(this) == DialogResult.OK)
-                {
-                    TextBoxInputFont.Text = GetFontName(FontDialogPicker.Font);
-                    TextBoxInputFont.Tag = FontDialogPicker.Font;
-                    m_ItemChanged = true;
-                }
-            }
-#pragma warning disable CS0168
-            catch (Exception exp)
-#pragma warning restore CS0168
-            {
-                TextBoxInputFont.Text = "";
-                TextBoxInputFont.Tag = null;
-                Interaction.MsgBox("Invalid font selected. Please select a TrueType font.", MsgBoxStyle.Critical);
+                TextBoxInputFont.Text = GetFontName(picked);
+                TextBoxInputFont.Tag = picked;
+                m_ItemChanged = true;
             }
         }
 

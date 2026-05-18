@@ -381,27 +381,12 @@ namespace GenieClient
 
         private void ButtonFont_Click(object sender, EventArgs e)
         {
-            if (!Information.IsNothing(TextBoxFont.Tag))
+            var picked = FontHelper.PickFont(this, TextBoxFont.Tag as Font);
+            if (picked != null && !picked.Equals(TextBoxFont.Tag as Font))
             {
-                FontDialogPicker.Font = (Font)TextBoxFont.Tag;
-            }
-
-            try
-            {
-                if (FontDialogPicker.ShowDialog(this) == DialogResult.OK)
-                {
-                    TextBoxFont.Text = GetFontName(FontDialogPicker.Font);
-                    TextBoxFont.Tag = FontDialogPicker.Font;
-                    m_ItemChanged = true;
-                }
-            }
-#pragma warning disable CS0168
-            catch (Exception exp)
-#pragma warning restore CS0168
-            {
-                TextBoxFont.Text = "";
-                TextBoxFont.Tag = null;
-                Interaction.MsgBox("Invalid font selected. Please select a TrueType font.", MsgBoxStyle.Critical);
+                TextBoxFont.Text = GetFontName(picked);
+                TextBoxFont.Tag = picked;
+                m_ItemChanged = true;
             }
         }
 
