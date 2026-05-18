@@ -309,7 +309,7 @@ namespace GenieClient.Genie
             }
 
             // Send G - Game Details Request
-            byte[] message = Encoding.Default.GetBytes("G\t" + instance.ToUpper());
+            byte[] message = Encoding.Default.GetBytes("G\t" + instance.ToUpper() + "\n");
             sslStream.Write(message);
             sslStream.Flush();
 
@@ -333,7 +333,7 @@ namespace GenieClient.Genie
             }
 
             // send C - Character Slot Request
-            message = Encoding.Default.GetBytes("C");
+            message = Encoding.Default.GetBytes("C\n");
             sslStream.Write(message);
             sslStream.Flush();
 
@@ -375,7 +375,7 @@ namespace GenieClient.Genie
             }
 
             //send L - Login Key Request
-            message = Encoding.Default.GetBytes("L\t" + characterKey + "\tSTORM");
+            message = Encoding.Default.GetBytes("L\t" + characterKey + "\tSTORM\n");
             sslStream.Write(message);
             sslStream.Flush();
 

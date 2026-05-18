@@ -533,6 +533,17 @@ namespace GenieClient.Genie
 
         private StringBuilder m_oXMLBuffer = new StringBuilder();
 
+        // Subtitle is "[Room Name]" with an optional " (123456)" suffix when DR's showroomid flag is on.
+        private static readonly Regex s_roomSubtitleRegex = new Regex(
+            @"^\[(?<name>.+?)\](?:\s*\((?<id>\d+)\))?\s*$",
+            RegexOptions.Compiled);
+
+        // Trailing " (123456)" that DR appends to the visible room name when showroomid is on.
+        // Lookahead anchor preserves the trailing newline that ends the styled line.
+        private static readonly Regex s_roomNameIdSuffixRegex = new Regex(
+            @"\s*\(\d+\)(?=\s*$)",
+            RegexOptions.Compiled);
+
         public void ParseGameRow(string sText)
         {
             var oXMLBuffer = new StringBuilder();
@@ -1399,18 +1410,30 @@ namespace GenieClient.Genie
                                 case "room":
                                     {
                                         string argstrAttributeName4 = "subtitle";
-                                        m_sRoomTitle = GetAttributeData(oXmlNode, argstrAttributeName4);
-                                        if (m_sRoomTitle.StartsWith(" - "))
+                                        var subtitle = GetAttributeData(oXmlNode, argstrAttributeName4);
+                                        if (subtitle.StartsWith(" - "))
                                         {
-                                            m_sRoomTitle = m_sRoomTitle.Substring(3);
+                                            subtitle = subtitle.Substring(3);
                                         }
 
-                                        if (m_sRoomTitle.StartsWith("["))
+                                        var roomMatch = s_roomSubtitleRegex.Match(subtitle);
+                                        string gameRoomId = "0";
+                                        if (roomMatch.Success)
                                         {
-                                            m_sRoomTitle = m_sRoomTitle.Substring(1, m_sRoomTitle.Length - 2);
+                                            m_sRoomTitle = roomMatch.Groups["name"].Value.Trim();
+                                            if (roomMatch.Groups["id"].Success)
+                                            {
+                                                gameRoomId = roomMatch.Groups["id"].Value;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            m_sRoomTitle = subtitle.Trim();
                                         }
 
-                                        m_sRoomTitle = m_sRoomTitle.Trim();
+                                        m_oGlobals.VariableList.Add("gameroomid", gameRoomId, Globals.Variables.VariableType.Reserved);
+                                        VariableChanged("$gameroomid");
+
                                         string argkey = "roomname";
                                         m_oGlobals.VariableList.Add(argkey, m_sRoomTitle, Globals.Variables.VariableType.Reserved);
                                         string argsVariable1 = "$roomname";
@@ -2704,6 +2727,7 @@ namespace GenieClient.Genie
                                 color = m_oGlobals.PresetList["roomname"].FgColor;
                                 bgcolor = m_oGlobals.PresetList["roomname"].BgColor;
                                 m_oLastFgColor = color;
+                                sText = s_roomNameIdSuffixRegex.Replace(sText, "");
                                 break;
                             }
 
