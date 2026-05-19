@@ -4,6 +4,16 @@ All notable changes to Genie Client 4 are documented here.
 
 ---
 
+## [4.5.0.3] - 2026-05-19
+
+### Fixed
+- Updater: replace string-equality version check with `Version` comparison — local builds newer than the latest GitHub release no longer trigger a false update-available prompt
+- Script engine: `put #var` write failures (e.g. lock timeout on `VariableList`) now echo a visible `[#var error]` message instead of being silently swallowed
+- Script engine: `ParseCommand` faults raised from script `SendText` events are now routed to `HandleGenieException` instead of being silently discarded
+- Script loop detection: `#commands` (processed client-side, never sent to server) are now excluded from the loop-detection send window, preventing false loop aborts on setup scripts that use `put #var`
+
+---
+
 ## [4.5.0.2] - 2026-05-18
 
 ### Added
