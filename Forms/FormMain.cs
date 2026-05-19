@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -2881,6 +2882,26 @@ namespace GenieClient
         private Genie.ScriptList m_oScriptList = new Genie.ScriptList();
         private Genie.ScriptList m_oScriptListNew = new Genie.ScriptList(); // New scripts end up here
 
+        private void DrainPendingVariableChanges()
+        {
+            // Process variable changes enqueued from the game socket background thread.
+            // Draining here (on the UI thread, inside the 10ms timer tick) avoids both
+            // flooding the UI message queue and blocking the socket thread with synchronous
+            // Invoke calls — the two causes of script-engine stalls after "info" or "enc".
+            while (m_oPendingVariableChanges.TryDequeue(out string varName))
+            {
+                try
+                {
+                    TriggerVariableChanged(varName);
+                    SafeParsePluginVariable(varName);
+                }
+                catch (Exception ex)
+                {
+                    HandleGenieException("VariableChanged", ex.Message, ex.ToString());
+                }
+            }
+        }
+
         private void TickScripts()
         {
             if (m_oScriptList.AcquireReaderLock())
@@ -4126,7 +4147,28 @@ namespace GenieClient
         {
             // Block re-entrant calls: a trigger action that sends text must not re-fire triggers
             // for that same sent text (prevents infinite trigger loops when bTriggerOnInput is enabled).
-            if (m_bParseTriggers) return;
+            // Exception: #parse (bBufferWait=false) must still reach scripts so waitfor/waitforre resolves,
+            // even when fired from inside an action trigger. Skip form-level trigger list only.
+            if (m_bParseTriggers)
+            {
+                if (!bBufferWait && sText.Trim().Length > 0 && m_oScriptList.AcquireReaderLock())
+                {
+                    try
+                    {
+                        foreach (Script oScript in m_oScriptList)
+                            oScript.TriggerParse(sText, false);
+                    }
+                    catch (Exception ex)
+                    {
+                        ClassCommand_EchoText("Error in TriggerParse (#parse reentrant): " + ex.Message, "Debug");
+                    }
+                    finally
+                    {
+                        m_oScriptList.ReleaseReaderLock();
+                    }
+                }
+                return;
+            }
 
             m_bParseTriggers = true;
             try
@@ -4435,12 +4477,15 @@ namespace GenieClient
         }
 
         private int m_iTriggerVariableChangedDepth = 0;
+        private readonly ConcurrentQueue<string> m_oPendingVariableChanges = new ConcurrentQueue<string>();
 
         public void TriggerVariableChanged(string sVariableName) // When variables change
         {
             if (InvokeRequired)
             {
-                BeginInvoke(new Action<string>(TriggerVariableChanged), sVariableName);
+                // Safety fallback: if somehow called directly from a background thread,
+                // enqueue rather than BeginInvoke to avoid flooding the UI message queue.
+                m_oPendingVariableChanges.Enqueue(sVariableName);
                 return;
             }
 
@@ -4762,6 +4807,17 @@ namespace GenieClient
 
         private void ClassCommand_EventVariableChanged(string sVariable)
         {
+            // This handler is called from the game socket background thread.
+            // Enqueue and return immediately so we never block the socket thread
+            // or flood the UI message queue with one BeginInvoke per variable.
+            // Both TriggerVariableChanged and SafeParsePluginVariable are drained
+            // on the UI thread inside DrainPendingVariableChanges (TimerBgWorker_Tick).
+            if (InvokeRequired)
+            {
+                m_oPendingVariableChanges.Enqueue(sVariable);
+                return;
+            }
+
             try
             {
                 TriggerVariableChanged(sVariable);
@@ -7922,6 +7978,7 @@ namespace GenieClient
             /*
             try
             {*/
+            DrainPendingVariableChanges();
             string argsAction = m_oGlobals.Events.Poll();
             RunQueueCommand(argsAction, ""); // , "Event")
             int iSent = 0;
