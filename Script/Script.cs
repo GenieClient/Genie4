@@ -690,6 +690,12 @@ namespace GenieClient
         private JintEngine m_JintEngine = null;
         private bool _pendingReload = false;
 
+        // Cross-wait infinite loop detection: track recent game sends by text + timestamp
+        private readonly Queue<(string text, DateTime when)> m_oSendHistory = new Queue<(string, DateTime)>();
+        private const int LOOP_SAME_CMD_LIMIT = 10;   // same text N times in window
+        private const int LOOP_TOTAL_CMD_LIMIT = 30;  // any N total sends in window
+        private const double LOOP_WINDOW_SECONDS = 10.0;
+
         // Allocating and unallocating is slow.
         private Match m_oRegMatch;
 
@@ -3544,6 +3550,7 @@ namespace GenieClient
                 m_oTimerStart = default;
                 m_dTimerLastTime = 0;
                 m_bWaitForEvent = true;
+                m_oSendHistory.Clear();
             }
             catch (Exception ex)
             {
@@ -4377,6 +4384,34 @@ namespace GenieClient
 
         private void SendText(string text, bool queue = false, bool docommand = false)
         {
+            if (!ScriptDone && !string.IsNullOrEmpty(text))
+            {
+                var now = DateTime.Now;
+                while (m_oSendHistory.Count > 0 && (now - m_oSendHistory.Peek().when).TotalSeconds > LOOP_WINDOW_SECONDS)
+                    m_oSendHistory.Dequeue();
+
+                m_oSendHistory.Enqueue((text, now));
+
+                int sameCount = 0;
+                foreach (var entry in m_oSendHistory)
+                    if (string.Equals(entry.text, text, StringComparison.OrdinalIgnoreCase))
+                        sameCount++;
+
+                bool loopDetected = sameCount >= LOOP_SAME_CMD_LIMIT || m_oSendHistory.Count >= LOOP_TOTAL_CMD_LIMIT;
+                if (loopDetected)
+                {
+                    string reason = sameCount >= LOOP_SAME_CMD_LIMIT
+                        ? "\"" + text + "\" sent " + sameCount + " times in " + LOOP_WINDOW_SECONDS + "s"
+                        : m_oSendHistory.Count + " commands sent in " + LOOP_WINDOW_SECONDS + "s";
+                    PrintText("[Script error: possible infinite loop detected (" + reason + "): " + m_sFileName + "]");
+                    PrintTrace();
+                    ScriptDone = true;
+                    ClearScript();
+                    m_CurrentState = ScriptState.finished;
+                    EventStatusChanged?.Invoke(this, ScriptState.finished);
+                    return;
+                }
+            }
             EventSendText?.Invoke(text, ScriptName, queue, docommand);
         }
     }
