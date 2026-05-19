@@ -239,6 +239,14 @@ namespace GenieClient.Mapper
             return def;
         }
 
+        // Matches room names garbled by the pre-PR#187 showroomid bug: old Substring(1,len-2)
+        // left a trailing "] (digits" without a closing paren. Strip it so legacy maps still load.
+        private static readonly Regex s_legacyGarbledNameRegex = new Regex(
+            @"\]\s*\(\d+$", RegexOptions.Compiled);
+
+        public static string NormalizeLegacyRoomName(string name) =>
+            name == null ? name : s_legacyGarbledNameRegex.Replace(name, "").TrimEnd();
+
         private string RoomOnDisk(Node oNode)
         {
             try
@@ -253,7 +261,7 @@ namespace GenieClient.Mapper
                         if ((dif.Extension.ToLower() ?? "") == ".xml")
                     {
                         xdoc = new XmlDocument();
-                        
+
                         xdoc.Load(new StreamReader(dif.FullName,true));
                         xnlist = xdoc.SelectNodes("zone/node");
                         foreach (XmlNode xn in xnlist)
@@ -261,7 +269,7 @@ namespace GenieClient.Mapper
                             // Don't match linked node rooms as they are duplicates.
                             if (!GetValue(xn, "note").Contains(".xml"))
                             {
-                                if ((oNode.Name ?? "") == (GetValue(xn, "name") ?? ""))
+                                if ((oNode.Name ?? "") == (NormalizeLegacyRoomName(GetValue(xn, "name")) ?? ""))
                                 {
                                     bool bDescMatch = false;
                                     var xDescs = xn.SelectNodes("description");

@@ -670,7 +670,7 @@ namespace GenieClient.Mapper
                     n.ID = int.Parse(GetValue(xn, "id", "0"));
                     if (n.ID > m_NodeList.NextID)
                         m_NodeList.NextID = n.ID;
-                    n.Name = GetValue(xn, "name");
+                    n.Name = AutoMapper.NormalizeLegacyRoomName(GetValue(xn, "name"));
                     n.Note = GetValue(xn, "note", "");
                     n.IsLabelFile = n.Note.Contains(".xml");
                     string sColor = GetValue(xn, "color");
