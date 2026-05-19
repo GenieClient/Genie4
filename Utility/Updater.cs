@@ -77,19 +77,23 @@ namespace GenieClient
             }
         }
 
-        public static bool ClientIsCurrent 
-        { 
+        public static bool ClientIsCurrent
+        {
             get
             {
-                return LocalClientVersion == ServerClientVersion;
-            } 
+                if (!Version.TryParse(LocalClientVersion, out var local)) return true;
+                if (!Version.TryParse(ServerClientVersion, out var server)) return true;
+                return server <= local;
+            }
         }
 
         public static bool UpdaterIsCurrent
         {
             get
             {
-                return LocalUpdaterVersion == ServerUpdaterVersion;
+                if (!Version.TryParse(LocalUpdaterVersion, out var local)) return true;
+                if (!Version.TryParse(ServerUpdaterVersion, out var server)) return true;
+                return server <= local;
             }
         }
 
@@ -97,7 +101,7 @@ namespace GenieClient
         {
             Release latest = await GetReleaseAsync(GitHubUpdaterReleaseURL).ConfigureAwait(false);
             string serverVersion = latest.Version?.TrimStart('v') ?? "0";
-            bool isCurrent = LocalUpdaterVersion == serverVersion;
+            bool isCurrent = Version.TryParse(serverVersion, out var sv) && Version.TryParse(LocalUpdaterVersion, out var lv) ? sv <= lv : true;
             if (!isCurrent && !autoUpdate && MessageBox.Show(System.Windows.Forms.Form.ActiveForm, @"An updated version of Lamp is available. It is recommended to update Lamp before continuing. Would you like to update now?", "Update Lamp?", MessageBoxButtons.YesNoCancel) != DialogResult.Yes) return;
             await latest.LoadAssetsAsync().ConfigureAwait(false);
             if (latest.Assets.ContainsKey(UpdaterFilename))

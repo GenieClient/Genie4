@@ -941,7 +941,14 @@ namespace GenieClient.Genie
                                                 // Add
                                                 string argkey = oGlobals.ParseGlobalVars(oArgs[1].ToString());
                                                 string argvalue = oGlobals.ParseGlobalVars(ParseAllArgs(oArgs, 2));
-                                                oGlobals.VariableList.Add(argkey, argvalue);
+                                                try
+                                                {
+                                                    oGlobals.VariableList.Add(argkey, argvalue);
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    EchoText("[#var error] key=" + argkey + " val=" + argvalue + " err=" + ex.Message + System.Environment.NewLine);
+                                                }
                                                 string argsVariable = "$" + oArgs[1].ToString();
                                                 VariableChanged(argsVariable);
                                             }

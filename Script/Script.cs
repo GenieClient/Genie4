@@ -4384,7 +4384,7 @@ namespace GenieClient
 
         private void SendText(string text, bool queue = false, bool docommand = false)
         {
-            if (!ScriptDone && !string.IsNullOrEmpty(text))
+            if (!ScriptDone && !string.IsNullOrEmpty(text) && !text.StartsWith("#"))
             {
                 var now = DateTime.Now;
                 while (m_oSendHistory.Count > 0 && (now - m_oSendHistory.Peek().when).TotalSeconds > LOOP_WINDOW_SECONDS)

@@ -6511,7 +6511,9 @@ namespace GenieClient
                 }
                 if (!ToQueue)
                 {
-                    m_oCommand.ParseCommand(Text, bSendText, false, Script);
+                    var pcTask = m_oCommand.ParseCommand(Text, bSendText, false, Script);
+                    if (pcTask.IsFaulted)
+                        HandleGenieException("Script_ParseCommand", pcTask.Exception?.InnerException?.Message ?? "ParseCommand fault", pcTask.Exception?.ToString() ?? "");
                 }
                 else
                 {
