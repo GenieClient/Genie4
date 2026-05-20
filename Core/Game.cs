@@ -533,15 +533,28 @@ namespace GenieClient.Genie
 
         private StringBuilder m_oXMLBuffer = new StringBuilder();
 
-        // Subtitle is "[Room Name]" with an optional " (123456)" suffix when DR's showroomid flag is on.
+        // Extracts the room name from a "[Room Name]" subtitle. Stops at the first closing
+        // bracket so any trailing markers DR appends — room ID "(123456)", critter count
+        // "(**)", or anything else parenthesized — are excluded from the captured name.
+        // $roomname stays clean regardless of which markers are present, in any order.
         private static readonly Regex s_roomSubtitleRegex = new Regex(
-            @"^\[(?<name>.+?)\](?:\s*\((?<id>\d+)\))?\s*$",
+            @"^\[(?<name>[^\]]+)\]",
             RegexOptions.Compiled);
 
-        // Trailing " (123456)" that DR appends to the visible room name when showroomid is on.
-        // Lookahead anchor preserves the trailing newline that ends the styled line.
+        // Finds the numeric room ID anywhere in the subtitle (DR's showroomid output).
+        // Independent of name extraction so it works regardless of marker order:
+        // "[Name] (123) (**)" and "[Name] (**) (123)" both populate $gameroomid correctly.
+        private static readonly Regex s_subtitleIdRegex = new Regex(
+            @"\((?<id>\d+)\)",
+            RegexOptions.Compiled);
+
+        // Strips all trailing parenthesized markers from the visible room-name display:
+        // "(123456)" room IDs (from showroomid), "(**)" critter markers, and any other
+        // parenthesized annotations DR appends after the closing bracket. Critter
+        // detection uses the separate <room objs> stream ($monstercount/$monsterlist),
+        // so removing "(**)" from the title display does not affect anything programmatic.
         private static readonly Regex s_roomNameIdSuffixRegex = new Regex(
-            @"\s*\(\d+\)(?=\s*$)",
+            @"(?<=\])(\s*\([^)]*\))+",
             RegexOptions.Compiled);
 
         public void ParseGameRow(string sText)
@@ -1421,14 +1434,18 @@ namespace GenieClient.Genie
                                         if (roomMatch.Success)
                                         {
                                             m_sRoomTitle = roomMatch.Groups["name"].Value.Trim();
-                                            if (roomMatch.Groups["id"].Success)
-                                            {
-                                                gameRoomId = roomMatch.Groups["id"].Value;
-                                            }
                                         }
                                         else
                                         {
                                             m_sRoomTitle = subtitle.Trim();
+                                        }
+
+                                        // Search the whole subtitle for the numeric room ID, regardless of
+                                        // where DR placed it relative to other markers like "(**)".
+                                        var idMatch = s_subtitleIdRegex.Match(subtitle);
+                                        if (idMatch.Success)
+                                        {
+                                            gameRoomId = idMatch.Groups["id"].Value;
                                         }
 
                                         m_oGlobals.VariableList.Add("gameroomid", gameRoomId, Globals.Variables.VariableType.Reserved);
