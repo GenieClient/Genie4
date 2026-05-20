@@ -1020,17 +1020,31 @@ namespace GenieClient
 
         }
 
+        private bool m_bInSetScrollBars;
+
         public void SetScrollBars()
         {
-            if (!IsHandleCreated) return;
-            if (Win32Utility.GetFirstLineVisible(Handle) > 0)
+            // Re-entry guard: setting ScrollBars below triggers RecreateHandle, whose destroy phase
+            // fires FormSkin_Resize, which re-enters this method. Without the guard, the inner call
+            // ran with a transient/zero handle and the recreation completed with ScrollBars desynced
+            // from native style bits — AVs on the next EM_STREAMIN from the socket BG thread.
+            if (m_bInSetScrollBars) return;
+            m_bInSetScrollBars = true;
+            try
             {
-                ScrollBars = RichTextBoxScrollBars.ForcedVertical;
+                if (Win32Utility.GetFirstLineVisible(Handle) > 0)
+                {
+                    ScrollBars = RichTextBoxScrollBars.ForcedVertical;
+                }
+                else
+                {
+                    ScrollBars = RichTextBoxScrollBars.None;
+                    VScroll += VScrollEvent;
+                }
             }
-            else
+            finally
             {
-                ScrollBars = RichTextBoxScrollBars.None;
-                VScroll += VScrollEvent;
+                m_bInSetScrollBars = false;
             }
         }
     }

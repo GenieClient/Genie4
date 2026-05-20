@@ -4917,7 +4917,14 @@ namespace GenieClient
 
             if (InvokeRequired)
             {
-                Invoke((Action)(() => AddText(sText, oColor, oBgColor, oTargetWindow, sTargetWindow, bNoCache, bMono, bPrompt, bInput)));
+                // BeginInvoke (not Invoke) is required here: BG threads (notably the socket
+                // ReceiveCallback) can be holding Script.m_oThreadLock when they call AddText
+                // via the trigger -> action -> put -> SendText -> echo chain. A synchronous
+                // Invoke would block them while the UI thread is itself trying to acquire that
+                // same lock from DrainPendingVariableChanges -> Script.TriggerVariableChanged,
+                // producing a deadlock that resolves only when Monitor.TryEnter times out
+                // (3.5s per blocked variable change — visible to the user as a 5-10s UI hang).
+                BeginInvoke((Action)(() => AddText(sText, oColor, oBgColor, oTargetWindow, sTargetWindow, bNoCache, bMono, bPrompt, bInput)));
                 return;
             }
 
