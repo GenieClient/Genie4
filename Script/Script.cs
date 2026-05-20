@@ -692,8 +692,8 @@ namespace GenieClient
 
         // Cross-wait infinite loop detection: track recent game sends by text + timestamp
         private readonly Queue<(string text, DateTime when)> m_oSendHistory = new Queue<(string, DateTime)>();
-        private const int LOOP_SAME_CMD_LIMIT = 10;   // same text N times in window
-        private const int LOOP_TOTAL_CMD_LIMIT = 30;  // any N total sends in window
+        private const int LOOP_SAME_CMD_LIMIT = 100;  // same text N times in window
+        private const int LOOP_TOTAL_CMD_LIMIT = 100; // any N total sends in window
         private const double LOOP_WINDOW_SECONDS = 10.0;
 
         // Allocating and unallocating is slow.
